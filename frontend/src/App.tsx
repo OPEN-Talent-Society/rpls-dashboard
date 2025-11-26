@@ -65,6 +65,13 @@ type GeminiResponse = {
 
 type HistorySeries = { series: { month: string; value: number }[] }
 
+const TOOLTIP = {
+  mom: 'Month over month change vs prior month.',
+  postings: 'Active job ads; postings Δ is change vs prior month.',
+  salary: 'Average salary from new postings; Δ vs prior month.',
+  employment: 'Employment headcount; Δ vs prior month.',
+}
+
 const Sparkline: React.FC<{ values: number[]; color: string; width?: number; height?: number }> = ({
   values,
   color,
@@ -510,10 +517,10 @@ function App() {
 
       <section className="grid-main">
         <div className="card wide feature pulse-panel" style={{ ['--delay' as string]: '0.1s' }}>
-            <div className="card-header">
-              <h2>Sector Pulse</h2>
-              <span className="pill neutral">Employment · Postings · Salary</span>
-            </div>
+          <div className="card-header">
+            <h2>Sector Pulse</h2>
+            <span className="pill neutral">Employment · Postings · Salary</span>
+          </div>
             <div className="pulse-grid">
             {topSectorMoves.top.map((s) => (
               <div key={s.naics2d_code} className="pulse-tile up tile-up">
@@ -523,21 +530,27 @@ function App() {
                 </div>
                 <div className="bars">
                   <div>
-                    <p className="metric-label">Employment</p>
+                    <p className="metric-label">
+                      Employment <span className="tip" title={TOOLTIP.employment}>ℹ</span>
+                    </p>
                     <p className="delta up with-bar">
                       <span>{s.employment_pct_change?.toFixed(2) ?? '—'}%</span>
                       <span className="micro-bar" style={barStyle(s.employment_pct_change, 'up')} />
                     </p>
                   </div>
                   <div>
-                    <p className="metric-label">Postings</p>
+                    <p className="metric-label">
+                      Postings <span className="tip" title={TOOLTIP.postings}>ℹ</span>
+                    </p>
                     <p className="delta neutral with-bar">
                       <span>{s.postings_pct_change?.toFixed(2) ?? '—'}%</span>
                       <span className="micro-bar" style={barStyle(s.postings_pct_change, 'postings')} />
                     </p>
                   </div>
                   <div>
-                    <p className="metric-label">Salary</p>
+                    <p className="metric-label">
+                      Salary <span className="tip" title={TOOLTIP.salary}>ℹ</span>
+                    </p>
                     <p className="delta neutral with-bar">
                       <span>
                         {s.salary_pct_change !== null && s.salary_pct_change !== undefined
@@ -567,21 +580,27 @@ function App() {
                 </div>
                 <div className="bars">
                   <div>
-                    <p className="metric-label">Employment</p>
+                    <p className="metric-label">
+                      Employment <span className="tip" title={TOOLTIP.employment}>ℹ</span>
+                    </p>
                     <p className="delta down with-bar">
                       <span>{s.employment_pct_change?.toFixed(2) ?? '—'}%</span>
                       <span className="micro-bar" style={barStyle(s.employment_pct_change, 'down')} />
                     </p>
                   </div>
                   <div>
-                    <p className="metric-label">Postings</p>
+                    <p className="metric-label">
+                      Postings <span className="tip" title={TOOLTIP.postings}>ℹ</span>
+                    </p>
                     <p className="delta neutral with-bar">
                       <span>{s.postings_pct_change?.toFixed(2) ?? '—'}%</span>
                       <span className="micro-bar" style={barStyle(s.postings_pct_change, 'postings')} />
                     </p>
                   </div>
                   <div>
-                    <p className="metric-label">Salary</p>
+                    <p className="metric-label">
+                      Salary <span className="tip" title={TOOLTIP.salary}>ℹ</span>
+                    </p>
                     <p className="delta neutral with-bar">
                       <span>
                         {s.salary_pct_change !== null && s.salary_pct_change !== undefined
@@ -617,7 +636,7 @@ function App() {
             <div className="spotlight">
               <div>
                 <p className="metric-label">
-                  Winners (MoM) <span className="tip" title="Month over month employment change vs prior month.">ℹ</span>
+                  Winners (MoM) <span className="tip" title={TOOLTIP.mom}>ℹ</span>
                 </p>
                 <ul>
                   {spotlight?.winners?.map((item) => (
@@ -644,7 +663,7 @@ function App() {
               </div>
               <div>
                 <p className="metric-label">
-                  Losers (MoM) <span className="tip" title="Month over month employment change vs prior month.">ℹ</span>
+                  Losers (MoM) <span className="tip" title={TOOLTIP.mom}>ℹ</span>
                 </p>
                 <ul>
                   {spotlight?.losers?.map((item) => (
@@ -691,12 +710,12 @@ function App() {
       </section>
 
       <section className="grid-bottom">
-        <div className="card" style={{ ['--delay' as string]: '0.22s' }}>
-          <div className="card-header">
-            <h2>Postings Momentum</h2>
-            <span className="pill neutral">
-              {postingsHeatmap ? postingsHeatmap.prev_month + ' → ' + postingsHeatmap.month : '—'}
-            </span>
+          <div className="card" style={{ ['--delay' as string]: '0.22s' }}>
+            <div className="card-header">
+              <h2>Postings Momentum</h2>
+              <span className="pill neutral">
+                {postingsHeatmap ? postingsHeatmap.prev_month + ' → ' + postingsHeatmap.month : '—'}
+              </span>
           </div>
           <div className="split">
             <div>
@@ -708,19 +727,20 @@ function App() {
                     <span className="skeleton skeleton-line" style={{ width: '30%' }} />
                   </li>
                 )}
-                {postingsLeaders.top.map((row) => (
-                  <li key={row.state} className="list-row">
-                    <span>{row.state}</span>
-                    <span className="delta up with-bar">
-                      <span>
-                        {row.pct_change !== null && row.pct_change !== undefined
-                          ? row.pct_change.toFixed(2) + '%'
-                          : '—'}
+                  {postingsLeaders.top.map((row) => (
+                    <li key={row.state} className="list-row">
+                      <span>{row.state}</span>
+                      <span className="delta up with-bar">
+                        <span>
+                          {row.pct_change !== null && row.pct_change !== undefined
+                            ? row.pct_change.toFixed(2) + '%'
+                            : '—'}
+                        </span>
+                        <span className="micro-bar" style={barStyle(row.pct_change, 'up')} />
                       </span>
-                      <span className="micro-bar" style={barStyle(row.pct_change, 'up')} />
-                    </span>
-                  </li>
-                ))}
+                      <span className="micro-bar" style={barStyle(row.pct_change, 'postings')} />
+                    </li>
+                  ))}
               </ul>
             </div>
             <div>
@@ -743,6 +763,7 @@ function App() {
                       </span>
                       <span className="micro-bar" style={barStyle(row.pct_change, 'down')} />
                     </span>
+                    <span className="micro-bar" style={barStyle(row.pct_change, 'postings')} />
                   </li>
                 ))}
               </ul>
