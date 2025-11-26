@@ -218,7 +218,7 @@ def api_history(
     metric: str = Query(..., description="employment|postings|salary|hiring_rate|attrition_rate|layoffs"),
     id: Optional[str] = None,
     sa: bool = True,
-    limit_months: int = Query(6, ge=1, le=24),
+    limit_months: int = Query(6, ge=1, le=36),
 ):
     table, dim_col, value_col, needs_money = resolve_mapping(dimension_type, metric, sa)
     val_expr = value_expr(value_col)

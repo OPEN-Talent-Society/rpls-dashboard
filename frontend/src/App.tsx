@@ -10,6 +10,7 @@ type MarketTemperature = {
   hiring_rate: number
   attrition_rate: number
   trend: string
+  history?: { month: string; hiring_rate: number; attrition_rate: number }[]
 }
 
 type SectorPulseEntry = {
@@ -23,6 +24,11 @@ type SectorPulseEntry = {
   postings_pct_change?: number
   salary?: number
   salary_pct_change?: number
+  history?: {
+    employment: number[]
+    postings: number[]
+    salary: number[]
+  }
 }
 
 type SpotlightMover = {
@@ -99,30 +105,94 @@ function App() {
   const [loadingGemini, setLoadingGemini] = useState(false)
   const [errors, setErrors] = useState<string | null>(null)
 
-  const fetchJson = async <T,>(path: string): Promise<T | null> => {
+  const fetchJson = async <T,>(path: string, suppressError = false): Promise<T | null> => {
     try {
       const resp = await fetch(`${API_BASE}${path}`)
       if (!resp.ok) throw new Error(`Request failed: ${resp.status}`)
       return (await resp.json()) as T
     } catch (err) {
       console.error(err)
-      setErrors(`Failed to fetch ${path}`)
+      if (!suppressError) setErrors(`Failed to fetch ${path}`)
       return null
     }
   }
 
   useEffect(() => {
-    fetchJson<MarketTemperature>('/api/market-temperature').then((data) => {
-      if (data) setMarketTemp(data)
-    })
-    fetchJson<Spotlight>('/api/sector-spotlight').then((data) => data && setSpotlight(data))
-    fetchJson<SectorPulseEntry[]>('/api/sector-pulse').then((data) => data && setSectorPulse(data))
-    fetchJson<{ month: string; data: LayoffEntry[] }>('/api/layoffs-heatmap').then(
-      (data) => data && setLayoffs(data.data)
-    )
-    fetchJson<PostingsHeatmap>('/api/postings-heatmap').then(
-      (data) => data && setPostingsHeatmap(data)
-    )
+    const load = async () => {
+      const fallbackSeries = (series?: { value: number }[], fallback?: number | null) => {
+        if (series && series.length) return series.map((x) => x.value ?? 0)
+        const v = fallback ?? 0
+        return [v, v]
+      }
+
+      const mt = await fetchJson<MarketTemperature>('/api/market-temperature')
+      if (mt) {
+        const hiringHist = await fetchJson<{ series: { month: string; value: number }[] }>(
+          `/api/history?dimension_type=national&metric=hiring_rate&limit_months=6`,
+          true
+        )
+        const attrHist = await fetchJson<{ series: { month: string; value: number }[] }>(
+          `/api/history?dimension_type=national&metric=attrition_rate&limit_months=6`,
+          true
+        )
+        mt.history =
+          hiringHist && attrHist && hiringHist.series.length && attrHist.series.length
+            ? hiringHist.series.map((h, i) => ({
+                month: h.month,
+                hiring_rate: h.value,
+                attrition_rate: attrHist.series[i]?.value ?? attrHist.series.slice(-1)[0]?.value ?? h.value,
+              }))
+            : [
+                {
+                  month: mt.month,
+                  hiring_rate: mt.hiring_rate ?? 0,
+                  attrition_rate: mt.attrition_rate ?? 0,
+                },
+              ]
+        setMarketTemp(mt)
+      }
+
+      const spot = await fetchJson<Spotlight>('/api/sector-spotlight')
+      if (spot) setSpotlight(spot)
+
+      const pulse = await fetchJson<SectorPulseEntry[]>('/api/sector-pulse')
+      if (pulse) {
+        const withHistory = await Promise.all(
+          pulse.map(async (s) => {
+            const emp = await fetchJson<{ series: { value: number }[] }>(
+              `/api/history?dimension_type=sector&metric=employment&id=${s.naics2d_code}&limit_months=6`,
+              true
+            )
+            const post = await fetchJson<{ series: { value: number }[] }>(
+              `/api/history?dimension_type=sector&metric=postings&id=${s.naics2d_code}&limit_months=6`,
+              true
+            )
+            const sal = await fetchJson<{ series: { value: number }[] }>(
+              `/api/history?dimension_type=sector&metric=salary&id=${s.naics2d_code}&limit_months=6`,
+              true
+            )
+            return {
+              ...s,
+              history: {
+                employment: fallbackSeries(emp?.series, s.employment_pct_change),
+                postings: fallbackSeries(post?.series, s.postings_pct_change),
+                salary: fallbackSeries(sal?.series, s.salary_pct_change),
+              },
+            }
+          })
+        )
+        setSectorPulse(withHistory)
+      }
+
+      const layoffsHeat = await fetchJson<{ month: string; data: LayoffEntry[] }>(
+        '/api/layoffs-heatmap'
+      )
+      if (layoffsHeat) setLayoffs(layoffsHeat.data)
+
+      const postings = await fetchJson<PostingsHeatmap>('/api/postings-heatmap')
+      if (postings) setPostingsHeatmap(postings)
+    }
+    load()
   }, [])
 
   const handleAskGemini = async () => {
@@ -222,12 +292,6 @@ function App() {
     return items
   }, [avgPostingsDelta, bottomEmploymentMove, marketTemp, topEmploymentMove])
 
-  const makeSparkValues = (pct?: number | null) => {
-    const p = pct ?? 0
-    const base = 100
-    return [base * 0.92, base * (1 + p / 300), base * (1 + p / 150), base * (1 + p / 100)]
-  }
-
   const barStyle = (
     pct?: number | null,
     tone: 'up' | 'down' | 'neutral' | 'postings' | 'salary' = 'neutral'
@@ -310,16 +374,38 @@ function App() {
           </div>
           <p className="hint">Higher hiring + attrition = dynamic; both down = cooling.</p>
           <div className="mini-bars">
-            <div className="mini-bar">
-              <span className="metric-label">Hiring</span>
-              <span className="micro-bar" style={barStyle(marketTemp?.hiring_rate, 'up')} />
-              <Sparkline values={makeSparkValues(marketTemp?.hiring_rate)} color="#7ef0c9" />
-            </div>
-            <div className="mini-bar">
-              <span className="metric-label">Attrition</span>
-              <span className="micro-bar" style={barStyle(marketTemp?.attrition_rate, 'down')} />
-              <Sparkline values={makeSparkValues(marketTemp?.attrition_rate)} color="#f87171" />
-            </div>
+              <div className="mini-bar">
+                <span className="metric-label">Hiring</span>
+                <span className="micro-bar" style={barStyle(marketTemp?.hiring_rate, 'up')} />
+              </div>
+              <div className="mini-bar">
+                <span className="metric-label">Attrition</span>
+                <span className="micro-bar" style={barStyle(marketTemp?.attrition_rate, 'down')} />
+              </div>
+            {marketTemp && (
+              <div className="spark-dual">
+                <Sparkline
+                  values={
+                    marketTemp.history?.length
+                      ? marketTemp.history.map((h) => h.hiring_rate)
+                      : [marketTemp.hiring_rate ?? 0]
+                  }
+                  color="#7ef0c9"
+                  width={120}
+                  height={32}
+                />
+                <Sparkline
+                  values={
+                    marketTemp.history?.length
+                      ? marketTemp.history.map((h) => h.attrition_rate)
+                      : [marketTemp.attrition_rate ?? 0]
+                  }
+                  color="#f87171"
+                  width={120}
+                  height={32}
+                />
+              </div>
+            )}
           </div>
         </div>
         <div className="card guidance" style={{ ['--delay' as string]: '0.05s' }}>
@@ -394,11 +480,11 @@ function App() {
                   </div>
                 </div>
                 <Sparkline
-                  values={[
-                    s.employment_pct_change ?? 0,
-                    s.postings_pct_change ?? 0,
-                    s.salary_pct_change ?? 0,
-                  ]}
+                  values={
+                    s.history?.employment?.length
+                      ? s.history.employment
+                      : [s.employment_pct_change ?? 0]
+                  }
                   color="#7ef0c9"
                 />
               </div>
@@ -438,11 +524,11 @@ function App() {
                   </div>
                 </div>
                 <Sparkline
-                  values={[
-                    s.employment_pct_change ?? 0,
-                    s.postings_pct_change ?? 0,
-                    s.salary_pct_change ?? 0,
-                  ]}
+                  values={
+                    s.history?.employment?.length
+                      ? s.history.employment
+                      : [s.employment_pct_change ?? 0]
+                  }
                   color="#f87171"
                 />
               </div>
