@@ -698,25 +698,25 @@ function App() {
               {postingsHeatmap ? postingsHeatmap.prev_month + ' → ' + postingsHeatmap.month : '—'}
             </span>
           </div>
-            <div className="split">
-              <div>
-                <p className="metric-label">States gaining</p>
-                <ul className="list">
-                  {postingsLeaders.top.length === 0 && (
-                    <li className="list-row">
-                      <span className="skeleton skeleton-line" style={{ width: '60%' }} />
-                      <span className="skeleton skeleton-line" style={{ width: '30%' }} />
-                    </li>
-                  )}
-                  {postingsLeaders.top.map((row) => (
-                    <li key={row.state} className="list-row">
-                      <span>{row.state}</span>
-                      <span className="delta up with-bar">
-                        <span>
-                          {row.pct_change !== null && row.pct_change !== undefined
-                            ? row.pct_change.toFixed(2) + '%'
-                            : '—'}
-                        </span>
+          <div className="split">
+            <div>
+              <p className="metric-label">States gaining</p>
+              <ul className="list">
+                {postingsLeaders.top.length === 0 && (
+                  <li className="list-row">
+                    <span className="skeleton skeleton-line" style={{ width: '60%' }} />
+                    <span className="skeleton skeleton-line" style={{ width: '30%' }} />
+                  </li>
+                )}
+                {postingsLeaders.top.map((row) => (
+                  <li key={row.state} className="list-row">
+                    <span>{row.state}</span>
+                    <span className="delta up with-bar">
+                      <span>
+                        {row.pct_change !== null && row.pct_change !== undefined
+                          ? row.pct_change.toFixed(2) + '%'
+                          : '—'}
+                      </span>
                       <span className="micro-bar" style={barStyle(row.pct_change, 'up')} />
                     </span>
                   </li>

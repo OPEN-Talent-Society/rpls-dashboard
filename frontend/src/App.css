@@ -1,6 +1,6 @@
 :root {
   --bg: #05070d;
-  --panel: rgba(10, 14, 26, 0.85);
+  --panel: rgba(10, 14, 26, 0.9);
   --panel-border: rgba(109, 218, 198, 0.28);
   --panel-highlight: rgba(87, 130, 255, 0.3);
   --text: #e7f6ff;
@@ -144,6 +144,10 @@ h1 {
   display: flex;
   gap: 12px;
   align-items: center;
+  padding: 8px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .version-banner {
