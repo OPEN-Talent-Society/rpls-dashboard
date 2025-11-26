@@ -35,6 +35,9 @@ type SpotlightMover = {
   dimension: string
   sector?: string
   pct_change?: number | null
+  history?: {
+    employment?: number[]
+  }
 }
 
 type Spotlight = { winners: SpotlightMover[]; losers: SpotlightMover[] }
@@ -153,7 +156,27 @@ function App() {
       }
 
       const spot = await fetchJson<Spotlight>('/api/sector-spotlight')
-      if (spot) setSpotlight(spot)
+      if (spot) {
+        const winnersWithHist = await Promise.all(
+          (spot.winners || []).map(async (w) => {
+            const hist = await fetchJson<{ series: { value: number }[] }>(
+              `/api/history?dimension_type=sector&metric=employment&id=${w.dimension}&limit_months=6`,
+              true
+            )
+            return { ...w, history: { employment: hist?.series.map((x) => x.value ?? 0) || [] } }
+          })
+        )
+        const losersWithHist = await Promise.all(
+          (spot.losers || []).map(async (w) => {
+            const hist = await fetchJson<{ series: { value: number }[] }>(
+              `/api/history?dimension_type=sector&metric=employment&id=${w.dimension}&limit_months=6`,
+              true
+            )
+            return { ...w, history: { employment: hist?.series.map((x) => x.value ?? 0) || [] } }
+          })
+        )
+        setSpotlight({ winners: winnersWithHist, losers: losersWithHist })
+      }
 
       const pulse = await fetchJson<SectorPulseEntry[]>('/api/sector-pulse')
       if (pulse) {
@@ -563,6 +586,9 @@ function App() {
                         </span>
                         <span className="micro-bar" style={barStyle(item.pct_change, 'up')} />
                       </div>
+                      {item.history?.employment?.length ? (
+                        <Sparkline values={item.history.employment} color="#7ef0c9" />
+                      ) : null}
                     </li>
                   )) || <li className="muted">Loading…</li>}
                 </ul>
@@ -585,11 +611,14 @@ function App() {
                         </span>
                         <span className="micro-bar" style={barStyle(item.pct_change, 'down')} />
                       </div>
+                      {item.history?.employment?.length ? (
+                        <Sparkline values={item.history.employment} color="#f87171" />
+                      ) : null}
                     </li>
                   )) || <li className="muted">Loading…</li>}
-                </ul>
-              </div>
+              </ul>
             </div>
+          </div>
             <p className="hint">MoM = month over month change versus the prior month (RPLS employment).</p>
           </div>
           <div className="card" style={{ ['--delay' as string]: '0.2s' }}>
