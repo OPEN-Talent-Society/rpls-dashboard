@@ -63,6 +63,8 @@ type GeminiResponse = {
   response: string
 }
 
+type HistorySeries = { series: { month: string; value: number }[] }
+
 const Sparkline: React.FC<{ values: number[]; color: string; width?: number; height?: number }> = ({
   values,
   color,
@@ -147,11 +149,11 @@ function App() {
 
       const mt = await fetchJson<MarketTemperature>('/api/market-temperature')
       if (mt) {
-        const hiringHist = await fetchJson<{ series: { month: string; value: number }[] }>(
+        const hiringHist = await fetchJson<HistorySeries>(
           `/api/history?dimension_type=national&metric=hiring_rate&limit_months=6`,
           true
         )
-        const attrHist = await fetchJson<{ series: { month: string; value: number }[] }>(
+        const attrHist = await fetchJson<HistorySeries>(
           `/api/history?dimension_type=national&metric=attrition_rate&limit_months=6`,
           true
         )
@@ -414,14 +416,14 @@ function App() {
       {errors ? <div className="error">{errors}</div> : null}
 
       <section className="grid-hero">
-            <div className="card hero-strip" style={{ ['--delay' as string]: '0s' }}>
-              <div className="card-header">
-                <h2>
-                  Market Temperature
-                  <span className="tip" title="Dual-line mini-chart: hiring vs attrition over recent months.">ℹ</span>
-                </h2>
-                <span className={`pill ${marketTemp?.trend || ''}`}>{marketTemp?.trend || '—'}</span>
-              </div>
+        <div className="card hero-strip" style={{ ['--delay' as string]: '0s' }}>
+          <div className="card-header">
+            <h2>
+              Market Temperature
+              <span className="tip" title="Dual-line mini-chart: hiring vs attrition over recent months.">ℹ</span>
+            </h2>
+            <span className={`pill ${marketTemp?.trend || ''}`}>{marketTemp?.trend || '—'}</span>
+          </div>
           <div className="metric-row">
             <div>
               <p className="metric-label">Month</p>
