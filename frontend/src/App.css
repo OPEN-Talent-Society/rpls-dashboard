@@ -150,6 +150,13 @@ h1 {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
+.spark-dual.main {
+  width: 100%;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(126, 240, 201, 0.2);
+}
+
 .version-banner {
   margin: 4px 0 8px;
   font-size: 12px;
@@ -303,6 +310,10 @@ h1 {
   margin: 6px 0;
 }
 
+/* apply skeleton to empty lists */
+.list .skeleton-line {
+  width: 70%;
+}
 @keyframes shimmer {
   0% {
     background-position: -200% 0;

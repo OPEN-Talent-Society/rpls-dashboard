@@ -112,6 +112,7 @@ function App() {
   const [postingsHeatmap, setPostingsHeatmap] = useState<PostingsHeatmap | null>(null)
   const [topMoversStrip, setTopMoversStrip] = useState<{ dimension: string; pct_change: number }[]>([])
   const [loading, setLoading] = useState(true)
+  const [historySeries, setHistorySeries] = useState<{ hiring: { month: string; value: number }[]; attrition: { month: string; value: number }[] }>({ hiring: [], attrition: [] })
   const [geminiQuestion, setGeminiQuestion] = useState('What changed most this month?')
   const [geminiContext, setGeminiContext] = useState(
     'You are summarizing RPLS labor stats for a people-ops audience. Keep answers concise.'
@@ -179,6 +180,8 @@ function App() {
                 },
               ]
         setMarketTemp(mt)
+        if (hiringHist) setHistorySeries((prev) => ({ ...prev, hiring: hiringHist.series }))
+        if (attrHist) setHistorySeries((prev) => ({ ...prev, attrition: attrHist.series }))
       }
 
       const spot = await fetchJson<Spotlight>('/api/sector-spotlight')
@@ -431,6 +434,25 @@ function App() {
             </h2>
             <span className={`pill ${marketTemp?.trend || ''}`}>{marketTemp?.trend || '—'}</span>
           </div>
+          {historySeries.hiring.length && historySeries.attrition.length ? (
+            <div className="mini-chart">
+              <h3>Trend (last 6 months)</h3>
+              <div className="spark-dual main">
+                <Sparkline
+                  values={historySeries.hiring.map((h) => h.value)}
+                  color="#7ef0c9"
+                  width={220}
+                  height={60}
+                />
+                <Sparkline
+                  values={historySeries.attrition.map((h) => h.value)}
+                  color="#f87171"
+                  width={220}
+                  height={60}
+                />
+              </div>
+            </div>
+          ) : null}
           <div className="metric-row">
             <div>
               <p className="metric-label">Month</p>
