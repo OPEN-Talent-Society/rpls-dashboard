@@ -661,26 +661,33 @@ function App() {
                   Winners (MoM) <span className="tip" title={TOOLTIP.mom}>ℹ</span>
                 </p>
                 <ul>
-                  {spotlight?.winners?.map((item) => (
-                    <li key={item.dimension} className="up">
-                      <div>
-                        <strong>{item.sector || item.dimension}</strong>
-                        <div className="muted">Employment Δ MoM</div>
-                      </div>
-                      <div className="delta up with-bar">
-                        <span>
-                          {item.pct_change !== null && item.pct_change !== undefined
-                            ? item.pct_change.toFixed(2)
-                            : '—'}
-                          %
-                        </span>
-                        <span className="micro-bar" style={barStyle(item.pct_change, 'up')} />
-                      </div>
-                      {item.history?.employment?.length ? (
-                        <Sparkline values={item.history.employment} color="#7ef0c9" />
-                      ) : null}
-                    </li>
-                  )) || <li className="muted">Loading…</li>}
+                  {spotlight?.winners?.length
+                    ? spotlight.winners.map((item) => (
+                        <li key={item.dimension} className="up">
+                          <div>
+                            <strong>{item.sector || item.dimension}</strong>
+                            <div className="muted">Employment Δ MoM</div>
+                          </div>
+                          <div className="delta up with-bar">
+                            <span>
+                              {item.pct_change !== null && item.pct_change !== undefined
+                                ? item.pct_change.toFixed(2)
+                                : '—'}
+                              %
+                            </span>
+                            <span className="micro-bar" style={barStyle(item.pct_change, 'up')} />
+                          </div>
+                          {item.history?.employment?.length ? (
+                            <Sparkline values={item.history.employment} color="#7ef0c9" />
+                          ) : null}
+                        </li>
+                      ))
+                    : Array.from({ length: 3 }).map((_, i) => (
+                        <li key={`win-skel-${i}`} className="list-row">
+                          <span className="skeleton skeleton-line" style={{ width: '60%' }} />
+                          <span className="skeleton skeleton-line" style={{ width: '30%' }} />
+                        </li>
+                      ))}
                 </ul>
               </div>
               <div>
@@ -688,29 +695,36 @@ function App() {
                   Losers (MoM) <span className="tip" title={TOOLTIP.mom}>ℹ</span>
                 </p>
                 <ul>
-                  {spotlight?.losers?.map((item) => (
-                    <li key={item.dimension} className="down">
-                      <div>
-                        <strong>{item.sector || item.dimension}</strong>
-                        <div className="muted">Employment Δ MoM</div>
-                      </div>
-                      <div className="delta down with-bar">
-                        <span>
-                          {item.pct_change !== null && item.pct_change !== undefined
-                            ? item.pct_change.toFixed(2)
-                            : '—'}
-                          %
-                        </span>
-                        <span className="micro-bar" style={barStyle(item.pct_change, 'down')} />
-                      </div>
-                      {item.history?.employment?.length ? (
-                        <Sparkline values={item.history.employment} color="#f87171" />
-                      ) : null}
-                    </li>
-                  )) || <li className="muted">Loading…</li>}
-              </ul>
+                  {spotlight?.losers?.length
+                    ? spotlight.losers.map((item) => (
+                        <li key={item.dimension} className="down">
+                          <div>
+                            <strong>{item.sector || item.dimension}</strong>
+                            <div className="muted">Employment Δ MoM</div>
+                          </div>
+                          <div className="delta down with-bar">
+                            <span>
+                              {item.pct_change !== null && item.pct_change !== undefined
+                                ? item.pct_change.toFixed(2)
+                                : '—'}
+                              %
+                            </span>
+                            <span className="micro-bar" style={barStyle(item.pct_change, 'down')} />
+                          </div>
+                          {item.history?.employment?.length ? (
+                            <Sparkline values={item.history.employment} color="#f87171" />
+                          ) : null}
+                        </li>
+                      ))
+                    : Array.from({ length: 3 }).map((_, i) => (
+                        <li key={`los-skel-${i}`} className="list-row">
+                          <span className="skeleton skeleton-line" style={{ width: '60%' }} />
+                          <span className="skeleton skeleton-line" style={{ width: '30%' }} />
+                        </li>
+                      ))}
+                </ul>
+              </div>
             </div>
-          </div>
             <p className="hint">MoM = month over month change versus the prior month (RPLS employment).</p>
           </div>
           <div className="card" style={{ ['--delay' as string]: '0.2s' }}>
@@ -719,7 +733,18 @@ function App() {
               <span className="pill warning">Latest month</span>
             </div>
             <ul className="list">
-              {topLayoffStates.length === 0 && <li className="muted">Loading…</li>}
+              {topLayoffStates.length === 0 && (
+                <>
+                  <li className="list-row">
+                    <span className="skeleton skeleton-line" style={{ width: '50%' }} />
+                    <span className="skeleton skeleton-line" style={{ width: '30%' }} />
+                  </li>
+                  <li className="list-row">
+                    <span className="skeleton skeleton-line" style={{ width: '40%' }} />
+                    <span className="skeleton skeleton-line" style={{ width: '25%' }} />
+                  </li>
+                </>
+              )}
               {topLayoffStates.map((row) => (
                 <li key={row.state} className="list-row">
                   <span>{row.state}</span>
@@ -735,44 +760,56 @@ function App() {
           <div className="card" style={{ ['--delay' as string]: '0.22s' }}>
             <div className="card-header">
               <h2>Postings Momentum</h2>
-              <span className="pill neutral">
-                {postingsHeatmap ? postingsHeatmap.prev_month + ' → ' + postingsHeatmap.month : '—'}
-              </span>
+            <span className="pill neutral">
+              {postingsHeatmap ? postingsHeatmap.prev_month + ' → ' + postingsHeatmap.month : '—'}
+            </span>
           </div>
           <div className="split">
             <div>
               <p className="metric-label">States gaining</p>
               <ul className="list">
                 {postingsLeaders.top.length === 0 && (
-                  <li className="list-row">
-                    <span className="skeleton skeleton-line" style={{ width: '60%' }} />
-                    <span className="skeleton skeleton-line" style={{ width: '30%' }} />
-                  </li>
-                )}
-                  {postingsLeaders.top.map((row) => (
-                    <li key={row.state} className="list-row">
-                      <span>{row.state}</span>
-                      <span className="delta up with-bar">
-                        <span>
-                          {row.pct_change !== null && row.pct_change !== undefined
-                            ? row.pct_change.toFixed(2) + '%'
-                            : '—'}
-                        </span>
-                        <span className="micro-bar" style={barStyle(row.pct_change, 'up')} />
-                      </span>
-                      <span className="micro-bar" style={barStyle(row.pct_change, 'postings')} />
+                  <>
+                    <li className="list-row">
+                      <span className="skeleton skeleton-line" style={{ width: '60%' }} />
+                      <span className="skeleton skeleton-line" style={{ width: '30%' }} />
                     </li>
-                  ))}
+                    <li className="list-row">
+                      <span className="skeleton skeleton-line" style={{ width: '55%' }} />
+                      <span className="skeleton skeleton-line" style={{ width: '25%' }} />
+                    </li>
+                  </>
+                )}
+                {postingsLeaders.top.map((row) => (
+                  <li key={row.state} className="list-row">
+                    <span>{row.state}</span>
+                    <span className="delta up with-bar">
+                      <span>
+                        {row.pct_change !== null && row.pct_change !== undefined
+                          ? row.pct_change.toFixed(2) + '%'
+                          : '—'}
+                      </span>
+                      <span className="micro-bar" style={barStyle(row.pct_change, 'up')} />
+                    </span>
+                    <span className="micro-bar" style={barStyle(row.pct_change, 'postings')} />
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
               <p className="metric-label">States cooling</p>
               <ul className="list">
                 {postingsLeaders.bottom.length === 0 && (
-                  <li className="list-row">
-                    <span className="skeleton skeleton-line" style={{ width: '60%' }} />
-                    <span className="skeleton skeleton-line" style={{ width: '30%' }} />
-                  </li>
+                  <>
+                    <li className="list-row">
+                      <span className="skeleton skeleton-line" style={{ width: '60%' }} />
+                      <span className="skeleton skeleton-line" style={{ width: '30%' }} />
+                    </li>
+                    <li className="list-row">
+                      <span className="skeleton skeleton-line" style={{ width: '55%' }} />
+                      <span className="skeleton skeleton-line" style={{ width: '25%' }} />
+                    </li>
+                  </>
                 )}
                 {postingsLeaders.bottom.map((row) => (
                   <li key={row.state} className="list-row">
