@@ -134,12 +134,41 @@ def health():
 
 @app.get("/api/datasets")
 def datasets():
+    """
+    Returns a manifest of tables with row counts and min/max month (when available).
+    ingested_at is derived from the DB file mtime.
+    """
     try:
         with get_con() as con:
-            rows = con.execute("SELECT * FROM metadata").fetchall()
-            cols = [c[1] for c in con.execute("PRAGMA table_info('metadata')").fetchall()]
-            result = [dict(zip(cols, row)) for row in rows]
-            return {"datasets": result}
+            tables = [
+                r[0]
+                for r in con.execute(
+                    "SELECT table_name FROM information_schema.tables WHERE table_schema='main'"
+                ).fetchall()
+            ]
+            manifest = []
+            db_mtime = DB_PATH.stat().st_mtime if DB_PATH.exists() else None
+            for t in tables:
+                try:
+                    cols = [c[1] for c in con.execute(f"PRAGMA table_info('{t}')").fetchall()]
+                    rowcount = con.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]
+                    min_month = max_month = None
+                    if "month" in cols:
+                        min_month, max_month = con.execute(
+                            f"SELECT MIN(month), MAX(month) FROM {t}"
+                        ).fetchone()
+                    manifest.append(
+                        {
+                            "table_name": t,
+                            "rowcount": rowcount,
+                            "min_month": min_month,
+                            "max_month": max_month,
+                            "ingested_at": db_mtime,
+                        }
+                    )
+                except Exception:
+                    continue
+            return {"datasets": manifest}
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 

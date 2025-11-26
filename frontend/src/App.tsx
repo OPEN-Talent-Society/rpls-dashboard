@@ -95,11 +95,13 @@ const formatPct = (value?: number | string | null) => {
 }
 
 function App() {
+  const [dataVersion, setDataVersion] = useState<{ release?: string; ingestedAt?: string }>({})
   const [marketTemp, setMarketTemp] = useState<MarketTemperature | null>(null)
   const [spotlight, setSpotlight] = useState<Spotlight | null>(null)
   const [sectorPulse, setSectorPulse] = useState<SectorPulseEntry[]>([])
   const [layoffs, setLayoffs] = useState<LayoffEntry[]>([])
   const [postingsHeatmap, setPostingsHeatmap] = useState<PostingsHeatmap | null>(null)
+  const [topMoversStrip, setTopMoversStrip] = useState<{ dimension: string; pct_change: number }[]>([])
   const [geminiQuestion, setGeminiQuestion] = useState('What changed most this month?')
   const [geminiContext, setGeminiContext] = useState(
     'You are summarizing RPLS labor stats for a people-ops audience. Keep answers concise.'
@@ -126,6 +128,20 @@ function App() {
         if (series && series.length) return series.map((x) => x.value ?? 0)
         const v = fallback ?? 0
         return [v, v]
+      }
+
+      const datasets = await fetchJson<{ datasets: any[] }>('/api/datasets', true)
+      if (datasets?.datasets?.length) {
+        const maxMonth = datasets.datasets
+          .map((d) => d.max_month)
+          .filter(Boolean)
+          .sort()
+          .pop()
+        const ing = datasets.datasets.find((d) => d.ingested_at)?.ingested_at
+        setDataVersion({
+          release: maxMonth || undefined,
+          ingestedAt: ing ? new Date(ing * 1000).toISOString() : undefined,
+        })
       }
 
       const mt = await fetchJson<MarketTemperature>('/api/market-temperature')
@@ -214,6 +230,12 @@ function App() {
 
       const postings = await fetchJson<PostingsHeatmap>('/api/postings-heatmap')
       if (postings) setPostingsHeatmap(postings)
+
+      const movers = await fetchJson<{ data: { dimension: string; pct_change: number }[] }>(
+        '/api/top-movers?dimension_type=sector&metric=employment&count=6',
+        true
+      )
+      if (movers?.data) setTopMoversStrip(movers.data)
     }
     load()
   }, [])
@@ -368,13 +390,30 @@ function App() {
         <div className="legend-chip sal">Salary Δ</div>
         <div className="legend-note">Bars show magnitude vs last month; − on the left, + on the right.</div>
       </div>
+      {dataVersion.release && (
+        <div className="version-banner">
+          Release: {dataVersion.release} {dataVersion.ingestedAt ? `• Ingested ${new Date(dataVersion.ingestedAt).toLocaleString()}` : ''}
+        </div>
+      )}
+      {topMoversStrip.length > 0 && (
+        <div className="mover-strip">
+          {topMoversStrip.map((m, idx) => (
+            <span key={m.dimension} className="mover-pill" style={{ animationDelay: `${idx * 0.03}s` }}>
+              {m.dimension}: {m.pct_change?.toFixed(2) ?? '—'}%
+            </span>
+          ))}
+        </div>
+      )}
 
       {errors ? <div className="error">{errors}</div> : null}
 
       <section className="grid-hero">
         <div className="card hero-strip" style={{ ['--delay' as string]: '0s' }}>
           <div className="card-header">
-            <h2>Market Temperature</h2>
+            <h2>
+              Market Temperature
+              <span className="tip" title="Dual-line mini-chart: hiring vs attrition over recent months.">ℹ</span>
+            </h2>
             <span className={`pill ${marketTemp?.trend || ''}`}>{marketTemp?.trend || '—'}</span>
           </div>
           <div className="metric-row">
@@ -397,14 +436,14 @@ function App() {
           </div>
           <p className="hint">Higher hiring + attrition = dynamic; both down = cooling.</p>
           <div className="mini-bars">
-              <div className="mini-bar">
-                <span className="metric-label">Hiring</span>
-                <span className="micro-bar" style={barStyle(marketTemp?.hiring_rate, 'up')} />
-              </div>
-              <div className="mini-bar">
-                <span className="metric-label">Attrition</span>
-                <span className="micro-bar" style={barStyle(marketTemp?.attrition_rate, 'down')} />
-              </div>
+            <div className="mini-bar">
+              <span className="metric-label">Hiring</span>
+              <span className="micro-bar" style={barStyle(marketTemp?.hiring_rate, 'up')} />
+            </div>
+            <div className="mini-bar">
+              <span className="metric-label">Attrition</span>
+              <span className="micro-bar" style={barStyle(marketTemp?.attrition_rate, 'down')} />
+            </div>
             {marketTemp && (
               <div className="spark-dual">
                 <Sparkline
@@ -463,11 +502,11 @@ function App() {
 
       <section className="grid-main">
         <div className="card wide feature pulse-panel" style={{ ['--delay' as string]: '0.1s' }}>
-          <div className="card-header">
-            <h2>Sector Pulse</h2>
-            <span className="pill neutral">Employment · Postings · Salary</span>
-          </div>
-          <div className="pulse-grid">
+            <div className="card-header">
+              <h2>Sector Pulse</h2>
+              <span className="pill neutral">Employment · Postings · Salary</span>
+            </div>
+            <div className="pulse-grid">
             {topSectorMoves.top.map((s) => (
               <div key={s.naics2d_code} className="pulse-tile up tile-up">
                 <div className="tile-head">
@@ -569,7 +608,9 @@ function App() {
             </div>
             <div className="spotlight">
               <div>
-                <p className="metric-label">Winners (MoM)</p>
+                <p className="metric-label">
+                  Winners (MoM) <span className="tip" title="Month over month employment change vs prior month.">ℹ</span>
+                </p>
                 <ul>
                   {spotlight?.winners?.map((item) => (
                     <li key={item.dimension} className="up">
@@ -594,7 +635,9 @@ function App() {
                 </ul>
               </div>
               <div>
-                <p className="metric-label">Losers (MoM)</p>
+                <p className="metric-label">
+                  Losers (MoM) <span className="tip" title="Month over month employment change vs prior month.">ℹ</span>
+                </p>
                 <ul>
                   {spotlight?.losers?.map((item) => (
                     <li key={item.dimension} className="down">
