@@ -1,0 +1,362 @@
+[
+  {
+    "month": "2025-12",
+    "employees_notified": null,
+    "notices_issued": null,
+    "employees_laidoff": 25724
+  },
+  {
+    "month": "2025-11",
+    "employees_notified": null,
+    "notices_issued": null,
+    "employees_laidoff": 30694
+  },
+  {
+    "month": "2025-10",
+    "employees_notified": 43626,
+    "notices_issued": 521,
+    "employees_laidoff": 26205
+  },
+  {
+    "month": "2025-09",
+    "employees_notified": 31714,
+    "notices_issued": 326,
+    "employees_laidoff": 28735
+  },
+  {
+    "month": "2025-08",
+    "employees_notified": 23175,
+    "notices_issued": 365,
+    "employees_laidoff": 26801
+  },
+  {
+    "month": "2025-07",
+    "employees_notified": 31856,
+    "notices_issued": 558,
+    "employees_laidoff": 41950
+  },
+  {
+    "month": "2025-06",
+    "employees_notified": 33033,
+    "notices_issued": 417,
+    "employees_laidoff": 55394
+  },
+  {
+    "month": "2025-05",
+    "employees_notified": 50887,
+    "notices_issued": 728,
+    "employees_laidoff": 36925
+  },
+  {
+    "month": "2025-04",
+    "employees_notified": 38467,
+    "notices_issued": 491,
+    "employees_laidoff": 31795
+  },
+  {
+    "month": "2025-03",
+    "employees_notified": 39356,
+    "notices_issued": 435,
+    "employees_laidoff": 34305
+  },
+  {
+    "month": "2025-02",
+    "employees_notified": 37236,
+    "notices_issued": 418,
+    "employees_laidoff": 22525
+  },
+  {
+    "month": "2025-01",
+    "employees_notified": 28816,
+    "notices_issued": 376,
+    "employees_laidoff": 32091
+  },
+  {
+    "month": "2024-12",
+    "employees_notified": 21805,
+    "notices_issued": 273,
+    "employees_laidoff": 36283
+  },
+  {
+    "month": "2024-11",
+    "employees_notified": 33159,
+    "notices_issued": 512,
+    "employees_laidoff": 25497
+  },
+  {
+    "month": "2024-10",
+    "employees_notified": 28458,
+    "notices_issued": 335,
+    "employees_laidoff": 19872
+  },
+  {
+    "month": "2024-09",
+    "employees_notified": 27119,
+    "notices_issued": 367,
+    "employees_laidoff": 23501
+  },
+  {
+    "month": "2024-08",
+    "employees_notified": 22668,
+    "notices_issued": 280,
+    "employees_laidoff": 29559
+  },
+  {
+    "month": "2024-07",
+    "employees_notified": 22099,
+    "notices_issued": 349,
+    "employees_laidoff": 23312
+  },
+  {
+    "month": "2024-06",
+    "employees_notified": 29179,
+    "notices_issued": 314,
+    "employees_laidoff": 44507
+  },
+  {
+    "month": "2024-05",
+    "employees_notified": 40627,
+    "notices_issued": 559,
+    "employees_laidoff": 35586
+  },
+  {
+    "month": "2024-04",
+    "employees_notified": 40127,
+    "notices_issued": 548,
+    "employees_laidoff": 34347
+  },
+  {
+    "month": "2024-03",
+    "employees_notified": 24646,
+    "notices_issued": 327,
+    "employees_laidoff": 34028
+  },
+  {
+    "month": "2024-02",
+    "employees_notified": 30182,
+    "notices_issued": 321,
+    "employees_laidoff": 19592
+  },
+  {
+    "month": "2024-01",
+    "employees_notified": 36726,
+    "notices_issued": 529,
+    "employees_laidoff": 28533
+  },
+  {
+    "month": "2023-12",
+    "employees_notified": 20917,
+    "notices_issued": 313,
+    "employees_laidoff": 34204
+  },
+  {
+    "month": "2023-11",
+    "employees_notified": 26036,
+    "notices_issued": 354,
+    "employees_laidoff": 17782
+  },
+  {
+    "month": "2023-10",
+    "employees_notified": 31663,
+    "notices_issued": 376,
+    "employees_laidoff": 30948
+  },
+  {
+    "month": "2023-09",
+    "employees_notified": 23904,
+    "notices_issued": 283,
+    "employees_laidoff": 22096
+  },
+  {
+    "month": "2023-08",
+    "employees_notified": 44891,
+    "notices_issued": 545,
+    "employees_laidoff": 25864
+  },
+  {
+    "month": "2023-07",
+    "employees_notified": 38694,
+    "notices_issued": 305,
+    "employees_laidoff": 56921
+  },
+  {
+    "month": "2023-06",
+    "employees_notified": 25405,
+    "notices_issued": 341,
+    "employees_laidoff": 38880
+  },
+  {
+    "month": "2023-05",
+    "employees_notified": 28211,
+    "notices_issued": 351,
+    "employees_laidoff": 26096
+  },
+  {
+    "month": "2023-04",
+    "employees_notified": 51056,
+    "notices_issued": 461,
+    "employees_laidoff": 48353
+  },
+  {
+    "month": "2023-03",
+    "employees_notified": 34433,
+    "notices_issued": 346,
+    "employees_laidoff": 40517
+  },
+  {
+    "month": "2023-02",
+    "employees_notified": 27789,
+    "notices_issued": 327,
+    "employees_laidoff": 18319
+  },
+  {
+    "month": "2023-01",
+    "employees_notified": 40359,
+    "notices_issued": 431,
+    "employees_laidoff": 31805
+  },
+  {
+    "month": "2022-12",
+    "employees_notified": 19923,
+    "notices_issued": 228,
+    "employees_laidoff": 30923
+  },
+  {
+    "month": "2022-11",
+    "employees_notified": 30031,
+    "notices_issued": 292,
+    "employees_laidoff": 23328
+  },
+  {
+    "month": "2022-10",
+    "employees_notified": 26123,
+    "notices_issued": 247,
+    "employees_laidoff": 20918
+  },
+  {
+    "month": "2022-09",
+    "employees_notified": 24447,
+    "notices_issued": 252,
+    "employees_laidoff": 17684
+  },
+  {
+    "month": "2022-08",
+    "employees_notified": 21016,
+    "notices_issued": 203,
+    "employees_laidoff": 14453
+  },
+  {
+    "month": "2022-07",
+    "employees_notified": 16276,
+    "notices_issued": 175,
+    "employees_laidoff": 15367
+  },
+  {
+    "month": "2022-06",
+    "employees_notified": 13932,
+    "notices_issued": 166,
+    "employees_laidoff": 17077
+  },
+  {
+    "month": "2022-05",
+    "employees_notified": 14739,
+    "notices_issued": 163,
+    "employees_laidoff": 14375
+  },
+  {
+    "month": "2022-04",
+    "employees_notified": 16616,
+    "notices_issued": 154,
+    "employees_laidoff": 12149
+  },
+  {
+    "month": "2022-03",
+    "employees_notified": 17565,
+    "notices_issued": 172,
+    "employees_laidoff": 15509
+  },
+  {
+    "month": "2022-02",
+    "employees_notified": 8813,
+    "notices_issued": 132,
+    "employees_laidoff": 10641
+  },
+  {
+    "month": "2022-01",
+    "employees_notified": 13729,
+    "notices_issued": 167,
+    "employees_laidoff": 14057
+  },
+  {
+    "month": "2021-12",
+    "employees_notified": 12869,
+    "notices_issued": 128,
+    "employees_laidoff": 18367
+  },
+  {
+    "month": "2021-11",
+    "employees_notified": 11845,
+    "notices_issued": 125,
+    "employees_laidoff": 8501
+  },
+  {
+    "month": "2021-10",
+    "employees_notified": 13137,
+    "notices_issued": 138,
+    "employees_laidoff": 16006
+  },
+  {
+    "month": "2021-09",
+    "employees_notified": 11794,
+    "notices_issued": 157,
+    "employees_laidoff": 11370
+  },
+  {
+    "month": "2021-08",
+    "employees_notified": 12700,
+    "notices_issued": 119,
+    "employees_laidoff": 11435
+  },
+  {
+    "month": "2021-07",
+    "employees_notified": 13631,
+    "notices_issued": 161,
+    "employees_laidoff": 16531
+  },
+  {
+    "month": "2021-06",
+    "employees_notified": 15160,
+    "notices_issued": 140,
+    "employees_laidoff": 17920
+  },
+  {
+    "month": "2021-05",
+    "employees_notified": 12412,
+    "notices_issued": 130,
+    "employees_laidoff": 16060
+  },
+  {
+    "month": "2021-04",
+    "employees_notified": 20712,
+    "notices_issued": 194,
+    "employees_laidoff": 33710
+  },
+  {
+    "month": "2021-03",
+    "employees_notified": 17431,
+    "notices_issued": 200,
+    "employees_laidoff": 24933
+  },
+  {
+    "month": "2021-02",
+    "employees_notified": 21456,
+    "notices_issued": 165,
+    "employees_laidoff": 13059
+  },
+  {
+    "month": "2021-01",
+    "employees_notified": 28180,
+    "notices_issued": 246,
+    "employees_laidoff": 19751
+  }
+]

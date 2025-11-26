@@ -1,0 +1,78 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+	body {
+		@apply bg-gray-50 text-gray-900;
+	}
+}
+
+@layer components {
+	.card {
+		@apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+	}
+
+	.card-header {
+		@apply text-lg font-semibold text-gray-800 mb-4;
+	}
+
+	.metric-value {
+		@apply text-3xl font-bold;
+	}
+
+	.metric-label {
+		@apply text-sm text-gray-500 uppercase tracking-wide;
+	}
+
+	.badge {
+		@apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+	}
+
+	.badge-growth {
+		@apply bg-green-100 text-green-800;
+	}
+
+	.badge-decline {
+		@apply bg-red-100 text-red-800;
+	}
+
+	.badge-churn {
+		@apply bg-amber-100 text-amber-800;
+	}
+
+	.badge-stagnant {
+		@apply bg-gray-100 text-gray-800;
+	}
+
+	.btn {
+		@apply inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg font-medium transition-colors;
+	}
+
+	.btn-primary {
+		@apply bg-primary-600 text-white hover:bg-primary-700;
+	}
+
+	.btn-secondary {
+		@apply bg-white text-gray-700 border-gray-300 hover:bg-gray-50;
+	}
+}
+
+/* Layoff ticker animation */
+@keyframes ticker {
+	0% {
+		transform: translateX(100%);
+	}
+	100% {
+		transform: translateX(-100%);
+	}
+}
+
+.ticker-animation {
+	animation: ticker 30s linear infinite;
+}
+
+/* Health index gradient */
+.health-gradient {
+	background: linear-gradient(90deg, #ef4444 0%, #f59e0b 25%, #eab308 50%, #84cc16 75%, #22c55e 100%);
+}

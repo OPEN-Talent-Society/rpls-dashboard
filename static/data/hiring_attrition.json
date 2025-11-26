@@ -1,0 +1,110 @@
+{
+  "month": "2025-10",
+  "sectors": [
+    {
+      "code": "11",
+      "name": "Agriculture, Forestry, Fishing and Hunting",
+      "hiring_rate": 0.30834807174741047,
+      "attrition_rate": 0.28696881828297777,
+      "quadrant": "churn_burn"
+    },
+    {
+      "code": "21",
+      "name": "Mining and logging",
+      "hiring_rate": 0.24640306442388768,
+      "attrition_rate": 0.2742272064080914,
+      "quadrant": "decline"
+    },
+    {
+      "code": "22",
+      "name": "Utilities",
+      "hiring_rate": 0.39381889151271515,
+      "attrition_rate": 0.4064505063187583,
+      "quadrant": "churn_burn"
+    },
+    {
+      "code": "23",
+      "name": "Construction",
+      "hiring_rate": 0.19793216688798565,
+      "attrition_rate": 0.1969165093733923,
+      "quadrant": "stagnant"
+    },
+    {
+      "code": "31-33",
+      "name": "Manufacturing",
+      "hiring_rate": 0.29556155294987013,
+      "attrition_rate": 0.30035185355858074,
+      "quadrant": "churn_burn"
+    },
+    {
+      "code": "42",
+      "name": "Wholesale trade",
+      "hiring_rate": 0.1645385863748686,
+      "attrition_rate": 0.17138718348082008,
+      "quadrant": "stagnant"
+    },
+    {
+      "code": "44-45",
+      "name": "Retail trade",
+      "hiring_rate": 0.19921431945090012,
+      "attrition_rate": 0.20809866858972362,
+      "quadrant": "stagnant"
+    },
+    {
+      "code": "48-49",
+      "name": "Transportation and warehousing",
+      "hiring_rate": 0.19951206830361234,
+      "attrition_rate": 0.1979283855748198,
+      "quadrant": "stagnant"
+    },
+    {
+      "code": "51",
+      "name": "Information",
+      "hiring_rate": 0.9217895523654444,
+      "attrition_rate": 0.9252596300990159,
+      "quadrant": "churn_burn"
+    },
+    {
+      "code": "52-53",
+      "name": "Financial activities",
+      "hiring_rate": 0.3660115881460221,
+      "attrition_rate": 0.35389083740049965,
+      "quadrant": "churn_burn"
+    },
+    {
+      "code": "54-56",
+      "name": "Professional and business services",
+      "hiring_rate": 0.24406940147353695,
+      "attrition_rate": 0.24199266123426352,
+      "quadrant": "stagnant"
+    },
+    {
+      "code": "61-62",
+      "name": "Education and health services",
+      "hiring_rate": 0.28224240459084976,
+      "attrition_rate": 0.2716948053188877,
+      "quadrant": "churn_burn"
+    },
+    {
+      "code": "71-72",
+      "name": "Leisure and hospitality",
+      "hiring_rate": 0.2370986106914525,
+      "attrition_rate": 0.24153548631089583,
+      "quadrant": "stagnant"
+    },
+    {
+      "code": "81",
+      "name": "Other services",
+      "hiring_rate": 0.2581669901719076,
+      "attrition_rate": 0.2628878558622927,
+      "quadrant": "decline"
+    },
+    {
+      "code": "92",
+      "name": "Government",
+      "hiring_rate": 0.14153165127810322,
+      "attrition_rate": 0.15058601664051388,
+      "quadrant": "stagnant"
+    }
+  ]
+}

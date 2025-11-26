@@ -1,0 +1,72 @@
+{
+  "updated_at": "2025-11-22T05:22:26.726913",
+  "data_month": "2025-10",
+  "health_index": 52,
+  "health_trend": "stable",
+  "headline_metrics": {
+    "total_employment": 159238994,
+    "employment_change": -9057,
+    "hiring_rate": 0.24815838075937047,
+    "attrition_rate": 0.24881613222460947,
+    "latest_layoffs": 25724,
+    "total_sectors": 16,
+    "total_occupations": 23
+  },
+  "top_sectors_by_postings": [
+    {
+      "name": "Professional and business services",
+      "current_postings": 2831338,
+      "prev_month_postings": 2970975,
+      "yoy_change": -34.1,
+      "mom_change": -4.7
+    },
+    {
+      "name": "Unknown/Other",
+      "current_postings": 2807014,
+      "prev_month_postings": 2764911,
+      "yoy_change": 28.0,
+      "mom_change": 1.5
+    },
+    {
+      "name": "Education and health services",
+      "current_postings": 2670059,
+      "prev_month_postings": 2753245,
+      "yoy_change": -21.5,
+      "mom_change": -3.0
+    },
+    {
+      "name": "Retail trade",
+      "current_postings": 1381955,
+      "prev_month_postings": 1405746,
+      "yoy_change": -22.0,
+      "mom_change": -1.7
+    },
+    {
+      "name": "Leisure and hospitality",
+      "current_postings": 1255089,
+      "prev_month_postings": 1262033,
+      "yoy_change": -10.7,
+      "mom_change": -0.6
+    }
+  ],
+  "recent_layoffs": [
+    {
+      "month": "2025-12",
+      "employees_notified": null,
+      "notices_issued": null,
+      "employees_laidoff": 25724
+    },
+    {
+      "month": "2025-11",
+      "employees_notified": null,
+      "notices_issued": null,
+      "employees_laidoff": 30694
+    },
+    {
+      "month": "2025-10",
+      "employees_notified": 43626,
+      "notices_issued": 521,
+      "employees_laidoff": 26205
+    }
+  ]
+}

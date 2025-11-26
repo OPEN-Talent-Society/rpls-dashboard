@@ -1,0 +1,292 @@
+[
+  {
+    "month": "2021-01",
+    "employment_nsa": 149056249,
+    "employment_sa": 148926416
+  },
+  {
+    "month": "2021-02",
+    "employment_nsa": 148907927,
+    "employment_sa": 149263760
+  },
+  {
+    "month": "2021-03",
+    "employment_nsa": 149334333,
+    "employment_sa": 149649956
+  },
+  {
+    "month": "2021-04",
+    "employment_nsa": 149635256,
+    "employment_sa": 150020397
+  },
+  {
+    "month": "2021-05",
+    "employment_nsa": 150416888,
+    "employment_sa": 150474135
+  },
+  {
+    "month": "2021-06",
+    "employment_nsa": 151045939,
+    "employment_sa": 151024250
+  },
+  {
+    "month": "2021-07",
+    "employment_nsa": 151310296,
+    "employment_sa": 151401568
+  },
+  {
+    "month": "2021-08",
+    "employment_nsa": 152393977,
+    "employment_sa": 151844249
+  },
+  {
+    "month": "2021-09",
+    "employment_nsa": 152294751,
+    "employment_sa": 152147467
+  },
+  {
+    "month": "2021-10",
+    "employment_nsa": 152721338,
+    "employment_sa": 152488924
+  },
+  {
+    "month": "2021-11",
+    "employment_nsa": 153040493,
+    "employment_sa": 152824635
+  },
+  {
+    "month": "2021-12",
+    "employment_nsa": 153110202,
+    "employment_sa": 153158697
+  },
+  {
+    "month": "2022-01",
+    "employment_nsa": 153641312,
+    "employment_sa": 153541383
+  },
+  {
+    "month": "2022-02",
+    "employment_nsa": 153576202,
+    "employment_sa": 153908920
+  },
+  {
+    "month": "2022-03",
+    "employment_nsa": 153942062,
+    "employment_sa": 154228649
+  },
+  {
+    "month": "2022-04",
+    "employment_nsa": 154179705,
+    "employment_sa": 154532775
+  },
+  {
+    "month": "2022-05",
+    "employment_nsa": 154920681,
+    "employment_sa": 154958175
+  },
+  {
+    "month": "2022-06",
+    "employment_nsa": 155404659,
+    "employment_sa": 155388606
+  },
+  {
+    "month": "2022-07",
+    "employment_nsa": 155582792,
+    "employment_sa": 155672943
+  },
+  {
+    "month": "2022-08",
+    "employment_nsa": 156555681,
+    "employment_sa": 156023925
+  },
+  {
+    "month": "2022-09",
+    "employment_nsa": 156309055,
+    "employment_sa": 156198308
+  },
+  {
+    "month": "2022-10",
+    "employment_nsa": 156638548,
+    "employment_sa": 156436562
+  },
+  {
+    "month": "2022-11",
+    "employment_nsa": 156823061,
+    "employment_sa": 156616871
+  },
+  {
+    "month": "2022-12",
+    "employment_nsa": 156794237,
+    "employment_sa": 156828694
+  },
+  {
+    "month": "2023-01",
+    "employment_nsa": 157107576,
+    "employment_sa": 157038102
+  },
+  {
+    "month": "2023-02",
+    "employment_nsa": 156892467,
+    "employment_sa": 157202115
+  },
+  {
+    "month": "2023-03",
+    "employment_nsa": 157102917,
+    "employment_sa": 157360333
+  },
+  {
+    "month": "2023-04",
+    "employment_nsa": 157170700,
+    "employment_sa": 157491587
+  },
+  {
+    "month": "2023-05",
+    "employment_nsa": 157671688,
+    "employment_sa": 157689348
+  },
+  {
+    "month": "2023-06",
+    "employment_nsa": 157840993,
+    "employment_sa": 157830557
+  },
+  {
+    "month": "2023-07",
+    "employment_nsa": 157867306,
+    "employment_sa": 157956344
+  },
+  {
+    "month": "2023-08",
+    "employment_nsa": 158611137,
+    "employment_sa": 158097441
+  },
+  {
+    "month": "2023-09",
+    "employment_nsa": 158224464,
+    "employment_sa": 158150322
+  },
+  {
+    "month": "2023-10",
+    "employment_nsa": 158443813,
+    "employment_sa": 158272381
+  },
+  {
+    "month": "2023-11",
+    "employment_nsa": 158513793,
+    "employment_sa": 158317338
+  },
+  {
+    "month": "2023-12",
+    "employment_nsa": 158415011,
+    "employment_sa": 158434661
+  },
+  {
+    "month": "2024-01",
+    "employment_nsa": 158543686,
+    "employment_sa": 158505142
+  },
+  {
+    "month": "2024-02",
+    "employment_nsa": 158266483,
+    "employment_sa": 158553097
+  },
+  {
+    "month": "2024-03",
+    "employment_nsa": 158405633,
+    "employment_sa": 158633739
+  },
+  {
+    "month": "2024-04",
+    "employment_nsa": 158420633,
+    "employment_sa": 158709177
+  },
+  {
+    "month": "2024-05",
+    "employment_nsa": 158733509,
+    "employment_sa": 158731300
+  },
+  {
+    "month": "2024-06",
+    "employment_nsa": 158785162,
+    "employment_sa": 158780348
+  },
+  {
+    "month": "2024-07",
+    "employment_nsa": 158748863,
+    "employment_sa": 158836818
+  },
+  {
+    "month": "2024-08",
+    "employment_nsa": 159390938,
+    "employment_sa": 158895389
+  },
+  {
+    "month": "2024-09",
+    "employment_nsa": 158975903,
+    "employment_sa": 158938454
+  },
+  {
+    "month": "2024-10",
+    "employment_nsa": 159146232,
+    "employment_sa": 159005472
+  },
+  {
+    "month": "2024-11",
+    "employment_nsa": 159196613,
+    "employment_sa": 159009955
+  },
+  {
+    "month": "2024-12",
+    "employment_nsa": 159064393,
+    "employment_sa": 159068348
+  },
+  {
+    "month": "2025-01",
+    "employment_nsa": 159104616,
+    "employment_sa": 159097266
+  },
+  {
+    "month": "2025-02",
+    "employment_nsa": 158856442,
+    "employment_sa": 159120053
+  },
+  {
+    "month": "2025-03",
+    "employment_nsa": 158979870,
+    "employment_sa": 159178483
+  },
+  {
+    "month": "2025-04",
+    "employment_nsa": 158942784,
+    "employment_sa": 159198788
+  },
+  {
+    "month": "2025-05",
+    "employment_nsa": 159205511,
+    "employment_sa": 159183383
+  },
+  {
+    "month": "2025-06",
+    "employment_nsa": 159186789,
+    "employment_sa": 159187613
+  },
+  {
+    "month": "2025-07",
+    "employment_nsa": 159113643,
+    "employment_sa": 159200590
+  },
+  {
+    "month": "2025-08",
+    "employment_nsa": 159692327,
+    "employment_sa": 159215077
+  },
+  {
+    "month": "2025-09",
+    "employment_nsa": 159248707,
+    "employment_sa": 159248051
+  },
+  {
+    "month": "2025-10",
+    "employment_nsa": 159348927,
+    "employment_sa": 159238994
+  }
+]

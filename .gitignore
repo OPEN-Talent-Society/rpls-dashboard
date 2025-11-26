@@ -1,0 +1,12 @@
+node_modules
+.DS_Store
+dist
+.vite
+.idea
+.vscode
+*.log
+/backend/rpls.duckdb
+/.env
+/frontend/node_modules
+/frontend/dist
+/frontend/.vite

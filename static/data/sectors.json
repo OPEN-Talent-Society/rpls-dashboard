@@ -1,0 +1,114 @@
+[
+  {
+    "name": "Professional and business services",
+    "current_postings": 2831338,
+    "prev_month_postings": 2970975,
+    "yoy_change": -34.1,
+    "mom_change": -4.7
+  },
+  {
+    "name": "Unknown/Other",
+    "current_postings": 2807014,
+    "prev_month_postings": 2764911,
+    "yoy_change": 28.0,
+    "mom_change": 1.5
+  },
+  {
+    "name": "Education and health services",
+    "current_postings": 2670059,
+    "prev_month_postings": 2753245,
+    "yoy_change": -21.5,
+    "mom_change": -3.0
+  },
+  {
+    "name": "Retail trade",
+    "current_postings": 1381955,
+    "prev_month_postings": 1405746,
+    "yoy_change": -22.0,
+    "mom_change": -1.7
+  },
+  {
+    "name": "Leisure and hospitality",
+    "current_postings": 1255089,
+    "prev_month_postings": 1262033,
+    "yoy_change": -10.7,
+    "mom_change": -0.6
+  },
+  {
+    "name": "Information",
+    "current_postings": 1062591,
+    "prev_month_postings": 1089638,
+    "yoy_change": -30.7,
+    "mom_change": -2.5
+  },
+  {
+    "name": "Manufacturing",
+    "current_postings": 966202,
+    "prev_month_postings": 989685,
+    "yoy_change": -13.3,
+    "mom_change": -2.4
+  },
+  {
+    "name": "Financial activities",
+    "current_postings": 908730,
+    "prev_month_postings": 930062,
+    "yoy_change": -15.9,
+    "mom_change": -2.3
+  },
+  {
+    "name": "Government",
+    "current_postings": 711052,
+    "prev_month_postings": 718556,
+    "yoy_change": -23.1,
+    "mom_change": -1.0
+  },
+  {
+    "name": "Transportation and warehousing",
+    "current_postings": 535749,
+    "prev_month_postings": 526228,
+    "yoy_change": -16.5,
+    "mom_change": 1.8
+  },
+  {
+    "name": "Other services",
+    "current_postings": 423270,
+    "prev_month_postings": 434564,
+    "yoy_change": -30.5,
+    "mom_change": -2.6
+  },
+  {
+    "name": "Construction",
+    "current_postings": 305387,
+    "prev_month_postings": 313875,
+    "yoy_change": -18.1,
+    "mom_change": -2.7
+  },
+  {
+    "name": "Wholesale trade",
+    "current_postings": 269321,
+    "prev_month_postings": 274962,
+    "yoy_change": -16.8,
+    "mom_change": -2.1
+  },
+  {
+    "name": "Utilities",
+    "current_postings": 46374,
+    "prev_month_postings": 47366,
+    "yoy_change": -17.3,
+    "mom_change": -2.1
+  },
+  {
+    "name": "Agriculture, Forestry, Fishing and Hunting",
+    "current_postings": 45361,
+    "prev_month_postings": 45111,
+    "yoy_change": -12.3,
+    "mom_change": 0.6
+  },
+  {
+    "name": "Mining and logging",
+    "current_postings": 31186,
+    "prev_month_postings": 30780,
+    "yoy_change": -21.2,
+    "mom_change": 1.3
+  }
+]

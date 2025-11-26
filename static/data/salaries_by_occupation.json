@@ -1,0 +1,163 @@
+[
+  {
+    "code": "0",
+    "name": "Occupation not classified",
+    "salary": 64299.0,
+    "prev_year_salary": 48537.0,
+    "yoy_change": 0.32473282124370306
+  },
+  {
+    "code": "11",
+    "name": "Management",
+    "salary": 94756.0,
+    "prev_year_salary": 89422.0,
+    "yoy_change": 0.05965650140183398
+  },
+  {
+    "code": "13",
+    "name": "Business and Financial Operations",
+    "salary": 90922.0,
+    "prev_year_salary": 90035.0,
+    "yoy_change": 0.009848437767622675
+  },
+  {
+    "code": "15",
+    "name": "Computer and Mathematical",
+    "salary": 119038.0,
+    "prev_year_salary": 121062.0,
+    "yoy_change": -0.016718864176651804
+  },
+  {
+    "code": "17",
+    "name": "Architecture and Engineering",
+    "salary": 104404.0,
+    "prev_year_salary": 104611.0,
+    "yoy_change": -0.001973784509252785
+  },
+  {
+    "code": "19",
+    "name": "Life, Physical, and Social Science",
+    "salary": 79501.0,
+    "prev_year_salary": 74693.0,
+    "yoy_change": 0.06436830276964556
+  },
+  {
+    "code": "21",
+    "name": "Community and Social Service",
+    "salary": 70477.0,
+    "prev_year_salary": 68992.0,
+    "yoy_change": 0.021524465196697262
+  },
+  {
+    "code": "23",
+    "name": "Legal",
+    "salary": 114186.0,
+    "prev_year_salary": 112552.0,
+    "yoy_change": 0.014514910863231867
+  },
+  {
+    "code": "25",
+    "name": "Educational Instruction and Library",
+    "salary": 62763.0,
+    "prev_year_salary": 60010.0,
+    "yoy_change": 0.045881466032990925
+  },
+  {
+    "code": "27",
+    "name": "Arts, Design, Entertainment, Sports, and Media",
+    "salary": 65988.0,
+    "prev_year_salary": 66476.0,
+    "yoy_change": -0.0073355042056590936
+  },
+  {
+    "code": "29",
+    "name": "Healthcare Practitioners and Technical",
+    "salary": 99911.0,
+    "prev_year_salary": 101681.0,
+    "yoy_change": -0.01740226416526791
+  },
+  {
+    "code": "31",
+    "name": "Healthcare Support",
+    "salary": 58663.0,
+    "prev_year_salary": 53479.0,
+    "yoy_change": 0.09692241570704296
+  },
+  {
+    "code": "33",
+    "name": "Protective Service",
+    "salary": 50667.0,
+    "prev_year_salary": 47175.0,
+    "yoy_change": 0.0740230547250047
+  },
+  {
+    "code": "35",
+    "name": "Food Preparation and Serving Related",
+    "salary": 37204.0,
+    "prev_year_salary": 36765.0,
+    "yoy_change": 0.011955219200775247
+  },
+  {
+    "code": "37",
+    "name": "Building and Grounds Cleaning and Maintenance",
+    "salary": 39948.0,
+    "prev_year_salary": 38649.0,
+    "yoy_change": 0.03359600220547043
+  },
+  {
+    "code": "39",
+    "name": "Personal Care and Service",
+    "salary": 45227.0,
+    "prev_year_salary": 42430.0,
+    "yoy_change": 0.06590488957786489
+  },
+  {
+    "code": "41",
+    "name": "Sales and Related",
+    "salary": 66877.0,
+    "prev_year_salary": 62496.0,
+    "yoy_change": 0.07010292643060745
+  },
+  {
+    "code": "43",
+    "name": "Office and Administrative Support",
+    "salary": 49727.0,
+    "prev_year_salary": 50172.0,
+    "yoy_change": -0.008877075642840127
+  },
+  {
+    "code": "45",
+    "name": "Farming, Fishing, and Forestry",
+    "salary": 45264.0,
+    "prev_year_salary": 43370.0,
+    "yoy_change": 0.0436685386387643
+  },
+  {
+    "code": "47",
+    "name": "Construction and Extraction",
+    "salary": 62857.0,
+    "prev_year_salary": 61468.0,
+    "yoy_change": 0.02260703616046733
+  },
+  {
+    "code": "49",
+    "name": "Installation, Maintenance, and Repair",
+    "salary": 59659.0,
+    "prev_year_salary": 58853.0,
+    "yoy_change": 0.013694664490810693
+  },
+  {
+    "code": "51",
+    "name": "Production",
+    "salary": 46812.0,
+    "prev_year_salary": 45783.0,
+    "yoy_change": 0.02245629748667577
+  },
+  {
+    "code": "53",
+    "name": "Transportation and Material Moving",
+    "salary": 67108.0,
+    "prev_year_salary": 60981.0,
+    "yoy_change": 0.1004648330380411
+  }
+]

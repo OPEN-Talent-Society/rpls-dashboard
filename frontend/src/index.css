@@ -1,0 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@300;500;700;800&family=IBM+Plex+Sans:wght@300;400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  font-family: 'IBM Plex Sans', 'Bricolage Grotesque', 'JetBrains Mono', system-ui, -apple-system,
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #e8f3ff;
+  background-color: #05070d;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(20, 180, 120, 0.18), transparent 30%),
+    radial-gradient(circle at 80% 0%, rgba(84, 108, 255, 0.15), transparent 28%),
+    linear-gradient(135deg, #05070d 0%, #0b1020 45%, #05070d 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.04),
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: soft-light;
+  opacity: 0.15;
+  animation: scan 6s linear infinite;
+  z-index: -1;
+}
+
+a {
+  color: inherit;
+}
+
+@keyframes scan {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(8px);
+  }
+}

@@ -1,0 +1,210 @@
+{
+  "Alabama": {
+    "salary": 62089.0,
+    "yoy_change": 0.019809202326155573
+  },
+  "Alaska": {
+    "salary": 79146.0,
+    "yoy_change": -0.05146049030153532
+  },
+  "Arizona": {
+    "salary": 69928.0,
+    "yoy_change": -0.005795715789591482
+  },
+  "Arkansas": {
+    "salary": 58942.0,
+    "yoy_change": -0.06721411467189908
+  },
+  "California": {
+    "salary": 83883.0,
+    "yoy_change": 0.03367229366188451
+  },
+  "Colorado": {
+    "salary": 74436.0,
+    "yoy_change": 0.02805521131310562
+  },
+  "Connecticut": {
+    "salary": 70113.0,
+    "yoy_change": -0.05965685506436935
+  },
+  "Delaware": {
+    "salary": 74342.0,
+    "yoy_change": 0.06588703948963781
+  },
+  "Florida": {
+    "salary": 64996.0,
+    "yoy_change": 0.02278208287351391
+  },
+  "Georgia": {
+    "salary": 67450.0,
+    "yoy_change": 0.008730637919067252
+  },
+  "Hawaii": {
+    "salary": 65665.0,
+    "yoy_change": 0.02700973543653329
+  },
+  "Idaho": {
+    "salary": 62665.0,
+    "yoy_change": -0.03631276796579164
+  },
+  "Illinois": {
+    "salary": 73909.0,
+    "yoy_change": 0.053718141185794765
+  },
+  "Indiana": {
+    "salary": 64396.0,
+    "yoy_change": -0.0020604898014314754
+  },
+  "Iowa": {
+    "salary": 70077.0,
+    "yoy_change": -0.013596268753138685
+  },
+  "Kansas": {
+    "salary": 64703.0,
+    "yoy_change": -0.023650278759172916
+  },
+  "Kentucky": {
+    "salary": 65721.0,
+    "yoy_change": 0.029373638886486253
+  },
+  "Louisiana": {
+    "salary": 60105.0,
+    "yoy_change": -0.014353658007232206
+  },
+  "Maine": {
+    "salary": 67341.0,
+    "yoy_change": -0.060427542572286
+  },
+  "Maryland": {
+    "salary": 76789.0,
+    "yoy_change": 0.02633996959890239
+  },
+  "Massachusetts": {
+    "salary": 76314.0,
+    "yoy_change": -0.005908457392924671
+  },
+  "Michigan": {
+    "salary": 62043.0,
+    "yoy_change": -0.006648644794574721
+  },
+  "Minnesota": {
+    "salary": 69085.0,
+    "yoy_change": 0.04001218103959747
+  },
+  "Mississippi": {
+    "salary": 62334.0,
+    "yoy_change": 0.07310918007049283
+  },
+  "Missouri": {
+    "salary": 69991.0,
+    "yoy_change": 0.078658599372055
+  },
+  "Montana": {
+    "salary": 66937.0,
+    "yoy_change": -0.02595221028165262
+  },
+  "Nebraska": {
+    "salary": 65762.0,
+    "yoy_change": 0.001446834407382358
+  },
+  "Nevada": {
+    "salary": 67022.0,
+    "yoy_change": 0.0382137838363088
+  },
+  "New Hampshire": {
+    "salary": 66099.0,
+    "yoy_change": -0.06631505021370265
+  },
+  "New Jersey": {
+    "salary": 74947.0,
+    "yoy_change": -0.03274252410801126
+  },
+  "New Mexico": {
+    "salary": 70819.0,
+    "yoy_change": -0.037985456057252454
+  },
+  "New York": {
+    "salary": 80178.0,
+    "yoy_change": 0.01691239408746248
+  },
+  "North Carolina": {
+    "salary": 66905.0,
+    "yoy_change": 0.02634650634393121
+  },
+  "North Dakota": {
+    "salary": 69986.0,
+    "yoy_change": -0.053413412580043396
+  },
+  "Ohio": {
+    "salary": 62984.0,
+    "yoy_change": 0.02500047037335862
+  },
+  "Oklahoma": {
+    "salary": 61562.0,
+    "yoy_change": 0.0021775337646503523
+  },
+  "Oregon": {
+    "salary": 73786.0,
+    "yoy_change": 0.012072007835756349
+  },
+  "Pennsylvania": {
+    "salary": 65616.0,
+    "yoy_change": 0.035258567716619504
+  },
+  "Rhode Island": {
+    "salary": 70962.0,
+    "yoy_change": -0.016011913573345304
+  },
+  "South Carolina": {
+    "salary": 57084.0,
+    "yoy_change": -0.01798239120587697
+  },
+  "South Dakota": {
+    "salary": 72278.0,
+    "yoy_change": 0.002073068224579755
+  },
+  "Tennessee": {
+    "salary": 64211.0,
+    "yoy_change": 0.021581957980906008
+  },
+  "Texas": {
+    "salary": 67978.0,
+    "yoy_change": 0.026044324028692056
+  },
+  "Utah": {
+    "salary": 63951.0,
+    "yoy_change": 0.03677376281337952
+  },
+  "Vermont": {
+    "salary": 69484.0,
+    "yoy_change": -0.06575814960520865
+  },
+  "Virginia": {
+    "salary": 71613.0,
+    "yoy_change": -0.024272361988280422
+  },
+  "Washington": {
+    "salary": 82419.0,
+    "yoy_change": 0.05752222319747413
+  },
+  "Washington, D.C.": {
+    "salary": 112326.0,
+    "yoy_change": 0.14600144160162754
+  },
+  "West Virginia": {
+    "salary": 67602.0,
+    "yoy_change": 0.032457803795644447
+  },
+  "Wisconsin": {
+    "salary": 66664.0,
+    "yoy_change": 0.017889915482324437
+  },
+  "Wyoming": {
+    "salary": 70601.0,
+    "yoy_change": -0.03735047259382218
+  },
+  "empty": {
+    "salary": 109947.0,
+    "yoy_change": -0.013091028391632231
+  }
+}
