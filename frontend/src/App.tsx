@@ -102,6 +102,7 @@ function App() {
   const [layoffs, setLayoffs] = useState<LayoffEntry[]>([])
   const [postingsHeatmap, setPostingsHeatmap] = useState<PostingsHeatmap | null>(null)
   const [topMoversStrip, setTopMoversStrip] = useState<{ dimension: string; pct_change: number }[]>([])
+  const [loading, setLoading] = useState(true)
   const [geminiQuestion, setGeminiQuestion] = useState('What changed most this month?')
   const [geminiContext, setGeminiContext] = useState(
     'You are summarizing RPLS labor stats for a people-ops audience. Keep answers concise.'
@@ -129,7 +130,7 @@ function App() {
         const v = fallback ?? 0
         return [v, v]
       }
-
+      setLoading(true)
       const datasets = await fetchJson<{ datasets: any[] }>('/api/datasets', true)
       if (datasets?.datasets?.length) {
         const maxMonth = datasets.datasets
@@ -236,6 +237,7 @@ function App() {
         true
       )
       if (movers?.data) setTopMoversStrip(movers.data)
+      setLoading(false)
     }
     load()
   }, [])
@@ -376,7 +378,11 @@ function App() {
       </header>
 
       <div className="ticker">
-        {tickerItems.length === 0 && <span className="muted">Waiting for data…</span>}
+        {tickerItems.length === 0 && (
+          <span className="muted">
+            {loading ? 'Loading…' : 'Waiting for data…'}
+          </span>
+        )}
         {tickerItems.map((item, idx) => (
           <div key={item.label} className={`ticker-item ${item.tone || 'neutral'}`} style={{ animationDelay: `${idx * 0.05}s` }}>
             <span className="ticker-label">{item.label}</span>
@@ -408,14 +414,14 @@ function App() {
       {errors ? <div className="error">{errors}</div> : null}
 
       <section className="grid-hero">
-        <div className="card hero-strip" style={{ ['--delay' as string]: '0s' }}>
-          <div className="card-header">
-            <h2>
-              Market Temperature
-              <span className="tip" title="Dual-line mini-chart: hiring vs attrition over recent months.">ℹ</span>
-            </h2>
-            <span className={`pill ${marketTemp?.trend || ''}`}>{marketTemp?.trend || '—'}</span>
-          </div>
+            <div className="card hero-strip" style={{ ['--delay' as string]: '0s' }}>
+              <div className="card-header">
+                <h2>
+                  Market Temperature
+                  <span className="tip" title="Dual-line mini-chart: hiring vs attrition over recent months.">ℹ</span>
+                </h2>
+                <span className={`pill ${marketTemp?.trend || ''}`}>{marketTemp?.trend || '—'}</span>
+              </div>
           <div className="metric-row">
             <div>
               <p className="metric-label">Month</p>
@@ -453,8 +459,8 @@ function App() {
                       : [marketTemp.hiring_rate ?? 0]
                   }
                   color="#7ef0c9"
-                  width={120}
-                  height={32}
+                  width={160}
+                  height={40}
                 />
                 <Sparkline
                   values={
@@ -463,8 +469,8 @@ function App() {
                       : [marketTemp.attrition_rate ?? 0]
                   }
                   color="#f87171"
-                  width={120}
-                  height={32}
+                  width={160}
+                  height={40}
                 />
               </div>
             )}
@@ -690,25 +696,25 @@ function App() {
               {postingsHeatmap ? postingsHeatmap.prev_month + ' → ' + postingsHeatmap.month : '—'}
             </span>
           </div>
-          <div className="split">
-            <div>
-              <p className="metric-label">States gaining</p>
-              <ul className="list">
-                {postingsLeaders.top.length === 0 && (
-                  <li className="list-row">
-                    <span className="skeleton skeleton-line" style={{ width: '60%' }} />
-                    <span className="skeleton skeleton-line" style={{ width: '30%' }} />
-                  </li>
-                )}
-                {postingsLeaders.top.map((row) => (
-                  <li key={row.state} className="list-row">
-                    <span>{row.state}</span>
-                    <span className="delta up with-bar">
-                      <span>
-                        {row.pct_change !== null && row.pct_change !== undefined
-                          ? row.pct_change.toFixed(2) + '%'
-                          : '—'}
-                      </span>
+            <div className="split">
+              <div>
+                <p className="metric-label">States gaining</p>
+                <ul className="list">
+                  {postingsLeaders.top.length === 0 && (
+                    <li className="list-row">
+                      <span className="skeleton skeleton-line" style={{ width: '60%' }} />
+                      <span className="skeleton skeleton-line" style={{ width: '30%' }} />
+                    </li>
+                  )}
+                  {postingsLeaders.top.map((row) => (
+                    <li key={row.state} className="list-row">
+                      <span>{row.state}</span>
+                      <span className="delta up with-bar">
+                        <span>
+                          {row.pct_change !== null && row.pct_change !== undefined
+                            ? row.pct_change.toFixed(2) + '%'
+                            : '—'}
+                        </span>
                       <span className="micro-bar" style={barStyle(row.pct_change, 'up')} />
                     </span>
                   </li>
