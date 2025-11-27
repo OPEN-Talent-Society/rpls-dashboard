@@ -4,7 +4,7 @@
 **Goal:** Replace the Python-to-JSON script with a Database-backed App.
 1.  **Setup:** Initialize Supabase Project & Schema.
 2.  **ETL:** Finalize `etl_supabase.py` to handle all CSV types (Layoffs, Hiring, Salaries).
-3.  **Backend:** None (Serverless).
+3.  **Backend:** None (Serverless). FastAPI/DuckDB path is legacy/dev-only.
 4.  **Frontend:** Connect SvelteKit to Supabase. Re-implement "Sector Spotlight" using DB queries.
 
 ## Phase 2: Enhancements (Interactive Dashboard)
