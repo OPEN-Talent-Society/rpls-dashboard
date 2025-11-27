@@ -302,11 +302,21 @@ export async function loadAllData(filterState: FilterState = {}) {
 		const layMonth = laySect?.[0]?.date;
 		const laySectors = (laySect ?? [])
 			.filter((r) => r.date === layMonth)
-			.map((r) => ({
-				code: r.sector_id,
-				name: sectorName.get(r.sector_id) ?? r.sector_id,
-				employees_laidoff: r.employees_laidoff ?? 0
-			}));
+			.reduce<Map<string, { code: string; name: string; employees_laidoff: number }>>((map, r) => {
+				const key = r.sector_id;
+				const existing = map.get(key) ?? {
+					code: r.sector_id,
+					name: sectorName.get(r.sector_id) ?? r.sector_id,
+					employees_laidoff: 0
+				};
+				existing.employees_laidoff += r.employees_laidoff ?? 0;
+				map.set(key, existing);
+				return map;
+			}, new Map())
+			.values();
+		const laySectorsList = Array.from(laySectors).sort(
+			(a, b) => (b.employees_laidoff ?? 0) - (a.employees_laidoff ?? 0)
+		);
 		const laySeriesSorted = (laySeries ?? [])
 			.sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
 			.filter((r, idx, arr) => arr.findIndex((x) => x.date === r.date) === idx);
@@ -318,7 +328,7 @@ export async function loadAllData(filterState: FilterState = {}) {
 				employees_laidoff: r.employees_laidoff ?? null
 			}))
 		);
-		layoffsBySector.set({ month: layMonth ?? '', sectors: laySectors });
+		layoffsBySector.set({ month: layMonth ?? '', sectors: laySectorsList });
 	} catch (err) {
 		console.error('Failed to load data:', err);
 		error.set('Failed to load dashboard data. Please try again later.');
