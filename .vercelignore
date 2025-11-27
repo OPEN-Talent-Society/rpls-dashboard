@@ -21,6 +21,5 @@ screenshots/**
 *.tar.gz
 *.tgz
 *.csv
-*.json
 tmp/**
 temp_**
