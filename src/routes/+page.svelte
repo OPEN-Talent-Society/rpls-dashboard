@@ -20,6 +20,7 @@
 	} from '$lib/stores/data';
 	import { filters, serializeFilters, parseFilters, updateFilters } from '$lib/stores/filters';
 	import DataDebugPanel from '$lib/components/DataDebugPanel.svelte';
+	import MethodologyNote from '$lib/components/MethodologyNote.svelte';
 
 	let initialized = false;
 
@@ -120,12 +121,14 @@
 			<SectorSpotlight />
 		</section>
 
-		<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-			<HiringQuadrant />
-			<SalaryCheck />
-		</section>
+	<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+		<HiringQuadrant />
+		<SalaryCheck />
+	</section>
 
-		<DataDebugPanel />
+	<MethodologyNote healthIndex={$summary?.health_index ?? 50} metrics={$summary?.headline_metrics ?? null} />
+
+	<DataDebugPanel />
 
 		<section id="about" class="bg-stone-100 rounded-xl p-4 text-center text-sm text-stone-500">
 			Data provided by Revelio Labs. Powered by Open Talent Society.

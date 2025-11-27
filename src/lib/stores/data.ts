@@ -170,14 +170,18 @@ export async function loadAllData(filterState: FilterState = {}) {
 		const attritionRate = latestHire?.attrition_rate_sa ?? 0;
 		const layoffsVal = latestLay?.employees_laidoff ?? 0;
 		const empDelta = latestEmp && prevEmp ? (latestEmp.employment_sa ?? 0) - (prevEmp.employment_sa ?? 0) : 0;
+		const empPct = pctChange(latestEmp?.employment_sa ?? null, prevEmp?.employment_sa ?? null) ?? 0;
 
-		const healthScore = Math.max(
-			0,
-			Math.min(
-				100,
-				50 + (hiringRate - attritionRate) * 200 - Math.min(layoffsVal / 50000, 20) + Math.min(empDelta, 1_000_000) / 1_000_000 * 10
-			)
-		);
+		// Reweighted, less jumpy Health Index:
+		// - Spread between hiring and attrition (capped) drives +/- 40 points.
+		// - Employment momentum (MoM %) drives up to +/- 20 points.
+		// - Layoffs subtract up to 20 points with a softer divisor (75k).
+		const spread = Math.max(-0.1, Math.min(0.1, hiringRate - attritionRate));
+		const spreadScore = spread * 400; // max ±40
+		const momentumScore = Math.max(-20, Math.min(20, empPct * 400)); // pct * 400 ≈ ±20 when ±0.05
+		const layPenalty = Math.min(layoffsVal / 75000 * 20, 20); // softer penalty
+		const rawHealth = 50 + spreadScore + momentumScore - layPenalty;
+		const healthScore = Math.max(0, Math.min(100, rawHealth));
 
 		summary.set({
 			updated_at: Date.now(),
