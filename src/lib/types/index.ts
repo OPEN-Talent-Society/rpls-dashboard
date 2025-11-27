@@ -95,6 +95,8 @@ export interface TopMover {
 	value: number | null;
 	prev_value: number | null;
 	pct_change: number | null;
+	yoy_change?: number | null;
+	year_ago_value?: number | null;
 	month: string;
 	prev_month: string | null;
 }
