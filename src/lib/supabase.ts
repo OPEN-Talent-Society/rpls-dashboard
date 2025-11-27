@@ -1,8 +1,8 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import { env } from '$env/dynamic/public';
+import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
 
-const url = env.PUBLIC_SUPABASE_URL;
-const anon = env.PUBLIC_SUPABASE_ANON_KEY;
+const url = PUBLIC_SUPABASE_URL;
+const anon = PUBLIC_SUPABASE_ANON_KEY;
 
 export const hasSupabaseEnv = Boolean(url && anon);
 
