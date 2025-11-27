@@ -1,7 +1,10 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from '$env/static/public';
+import { env } from '$env/dynamic/public';
 
-export const hasSupabaseEnv = Boolean(PUBLIC_SUPABASE_URL && PUBLIC_SUPABASE_ANON_KEY);
+const url = env.PUBLIC_SUPABASE_URL;
+const anon = env.PUBLIC_SUPABASE_ANON_KEY;
+
+export const hasSupabaseEnv = Boolean(url && anon);
 
 if (!hasSupabaseEnv) {
 	console.warn('Supabase env vars missing: set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY');
@@ -15,6 +18,4 @@ const fallbackClient = () =>
 		})
 	} as unknown as SupabaseClient);
 
-export const supabase = hasSupabaseEnv
-	? createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY)
-	: fallbackClient();
+export const supabase = hasSupabaseEnv ? createClient(url, anon) : fallbackClient();
