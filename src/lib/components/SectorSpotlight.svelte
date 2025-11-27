@@ -2,11 +2,11 @@
 import { topSectors } from '$lib/stores/data';
 import { formatNumber, formatPercentChange, getChangeColor } from '$lib/utils/format';
 
-function getStatusBadge(change: number | null | undefined) {
-	if (change === null || change === undefined) return { class: 'badge-stagnant', text: 'Stable' };
-	if (change > 5) return { class: 'badge-growth', text: 'Growing' };
-	if (change < -10) return { class: 'badge-decline', text: 'Declining' };
-	if (change < -5) return { class: 'badge-churn', text: 'Slowing' };
+function getStatusBadge(momChange: number | null | undefined) {
+	if (momChange === null || momChange === undefined) return { class: 'badge-stagnant', text: 'Stable' };
+	if (momChange > 5) return { class: 'badge-growth', text: 'Growing' };
+	if (momChange < -10) return { class: 'badge-decline', text: 'Declining' };
+	if (momChange < -5) return { class: 'badge-churn', text: 'Slowing' };
 	return { class: 'badge-stagnant', text: 'Stable' };
 }
 </script>
@@ -19,8 +19,7 @@ function getStatusBadge(change: number | null | undefined) {
 
 	<div class="space-y-3">
 		{#each $topSectors as sector}
-			{@const change = sector.yoy_change ?? sector.mom_change}
-			{@const badge = getStatusBadge(change)}
+			{@const badge = getStatusBadge(sector.mom_change)}
 			<div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
 				<div class="flex-1 min-w-0">
 					<div class="flex items-center gap-2">
@@ -33,16 +32,14 @@ function getStatusBadge(change: number | null | undefined) {
 				</div>
 
 				<div class="text-right ml-4">
-					<div class="text-sm {getChangeColor(change)}">
-						{change === null || change === undefined
-							? 'Stable (MoM)'
-							: `${formatPercentChange(change)} vs prior period`}
+					<div class="text-sm {getChangeColor(sector.mom_change)}">
+						{formatPercentChange(sector.mom_change)} MoM
 					</div>
-					<div class="text-xs text-gray-400">
-						{sector.yoy_change === null || sector.yoy_change === undefined
-							? `MoM: ${formatPercentChange(sector.mom_change)}`
-							: `YoY: ${formatPercentChange(sector.yoy_change)}`}
-					</div>
+					{#if sector.yoy_change !== null && sector.yoy_change !== undefined}
+						<div class="text-xs text-gray-400">
+							YoY: {formatPercentChange(sector.yoy_change)}
+						</div>
+					{/if}
 				</div>
 			</div>
 		{/each}
