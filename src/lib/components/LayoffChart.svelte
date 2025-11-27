@@ -21,8 +21,10 @@
 	let canvas: HTMLCanvasElement | null = null;
 	let chart: Chart<'line'> | null = null;
 
-	const labels = () => data.map((d) => d.month);
-	const values = () => data.map((d) => d.employees_laidoff ?? 0);
+	// Keep chart chronological while stores keep latest-first ordering
+	$: chronological = [...data].sort((a, b) => a.month.localeCompare(b.month));
+	const labels = () => chronological.map((d) => d.month);
+	const values = () => chronological.map((d) => d.employees_laidoff ?? 0);
 
 	function updateChart() {
 		if (!chart) return;
@@ -82,8 +84,8 @@
 		updateChart();
 	}
 
-	$: latest = data.at(-1);
-	$: sixMonthTotal = data.slice(-6).reduce((sum, l) => sum + (l.employees_laidoff ?? 0), 0);
+	$: latest = data[0];
+	$: sixMonthTotal = data.slice(0, 6).reduce((sum, l) => sum + (l.employees_laidoff ?? 0), 0);
 </script>
 
 <div class="card">
