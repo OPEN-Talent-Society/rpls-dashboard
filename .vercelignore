@@ -9,11 +9,14 @@ dist
 .env.local
 .env.vercel
 .env.production
-rpls_data
-rpls_data_extracted
-screenshots
+rpls_data/**
+rpls_data_extracted/**
+screenshots/**
 *.zip
 *.tar
 *.tar.gz
 *.tgz
 *.csv
+*.json
+tmp/**
+temp_**
