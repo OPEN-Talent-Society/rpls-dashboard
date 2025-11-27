@@ -68,6 +68,16 @@ async function getLatestTwo(
 	return data ?? [];
 }
 
+function dedupeBy<T extends Record<string, any>>(rows: T[], key: keyof T) {
+	const seen = new Set<string>();
+	return rows.filter((r) => {
+		const val = r[key];
+		if (seen.has(String(val))) return false;
+		seen.add(String(val));
+		return true;
+	});
+}
+
 // Data loading function (Supabase)
 export async function loadAllData(filterState: FilterState = {}) {
 	isLoading.set(true);
