@@ -37,6 +37,7 @@
 - [ ] **Task E.5:** Add auth/saved-view tests (API contract + UI flows) tied to Epic D.
 - [ ] **Task E.6:** Add AI pipeline tests (filter JSON generation, /api/analyze prompt/response validation) tied to Epic F.
 - [ ] **Task E.7:** Add manifest/health checks (row counts, min/max dates) as CI guardrails; ensure they run against Supabase with safe limits.
+- [ ] **Task E.8:** Add `/api/status` and `/api/sample` runtime health checks in CI to confirm Supabase data availability.
 
 ## Epic F: AI & Insights (Phase 3)
 - [ ] **Task F.1:** Install `ai`, `@google/generative-ai`, and add env plumbing for Gemini keys; add config validation tests to fail fast when env is missing.
