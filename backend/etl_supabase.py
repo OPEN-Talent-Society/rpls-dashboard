@@ -1,244 +1,322 @@
 """
-RPLS Dashboard - ETL Pipeline (DuckDB -> Supabase)
---------------------------------------------------
-This script:
-1. Loads raw CSV data into an in-memory DuckDB instance.
-2. Cleans, transforms, and normalizes the data using SQL.
-3. Pushes the structured data to Supabase (Postgres).
+Supabase ETL (DuckDB -> Supabase Postgres)
+-----------------------------------------
+- Loads CSVs from canonical `rpls_data/`
+- Normalizes to dimension + fact tables (schema in supabase/schema.sql)
+- Upserts to Supabase (Service Role key recommended)
 
-Usage:
-    export SUPABASE_URL=...
-    export SUPABASE_KEY=...
-    python etl_supabase.py
+Run:
+  export PUBLIC_SUPABASE_URL=...
+  export SUPABASE_SERVICE_ROLE_KEY=...
+  python backend/etl_supabase.py
 """
 
+from __future__ import annotations
+
 import os
-import glob
-import duckdb
-from supabase import create_client, Client
 from pathlib import Path
-from dotenv import load_dotenv
+from typing import Sequence
+
+import duckdb
 import pandas as pd
-import numpy as np
+from dotenv import load_dotenv
+from supabase import Client, create_client
 
-# Load environment variables
-env_path = Path(__file__).resolve().parent.parent / '.env'
-load_dotenv(dotenv_path=env_path)
+ROOT = Path(__file__).resolve().parents[1]
+DATA_DIR = Path(os.environ.get("RPLS_DATA_DIR", ROOT.parent / "rpls_data"))
+ENV_PATH = ROOT / ".env"
 
-SUPABASE_URL = os.getenv("PUBLIC_SUPABASE_URL") # Changed to match .env keys
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY") # Use Service Role for ETL
-DATA_DIR = Path(__file__).resolve().parents[2] / "rpls_data_extracted"
+load_dotenv(ENV_PATH)
+SUPABASE_URL = os.getenv("PUBLIC_SUPABASE_URL")
+SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 
-if not SUPABASE_URL or not SUPABASE_KEY:
-    print(f"⚠️  WARNING: Credentials not found in {env_path}. Running in Dry-Run mode.")
-    DRY_RUN = True
+DRY_RUN = not (SUPABASE_URL and SUPABASE_KEY)
+supabase: Client | None = None
+if not DRY_RUN:
+    supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 else:
-    # supabase-py requires the URL and Key
-    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
-    DRY_RUN = False
+    print(f"⚠️  Supabase credentials missing in {ENV_PATH}. Running in DRY RUN (no uploads).")
 
-def get_csv_path(pattern: str) -> str:
-    """Finds a CSV file matching the pattern in the data directory."""
-    files = glob.glob(str(DATA_DIR / pattern))
-    if not files:
-        raise FileNotFoundError(f"No file matches pattern: {pattern} in {DATA_DIR}")
-    return files[0]
 
-def clean_currency_sql(col_name):
-    return f"TRY_CAST(REPLACE(REPLACE({col_name}, '$', ''), ',', '') AS DECIMAL)"
+def money(col: str) -> str:
+    return f"TRY_CAST(REPLACE(REPLACE({col}, '$',''), ',','') AS DOUBLE)"
 
-def clean_percent_sql(col_name):
-    return f"TRY_CAST(REPLACE(REPLACE({col_name}, '%', ''), '+', '') AS DECIMAL) / 100.0"
+
+def upsert(table: str, columns: Sequence[str], rows: Sequence[Sequence]) -> None:
+    """Chunked upsert to Supabase; DRY_RUN logs only."""
+    if DRY_RUN:
+        print(f"DRY RUN: {table} rows={len(rows)}")
+        return
+    assert supabase is not None
+    if not rows:
+        print(f"Skip {table}: no rows")
+        return
+    df = pd.DataFrame(rows, columns=columns)
+    payload = df.to_dict(orient="records")
+    chunk = 1000
+    for i in range(0, len(payload), chunk):
+        batch = payload[i : i + chunk]
+        supabase.table(table).upsert(batch).execute()
+    print(f"Upserted {len(rows)} rows into {table}")
+
 
 def run_etl():
-    con = duckdb.connect(database=':memory:')
-    
-    print(f"📂 Loading data from: {DATA_DIR}")
+    if not DATA_DIR.exists():
+        raise FileNotFoundError(f"Data dir not found: {DATA_DIR}")
 
-    # ==========================================
-    # 1. Dimensions
-    # ==========================================
-    print("Processing Dimensions...")
-    
-    # DIM_SECTORS (from salaries_naics.csv)
-    path = get_csv_path("salaries_naics.csv")
-    con.execute(f"""
-        CREATE OR REPLACE TEMP TABLE raw_sectors AS SELECT * FROM read_csv_auto('{path}', all_varchar=True);
-        SELECT DISTINCT 
-            naics2d_code as id, 
-            naics2d_name as name 
-        FROM raw_sectors 
-        WHERE naics2d_code != '00'
-    """)
-    sectors = con.fetchall()
-    upload_to_supabase("dim_sectors", ["id", "name"], sectors)
+    con = duckdb.connect(database=":memory:", config={"threads": 4})
+    con.execute("SET enable_progress_bar = false;")
+    print(f"📂 Loading data from {DATA_DIR}")
 
-    # DIM_OCCUPATIONS (from salaries_soc.csv)
-    path = get_csv_path("salaries_soc.csv")
-    con.execute(f"""
-        CREATE OR REPLACE TEMP TABLE raw_soc AS SELECT * FROM read_csv_auto('{path}', all_varchar=True);
-        SELECT DISTINCT 
-            soc2d_code as id, 
-            soc2d_name as name 
-        FROM raw_soc 
-        WHERE soc2d_code != '0'
-    """)
-    occupations = con.fetchall()
-    upload_to_supabase("dim_occupations", ["id", "name"], occupations)
+    # Dimensions
+    sectors = con.execute(
+        f"""
+        SELECT DISTINCT naics2d_code AS id, naics2d_name AS name
+        FROM read_csv_auto('{DATA_DIR/'employment_naics.csv'}', all_varchar=True)
+        WHERE naics2d_code!='00'
+        """
+    ).fetchall()
+    upsert("dim_sectors", ["id", "name"], sectors)
 
-    # DIM_STATES (from salaries_state.csv)
-    path = get_csv_path("salaries_state.csv")
-    con.execute(f"""
-        CREATE OR REPLACE TEMP TABLE raw_states AS SELECT * FROM read_csv_auto('{path}', all_varchar=True);
-        SELECT DISTINCT state as id, state as name FROM raw_states
-    """)
-    states = con.fetchall()
-    upload_to_supabase("dim_states", ["id", "name"], states)
+    occupations = con.execute(
+        f"""
+        SELECT DISTINCT soc2d_code AS id, soc2d_name AS name
+        FROM read_csv_auto('{DATA_DIR/'employment_soc.csv'}', all_varchar=True)
+        WHERE soc2d_code!='0'
+        """
+    ).fetchall()
+    upsert("dim_occupations", ["id", "name"], occupations)
 
+    states = con.execute(
+        f"""
+        SELECT DISTINCT state AS id, state AS name
+        FROM read_csv_auto('{DATA_DIR/'employment_state.csv'}', all_varchar=True)
+        WHERE state IS NOT NULL AND state!=''
+        """
+    ).fetchall()
+    upsert("dim_states", ["id", "name"], states)
 
-    # ==========================================
-    # 2. Fact Tables
-    # ==========================================
-    
-    # FACT_LAYOFFS (Total, NAICS, State)
-    print("Processing Layoffs...")
-    # We load all 3 files and union them
-    f_total = get_csv_path("total_layoffs.csv")
-    f_naics = get_csv_path("layoffs_by_naics.csv")
-    f_state = get_csv_path("layoffs_by_state.csv")
-    
-    query = f"""
-        SELECT 
-            month || '-01' as date,
-            NULL as sector_id,
-            NULL as state_id,
-            TRY_CAST(num_employees_notified AS INT) as employees_notified,
-            TRY_CAST(num_notices_issued AS INT) as notices_issued,
-            TRY_CAST(num_employees_laidoff AS INT) as employees_laidoff,
-            'total' as granularity
-        FROM read_csv_auto('{f_total}', all_varchar=True)
-        
-        UNION ALL
-        
-        SELECT 
-            month || '-01' as date,
-            naics2d as sector_id,
-            NULL as state_id,
-            TRY_CAST(num_employees_notified AS INT),
-            TRY_CAST(num_notices_issued AS INT),
-            TRY_CAST(num_employees_laidoff AS INT),
-            'sector' as granularity
-        FROM read_csv_auto('{f_naics}', all_varchar=True)
-        
-        UNION ALL
-        
-        SELECT 
-            month || '-01' as date,
-            NULL as sector_id,
-            state as state_id,
-            TRY_CAST(num_employees_notified AS INT),
-            TRY_CAST(num_notices_issued AS INT),
-            TRY_CAST(num_employees_laidoff AS INT),
-            'state' as granularity
-        FROM read_csv_auto('{f_state}', all_varchar=True)
-    """
-    con.execute(query)
-    layoffs = con.fetchall()
-    # Columns: date, sector_id, state_id, employees_notified, notices_issued, employees_laidoff, granularity
-    cols = ["date", "sector_id", "state_id", "employees_notified", "notices_issued", "employees_laidoff", "granularity"]
-    upload_to_supabase("fact_layoffs", cols, layoffs)
+    # Layoffs
+    layoffs = con.execute(
+        f"""
+        WITH total AS (
+          SELECT month||'-01' AS date, NULL AS sector_id, NULL AS state_id,
+                 TRY_CAST(num_employees_notified AS INT), TRY_CAST(num_notices_issued AS INT),
+                 TRY_CAST(num_employees_laidoff AS INT), 'total' AS granularity
+          FROM read_csv_auto('{DATA_DIR/'total_layoffs.csv'}', all_varchar=True)
+        ),
+        naics AS (
+          SELECT month||'-01', naics2d, NULL,
+                 TRY_CAST(num_employees_notified AS INT), TRY_CAST(num_notices_issued AS INT),
+                 TRY_CAST(num_employees_laidoff AS INT), 'sector'
+          FROM read_csv_auto('{DATA_DIR/'layoffs_by_naics.csv'}', all_varchar=True)
+        ),
+        state AS (
+          SELECT month||'-01', NULL, state,
+                 TRY_CAST(num_employees_notified AS INT), TRY_CAST(num_notices_issued AS INT),
+                 TRY_CAST(num_employees_laidoff AS INT), 'state'
+          FROM read_csv_auto('{DATA_DIR/'layoffs_by_state.csv'}', all_varchar=True)
+        )
+        SELECT * FROM total
+        UNION ALL SELECT * FROM naics
+        UNION ALL SELECT * FROM state
+        """
+    ).fetchall()
+    upsert(
+        "fact_layoffs",
+        ["date", "sector_id", "state_id", "employees_notified", "notices_issued", "employees_laidoff", "granularity"],
+        layoffs,
+    )
 
-    # FACT_SALARIES
-    print("Processing Salaries...")
-    # Example for NAICS, SOC, State, National
-    f_sal_naics = get_csv_path("salaries_naics.csv")
-    f_sal_soc = get_csv_path("salaries_soc.csv")
-    
-    query = f"""
-        SELECT 
-            month || '-01' as date,
-            naics2d_code as sector_id,
-            NULL as occupation_id,
-            NULL as state_id,
-            TRY_CAST(count as INT) as count,
-            {clean_currency_sql('salary_nsa')} as salary_nsa,
-            {clean_currency_sql('salary_sa')} as salary_sa,
-            'sector' as granularity
-        FROM read_csv_auto('{f_sal_naics}', all_varchar=True)
-        
-        UNION ALL
-        
-        SELECT 
-            month || '-01' as date,
-            NULL as sector_id,
-            soc2d_code as occupation_id,
-            NULL as state_id,
-            TRY_CAST(count as INT) as count,
-            {clean_currency_sql('salary_nsa')} as salary_nsa,
-            {clean_currency_sql('salary_sa')} as salary_sa,
-            'occupation' as granularity
-        FROM read_csv_auto('{f_sal_soc}', all_varchar=True)
-    """
-    con.execute(query)
-    salaries = con.fetchall()
-    cols = ["date", "sector_id", "occupation_id", "state_id", "count", "salary_nsa", "salary_sa", "granularity"]
-    upload_to_supabase("fact_salaries", cols, salaries)
+    # Salaries
+    salaries = con.execute(
+        f"""
+        WITH naics AS (
+          SELECT month||'-01' AS date, naics2d_code AS sector_id, NULL AS occupation_id, NULL AS state_id,
+                 TRY_CAST(count AS INT) AS count, {money('salary_nsa')} AS salary_nsa, {money('salary_sa')} AS salary_sa,
+                 'sector' AS granularity
+          FROM read_csv_auto('{DATA_DIR/'salaries_naics.csv'}', all_varchar=True)
+        ),
+        soc AS (
+          SELECT month||'-01', NULL, soc2d_code, NULL,
+                 TRY_CAST(count AS INT), {money('salary_nsa')}, {money('salary_sa')}, 'occupation'
+          FROM read_csv_auto('{DATA_DIR/'salaries_soc.csv'}', all_varchar=True)
+        ),
+        state AS (
+          SELECT month||'-01', NULL, NULL, state,
+                 TRY_CAST(count AS INT), {money('salary_nsa')}, {money('salary_sa')}, 'state'
+          FROM read_csv_auto('{DATA_DIR/'salaries_state.csv'}', all_varchar=True)
+        ),
+        national AS (
+          SELECT month||'-01', NULL, NULL, NULL,
+                 TRY_CAST(count AS INT), {money('salary_nsa')}, {money('salary_sa')}, 'national'
+          FROM read_csv_auto('{DATA_DIR/'salaries_national.csv'}', all_varchar=True)
+        )
+        SELECT * FROM naics
+        UNION ALL SELECT * FROM soc
+        UNION ALL SELECT * FROM state
+        UNION ALL SELECT * FROM national
+        """
+    ).fetchall()
+    upsert(
+        "fact_salaries",
+        ["date", "sector_id", "occupation_id", "state_id", "count", "salary_nsa", "salary_sa", "granularity"],
+        salaries,
+    )
 
-    # Add other fact tables similarly (Postings, Hiring, etc.)
-    # For brevity in this artifact, I am implementing the core ones. 
-    # You can extend this pattern easily.
+    # Employment
+    employment = con.execute(
+        f"""
+        WITH national AS (
+          SELECT month||'-01' AS date, NULL AS sector_id, NULL AS occupation_id, NULL AS state_id,
+                 TRY_CAST(employment_nsa AS DOUBLE), TRY_CAST(employment_sa AS DOUBLE), 'national' AS granularity
+          FROM read_csv_auto('{DATA_DIR/'employment_national.csv'}', all_varchar=True)
+        ),
+        naics AS (
+          SELECT month||'-01', naics2d_code, NULL, NULL,
+                 TRY_CAST(employment_nsa AS DOUBLE), TRY_CAST(employment_sa AS DOUBLE), 'sector'
+          FROM read_csv_auto('{DATA_DIR/'employment_naics.csv'}', all_varchar=True)
+        ),
+        soc AS (
+          SELECT month||'-01', NULL, soc2d_code, NULL,
+                 TRY_CAST(employment_nsa AS DOUBLE), TRY_CAST(employment_sa AS DOUBLE), 'occupation'
+          FROM read_csv_auto('{DATA_DIR/'employment_soc.csv'}', all_varchar=True)
+        ),
+        state AS (
+          SELECT month||'-01', NULL, NULL, state,
+                 TRY_CAST(employment_nsa AS DOUBLE), TRY_CAST(employment_sa AS DOUBLE), 'state'
+          FROM read_csv_auto('{DATA_DIR/'employment_state.csv'}', all_varchar=True)
+        )
+        SELECT * FROM national
+        UNION ALL SELECT * FROM naics
+        UNION ALL SELECT * FROM soc
+        UNION ALL SELECT * FROM state
+        """
+    ).fetchall()
+    upsert(
+        "fact_employment",
+        ["date", "sector_id", "occupation_id", "state_id", "employment_nsa", "employment_sa", "granularity"],
+        employment,
+    )
 
-    print("✅ ETL Complete.")
+    # Postings
+    postings = con.execute(
+        f"""
+        WITH total AS (
+          SELECT month||'-01' AS date, NULL AS sector_id, NULL AS occupation_id, NULL AS state_id,
+                 TRY_CAST(active_postings_nsa AS DOUBLE), TRY_CAST(active_postings_sa AS DOUBLE),
+                 NULL AS new_postings_nsa, NULL AS new_postings_sa,
+                 NULL AS removed_postings_nsa, NULL AS removed_postings_sa,
+                 'total' AS granularity
+          FROM read_csv_auto('{DATA_DIR/'postings_total_us.csv'}', all_varchar=True)
+        ),
+        naics AS (
+          SELECT month||'-01', naics2d_code, NULL, NULL,
+                 TRY_CAST(active_postings_nsa AS DOUBLE), TRY_CAST(active_postings_sa AS DOUBLE),
+                 NULL,NULL,NULL,NULL,
+                 'sector'
+          FROM read_csv_auto('{DATA_DIR/'postings_by_sector.csv'}', all_varchar=True)
+        ),
+        soc AS (
+          SELECT month||'-01', NULL, soc2d_code, NULL,
+                 TRY_CAST(active_postings_nsa AS DOUBLE), TRY_CAST(active_postings_sa AS DOUBLE),
+                 NULL,NULL,NULL,NULL,
+                 'occupation'
+          FROM read_csv_auto('{DATA_DIR/'postings_by_occupation.csv'}', all_varchar=True)
+        ),
+        state AS (
+          SELECT month||'-01', NULL, NULL, state,
+                 TRY_CAST(active_postings_nsa AS DOUBLE), TRY_CAST(active_postings_sa AS DOUBLE),
+                 NULL,NULL,NULL,NULL,
+                 'state'
+          FROM read_csv_auto('{DATA_DIR/'postings_by_state.csv'}', all_varchar=True)
+        )
+        SELECT * FROM total
+        UNION ALL SELECT * FROM naics
+        UNION ALL SELECT * FROM soc
+        UNION ALL SELECT * FROM state
+        """
+    ).fetchall()
+    upsert(
+        "fact_postings",
+        [
+            "date",
+            "sector_id",
+            "occupation_id",
+            "state_id",
+            "active_postings_nsa",
+            "active_postings_sa",
+            "new_postings_nsa",
+            "new_postings_sa",
+            "removed_postings_nsa",
+            "removed_postings_sa",
+            "granularity",
+        ],
+        postings,
+    )
 
-import pandas as pd
-import numpy as np
+    # Hiring / Attrition
+    hiring = con.execute(
+        f"""
+        WITH total AS (
+          SELECT month||'-01' AS date, NULL AS sector_id, NULL AS occupation_id, NULL AS state_id,
+                 TRY_CAST(rl_hiring_rate AS DOUBLE) AS hiring_rate_sa,
+                 TRY_CAST(rl_attrition_rate AS DOUBLE) AS attrition_rate_sa,
+                 TRY_CAST(rl_hiring_rate_nsa AS DOUBLE) AS hiring_rate_nsa,
+                 TRY_CAST(rl_attrition_rate_nsa AS DOUBLE) AS attrition_rate_nsa,
+                 'total' AS granularity
+          FROM read_csv_auto('{DATA_DIR/'hiring_and_attrition_total_us.csv'}', all_varchar=True)
+        ),
+        naics AS (
+          SELECT month||'-01', naics2d_code, NULL, NULL,
+                 TRY_CAST(rl_hiring_rate AS DOUBLE), TRY_CAST(rl_attrition_rate AS DOUBLE),
+                 TRY_CAST(rl_hiring_rate_nsa AS DOUBLE), TRY_CAST(rl_attrition_rate_nsa AS DOUBLE),
+                 'sector'
+          FROM read_csv_auto('{DATA_DIR/'hiring_and_attrition_by_sector.csv'}', all_varchar=True)
+        ),
+        soc AS (
+          SELECT month||'-01', NULL, soc2d_code, NULL,
+                 TRY_CAST(rl_hiring_rate AS DOUBLE), TRY_CAST(rl_attrition_rate AS DOUBLE),
+                 TRY_CAST(rl_hiring_rate_nsa AS DOUBLE), TRY_CAST(rl_attrition_rate_nsa AS DOUBLE),
+                 'occupation'
+          FROM read_csv_auto('{DATA_DIR/'hiring_and_attrition_by_occupation.csv'}', all_varchar=True)
+        ),
+        state AS (
+          SELECT month||'-01', NULL, NULL, state,
+                 TRY_CAST(rl_hiring_rate AS DOUBLE), TRY_CAST(rl_attrition_rate AS DOUBLE),
+                 TRY_CAST(rl_hiring_rate_nsa AS DOUBLE), TRY_CAST(rl_attrition_rate_nsa AS DOUBLE),
+                 'state'
+          FROM read_csv_auto('{DATA_DIR/'hiring_and_attrition_by_state.csv'}', all_varchar=True)
+        )
+        SELECT * FROM total
+        UNION ALL SELECT * FROM naics
+        UNION ALL SELECT * FROM soc
+        UNION ALL SELECT * FROM state
+        """
+    ).fetchall()
+    upsert(
+        "fact_hiring_attrition",
+        [
+            "date",
+            "sector_id",
+            "occupation_id",
+            "state_id",
+            "hiring_rate_sa",
+            "attrition_rate_sa",
+            "hiring_rate_nsa",
+            "attrition_rate_nsa",
+            "granularity",
+        ],
+        hiring,
+    )
+
+    print("✅ Supabase ETL complete.")
+
 
 def upload_to_supabase(table_name, columns, query_result):
-    """
-    Uploads data to Supabase using Pandas for robust type conversion.
-    query_result: Result from DuckDB (can be a list of tuples or a DF if we change the caller)
-    But here we assume the caller passed 'data_rows' which is a list of tuples.
-    Actually, let's change the caller to pass the connection and query, or just handle the list.
-    """
-    if not query_result:
-        print(f"  ⚠️ No data for {table_name}")
-        return
-        
-    # Convert list of tuples to DataFrame
-    df = pd.DataFrame(query_result, columns=columns)
-    
-    # 1. Convert Decimals to Floats
-    # Select object columns that might be Decimals and convert
-    for col in df.select_dtypes(include=['object']).columns:
-        try:
-            df[col] = df[col].astype(float)
-        except (ValueError, TypeError):
-            pass # Keep as string if it fails (e.g. IDs)
+    """Backward compatibility shim; kept for older imports."""
+    upsert(table_name, columns, query_result)
 
-    # 2. Handle NaNs (Supabase expects null)
-    df = df.replace({np.nan: None})
-    
-    records = df.to_dict(orient='records')
-    
-    if DRY_RUN:
-        print(f"  [DRY RUN] Would insert {len(records)} rows into {table_name}")
-        return
-
-    # Batch insert
-    batch_size = 1000
-    for i in range(0, len(records), batch_size):
-        batch = records[i:i+batch_size]
-        try:
-            supabase.table(table_name).upsert(batch).execute()
-            print(f"  Inserted {len(batch)} rows into {table_name}")
-        except Exception as e:
-            msg = str(e)
-            if "Could not find the table" in msg or "PGRST205" in msg:
-                 print(f"  ❌ ERROR: Table '{table_name}' does not exist in Supabase.")
-                 print(f"     ACTION REQUIRED: Run 'rpls-dashboard/supabase/schema.sql' in your Supabase SQL Editor.")
-                 return # Stop trying for this table
-            else:
-                print(f"  ❌ Error inserting into {table_name}: {e}")
 
 if __name__ == "__main__":
     run_etl()
