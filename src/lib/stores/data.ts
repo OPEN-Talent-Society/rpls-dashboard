@@ -54,12 +54,40 @@ function pctChange(curr: number | null, prev: number | null): number | null {
 	return ((curr - prev) / prev) * 100;
 }
 
+function fallbackSectorLabel(id: string, provided?: string | null) {
+	if (provided) return provided;
+	const map: Record<string, string> = {
+		'00': 'Unclassified',
+		'31': 'Manufacturing',
+		'32': 'Manufacturing',
+		'33': 'Manufacturing',
+		'44': 'Retail Trade',
+		'45': 'Retail Trade',
+		'48': 'Transportation and Warehousing',
+		'49': 'Transportation and Warehousing',
+		'52': 'Finance and Insurance',
+		'53': 'Real Estate and Rental',
+		'54': 'Professional & Technical Services',
+		'55': 'Management of Companies',
+		'56': 'Administrative & Support Services',
+		'61': 'Educational Services',
+		'62': 'Health Care & Social Assistance',
+		'71': 'Arts, Entertainment & Recreation',
+		'72': 'Accommodation & Food Services',
+		'81': 'Other Services',
+		'92': 'Public Administration',
+		'99': 'Unclassified'
+	};
+	return map[id] ?? id;
+}
+
 async function getLatestTwo(
 	table: string,
 	filters: Record<string, string>,
-	dateRange?: { start?: string; end?: string }
+	dateRange?: { start?: string; end?: string },
+	dedupeByDate = false
 ) {
-	let query = supabase.from(table).select().order('date', { ascending: false }).limit(2);
+	let query = supabase.from(table).select().order('date', { ascending: false }).limit(dedupeByDate ? 6 : 2);
 	for (const [k, v] of Object.entries(filters)) {
 		query = query.eq(k, v);
 	}
@@ -67,7 +95,17 @@ async function getLatestTwo(
 	if (dateRange?.end) query = query.lte('date', `${dateRange.end}-31`);
 	const { data, error: err } = await query;
 	if (err) throw err;
-	return data ?? [];
+	if (!dedupeByDate) return data ?? [];
+	const uniq: any[] = [];
+	const seen = new Set<string>();
+	for (const row of data ?? []) {
+		if (!row?.date) continue;
+		if (seen.has(row.date)) continue;
+		seen.add(row.date);
+		uniq.push(row);
+		if (uniq.length >= 2) break;
+	}
+	return uniq;
 }
 
 function dedupeBy<T extends Record<string, any>>(rows: T[], key: keyof T) {
@@ -116,9 +154,9 @@ export async function loadAllData(filterState: FilterState = {}) {
 		// Summary pieces
 		const dateRange = { start: filterState.startMonth, end: filterState.endMonth };
 		const [empRows, hireRows, layRows] = await Promise.all([
-			getLatestTwo('fact_employment', { granularity: 'national' }, dateRange),
-			getLatestTwo('fact_hiring_attrition', { granularity: 'total' }, dateRange),
-			getLatestTwo('fact_layoffs', { granularity: 'total' }, dateRange)
+			getLatestTwo('fact_employment', { granularity: 'national' }, dateRange, true),
+			getLatestTwo('fact_hiring_attrition', { granularity: 'total' }, dateRange, true),
+			getLatestTwo('fact_layoffs', { granularity: 'total' }, dateRange, true)
 		]);
 
 		const latestEmp = empRows[0];
@@ -189,7 +227,7 @@ export async function loadAllData(filterState: FilterState = {}) {
 			const yoyChange = pctChange(val, yearAgoVal);
 			movers.push({
 				dimension: id,
-				sector: sectorName.get(id) ?? id,
+				sector: fallbackSectorLabel(id, sectorName.get(id)),
 				value: val,
 				prev_value: prevVal,
 				pct_change: momChange,
@@ -317,7 +355,7 @@ export async function loadAllData(filterState: FilterState = {}) {
 				const key = r.sector_id;
 				const existing = map.get(key) ?? {
 					code: r.sector_id,
-					name: sectorName.get(r.sector_id) ?? r.sector_id,
+					name: fallbackSectorLabel(r.sector_id, sectorName.get(r.sector_id)),
 					employees_laidoff: 0
 				};
 				existing.employees_laidoff += r.employees_laidoff ?? 0;
