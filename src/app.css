@@ -1,78 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
 	body {
-		@apply bg-gray-50 text-gray-900;
+		@apply bg-cream text-stone-900 font-sans antialiased selection:bg-brand-200 selection:text-brand-900;
+	}
+	
+	h1, h2, h3, h4, h5, h6 {
+		@apply font-display tracking-tight;
 	}
 }
 
 @layer components {
 	.card {
-		@apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+		@apply bg-white border border-stone-200 rounded-lg shadow-sm p-6 transition-all duration-200;
+	}
+	
+	.card:hover {
+		@apply shadow-md border-brand-200;
 	}
 
 	.card-header {
-		@apply text-lg font-semibold text-gray-800 mb-4;
+		@apply text-xl font-bold text-brand-900 mb-6 flex items-center justify-between font-display border-b border-stone-100 pb-4;
 	}
 
 	.metric-value {
-		@apply text-3xl font-bold;
+		@apply text-4xl font-bold font-display text-brand-900 tracking-tight;
 	}
 
 	.metric-label {
-		@apply text-sm text-gray-500 uppercase tracking-wide;
+		@apply text-xs text-stone-500 uppercase tracking-widest font-sans font-semibold mb-1;
 	}
 
 	.badge {
-		@apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+		@apply inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold uppercase tracking-wide font-sans;
 	}
 
 	.badge-growth {
-		@apply bg-green-100 text-green-800;
+		@apply bg-green-50 text-green-700 border border-green-200;
 	}
 
 	.badge-decline {
-		@apply bg-red-100 text-red-800;
+		@apply bg-red-50 text-red-700 border border-red-200;
 	}
 
 	.badge-churn {
-		@apply bg-amber-100 text-amber-800;
+		@apply bg-amber-50 text-amber-700 border border-amber-200;
 	}
 
 	.badge-stagnant {
-		@apply bg-gray-100 text-gray-800;
+		@apply bg-gray-100 text-gray-600 border border-gray-200;
 	}
 
 	.btn {
-		@apply inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-lg font-medium transition-colors;
+		@apply inline-flex items-center justify-center px-6 py-2.5 rounded text-sm font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-cream shadow-sm;
 	}
 
 	.btn-primary {
-		@apply bg-primary-600 text-white hover:bg-primary-700;
+		@apply bg-brand-800 text-white hover:bg-brand-900 focus:ring-brand-800 border border-transparent;
 	}
 
 	.btn-secondary {
-		@apply bg-white text-gray-700 border-gray-300 hover:bg-gray-50;
+		@apply bg-white text-stone-700 border border-stone-300 hover:bg-stone-50 hover:text-brand-800 focus:ring-stone-400;
 	}
-}
-
-/* Layoff ticker animation */
-@keyframes ticker {
-	0% {
-		transform: translateX(100%);
+	
+	.input-field {
+		@apply bg-white border border-stone-300 text-stone-900 text-sm rounded block w-full p-3 focus:ring-brand-500 focus:border-brand-500 placeholder-stone-400 shadow-sm;
 	}
-	100% {
-		transform: translateX(-100%);
-	}
-}
-
-.ticker-animation {
-	animation: ticker 30s linear infinite;
-}
-
-/* Health index gradient */
-.health-gradient {
-	background: linear-gradient(90deg, #ef4444 0%, #f59e0b 25%, #eab308 50%, #84cc16 75%, #22c55e 100%);
 }

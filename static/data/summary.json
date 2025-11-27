@@ -1,5 +1,5 @@
 {
-  "updated_at": "2025-11-22T05:22:26.726913",
+  "updated_at": "2025-11-26T20:58:35.897491",
   "data_month": "2025-10",
   "health_index": 52,
   "health_trend": "stable",
@@ -8,6 +8,7 @@
     "employment_change": -9057,
     "hiring_rate": 0.24815838075937047,
     "attrition_rate": 0.24881613222460947,
+    "average_salary": 71780.0,
     "latest_layoffs": 25724,
     "total_sectors": 16,
     "total_occupations": 23

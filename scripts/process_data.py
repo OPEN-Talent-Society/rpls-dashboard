@@ -9,17 +9,18 @@ import json
 import os
 from datetime import datetime
 from pathlib import Path
+from typing import Iterable, List, Optional
 
-# Paths
-DATA_DIR = Path(__file__).parent.parent.parent / "revelio-data"
-OUTPUT_DIR = Path(__file__).parent.parent / "static" / "data"
+# Paths (prefers canonical rpls_data; fallback to env override)
+ROOT_DIR = Path(__file__).resolve().parents[1]
+DATA_DIR = Path(os.environ.get("RPLS_DATA_DIR", ROOT_DIR.parent / "rpls_data"))
+OUTPUT_DIR = ROOT_DIR / "static" / "data"
 
 def load_csv(filename):
     """Load CSV file and return list of dicts."""
     filepath = DATA_DIR / filename
     if not filepath.exists():
-        print(f"Warning: {filename} not found")
-        return []
+        raise FileNotFoundError(f"{filename} not found in {DATA_DIR}")
 
     with open(filepath, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(f)
@@ -37,21 +38,58 @@ def parse_percent(val):
         return None
     return float(val.replace('%', '').replace('+', ''))
 
+
+def _parse_month_key(key: str):
+    for fmt in ("%B %Y", "%b %Y"):
+        try:
+            return datetime.strptime(key, fmt)
+        except ValueError:
+            continue
+    return None
+
+
+def latest_month_column(keys: Iterable[str]) -> Optional[str]:
+    """Return the column name representing the latest month among the provided keys."""
+    dated_keys: List[tuple[datetime, str]] = []
+    for key in keys:
+        parsed = _parse_month_key(key)
+        if parsed:
+            dated_keys.append((parsed, key))
+    if not dated_keys:
+        return None
+    dated_keys.sort(key=lambda tup: tup[0])
+    return dated_keys[-1][1]
+
 def process_sector_summary():
     """Process sector summary data for Sector Spotlight Cards."""
     rows = load_csv("sector_summary.csv")
     sectors = []
 
+    if not rows:
+        return sectors
+
+    month_cols = [c for c in rows[0].keys() if _parse_month_key(c)]
+    month_cols.sort(key=lambda c: _parse_month_key(c))
+    latest_col = month_cols[-1]
+    prev_col = month_cols[-2] if len(month_cols) > 1 else month_cols[-1]
+    yoy_col = next((c for c in rows[0].keys() if "YoY" in c), None)
+    mom_col = next((c for c in rows[0].keys() if "MoM" in c), None)
+
     for row in rows:
         if row.get('Sector') == 'Total US':
             continue
 
+        current = int(row.get(latest_col, '0').replace(',', '') or 0)
+        prev = int(row.get(prev_col, '0').replace(',', '') or 0)
+        yoy = parse_percent(row.get(yoy_col, '0%')) if yoy_col else None
+        mom = parse_percent(row.get(mom_col, '0%')) if mom_col else None
+
         sectors.append({
             "name": row.get('Sector', ''),
-            "current_postings": int(row.get('October 2025', '0').replace(',', '') or 0),
-            "prev_month_postings": int(row.get('September 2025', '0').replace(',', '') or 0),
-            "yoy_change": parse_percent(row.get('YoY change (Oct 24–Oct 25)', '0%')),
-            "mom_change": parse_percent(row.get('MoM change (Sep 25–Oct 25)', '0%'))
+            "current_postings": current,
+            "prev_month_postings": prev,
+            "yoy_change": yoy if yoy is not None else ((current - prev) / prev * 100 if prev else None),
+            "mom_change": mom if mom is not None else None
         })
 
     return sorted(sectors, key=lambda x: x['current_postings'], reverse=True)
@@ -61,6 +99,15 @@ def process_salary_by_occupation():
     rows = load_csv("salary_overview_soc.csv")
     salaries = []
 
+    if not rows:
+        return salaries
+
+    month_cols = [c for c in rows[0].keys() if _parse_month_key(c)]
+    month_cols.sort(key=lambda c: _parse_month_key(c))
+    latest_col = month_cols[-1]
+    prev_col = month_cols[-2] if len(month_cols) > 1 else month_cols[-1]
+    yoy_col = next((c for c in rows[0].keys() if "Pct change YoY" in c), None)
+
     for row in rows:
         soc_code = row.get('soc2d_code', '')
         if soc_code == 'Total US' or not soc_code:
@@ -69,9 +116,9 @@ def process_salary_by_occupation():
         salaries.append({
             "code": soc_code,
             "name": row.get('soc2d_name', ''),
-            "salary": parse_currency(row.get('Oct 2025', '$0')),
-            "prev_year_salary": parse_currency(row.get('Oct 2024', '$0')),
-            "yoy_change": float(row.get('Pct change YoY (Oct 2024 - Oct 2025)', '0') or 0)
+            "salary": parse_currency(row.get(latest_col, '$0')),
+            "prev_year_salary": parse_currency(row.get(prev_col, '$0')),
+            "yoy_change": float(row.get(yoy_col, '0') or 0) if yoy_col else None
         })
 
     return salaries
@@ -80,18 +127,33 @@ def process_salary_by_state():
     """Process salary data by state."""
     rows = load_csv("salary_overview_state.csv")
     salaries = {}
+    national_avg = 0.0
+
+    if not rows:
+        return salaries, national_avg
+
+    month_cols = [c for c in rows[0].keys() if _parse_month_key(c)]
+    month_cols.sort(key=lambda c: _parse_month_key(c))
+    latest_col = month_cols[-1]
+    yoy_col = next((c for c in rows[0].keys() if "Pct change YoY" in c), None)
 
     for row in rows:
         state = row.get('state', '')
-        if not state or state == 'Total US':
+        if not state:
+            continue
+            
+        salary_val = parse_currency(row.get(latest_col, '$0'))
+        
+        if state == 'Total US':
+            national_avg = salary_val or 0.0
             continue
 
         salaries[state] = {
-            "salary": parse_currency(row.get('Oct 2025', '$0')),
-            "yoy_change": float(row.get('Pct change YoY (Oct 2024 - Oct 2025)', '0') or 0)
+            "salary": salary_val,
+            "yoy_change": float(row.get(yoy_col, '0') or 0) if yoy_col else None
         }
 
-    return salaries
+    return salaries, national_avg
 
 def process_hiring_attrition():
     """Process hiring and attrition by sector for Quadrant chart."""
@@ -278,7 +340,7 @@ def main():
     # Process all data
     sectors = process_sector_summary()
     salaries_soc = process_salary_by_occupation()
-    salaries_state = process_salary_by_state()
+    salaries_state, national_avg_salary = process_salary_by_state()
     hiring_attrition = process_hiring_attrition()
     layoffs = process_layoffs()
     layoffs_by_sector = process_layoffs_by_sector()
@@ -316,7 +378,7 @@ def main():
     # Build summary
     summary = {
         "updated_at": datetime.now().isoformat(),
-        "data_month": "2025-10",
+        "data_month": latest_emp.get('month') or latest_hiring.get('month') or "",
         "health_index": health_index,
         "health_trend": health_trend,
         "headline_metrics": {
@@ -324,6 +386,7 @@ def main():
             "employment_change": (latest_emp.get('employment_sa', 0) - prev_emp.get('employment_sa', 0)) if prev_emp else 0,
             "hiring_rate": latest_hiring.get('hiring_rate'),
             "attrition_rate": latest_hiring.get('attrition_rate'),
+            "average_salary": national_avg_salary,
             "latest_layoffs": latest_layoff.get('employees_laidoff'),
             "total_sectors": len(sectors),
             "total_occupations": len(salaries_soc)
