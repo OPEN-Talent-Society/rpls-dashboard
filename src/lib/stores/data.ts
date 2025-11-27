@@ -1,5 +1,6 @@
 import { writable, derived } from 'svelte/store';
 import { supabase } from '$lib/supabase';
+import type { FilterState } from './filters';
 import type {
 	Summary,
 	OccupationSalary,
@@ -51,27 +52,44 @@ function pctChange(curr: number | null, prev: number | null): number | null {
 	return ((curr - prev) / prev) * 100;
 }
 
-async function getLatestTwo(table: string, filters: Record<string, string>) {
+async function getLatestTwo(
+	table: string,
+	filters: Record<string, string>,
+	dateRange?: { start?: string; end?: string }
+) {
 	let query = supabase.from(table).select().order('date', { ascending: false }).limit(2);
 	for (const [k, v] of Object.entries(filters)) {
 		query = query.eq(k, v);
 	}
+	if (dateRange?.start) query = query.gte('date', `${dateRange.start}-01`);
+	if (dateRange?.end) query = query.lte('date', `${dateRange.end}-31`);
 	const { data, error: err } = await query;
 	if (err) throw err;
 	return data ?? [];
 }
 
 // Data loading function (Supabase)
-export async function loadAllData() {
+export async function loadAllData(filterState: FilterState = {}) {
 	isLoading.set(true);
 	error.set(null);
 
 	try {
+		const dateFilter = (query: any, field = 'date') => {
+			if (filterState.startMonth) {
+				query = query.gte(field, `${filterState.startMonth}-01`);
+			}
+			if (filterState.endMonth) {
+				query = query.lte(field, `${filterState.endMonth}-31`);
+			}
+			return query;
+		};
+
 		// Summary pieces
+		const dateRange = { start: filterState.startMonth, end: filterState.endMonth };
 		const [empRows, hireRows, layRows] = await Promise.all([
-			getLatestTwo('fact_employment', { granularity: 'national' }),
-			getLatestTwo('fact_hiring_attrition', { granularity: 'total' }),
-			getLatestTwo('fact_layoffs', { granularity: 'total' })
+			getLatestTwo('fact_employment', { granularity: 'national' }, dateRange),
+			getLatestTwo('fact_hiring_attrition', { granularity: 'total' }, dateRange),
+			getLatestTwo('fact_layoffs', { granularity: 'total' }, dateRange)
 		]);
 
 		const latestEmp = empRows[0];
@@ -97,12 +115,17 @@ export async function loadAllData() {
 		});
 
 		// Spotlight (top/bottom movers by employment sector)
-		const { data: latestSector } = await supabase
+		let spotlightQuery = supabase
 			.from('fact_employment')
 			.select('date, sector_id, employment_sa')
 			.eq('granularity', 'sector')
 			.order('date', { ascending: false })
 			.limit(1000);
+		if (filterState.sector) {
+			spotlightQuery = spotlightQuery.eq('sector_id', filterState.sector);
+		}
+		spotlightQuery = dateFilter(spotlightQuery);
+		const { data: latestSector } = await spotlightQuery;
 		const latestMonth = latestSector?.[0]?.date;
 		const prevMonth = latestSector?.find((r) => r.date !== latestMonth)?.date;
 		const latestMap = new Map<string, number | null>();
@@ -129,11 +152,16 @@ export async function loadAllData() {
 		spotlight.set({ winners, losers });
 
 		// Salaries
-		const { data: salOcc } = await supabase
+		let salOccQuery = supabase
 			.from('fact_salaries')
 			.select('date, occupation_id, salary_sa')
 			.eq('granularity', 'occupation')
 			.order('date', { ascending: false });
+		if (filterState.occupation) {
+			salOccQuery = salOccQuery.eq('occupation_id', filterState.occupation);
+		}
+		salOccQuery = dateFilter(salOccQuery);
+		const { data: salOcc } = await salOccQuery;
 		const salLatest = salOcc?.[0]?.date;
 		const salPrev = salOcc?.find((r) => r.date !== salLatest)?.date;
 		const occMap = new Map<string, { curr: number | null; prev: number | null }>();
@@ -155,11 +183,16 @@ export async function loadAllData() {
 		}
 		salariesByOccupation.set(occList);
 
-		const { data: salState } = await supabase
+		let salStateQuery = supabase
 			.from('fact_salaries')
 			.select('date, state_id, salary_sa')
 			.eq('granularity', 'state')
 			.order('date', { ascending: false });
+		if (filterState.state) {
+			salStateQuery = salStateQuery.eq('state_id', filterState.state);
+		}
+		salStateQuery = dateFilter(salStateQuery);
+		const { data: salState } = await salStateQuery;
 		const stateLatest = salState?.[0]?.date;
 		const statePrev = salState?.find((r) => r.date !== stateLatest)?.date;
 		const stateMap: Record<string, { salary: number | null; yoy_change: number | null }> = {};
@@ -174,11 +207,14 @@ export async function loadAllData() {
 		salariesByState.set(stateMap);
 
 		// Hiring quadrant (latest sector)
-		const { data: hireSect } = await supabase
+		let hireSectQuery = supabase
 			.from('fact_hiring_attrition')
 			.select('date, sector_id, hiring_rate_sa, attrition_rate_sa')
 			.eq('granularity', 'sector')
 			.order('date', { ascending: false });
+		if (filterState.sector) hireSectQuery = hireSectQuery.eq('sector_id', filterState.sector);
+		hireSectQuery = dateFilter(hireSectQuery);
+		const { data: hireSect } = await hireSectQuery;
 		const hLatest = hireSect?.[0]?.date;
 		const sectors = (hireSect ?? []).filter((r) => r.date === hLatest).map((r) => ({
 			code: r.sector_id,
@@ -190,16 +226,23 @@ export async function loadAllData() {
 		hiringAttrition.set({ month: hLatest ?? '', sectors });
 
 		// Layoffs series + sectors
-		const { data: laySeries } = await supabase
+		let laySeriesQuery = supabase
 			.from('fact_layoffs')
 			.select('date, employees_laidoff')
 			.eq('granularity', 'total')
 			.order('date', { ascending: true });
-		const { data: laySect } = await supabase
+		laySeriesQuery = dateFilter(laySeriesQuery);
+
+		let laySectQuery = supabase
 			.from('fact_layoffs')
 			.select('date, sector_id, employees_laidoff')
 			.eq('granularity', 'sector')
 			.order('date', { ascending: false });
+		if (filterState.sector) laySectQuery = laySectQuery.eq('sector_id', filterState.sector);
+		laySectQuery = dateFilter(laySectQuery);
+
+		const { data: laySeries } = await laySeriesQuery;
+		const { data: laySect } = await laySectQuery;
 		const layMonth = laySect?.[0]?.date;
 		const laySectors = (laySect ?? [])
 			.filter((r) => r.date === layMonth)
