@@ -1,17 +1,27 @@
 <script lang="ts">
-	import { formatNumber, formatPercent, formatMonth } from '$lib/utils/format';
+	import { onMount } from 'svelte';
+	import { formatNumber } from '$lib/utils/format';
 	import HealthIndex from '$lib/components/HealthIndex.svelte';
 	import LayoffTicker from '$lib/components/LayoffTicker.svelte';
 	import SectorSpotlight from '$lib/components/SectorSpotlight.svelte';
 	import HiringQuadrant from '$lib/components/HiringQuadrant.svelte';
 	import SalaryCheck from '$lib/components/SalaryCheck.svelte';
+	import LayoffChart from '$lib/components/LayoffChart.svelte';
+	import {
+		loadAllData,
+		isLoading,
+		error,
+		summary,
+		layoffs,
+		hiringAttrition,
+		spotlight
+	} from '$lib/stores/data';
 
-    export let data;
-    
-    // Reactive declarations to extract data safely
-    $: layoffs = data.layoffs || [];
-    $: sectors = data.sectors || [];
-    $: latestLayoff = layoffs[0] || {};
+	onMount(() => {
+		loadAllData();
+	});
+
+	$: headline = $summary?.headline_metrics;
 </script>
 
 <svelte:head>
@@ -35,39 +45,65 @@
 					<div class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">System Status</div>
 					<div class="flex items-center justify-end gap-2">
 						<span class="w-2 h-2 rounded-full bg-green-500"></span>
-						<span class="text-stone-900 font-semibold text-sm">Live (Supabase)</span>
+						<span class="text-stone-900 font-semibold text-sm">
+							{$isLoading ? 'Loading data…' : 'Live (Supabase)'}
+						</span>
 					</div>
 				</div>
 			</div>
 
-            <!-- Headlines -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div class="bg-white border border-stone-200 rounded-xl p-4 shadow-sm">
-                    <div class="text-xs uppercase text-stone-500 font-semibold">Latest Layoffs</div>
-                    <div class="text-2xl font-bold text-red-700 mt-1">{formatNumber(latestLayoff.employees_laidoff)}</div>
-                    <div class="text-xs text-stone-400 mt-1">{latestLayoff.date}</div>
-                </div>
-                <!-- Placeholders for other metrics until fully wired -->
-                <div class="bg-white border border-stone-200 rounded-xl p-4 shadow-sm opacity-50">
-                    <div class="text-xs uppercase text-stone-500 font-semibold">Hiring Rate</div>
-                    <div class="text-2xl font-bold text-green-700 mt-1">--</div>
-                </div>
-            </div>
+			{#if $error}
+				<div class="bg-red-50 border border-red-200 text-red-800 rounded-lg p-4">
+					{$error}
+				</div>
+			{/if}
+
+			<!-- Headlines -->
+			<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+				<div class="bg-white border border-stone-200 rounded-xl p-4 shadow-sm">
+					<div class="text-xs uppercase text-stone-500 font-semibold">Total Employment</div>
+					<div class="text-2xl font-bold text-stone-900 mt-1">
+						{formatNumber(headline?.total_employment)}
+					</div>
+					<div class="text-xs text-stone-400 mt-1">MoM change {formatNumber(headline?.employment_change)}</div>
+				</div>
+				<div class="bg-white border border-stone-200 rounded-xl p-4 shadow-sm">
+					<div class="text-xs uppercase text-stone-500 font-semibold">Hiring Rate</div>
+					<div class="text-2xl font-bold text-green-700 mt-1">
+						{headline?.hiring_rate ? `${(headline.hiring_rate * 100).toFixed(1)}%` : '--'}
+					</div>
+				</div>
+				<div class="bg-white border border-stone-200 rounded-xl p-4 shadow-sm">
+					<div class="text-xs uppercase text-stone-500 font-semibold">Attrition Rate</div>
+					<div class="text-2xl font-bold text-amber-700 mt-1">
+						{headline?.attrition_rate ? `${(headline.attrition_rate * 100).toFixed(1)}%` : '--'}
+					</div>
+				</div>
+				<div class="bg-white border border-stone-200 rounded-xl p-4 shadow-sm">
+					<div class="text-xs uppercase text-stone-500 font-semibold">Latest Layoffs</div>
+					<div class="text-2xl font-bold text-red-700 mt-1">
+						{formatNumber(headline?.latest_layoffs)}
+					</div>
+					<div class="text-xs text-stone-400 mt-1">Recent WARN filings</div>
+				</div>
+			</div>
 		</section>
 
 		<!-- Core visuals -->
 		<section class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="sectors">
-            <!-- Passing data to components would happen here. 
-                 For now, we are just ensuring the page loads without errors using the new data prop. -->
-			<LayoffTicker data={layoffs} />
+			<HealthIndex />
+			<LayoffTicker />
 		</section>
 
-        <section class="bg-blue-50 border border-blue-100 rounded-xl p-6">
-            <h3 class="font-bold text-blue-900">AI Insights (Coming Soon)</h3>
-            <p class="text-blue-700 text-sm mt-2">
-                Gemini analysis will appear here. Currently tracking {sectors.length} sector data points.
-            </p>
-        </section>
+		<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+			<LayoffChart data={$layoffs} loading={$isLoading} />
+			<SectorSpotlight />
+		</section>
+
+		<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+			<HiringQuadrant />
+			<SalaryCheck />
+		</section>
 
 		<section id="about" class="bg-stone-100 rounded-xl p-4 text-center text-sm text-stone-500">
 			Data provided by Revelio Labs. Powered by Open Talent Society.
