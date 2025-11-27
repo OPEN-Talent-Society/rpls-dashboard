@@ -41,7 +41,9 @@ export const topSectors = derived(spotlight, ($spotlight) => {
 	}));
 });
 
-export const latestLayoffs = derived(layoffs, ($layoffs) => $layoffs.slice(0, 3));
+export const latestLayoffs = derived(layoffs, ($layoffs) => {
+	return [...$layoffs].sort((a, b) => b.month.localeCompare(a.month)).slice(0, 3);
+});
 
 export const occupationOptions = derived(salariesByOccupation, ($salaries) =>
 	$salaries.map((s) => ({ value: s.code, label: s.name, salary: s.salary }))
