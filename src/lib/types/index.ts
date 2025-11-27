@@ -1,13 +1,13 @@
 // Data Types for RPLS Dashboard
 
 export interface Summary {
-	updated_at: string;
+	updated_at: number | null;
 	data_month: string;
 	health_index: number;
 	health_trend: 'improving' | 'stable' | 'declining';
 	headline_metrics: HeadlineMetrics;
-	top_sectors_by_postings: Sector[];
-	recent_layoffs: Layoff[];
+	top_sectors_by_postings?: Sector[];
+	recent_layoffs?: Layoff[];
 }
 
 export interface HeadlineMetrics {
@@ -16,8 +16,8 @@ export interface HeadlineMetrics {
 	hiring_rate: number | null;
 	attrition_rate: number | null;
 	latest_layoffs: number | null;
-	total_sectors: number;
-	total_occupations: number;
+	total_sectors?: number;
+	total_occupations?: number;
 }
 
 export interface Sector {
@@ -82,6 +82,27 @@ export interface HiringTrend {
 	month: string;
 	hiring_rate: number;
 	attrition_rate: number;
+}
+
+export interface SectorSpotlightResult {
+	winners: TopMover[];
+	losers: TopMover[];
+}
+
+export interface TopMover {
+	dimension: string;
+	sector?: string;
+	value: number | null;
+	prev_value: number | null;
+	pct_change: number | null;
+	month: string;
+	prev_month: string | null;
+}
+
+export interface LayoffsSummary {
+	month: string;
+	series: { month: string; employees_laidoff: number | null }[];
+	sectors: SectorLayoff[];
 }
 
 // Quadrant classification

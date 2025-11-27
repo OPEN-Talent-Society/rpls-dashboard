@@ -2,11 +2,13 @@
 	import { onMount } from 'svelte';
 	import { hiringAttrition } from '$lib/stores/data';
 	import { formatPercent, formatMonth } from '$lib/utils/format';
-	import { QUADRANT_COLORS, QUADRANT_LABELS, type QuadrantType } from '$lib/types';
-	import Chart from 'chart.js/auto';
+import { QUADRANT_COLORS, QUADRANT_LABELS, type QuadrantType } from '$lib/types';
+import Chart from 'chart.js/auto';
 
-	let canvas: HTMLCanvasElement;
-	let chart: Chart | null = null;
+let canvas: HTMLCanvasElement;
+let chart: Chart | null = null;
+
+const QUADRANT_ENTRIES = Object.entries(QUADRANT_LABELS) as [QuadrantType, string][];
 
 	// Thresholds for quadrant lines
 	const HIRING_THRESHOLD = 0.28;
@@ -169,11 +171,11 @@
 	<!-- Legend -->
 	<div class="mt-4 pt-4 border-t border-gray-100">
 		<div class="flex flex-wrap gap-4 justify-center">
-			{#each Object.entries(QUADRANT_LABELS) as [key, label]}
+			{#each QUADRANT_ENTRIES as [key, label]}
 				<div class="flex items-center gap-2">
 					<span
 						class="w-3 h-3 rounded-full"
-						style="background-color: {QUADRANT_COLORS[key as QuadrantType]}"
+						style={`background-color: ${QUADRANT_COLORS[key]}`}
 					></span>
 					<span class="text-sm text-gray-600">{label}</span>
 				</div>

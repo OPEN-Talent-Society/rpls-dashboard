@@ -20,10 +20,10 @@
 				</div>
 
 				<nav class="hidden md:flex items-center gap-6">
-					<a href="/" class="text-sm font-medium text-primary-600">Dashboard</a>
-					<a href="/salary" class="text-sm font-medium text-gray-600 hover:text-gray-900">Salary Check</a>
-					<a href="/sectors" class="text-sm font-medium text-gray-600 hover:text-gray-900">Sectors</a>
-					<a href="/about" class="text-sm font-medium text-gray-600 hover:text-gray-900">About</a>
+					<a href="/#dashboard" class="text-sm font-medium text-primary-600">Dashboard</a>
+					<a href="/#salary" class="text-sm font-medium text-gray-600 hover:text-gray-900">Salary Check</a>
+					<a href="/#sectors" class="text-sm font-medium text-gray-600 hover:text-gray-900">Sectors</a>
+					<a href="/#about" class="text-sm font-medium text-gray-600 hover:text-gray-900">About</a>
 				</nav>
 
 				<div class="flex items-center gap-3">

@@ -69,13 +69,13 @@
 				<div>
 					<div class="metric-label">National Average</div>
 					<div class="metric-value text-primary-600">
-						{formatCurrency(nationalSalary)}
+					{formatCurrency(nationalSalary)}
+				</div>
+				{#if occupation.yoy_change !== null && occupation.yoy_change !== undefined}
+					<div class="text-sm {getChangeColor(occupation.yoy_change)}">
+						{formatPercentChange(occupation.yoy_change)} YoY
 					</div>
-					{#if occupation.yoy_change}
-						<div class="text-sm {getChangeColor(occupation.yoy_change)}">
-							{formatPercentChange(occupation.yoy_change * 100)} YoY
-						</div>
-					{/if}
+				{/if}
 				</div>
 
 				<!-- State Salary -->
@@ -85,9 +85,9 @@
 						<div class="metric-value">
 							{formatCurrency(stateSalary)}
 						</div>
-						{#if stateData.yoy_change}
+						{#if stateData.yoy_change !== null && stateData.yoy_change !== undefined}
 							<div class="text-sm {getChangeColor(stateData.yoy_change)}">
-								{formatPercentChange(stateData.yoy_change * 100)} YoY
+								{formatPercentChange(stateData.yoy_change)} YoY
 							</div>
 						{/if}
 					</div>

@@ -51,6 +51,16 @@ app.add_middleware(
 )
 
 
+@app.get("/")
+def root():
+    return {
+        "status": "ok",
+        "docs": "/docs",
+        "openapi": "/openapi.json",
+        "health": "/api/health",
+    }
+
+
 class QueryRequest(BaseModel):
     dimension_type: str
     id: Optional[str] = None
@@ -75,6 +85,54 @@ def value_expr(col_expr: str) -> str:
     if base in MONEY_COLS:
         return f"TRY_CAST(REPLACE(REPLACE({col_expr}, '$',''), ',','') AS DOUBLE)"
     return f"TRY_CAST({col_expr} AS DOUBLE)"
+
+
+def money_expr(col_expr: str) -> str:
+    """Cast money-like strings ($12,345) to DOUBLE."""
+    return f"TRY_CAST(REPLACE(REPLACE({col_expr}, '$',''), ',','') AS DOUBLE)"
+
+
+def pct_change(curr: Optional[float], prev: Optional[float]) -> Optional[float]:
+    if curr is None or prev in (None, 0):
+        return None
+    try:
+        return (curr - prev) / prev * 100
+    except Exception:
+        return None
+
+
+def clamp(value: float, min_value: float, max_value: float) -> float:
+    return max(min_value, min(max_value, value))
+
+
+def calculate_health_index(
+    employment_growth: Optional[float],
+    hiring_rate: Optional[float],
+    attrition_rate: Optional[float],
+    layoff_change: Optional[float],
+) -> int:
+    """Lightweight composite index (0-100) to mirror dashboard health."""
+    score = 50.0
+    if employment_growth is not None:
+        score += clamp(employment_growth * 100, -20, 20)
+    if hiring_rate is not None:
+        score += clamp((hiring_rate - 0.2) * 200, -15, 15)
+    if attrition_rate is not None:
+        score -= clamp((attrition_rate - 0.2) * 200, -15, 15)
+    if layoff_change is not None:
+        score -= clamp(layoff_change * 100, -15, 15)
+    return int(clamp(score, 0, 100))
+
+
+def classify_quadrant(hiring_rate: Optional[float], attrition_rate: Optional[float]) -> str:
+    """Classify sector into a hiring/attrition quadrant."""
+    if hiring_rate is None or attrition_rate is None:
+        return "stagnant"
+    hiring_threshold = 0.28
+    attrition_threshold = 0.26
+    if hiring_rate > hiring_threshold:
+        return "growth" if attrition_rate < attrition_threshold else "churn_burn"
+    return "stagnant" if attrition_rate < attrition_threshold else "decline"
 
 
 # mapping: dimension -> metric -> table/col info
@@ -169,6 +227,190 @@ def datasets():
                 except Exception:
                     continue
             return {"datasets": manifest}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.get("/api/salaries/occupation")
+def salaries_occupation():
+    """Latest salaries by SOC 2d with prev-month change."""
+    try:
+        with get_con() as con:
+            latest_month = con.execute("SELECT MAX(month) FROM salaries_soc").fetchone()[0]
+            prev_month = con.execute(
+                "SELECT month FROM (SELECT DISTINCT month FROM salaries_soc ORDER BY month DESC LIMIT 2) ORDER BY month LIMIT 1"
+            ).fetchone()[0]
+            rows = con.execute(
+                f"""
+                SELECT soc2d_code, soc2d_name, {money_expr('salary_sa')} AS salary
+                FROM salaries_soc WHERE month=?
+                """,
+                [latest_month],
+            ).fetchall()
+            prev_map = {
+                row[0]: row[1]
+                for row in con.execute(
+                    f"SELECT soc2d_code, {money_expr('salary_sa')} FROM salaries_soc WHERE month=?",
+                    [prev_month],
+                ).fetchall()
+            }
+            data = []
+            for code, name, salary in rows:
+                prev_salary = prev_map.get(code)
+                data.append(
+                    {
+                        "code": code,
+                        "name": name,
+                        "salary": salary,
+                        "prev_salary": prev_salary,
+                        "yoy_change": pct_change(salary, prev_salary),
+                    }
+                )
+            return {"month": latest_month, "prev_month": prev_month, "data": data}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.get("/api/salaries/state")
+def salaries_state():
+    """Latest salaries by state with prev-month change."""
+    try:
+        with get_con() as con:
+            latest_month = con.execute("SELECT MAX(month) FROM salaries_state").fetchone()[0]
+            prev_month = con.execute(
+                "SELECT month FROM (SELECT DISTINCT month FROM salaries_state ORDER BY month DESC LIMIT 2) ORDER BY month LIMIT 1"
+            ).fetchone()[0]
+            rows = con.execute(
+                f"SELECT state, {money_expr('salary_sa')} AS salary FROM salaries_state WHERE month=?",
+                [latest_month],
+            ).fetchall()
+            prev_map = {
+                row[0]: row[1]
+                for row in con.execute(
+                    f"SELECT state, {money_expr('salary_sa')} FROM salaries_state WHERE month=?",
+                    [prev_month],
+                ).fetchall()
+            }
+            data = []
+            for state, salary in rows:
+                prev_salary = prev_map.get(state)
+                data.append(
+                    {
+                        "state": state,
+                        "salary": salary,
+                        "yoy_change": pct_change(salary, prev_salary),
+                    }
+                )
+            return {"month": latest_month, "prev_month": prev_month, "data": data}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.get("/api/hiring-quadrant")
+def hiring_quadrant():
+    """Return hiring vs attrition per sector for the latest month."""
+    try:
+        with get_con() as con:
+            latest_month = con.execute("SELECT MAX(month) FROM hiring_and_attrition_by_sector").fetchone()[0]
+            rows = con.execute(
+                """
+                SELECT naics2d_code, TRY_CAST(rl_hiring_rate AS DOUBLE), TRY_CAST(rl_attrition_rate AS DOUBLE)
+                FROM hiring_and_attrition_by_sector WHERE month=?
+                """,
+                [latest_month],
+            ).fetchall()
+            data = []
+            for code, hiring_rate, attrition_rate in rows:
+                data.append(
+                    {
+                        "code": code,
+                        "name": NAICS_NAMES.get(code, code),
+                        "hiring_rate": hiring_rate,
+                        "attrition_rate": attrition_rate,
+                        "quadrant": classify_quadrant(hiring_rate, attrition_rate),
+                    }
+                )
+            return {"month": latest_month, "sectors": data}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.get("/api/layoffs-summary")
+def layoffs_summary():
+    """Total layoffs series + top sectors for latest month."""
+    try:
+        with get_con() as con:
+            series_rows = con.execute(
+                "SELECT month, TRY_CAST(num_employees_laidoff AS DOUBLE) FROM total_layoffs ORDER BY month"
+            ).fetchall()
+            latest_month = series_rows[-1][0] if series_rows else None
+            sector_rows = con.execute(
+                "SELECT naics2d, TRY_CAST(num_employees_laidoff AS DOUBLE) FROM layoffs_by_naics WHERE month=? ORDER BY TRY_CAST(num_employees_laidoff AS DOUBLE) DESC",
+                [latest_month],
+            ).fetchall()
+            series = [{"month": m, "employees_laidoff": v} for m, v in series_rows]
+            sectors = [
+                {"code": code, "name": NAICS_NAMES.get(code, code), "employees_laidoff": val}
+                for code, val in sector_rows
+            ]
+            return {"month": latest_month, "series": series, "sectors": sectors}
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=str(exc))
+
+
+@app.get("/api/summary")
+def summary():
+    """Aggregate a small summary used by the dashboard header."""
+    try:
+        with get_con() as con:
+            emp_rows = con.execute(
+                "SELECT month, TRY_CAST(employment_sa AS DOUBLE) FROM employment_national ORDER BY month DESC LIMIT 2"
+            ).fetchall()
+            hiring_row = con.execute(
+                "SELECT month, TRY_CAST(rl_hiring_rate AS DOUBLE), TRY_CAST(rl_attrition_rate AS DOUBLE) FROM hiring_and_attrition_total_us ORDER BY month DESC LIMIT 1"
+            ).fetchone()
+            layoffs_rows = con.execute(
+                "SELECT month, TRY_CAST(num_employees_laidoff AS DOUBLE) FROM total_layoffs ORDER BY month DESC LIMIT 2"
+            ).fetchall()
+
+            latest_emp = emp_rows[0] if emp_rows else (None, None)
+            prev_emp = emp_rows[1] if len(emp_rows) > 1 else (None, None)
+            employment_change = None
+            if latest_emp[1] is not None and prev_emp[1] is not None:
+                employment_change = latest_emp[1] - prev_emp[1]
+
+            hiring_rate = hiring_row[1] if hiring_row else None
+            attrition_rate = hiring_row[2] if hiring_row else None
+            layoff_latest = layoffs_rows[0][1] if layoffs_rows else None
+            layoff_prev = layoffs_rows[1][1] if len(layoffs_rows) > 1 else None
+
+            health_idx = calculate_health_index(
+                employment_growth=pct_change(latest_emp[1], prev_emp[1]),
+                hiring_rate=hiring_rate,
+                attrition_rate=attrition_rate,
+                layoff_change=pct_change(layoff_latest, layoff_prev),
+            )
+
+            health_trend = "stable"
+            if employment_change is not None:
+                if employment_change > 50000:
+                    health_trend = "improving"
+                elif employment_change < -50000:
+                    health_trend = "declining"
+
+            return {
+                "updated_at": DB_PATH.stat().st_mtime if DB_PATH.exists() else None,
+                "data_month": latest_emp[0] or (hiring_row[0] if hiring_row else None),
+                "health_index": health_idx,
+                "health_trend": health_trend,
+                "headline_metrics": {
+                    "total_employment": latest_emp[1],
+                    "employment_change": employment_change or 0,
+                    "hiring_rate": hiring_rate,
+                    "attrition_rate": attrition_rate,
+                    "latest_layoffs": layoff_latest,
+                },
+            }
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))
 

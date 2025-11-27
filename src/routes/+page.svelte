@@ -1,12 +1,20 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { loadAllData, isLoading, error, summary } from '$lib/stores/data';
+	import {
+		loadAllData,
+		isLoading,
+		error,
+		summary,
+		healthIndex,
+		healthTrend,
+		dataMonth
+	} from '$lib/stores/data';
 	import { formatNumber, formatPercent, formatMonth } from '$lib/utils/format';
 	import HealthIndex from '$lib/components/HealthIndex.svelte';
-	import SalaryCheck from '$lib/components/SalaryCheck.svelte';
-	import SectorSpotlight from '$lib/components/SectorSpotlight.svelte';
 	import LayoffTicker from '$lib/components/LayoffTicker.svelte';
+	import SectorSpotlight from '$lib/components/SectorSpotlight.svelte';
 	import HiringQuadrant from '$lib/components/HiringQuadrant.svelte';
+	import SalaryCheck from '$lib/components/SalaryCheck.svelte';
 
 	onMount(() => {
 		loadAllData();
@@ -14,100 +22,86 @@
 </script>
 
 <svelte:head>
-	<title>RPLS Dashboard - Labor Market Intelligence</title>
-	<meta name="description" content="Real-time labor market intelligence powered by Revelio Labs data. Track employment, salaries, hiring trends, and layoffs across the US economy." />
+	<title>RPLS Dashboard - Labor Market Pulse</title>
+	<meta name="description" content="Real-time labor market intelligence powered by Revelio Labs Public Labor Statistics." />
 </svelte:head>
 
-{#if $isLoading}
-	<div class="flex items-center justify-center min-h-96">
-		<div class="text-center">
-			<div class="w-12 h-12 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
-			<p class="text-gray-600">Loading labor market data...</p>
-		</div>
-	</div>
-{:else if $error}
-	<div class="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-		<svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-		</svg>
-		<h3 class="text-lg font-medium text-red-800 mb-2">Unable to Load Data</h3>
-		<p class="text-red-600">{$error}</p>
-		<button on:click={() => loadAllData()} class="btn btn-primary mt-4">
-			Try Again
-		</button>
-	</div>
-{:else}
-	<!-- Page Header -->
-	<div class="mb-8">
-		<h1 class="text-3xl font-bold text-gray-900">Labor Market Pulse</h1>
-		<p class="text-gray-600 mt-1">
-			Real-time insights into US labor market conditions
-			{#if $summary?.data_month}
-				<span class="text-gray-400">| Data as of {formatMonth($summary.data_month)}</span>
+<div class="min-h-screen bg-stone-50">
+	<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+		<!-- Hero -->
+		<section id="dashboard" class="space-y-4">
+			<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+				<div>
+					<p class="text-xs font-semibold text-stone-500 uppercase tracking-widest">Labor Market Pulse</p>
+					<h1 class="text-4xl md:text-5xl font-extrabold text-stone-900 leading-tight">US Jobs Dashboard</h1>
+					<p class="text-stone-600 mt-2">
+						Signals from employment, postings, hiring, attrition, salaries, and WARN layoffs.
+						{#if $dataMonth}
+							<span class="text-stone-400"> Data as of {formatMonth($dataMonth)}</span>
+						{/if}
+					</p>
+				</div>
+				<div class="text-right">
+					<div class="text-xs font-bold text-stone-400 uppercase tracking-widest mb-1">System Status</div>
+					<div class="flex items-center justify-end gap-2">
+						<span class="w-2 h-2 rounded-full bg-green-500"></span>
+						<span class="text-stone-900 font-semibold text-sm">Live</span>
+					</div>
+				</div>
+			</div>
+
+			{#if $isLoading}
+				<div class="bg-white border border-stone-200 rounded-xl p-6 shadow-sm">
+					<p class="text-stone-500">Loading labor market data…</p>
+				</div>
+			{:else if $error}
+				<div class="bg-red-50 border border-red-200 text-red-800 rounded-xl p-6 shadow-sm">
+					<p>{$error}</p>
+					<button class="mt-4 px-4 py-2 bg-red-600 text-white rounded" on:click={loadAllData}>Retry</button>
+				</div>
+			{:else}
+				<!-- Headline metrics -->
+				{#if $summary?.headline_metrics}
+					<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+						<div class="bg-white border border-stone-200 rounded-xl p-4 shadow-sm">
+							<div class="text-xs uppercase text-stone-500 font-semibold">Total Employment</div>
+							<div class="text-2xl font-bold text-stone-900 mt-1">{formatNumber($summary.headline_metrics.total_employment)}</div>
+						</div>
+						<div class="bg-white border border-stone-200 rounded-xl p-4 shadow-sm">
+							<div class="text-xs uppercase text-stone-500 font-semibold">Hiring Rate</div>
+							<div class="text-2xl font-bold text-green-700 mt-1">{formatPercent($summary.headline_metrics.hiring_rate)}</div>
+						</div>
+						<div class="bg-white border border-stone-200 rounded-xl p-4 shadow-sm">
+							<div class="text-xs uppercase text-stone-500 font-semibold">Attrition Rate</div>
+							<div class="text-2xl font-bold text-amber-700 mt-1">{formatPercent($summary.headline_metrics.attrition_rate)}</div>
+						</div>
+						<div class="bg-white border border-stone-200 rounded-xl p-4 shadow-sm">
+							<div class="text-xs uppercase text-stone-500 font-semibold">Latest Layoffs</div>
+							<div class="text-2xl font-bold text-red-700 mt-1">{formatNumber($summary.headline_metrics.latest_layoffs)}</div>
+						</div>
+					</div>
+				{/if}
 			{/if}
-		</p>
+		</section>
+
+		<!-- Core visuals -->
+		<section class="grid grid-cols-1 lg:grid-cols-2 gap-6" id="sectors">
+			<HealthIndex />
+			<LayoffTicker />
+		</section>
+
+		<section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+			<SectorSpotlight />
+			<HiringQuadrant />
+		</section>
+
+		<!-- Salary Comparison -->
+		<section id="salary">
+			<SalaryCheck />
+		</section>
+
+		<section id="about" class="bg-blue-50 border border-blue-100 rounded-xl p-4 text-center text-sm text-blue-800">
+			Data from Revelio Labs Public Labor Statistics. Updated monthly. API base: http://127.0.0.1:9055
+		</section>
 	</div>
-
-	<!-- Quick Stats Bar -->
-	{#if $summary?.headline_metrics}
-		<div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-			<div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-				<div class="metric-label">Total Employment</div>
-				<div class="text-2xl font-bold text-gray-900">
-					{formatNumber($summary.headline_metrics.total_employment)}
-				</div>
-			</div>
-			<div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-				<div class="metric-label">Hiring Rate</div>
-				<div class="text-2xl font-bold text-green-600">
-					{formatPercent($summary.headline_metrics.hiring_rate)}
-				</div>
-			</div>
-			<div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-				<div class="metric-label">Attrition Rate</div>
-				<div class="text-2xl font-bold text-amber-600">
-					{formatPercent($summary.headline_metrics.attrition_rate)}
-				</div>
-			</div>
-			<div class="bg-white rounded-lg p-4 shadow-sm border border-gray-100">
-				<div class="metric-label">Recent Layoffs</div>
-				<div class="text-2xl font-bold text-red-600">
-					{formatNumber($summary.headline_metrics.latest_layoffs)}
-				</div>
-			</div>
-		</div>
-	{/if}
-
-	<!-- Main Dashboard Grid -->
-	<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-		<!-- Health Index -->
-		<HealthIndex />
-
-		<!-- Layoff Alert -->
-		<LayoffTicker />
-	</div>
-
-	<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-		<!-- Sector Spotlight -->
-		<SectorSpotlight />
-
-		<!-- Hiring vs Attrition Quadrant -->
-		<HiringQuadrant />
-	</div>
-
-	<!-- Full Width Salary Check -->
-	<div class="mb-6">
-		<SalaryCheck />
-	</div>
-
-	<!-- Data Source Attribution -->
-	<div class="bg-blue-50 border border-blue-100 rounded-lg p-4 text-center">
-		<p class="text-sm text-blue-700">
-			<strong>Open Source Labor Market Data</strong> - This dashboard uses
-			<a href="https://www.reveliolabs.com/product/rpls/" target="_blank" rel="noopener" class="underline">
-				Revelio Labs Public Labor Statistics
-			</a>
-			covering 100M+ US workforce profiles. Data is updated monthly.
-		</p>
-	</div>
-{/if}
+</div>
