@@ -1,0 +1,94 @@
+openapi: 3.0.0
+info:
+  title: RPLS Labor Data API (Supabase)
+  version: 1.0.0
+  description: Auto-generated PostgREST API for Labor Market Data.
+
+servers:
+  - url: https://{project}.supabase.co/rest/v1
+    description: Production Supabase API
+
+components:
+  securitySchemes:
+    apikey:
+      type: apiKey
+      name: apikey
+      in: header
+    bearerAuth:
+      type: http
+      scheme: bearer
+
+security:
+  - apikey: []
+  - bearerAuth: []
+
+paths:
+  /fact_layoffs:
+    get:
+      summary: Retrieve Layoff Data
+      parameters:
+        - name: select
+          in: query
+          schema:
+            type: string
+            default: "*"
+        - name: granularity
+          in: query
+          schema:
+            type: string
+            enum: [total, sector, state]
+        - name: date
+          in: query
+          schema:
+            type: string
+            format: date-time
+      responses:
+        '200':
+          description: List of layoffs
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/LayoffFact'
+
+  /dim_sectors:
+    get:
+      summary: Retrieve Sectors
+      responses:
+        '200':
+          description: List of sectors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/SectorDim'
+
+components:
+  schemas:
+    LayoffFact:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        date:
+          type: string
+          format: date
+        sector_id:
+          type: string
+        employees_laidoff:
+          type: integer
+        granularity:
+          type: string
+
+    SectorDim:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string

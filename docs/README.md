@@ -5,6 +5,7 @@ This repo keeps specs under `docs/`. There is no `.spec` folder; use the files b
 - `docs/spec.md` – product epics/scope (RPLS dashboard slices).
 - `docs/TECHNICAL_SPECS.md` – legacy Svelte tech notes.
 - `docs/DATA_ARCHITECTURE.md` – canonical RPLS data tables and dimensions.
+- `.spec/` – spec-driven files (constitution, PRD, plan, tasks, AI architecture, design system) under `.spec/v1/*.md`.
 
 ## Source of Truth (current stack)
 - Data: `rpls_data/` CSVs → `backend/etl.py` builds `backend/rpls.duckdb`.
