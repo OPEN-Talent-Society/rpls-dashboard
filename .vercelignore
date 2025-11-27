@@ -9,6 +9,11 @@ dist
 .env.local
 .env.vercel
 .env.production
-package-lock.json
-pnpm-lock.yaml
-yarn.lock
+rpls_data
+rpls_data_extracted
+screenshots
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.csv
