@@ -53,6 +53,7 @@ function makeBuilder(table: string): Builder {
 }
 
 vi.mock('$lib/supabase', () => ({
+	hasSupabaseEnv: true,
 	supabase: {
 		from: (table: string) => makeBuilder(table)
 	}
