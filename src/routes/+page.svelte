@@ -19,6 +19,7 @@
 		spotlight
 	} from '$lib/stores/data';
 	import { filters, serializeFilters, parseFilters, updateFilters } from '$lib/stores/filters';
+	import DataDebugPanel from '$lib/components/DataDebugPanel.svelte';
 
 	let initialized = false;
 
@@ -123,6 +124,8 @@
 			<HiringQuadrant />
 			<SalaryCheck />
 		</section>
+
+		<DataDebugPanel />
 
 		<section id="about" class="bg-stone-100 rounded-xl p-4 text-center text-sm text-stone-500">
 			Data provided by Revelio Labs. Powered by Open Talent Society.
