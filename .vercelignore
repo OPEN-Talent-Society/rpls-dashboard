@@ -1,4 +1,5 @@
 node_modules
+.pnp.*
 .svelte-kit
 .vercel
 build
@@ -11,6 +12,9 @@ dist
 .env.production
 rpls_data/**
 rpls_data_extracted/**
+backend/**
+frontend/**
+*.duckdb
 screenshots/**
 *.zip
 *.tar
