@@ -1,0 +1,14 @@
+node_modules
+.svelte-kit
+.vercel
+build
+dist
+.git
+.gitignore
+.env
+.env.local
+.env.vercel
+.env.production
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
