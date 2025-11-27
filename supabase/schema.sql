@@ -20,6 +20,7 @@ create table if not exists dim_occupations (
 -- States
 create table if not exists dim_states (
     id text primary key, -- State Name (e.g., 'Alabama') or Abbreviation if available
+    name text,
     abbreviation text
 );
 
