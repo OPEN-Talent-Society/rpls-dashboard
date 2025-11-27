@@ -33,7 +33,9 @@
 		<div>Dims: sectors {$status.dim_counts?.sectors}, occ {$status.dim_counts?.occupations}, states {$status.dim_counts?.states}</div>
 		<div>Employment latest: {$status.facts?.employment_latest}</div>
 		<div>Layoffs latest: {$status.facts?.layoffs_latest}</div>
+		<div class="text-[10px] text-gray-500">Env: {hasSupabaseEnv ? 'yes' : 'no'}</div>
 	{:else}
 		<div class="text-red-700">{$status.error}</div>
+		<div class="text-[10px] text-gray-500">Env: {hasSupabaseEnv ? 'yes' : 'no'}</div>
 	{/if}
 </div>
