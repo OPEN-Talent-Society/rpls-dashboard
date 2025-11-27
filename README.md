@@ -98,11 +98,8 @@ Visit `http://localhost:5173` to see the platform in action.
 
 ## 🛡️ Spec-Driven Development
 This project follows **Spec-Driven Development (SDD)**.
-- **`.spec/constitution.md`**: Core architectural rules.
-- **`.spec/v1/prd.md`**: Product requirements.
-- **`.spec/v1/openapi.yaml`**: API Contracts.
-- Additional spec files: `.spec/v1/plan.md`, `.spec/v1/tasks.md`, `.spec/v1/ai_architecture.md`, `.spec/v1/design_system.md`.
-- Legacy docs (for reference): `docs/spec.md`, `docs/TECHNICAL_SPECS.md`, `docs/DATA_ARCHITECTURE.md`. Prefer `.spec/` as the source of truth.
+- **Source of truth:** `.spec/constitution.md`, `.spec/v1/prd.md`, `.spec/v1/plan.md`, `.spec/v1/tasks.md`, `.spec/v1/ai_architecture.md`, `.spec/v1/design_system.md`, `.spec/v1/openapi.yaml`.
+- Legacy docs have been moved to `docs_legacy/` for reference only.
 
 Always update the specs *before* writing code.
 
