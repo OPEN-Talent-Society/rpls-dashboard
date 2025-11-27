@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store';
-import { supabase } from '$lib/supabase';
+import { supabase, hasSupabaseEnv } from '$lib/supabase';
 import type { FilterState } from './filters';
 import type {
 	Summary,
@@ -74,6 +74,9 @@ export async function loadAllData(filterState: FilterState = {}) {
 	error.set(null);
 
 	try {
+		if (!hasSupabaseEnv) {
+			throw new Error('Supabase is not configured. Please set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.');
+		}
 		const dateFilter = (query: any, field = 'date') => {
 			if (filterState.startMonth) {
 				query = query.gte(field, `${filterState.startMonth}-01`);
