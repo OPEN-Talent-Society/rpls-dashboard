@@ -8,10 +8,10 @@ We strictly separate **Data Retrieval** from **Content Generation**.
 ## 2. Tech Stack
 - **Framework:** Vercel AI SDK Core (`ai`).
 - **Models:** 
-  - `google/gemini-2.5-flash-lite`: For Query Translation (Text -> JSON) and fast UI interactions.
-  - `google/gemini-1.5-flash`: For standard RAG (Summarizing retrieved rows).
-  - `google/gemini-1.5-pro`: For deep analysis reports (Background jobs).
-- **Embeddings:** `text-embedding-004` (via Google) or Supabase `pgvector`.
+  - `gemini-2.5-flash-lite-preview-09-2025`: For Query Translation (Text -> JSON) and fast UI interactions.
+  - `gemini-2.5-flash-preview-09-2025`: For standard RAG (Summarizing retrieved rows).
+  - `gemini-2.5-flash-preview-09-2025` with thinking budget: For deep analysis reports (Background jobs).
+- **Embeddings:** `gemini-embedding-001` (via Google) or Supabase `pgvector`.
 
 ## 3. Integration Patterns
 
@@ -44,4 +44,4 @@ We strictly separate **Data Retrieval** from **Content Generation**.
 
 ## 5. Cost Optimization
 - **Cache:** Cache AI responses for identical queries (e.g., "Summary of Tech Sector 2023" is static for the month).
-- **Tiered Usage:** Default to `Flash Lite`. Only use `Pro` for exportable PDF reports.
+- **Tiered Usage:** Default to `Flash Lite` and `Flash` models. 
