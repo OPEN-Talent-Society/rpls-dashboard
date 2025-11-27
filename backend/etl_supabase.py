@@ -19,6 +19,7 @@ from typing import Sequence
 
 import duckdb
 import pandas as pd
+import numpy as np
 from dotenv import load_dotenv
 from supabase import Client, create_client
 
@@ -51,8 +52,21 @@ def upsert(table: str, columns: Sequence[str], rows: Sequence[Sequence]) -> None
     if not rows:
         print(f"Skip {table}: no rows")
         return
-    df = pd.DataFrame(rows, columns=columns)
-    payload = df.to_dict(orient="records")
+
+    def _sanitize(val):
+        if isinstance(val, str) and val.lower() in {"nan", "inf", "-inf", "infinity", "-infinity"}:
+            return None
+        if isinstance(val, float) and (np.isnan(val) or np.isinf(val)):
+            return None
+        return val
+
+    payload = []
+    for row in rows:
+        clean = {}
+        for col, val in zip(columns, row):
+            sval = _sanitize(val)
+            clean[col] = sval
+        payload.append(clean)
     chunk = 1000
     for i in range(0, len(payload), chunk):
         batch = payload[i : i + chunk]
@@ -71,30 +85,62 @@ def run_etl():
     # Dimensions
     sectors = con.execute(
         f"""
-        SELECT DISTINCT naics2d_code AS id, naics2d_name AS name
-        FROM read_csv_auto('{DATA_DIR/'employment_naics.csv'}', all_varchar=True)
-        WHERE naics2d_code!='00'
+        WITH base AS (
+          SELECT naics2d_code AS code, naics2d_name AS name FROM read_csv_auto('{DATA_DIR/'employment_naics.csv'}', all_varchar=True)
+          UNION ALL
+          SELECT naics2d_code, naics2d_name FROM read_csv_auto('{DATA_DIR/'salaries_naics.csv'}', all_varchar=True)
+        ),
+        codes AS (
+          SELECT DISTINCT code FROM base
+          UNION
+          SELECT DISTINCT naics2d AS code FROM read_csv_auto('{DATA_DIR/'layoffs_by_naics.csv'}', all_varchar=True)
+          UNION
+          SELECT DISTINCT naics2d_code AS code FROM read_csv_auto('{DATA_DIR/'postings_by_sector.csv'}', all_varchar=True)
+        )
+        SELECT c.code AS id, COALESCE(MAX(b.name), c.code) AS name
+        FROM codes c
+        LEFT JOIN base b ON c.code=b.code
+        WHERE c.code IS NOT NULL AND c.code!=''
+        GROUP BY c.code
         """
     ).fetchall()
     upsert("dim_sectors", ["id", "name"], sectors)
 
     occupations = con.execute(
         f"""
-        SELECT DISTINCT soc2d_code AS id, soc2d_name AS name
-        FROM read_csv_auto('{DATA_DIR/'employment_soc.csv'}', all_varchar=True)
-        WHERE soc2d_code!='0'
+        WITH base AS (
+          SELECT soc2d_code AS code, soc2d_name AS name FROM read_csv_auto('{DATA_DIR/'employment_soc.csv'}', all_varchar=True)
+          UNION ALL
+          SELECT soc2d_code, soc2d_name FROM read_csv_auto('{DATA_DIR/'salaries_soc.csv'}', all_varchar=True)
+        ),
+        codes AS (
+          SELECT DISTINCT code FROM base
+          UNION
+          SELECT DISTINCT soc2d_code AS code FROM read_csv_auto('{DATA_DIR/'postings_by_occupation.csv'}', all_varchar=True)
+        )
+        SELECT c.code AS id, COALESCE(MAX(b.name), c.code) AS name
+        FROM codes c
+        LEFT JOIN base b ON c.code=b.code
+        WHERE c.code IS NOT NULL AND c.code!=''
+        GROUP BY c.code
         """
     ).fetchall()
     upsert("dim_occupations", ["id", "name"], occupations)
 
     states = con.execute(
         f"""
-        SELECT DISTINCT state AS id, state AS name
-        FROM read_csv_auto('{DATA_DIR/'employment_state.csv'}', all_varchar=True)
-        WHERE state IS NOT NULL AND state!=''
+        WITH base AS (
+          SELECT state FROM read_csv_auto('{DATA_DIR/'employment_state.csv'}', all_varchar=True)
+          UNION ALL SELECT state FROM read_csv_auto('{DATA_DIR/'salaries_state.csv'}', all_varchar=True)
+          UNION ALL SELECT state FROM read_csv_auto('{DATA_DIR/'layoffs_by_state.csv'}', all_varchar=True)
+          UNION ALL SELECT state FROM read_csv_auto('{DATA_DIR/'postings_by_state.csv'}', all_varchar=True)
+        )
+        SELECT DISTINCT COALESCE(NULLIF(state,''),'empty') AS id
+        FROM base
+        WHERE state IS NOT NULL
         """
     ).fetchall()
-    upsert("dim_states", ["id", "name"], states)
+    upsert("dim_states", ["id"], states)
 
     # Layoffs
     layoffs = con.execute(
