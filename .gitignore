@@ -13,3 +13,4 @@ dist
 /frontend/.vite
 .svelte-kit
 build
+.env*.local
