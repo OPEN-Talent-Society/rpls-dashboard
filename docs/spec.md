@@ -34,10 +34,10 @@ tags:
 ## 3. Release Slices
 | Slice | Target Users | Scope | Acceptance Criteria | Metrics | Owner |
 | --- | --- | --- | --- | --- | --- |
-| Foundation | Internal | ETL all CSVs → DuckDB; canonical schema; `/datasets` | All tables present; ingest metadata exposed | 100% CSV coverage | Codex |
-| Core UI | TA/HR/Econ | `/search`, `/query`, `/top-movers`; 3 visuals; banner | Queries correct deltas; visuals load <1s; banner shows version | p95 <1s common queries | Codex |
-| Depth | Power users | SOC/NAICS drilldowns; comparison | SOC/NAICS views correct; comparisons work | Spot checks | Codex |
-| Assist | Content/TA | Gemini summaries with citations/version | Outputs <=3 sentences citing numbers; version shown | Manual QA | Codex |
+| Foundation | Internal | ETL all CSVs → DuckDB (`rpls_data/` canonical); `/datasets` manifest | All tables present; ingest metadata exposed (rowcount, min/max month, ingested_at) | 100% CSV coverage | Codex |
+| Core UI | TA/HR/Econ | `/search`, `/query`, `/top-movers`; hero movers strip + dual-line hiring/attrition; Spotlight/Pulse with history; state postings/layoffs heatmaps; table/export; version banner | Queries correct; visuals load <1s; banner shows version; heatmaps/top-bottom lists render | p95 <1s common queries | Codex |
+| Depth | Power users | SOC/NAICS drilldowns; comparison view; legends/tooltips | SOC/NAICS views correct; comparisons work; legends consistent | Spot checks | Codex |
+| Assist | Content/TA | Gemini summaries with citations/version; guardrails | Outputs ≤3 sentences citing numbers; version shown; prompt pinned | Manual QA | Codex |
 
 ## 4. Delivery Plan
 - Dependencies: DuckDB/SQLite; pandas for ETL; Recharts; simple SVG map; Gemini server-side proxy.
@@ -52,14 +52,22 @@ tags:
 | Performance slow | Med | Med | Precompute deltas, cache warmup | p95 >1s | Codex |
 | Adoption (trust) | Med | Med | Version/banner, caveats, numeric citations | User feedback | Codex |
 
-## 6. Open Questions & Follow-Ups
+## 6. Current Gaps (must-close next)
+- Search: `/api/search` is basic; UI search bar must drive filters across Spotlight/Pulse/Momentum.
+- Charts: add full dual-axis hiring vs attrition chart with legend/axes (national + filter); keep mini charts as summary.
+- Geography: state postings/layoffs choropleth + top/bottom lists.
+- Table/export: add paged table and copy/export with version/footer from `/api/datasets`.
+- UX polish: consistent skeleton/empty/error states on Spotlight/Pulse/Momentum/Layoffs; legends for micro-bars/deltas; clarify color semantics (teal/blue/coral; amber warnings).
+- Data hygiene: canonical data dir is `rpls_data/`; `revelio-data/` is a duplicate and unused.
+
+## 7. Open Questions & Follow-Ups
 - [ ] Auth/multi-tenant needed later? (assumed no)
 - [ ] Export formats beyond copy/PNG? (assumed no)
 
-## 7. Recommendation
+## 8. Recommendation
 - Proceed with DuckDB, canonical schema, minimal strong visuals, then depth and Gemini assist.
 
-## 8. Next Steps
+## 9. Next Steps
 1. Phase 1: ETL all CSVs → DuckDB + `/datasets`.
 2. Phase 2: `/search` + `/query` + `/top-movers`.
 3. Phase 3: Core visuals + banner + top-movers strip.

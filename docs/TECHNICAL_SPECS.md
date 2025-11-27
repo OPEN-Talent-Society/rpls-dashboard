@@ -2,7 +2,9 @@
 
 ## Tech Stack Decision
 
-### Recommended Stack: **SvelteKit + Tailwind + Vercel**
+Current implementation: **FastAPI (DuckDB) + React/Vite + Tailwind** for local/on-prem. Earlier Svelte sketches remain in the repo; React is the active frontend.
+
+### Recommended Stack (for hosted): **SvelteKit + Tailwind + Vercel**
 
 | Layer | Technology | Rationale |
 |-------|------------|-----------|

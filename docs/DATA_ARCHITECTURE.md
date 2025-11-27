@@ -4,6 +4,8 @@
 
 This document defines the data architecture for the Open Talent Society RPLS Dashboard platform, built on Revelio Labs Public Labor Statistics data.
 
+**Canonical raw source directory:** `rpls_data/` at repo root. A duplicate (`revelio-data/`) exists from earlier experiments—do not use it for ETL.
+
 ---
 
 ## 1. Data Source Inventory
