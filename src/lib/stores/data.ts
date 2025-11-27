@@ -128,17 +128,29 @@ export async function loadAllData(filterState: FilterState = {}) {
 		const prevLay = layRows[1];
 
 		const dataMonthVal = latestEmp?.date?.slice(0, 7) ?? latestHire?.date?.slice(0, 7) ?? '';
+		const hiringRate = latestHire?.hiring_rate_sa ?? 0;
+		const attritionRate = latestHire?.attrition_rate_sa ?? 0;
+		const layoffsVal = latestLay?.employees_laidoff ?? 0;
+		const empDelta = latestEmp && prevEmp ? (latestEmp.employment_sa ?? 0) - (prevEmp.employment_sa ?? 0) : 0;
+
+		const healthScore = Math.max(
+			0,
+			Math.min(
+				100,
+				50 + (hiringRate - attritionRate) * 200 - Math.min(layoffsVal / 50000, 20) + Math.min(empDelta, 1_000_000) / 1_000_000 * 10
+			)
+		);
 
 		summary.set({
 			updated_at: Date.now(),
 			data_month: dataMonthVal,
-			health_index: 50,
-			health_trend: 'stable',
+			health_index: Math.round(healthScore),
+			health_trend: healthScore > 55 ? 'improving' : healthScore < 45 ? 'declining' : 'stable',
 			headline_metrics: {
 				total_employment: latestEmp?.employment_sa ?? null,
-				employment_change: latestEmp && prevEmp ? (latestEmp.employment_sa ?? 0) - (prevEmp.employment_sa ?? 0) : 0,
-				hiring_rate: latestHire?.hiring_rate_sa ?? null,
-				attrition_rate: latestHire?.attrition_rate_sa ?? null,
+				employment_change: empDelta,
+				hiring_rate: hiringRate || null,
+				attrition_rate: attritionRate || null,
 				latest_layoffs: latestLay?.employees_laidoff ?? null
 			}
 		});
@@ -247,15 +259,26 @@ export async function loadAllData(filterState: FilterState = {}) {
 		hireSectQuery = dateFilter(hireSectQuery);
 		const { data: hireSect } = await hireSectQuery;
 		const hLatest = hireSect?.[0]?.date;
+		const classifyQuadrant = (h: number, a: number) => {
+			if (h >= 0.3 && a <= 0.25) return 'growth' as const;
+			if (h >= 0.3 && a > 0.25) return 'churn_burn' as const;
+			if (h < 0.3 && a <= 0.25) return 'stagnant' as const;
+			return 'decline' as const;
+		};
+
 		const sectors = (hireSect ?? [])
 			.filter((r) => r.date === hLatest)
-			.map((r) => ({
-				code: r.sector_id,
-				name: sectorName.get(r.sector_id) ?? r.sector_id,
-				hiring_rate: r.hiring_rate_sa ?? 0,
-				attrition_rate: r.attrition_rate_sa ?? 0,
-				quadrant: 'stagnant' as const
-			}));
+			.map((r) => {
+				const h = r.hiring_rate_sa ?? 0;
+				const a = r.attrition_rate_sa ?? 0;
+				return {
+					code: r.sector_id,
+					name: sectorName.get(r.sector_id) ?? r.sector_id,
+					hiring_rate: h,
+					attrition_rate: a,
+					quadrant: classifyQuadrant(h, a)
+				};
+			});
 		hiringAttrition.set({ month: hLatest ?? '', sectors });
 
 		// Layoffs series + sectors
@@ -284,8 +307,11 @@ export async function loadAllData(filterState: FilterState = {}) {
 				name: sectorName.get(r.sector_id) ?? r.sector_id,
 				employees_laidoff: r.employees_laidoff ?? 0
 			}));
+		const laySeriesSorted = (laySeries ?? [])
+			.sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
+			.filter((r, idx, arr) => arr.findIndex((x) => x.date === r.date) === idx);
 		layoffs.set(
-			(laySeries ?? []).map((r) => ({
+			laySeriesSorted.map((r) => ({
 				month: r.date?.slice(0, 7) ?? '',
 				employees_notified: null,
 				notices_issued: null,
