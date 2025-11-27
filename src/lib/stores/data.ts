@@ -77,6 +77,20 @@ export async function loadAllData(filterState: FilterState = {}) {
 		if (!hasSupabaseEnv) {
 			throw new Error('Supabase is not configured. Please set PUBLIC_SUPABASE_URL and PUBLIC_SUPABASE_ANON_KEY.');
 		}
+
+		// dimension lookups
+		const [{ data: sectorDim }, { data: occDim }, { data: stateDim }] = await Promise.all([
+			supabase.from('dim_sectors').select('id, name'),
+			supabase.from('dim_occupations').select('id, name'),
+			supabase.from('dim_states').select('id, name')
+		]);
+		const sectorName = new Map<string, string>();
+		const occName = new Map<string, string>();
+		const stateName = new Map<string, string>();
+		(sectorDim ?? []).forEach((s) => sectorName.set(s.id, s.name ?? s.id));
+		(occDim ?? []).forEach((o) => occName.set(o.id, o.name ?? o.id));
+		(stateDim ?? []).forEach((s) => stateName.set(s.id, s.name ?? s.id));
+
 		const dateFilter = (query: any, field = 'date') => {
 			if (filterState.startMonth) {
 				query = query.gte(field, `${filterState.startMonth}-01`);
@@ -142,6 +156,7 @@ export async function loadAllData(filterState: FilterState = {}) {
 			const prevVal = prevMap.get(id) ?? null;
 			movers.push({
 				dimension: id,
+				sector: sectorName.get(id) ?? id,
 				value: val,
 				prev_value: prevVal,
 				pct_change: pctChange(val, prevVal),
@@ -178,7 +193,7 @@ export async function loadAllData(filterState: FilterState = {}) {
 		for (const [code, vals] of occMap.entries()) {
 			occList.push({
 				code,
-				name: code,
+				name: occName.get(code) ?? code,
 				salary: vals.curr,
 				prev_year_salary: vals.prev,
 				yoy_change: pctChange(vals.curr, vals.prev) ?? 0
@@ -201,11 +216,12 @@ export async function loadAllData(filterState: FilterState = {}) {
 		const stateMap: Record<string, { salary: number | null; yoy_change: number | null }> = {};
 		(salState ?? []).forEach((r) => {
 			const curr = r.date === stateLatest;
-			if (!stateMap[r.state_id]) {
-				stateMap[r.state_id] = { salary: null, yoy_change: null };
+			const key = stateName.get(r.state_id) ?? r.state_id;
+			if (!stateMap[key]) {
+				stateMap[key] = { salary: null, yoy_change: null };
 			}
-			if (curr) stateMap[r.state_id].salary = r.salary_sa;
-			else if (r.date === statePrev) stateMap[r.state_id].yoy_change = pctChange(stateMap[r.state_id].salary, r.salary_sa);
+			if (curr) stateMap[key].salary = r.salary_sa;
+			else if (r.date === statePrev) stateMap[key].yoy_change = pctChange(stateMap[key].salary, r.salary_sa);
 		});
 		salariesByState.set(stateMap);
 
@@ -219,13 +235,15 @@ export async function loadAllData(filterState: FilterState = {}) {
 		hireSectQuery = dateFilter(hireSectQuery);
 		const { data: hireSect } = await hireSectQuery;
 		const hLatest = hireSect?.[0]?.date;
-		const sectors = (hireSect ?? []).filter((r) => r.date === hLatest).map((r) => ({
-			code: r.sector_id,
-			name: r.sector_id,
-			hiring_rate: r.hiring_rate_sa ?? 0,
-			attrition_rate: r.attrition_rate_sa ?? 0,
-			quadrant: 'stagnant' as const
-		}));
+		const sectors = (hireSect ?? [])
+			.filter((r) => r.date === hLatest)
+			.map((r) => ({
+				code: r.sector_id,
+				name: sectorName.get(r.sector_id) ?? r.sector_id,
+				hiring_rate: r.hiring_rate_sa ?? 0,
+				attrition_rate: r.attrition_rate_sa ?? 0,
+				quadrant: 'stagnant' as const
+			}));
 		hiringAttrition.set({ month: hLatest ?? '', sectors });
 
 		// Layoffs series + sectors
@@ -249,7 +267,11 @@ export async function loadAllData(filterState: FilterState = {}) {
 		const layMonth = laySect?.[0]?.date;
 		const laySectors = (laySect ?? [])
 			.filter((r) => r.date === layMonth)
-			.map((r) => ({ code: r.sector_id, name: r.sector_id, employees_laidoff: r.employees_laidoff ?? 0 }));
+			.map((r) => ({
+				code: r.sector_id,
+				name: sectorName.get(r.sector_id) ?? r.sector_id,
+				employees_laidoff: r.employees_laidoff ?? 0
+			}));
 		layoffs.set(
 			(laySeries ?? []).map((r) => ({
 				month: r.date?.slice(0, 7) ?? '',
