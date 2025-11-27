@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
+	import { page } from '$app/stores';
 	import { formatNumber } from '$lib/utils/format';
 	import HealthIndex from '$lib/components/HealthIndex.svelte';
 	import LayoffTicker from '$lib/components/LayoffTicker.svelte';
@@ -16,10 +18,27 @@
 		hiringAttrition,
 		spotlight
 	} from '$lib/stores/data';
+	import { filters, serializeFilters, parseFilters, updateFilters } from '$lib/stores/filters';
+
+	let initialized = false;
 
 	onMount(() => {
-		loadAllData();
+		if (browser) {
+			const parsed = parseFilters(window.location.search);
+			updateFilters(parsed);
+		}
+		initialized = true;
 	});
+
+	$: if (initialized) {
+		loadAllData($filters);
+		if (browser) {
+			const search = serializeFilters($filters);
+			const url = new URL(window.location.href);
+			url.search = search.replace(/^\?/, '');
+			window.history.replaceState({}, '', url.toString());
+		}
+	}
 
 	$: headline = $summary?.headline_metrics;
 </script>
