@@ -7,9 +7,6 @@ const configDir = path.dirname(fileURLToPath(import.meta.url));
 
 export default defineConfig({
 	plugins: [sveltekit()],
-	resolve: {
-		conditions: ['svelte', 'browser']
-	},
 	test: {
 		globals: true,
 		environment: 'jsdom',
