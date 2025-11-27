@@ -78,7 +78,7 @@ def main_validate():
     if not DB_PATH.exists():
         raise SystemExit(f"Missing DB at {DB_PATH}")
 
-    con = duckdb.connect(str(DB_PATH), read_only=True)
+    con = duckdb.connect(str(DB_PATH), read_only=True, config={"threads": 1})
     manifest = validate_tables(con)
     client = TestClient(main.app)
     api_checks = validate_api(client)
