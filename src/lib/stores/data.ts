@@ -36,8 +36,8 @@ export const topSectors = derived(spotlight, ($spotlight) => {
 		name: item.sector ?? item.dimension,
 		current_postings: item.value ?? 0,
 		prev_month_postings: item.prev_value ?? 0,
-		yoy_change: item.pct_change ?? 0,
-		mom_change: item.pct_change ?? 0
+		yoy_change: item.yoy_change ?? null,
+		mom_change: item.pct_change ?? null
 	}));
 });
 
@@ -169,21 +169,32 @@ export async function loadAllData(filterState: FilterState = {}) {
 		const { data: latestSector } = await spotlightQuery;
 		const latestMonth = latestSector?.[0]?.date;
 		const prevMonth = latestSector?.find((r) => r.date !== latestMonth)?.date;
+		const yearAgoMonth =
+			latestMonth && latestMonth.includes('-')
+				? `${String(Number(latestMonth.slice(0, 4)) - 1).padStart(4, '0')}-${latestMonth.slice(5, 7)}`
+				: undefined;
 		const latestMap = new Map<string, number | null>();
 		const prevMap = new Map<string, number | null>();
+		const yearAgoMap = new Map<string, number | null>();
 		(latestSector ?? []).forEach((r) => {
 			if (r.date === latestMonth) latestMap.set(r.sector_id, r.employment_sa);
 			else if (r.date === prevMonth) prevMap.set(r.sector_id, r.employment_sa);
+			else if (r.date === yearAgoMonth) yearAgoMap.set(r.sector_id, r.employment_sa);
 		});
 		const movers: TopMover[] = [];
 		for (const [id, val] of latestMap.entries()) {
 			const prevVal = prevMap.get(id) ?? null;
+			const yearAgoVal = yearAgoMap.get(id) ?? null;
+			const momChange = pctChange(val, prevVal);
+			const yoyChange = pctChange(val, yearAgoVal);
 			movers.push({
 				dimension: id,
 				sector: sectorName.get(id) ?? id,
 				value: val,
 				prev_value: prevVal,
-				pct_change: pctChange(val, prevVal),
+				pct_change: momChange,
+				yoy_change: yoyChange,
+				year_ago_value: yearAgoVal,
 				month: latestMonth,
 				prev_month: prevMonth
 			});
