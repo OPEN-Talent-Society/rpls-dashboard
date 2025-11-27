@@ -194,23 +194,27 @@ export async function loadAllData(filterState: FilterState = {}) {
 		});
 
 		// Spotlight (top/bottom movers by employment sector)
-		// Grab latest month, plus previous and year-ago by fetching ~13 months back to guarantee coverage
-		let spotlightQuery = supabase
+		// Grab distinct recent months to ensure we have latest, previous, and year-ago
+		const { data: dateRows } = await supabase
 			.from('fact_employment')
-			.select('date, sector_id, employment_sa')
+			.select('date')
 			.eq('granularity', 'sector')
-			.order('date', { ascending: false });
-		if (filterState.sector) {
-			spotlightQuery = spotlightQuery.eq('sector_id', filterState.sector);
+			.order('date', { ascending: false })
+			.limit(36);
+		const distinctMonths: string[] = [];
+		for (const row of dateRows ?? []) {
+			const m = row.date;
+			if (!m) continue;
+			if (distinctMonths.includes(m)) continue;
+			distinctMonths.push(m);
 		}
-		spotlightQuery = dateFilter(spotlightQuery);
-		const { data: latestRows } = await spotlightQuery.limit(2);
-		const latestMonth = latestRows?.[0]?.date;
-		const prevMonth = latestRows?.find((r) => r.date !== latestMonth)?.date;
-		const yearAgoMonth =
+		const latestMonth = distinctMonths[0];
+		const prevMonth = distinctMonths[1];
+		const yearAgoPrefix =
 			latestMonth && latestMonth.includes('-')
 				? `${String(Number(latestMonth.slice(0, 4)) - 1).padStart(4, '0')}-${latestMonth.slice(5, 7)}`
 				: undefined;
+		const yearAgoMonth = distinctMonths.find((m) => (yearAgoPrefix ? m.startsWith(yearAgoPrefix) : false));
 
 		let spotlightMonthQuery = supabase
 			.from('fact_employment')
@@ -220,10 +224,11 @@ export async function loadAllData(filterState: FilterState = {}) {
 		if (filterState.sector) {
 			spotlightMonthQuery = spotlightMonthQuery.eq('sector_id', filterState.sector);
 		}
-		if (yearAgoMonth) {
-			spotlightMonthQuery = spotlightMonthQuery.gte('date', `${yearAgoMonth}-01`);
+		const monthFilter = [latestMonth, prevMonth, yearAgoMonth].filter(Boolean) as string[];
+		if (monthFilter.length) {
+			spotlightMonthQuery = spotlightMonthQuery.in('date', monthFilter);
 		}
-		const { data: latestSector } = await spotlightMonthQuery.limit(2000);
+		const { data: latestSector } = await spotlightMonthQuery.limit(500);
 		const latestMap = new Map<string, number | null>();
 		const prevMap = new Map<string, number | null>();
 		const yearAgoMap = new Map<string, number | null>();
