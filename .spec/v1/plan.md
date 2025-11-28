@@ -1,17 +1,17 @@
 # Execution Plan
 
-## Phase 1: Foundation (Core Data & UI)
-**Goal:** Replace the Python-to-JSON script with a Database-backed App.
-1.  **Setup:** Initialize Supabase Project & Schema.
-2.  **ETL:** Finalize `etl_supabase.py` to handle all CSV types (Layoffs, Hiring, Salaries).
-3.  **Backend:** None (Serverless). FastAPI/DuckDB path is legacy/dev-only.
-4.  **Frontend:** Connect SvelteKit to Supabase. Re-implement "Sector Spotlight" using DB queries.
+## Phase 1: Foundation (Core Data & UI, Mandatory)
+**Goal:** Fully load RPLS data (including granularity files) and ship a sector-first dashboard for HR/TA.
+1.  **Setup:** Supabase schema (core + multi tables) with size guardrails; normalize NAICS/SOC dims.
+2.  **ETL:** Load *all* CSVs (layoffs, hiring, salaries, postings, employment) plus multi-dimension files; add summary/overview/Table B tables; block if payload > ~450 MB.
+3.  **Frontend:** Sector-first “Talent Market Scanner” with sector/state/occupation filters (headlines, postings trend, salary trend, hiring vs attrition, layoffs/WARN).
+4.  **Transparency:** In-app methodology and per-chart sourcing; health/status checks.
 
-## Phase 2: Enhancements (Interactive Dashboard)
-**Goal:** Enable dynamic user queries.
-1.  **Filters:** Add global Date/Sector state management in Svelte.
-2.  **Charts:** Replace Chart.js with Recharts/LayerChart.
-3.  **Auth:** Enable Supabase Auth to allow "Saving" views.
+## Phase 2: Enhancements (Interactive Dashboard, Mandatory)
+**Goal:** Deep drill and comparison views without login.
+1.  **Filters:** Global date/sector/occupation/state with URL sync and shareable links.
+2.  **Charts:** Upgrade to interactive charting (LayerChart/ECharts/Plotly) for all widgets; add map (state choropleth).
+3.  **Views:** Data Lab (table + time-series builder) and My Market Check (occupation/state report card); export PNG/CSV.
 
 ## Phase 3: Intelligence (AI & Search)
 **Goal:** Add "Reasoning" to the data using Gemini & Vercel AI SDK.
