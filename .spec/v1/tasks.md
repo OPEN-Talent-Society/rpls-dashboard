@@ -8,7 +8,7 @@
 - [x] **Task A.5:** Add Integration Test (Upsert to a local Supabase test project).
 - [x] **Task A.6 (Mandatory):** Ingest high-volume CSVs (`employment_all_granularities`, `salaries_all_granularities`, `hiring_and_attrition_by_sector_occupation_state`, `postings_by_sector_occupation_state`) into new multi fact tables (naics2d, soc2d, state, date) with size guardrails.
 - [x] **Task A.7 (Mandatory):** Load summary/overview/Table B CSVs into dedicated summary tables; add row-count + min/max date health checks per table.
-- [ ] **Task A.8 (Mandatory):** Add Supabase size estimator and hard stop at ~700 MB; log table sizes after ETL; document Storage offload plan for overflow.
+- [x] **Task A.8 (Mandatory):** Add Supabase size estimator and hard stop at ~700 MB; log table sizes after ETL; document storage offload plan for overflow (consider parquet/export + CDN if nearing cap).
 
 ## Epic B: Frontend Core (SvelteKit)
 - [x] **Task B.1:** Install `@supabase/supabase-js` in `rpls-dashboard`.

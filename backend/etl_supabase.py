@@ -41,6 +41,7 @@ BIG_FILES = [
 ]
 # Allow up to ~700MB for high-volume sources; warn if exceeded
 MAX_BYTES = 700 * 1024 * 1024
+AVG_ROW_BYTES = int(os.environ.get("SUPABASE_ROW_BYTES_ESTIMATE", "200"))  # rough estimate for size check
 
 load_dotenv(ENV_PATH)
 SUPABASE_URL = os.getenv("PUBLIC_SUPABASE_URL")
@@ -197,6 +198,53 @@ def clear_tables():
         placeholder = "00000000-0000-0000-0000-000000000000" if col == "id" else "__wipe__"
         supabase.table(table).delete().neq(col, placeholder).execute()
     print(f"Cleared tables: {', '.join(CLEAR_TARGETS.keys())}")
+
+
+def log_table_counts_and_estimate():
+    """Log row counts per table and estimate total size; abort if exceeds guard."""
+    if DRY_RUN:
+        print("DRY RUN: skip table size logging")
+        return
+    assert supabase is not None
+    tables = [
+        "fact_layoffs",
+        "fact_salaries",
+        "fact_employment",
+        "fact_postings",
+        "fact_hiring_attrition",
+        "fact_employment_multi",
+        "fact_postings_multi",
+        "fact_hiring_attrition_multi",
+        "fact_salaries_multi",
+        "summary_sector",
+        "summary_occupation",
+        "summary_state",
+        "salary_overview_naics",
+        "salary_overview_soc",
+        "salary_overview_state",
+        "salary_overview_total",
+        "table_b_naics",
+        "table_b_soc",
+        "table_b_state",
+        "hiring_sector_summary",
+        "attrition_sector_summary",
+    ]
+    total_rows = 0
+    counts = {}
+    for t in tables:
+        try:
+            res = supabase.table(t).select("id", count="exact").limit(1).execute()
+            counts[t] = res.count or 0
+            total_rows += res.count or 0
+        except Exception as exc:
+            counts[t] = f"err:{exc}"
+    print("Table row counts:", counts)
+    est_mb = (total_rows * AVG_ROW_BYTES) / (1024 * 1024)
+    print(f"Estimated Supabase payload: {est_mb:.1f} MB (rows={total_rows}, avg_row_bytes={AVG_ROW_BYTES})")
+    if est_mb > (MAX_BYTES / (1024 * 1024)):
+        raise SystemExit(
+            f"Aborting: estimated Supabase storage {est_mb:.1f} MB exceeds guard {(MAX_BYTES / (1024 * 1024)):.1f} MB."
+        )
 
 
 def run_etl():
@@ -806,6 +854,7 @@ def run_etl():
         )
 
     print("✅ Supabase ETL complete.")
+    log_table_counts_and_estimate()
 
 
 def upload_to_supabase(table_name, columns, query_result):
