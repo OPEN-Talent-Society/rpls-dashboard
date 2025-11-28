@@ -6,6 +6,8 @@
 - [x] **Task A.3:** Implement `fact_postings` loading logic.
 - [x] **Task A.4:** Add Unit Tests for CSV parsing (Mock the file system).
 - [x] **Task A.5:** Add Integration Test (Upsert to a local Supabase test project).
+- [ ] **Task A.6:** Ingest high-volume CSVs (`employment_all_granularities`, `salaries_all_granularities`, `hiring_and_attrition_by_sector_occupation_state`, `postings_by_sector_occupation_state`) into new fact tables.
+- [ ] **Task A.7:** Load summary/overview/Table B CSVs into dedicated summary tables; add row-count health checks per table.
 
 ## Epic B: Frontend Core (SvelteKit)
 - [x] **Task B.1:** Install `@supabase/supabase-js` in `rpls-dashboard`.
@@ -38,6 +40,7 @@
 - [ ] **Task E.6:** Add AI pipeline tests (filter JSON generation, /api/analyze prompt/response validation) tied to Epic F.
 - [ ] **Task E.7:** Add manifest/health checks (row counts, min/max dates) as CI guardrails; ensure they run against Supabase with safe limits.
 - [ ] **Task E.8:** Add `/api/status` and `/api/sample` runtime health checks in CI to confirm Supabase data availability.
+- [ ] **Task E.9:** Add data coverage checks for YoY availability by sector; report missing year-ago rows as warnings in CI.
 
 ## Epic F: AI & Insights (Phase 3)
 - [ ] **Task F.1:** Install `ai`, `@google/generative-ai`, and add env plumbing for Gemini keys; add config validation tests to fail fast when env is missing.
