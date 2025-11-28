@@ -1,10 +1,11 @@
 # Execution Plan
 
 ## Phase 1: Foundation (Core Data & UI, Mandatory)
-**Goal:** Fully load RPLS data (including granularity files) and ship a sector-first dashboard for HR/TA.
+**Goal:** Fully load RPLS data (including granularity files) and ship a sector-first dashboard for HR/TA.  
+**Status:** Supabase schema + multi tables are live; ETL loads all granularity + summary tables; dashboard stores now read from Supabase multi tables. Next: build the sector-first UI (Scanner) and map.
 1.  **Setup:** Supabase schema (core + multi tables) with size guardrails; normalize NAICS/SOC dims.
-2.  **ETL:** Load *all* CSVs (layoffs, hiring, salaries, postings, employment) plus multi-dimension files; add summary/overview/Table B tables; block if payload > ~450 MB.
-3.  **Frontend:** Sector-first “Talent Market Scanner” with sector/state/occupation filters (headlines, postings trend, salary trend, hiring vs attrition, layoffs/WARN).
+2.  **ETL:** Load *all* CSVs (layoffs, hiring, salaries, postings, employment) plus multi-dimension files; add summary/overview/Table B tables; block if payload > ~700 MB.
+3.  **Frontend:** Sector-first “Talent Market Scanner” with sector/state/occupation filters (headlines, postings trend, salary trend, hiring vs attrition, layoffs/WARN); wire map.
 4.  **Transparency:** In-app methodology and per-chart sourcing; health/status checks.
 
 ## Phase 2: Enhancements (Interactive Dashboard, Mandatory)

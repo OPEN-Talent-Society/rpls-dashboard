@@ -1,5 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { filters, parseFilters, serializeFilters, resetFilters, updateFilters } from '$lib/stores/filters';
+import type { FilterState } from '$lib/stores/filters';
 
 describe('Filter store', () => {
 	it('serializes and parses filters round-trip', () => {
@@ -19,12 +20,14 @@ describe('Filter store', () => {
 
 	it('updates and resets filters', async () => {
 		updateFilters({ sector: 'finance' });
-		let value;
+		let value: FilterState | undefined = undefined;
 		filters.subscribe((v) => (value = v))();
-		expect(value.sector).toBe('finance');
+		const current = value as FilterState | undefined;
+		expect(current?.sector).toBe('finance');
 		resetFilters();
 		filters.subscribe((v) => (value = v))();
-		expect(value.sector).toBeUndefined();
+		const reset = value as FilterState | undefined;
+		expect(reset?.sector).toBeUndefined();
 	});
 
 	it('ignores empty search params', () => {

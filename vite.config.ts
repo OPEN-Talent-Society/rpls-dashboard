@@ -10,9 +10,6 @@ export default defineConfig({
 	test: {
 		globals: true,
 		environment: 'jsdom',
-		setupFiles: [path.resolve(configDir, 'tests/setup.ts')],
-		resolve: {
-			conditions: ['svelte', 'browser']
-		}
+		setupFiles: [path.resolve(configDir, 'tests/setup.ts')]
 	}
 });
