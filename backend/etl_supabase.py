@@ -34,7 +34,8 @@ BIG_FILES = [
     DATA_DIR / "hiring_and_attrition_by_sector_occupation_state.csv",
     DATA_DIR / "postings_by_sector_occupation_state.csv",
 ]
-MAX_BYTES = 450 * 1024 * 1024  # ~450MB cap to stay within Supabase free tier
+# Allow up to ~700MB for high-volume sources; warn if exceeded
+MAX_BYTES = 700 * 1024 * 1024
 
 load_dotenv(ENV_PATH)
 SUPABASE_URL = os.getenv("PUBLIC_SUPABASE_URL")
