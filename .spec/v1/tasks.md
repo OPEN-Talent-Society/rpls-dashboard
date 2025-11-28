@@ -6,9 +6,9 @@
 - [x] **Task A.3:** Implement `fact_postings` loading logic.
 - [x] **Task A.4:** Add Unit Tests for CSV parsing (Mock the file system).
 - [x] **Task A.5:** Add Integration Test (Upsert to a local Supabase test project).
-- [ ] **Task A.6 (Mandatory):** Ingest high-volume CSVs (`employment_all_granularities`, `salaries_all_granularities`, `hiring_and_attrition_by_sector_occupation_state`, `postings_by_sector_occupation_state`) into new multi fact tables (naics2d, soc2d, state, date) with size guardrails.
-- [ ] **Task A.7 (Mandatory):** Load summary/overview/Table B CSVs into dedicated summary tables; add row-count + min/max date health checks per table.
-- [ ] **Task A.8 (Mandatory):** Add Supabase size estimator and hard stop at ~450 MB; log table sizes after ETL; document Storage offload plan for overflow.
+- [x] **Task A.6 (Mandatory):** Ingest high-volume CSVs (`employment_all_granularities`, `salaries_all_granularities`, `hiring_and_attrition_by_sector_occupation_state`, `postings_by_sector_occupation_state`) into new multi fact tables (naics2d, soc2d, state, date) with size guardrails.
+- [x] **Task A.7 (Mandatory):** Load summary/overview/Table B CSVs into dedicated summary tables; add row-count + min/max date health checks per table.
+- [ ] **Task A.8 (Mandatory):** Add Supabase size estimator and hard stop at ~700 MB; log table sizes after ETL; document Storage offload plan for overflow.
 
 ## Epic B: Frontend Core (SvelteKit)
 - [x] **Task B.1:** Install `@supabase/supabase-js` in `rpls-dashboard`.
@@ -16,11 +16,12 @@
 - [x] **Task B.3:** Create `src/routes/dashboard/+page.server.ts` to fetch Layoffs (moved to supabase store logic).
 - [x] **Task B.4:** Create `LayoffChart.svelte` using the dynamic data.
 - [x] **Task B.5:** Remove old JSON import logic (frontend now pulls from Supabase).
-- [ ] **Task B.6 (Mandatory):** Talent Market Scanner UI (sector-first) with sector/state/occupation filters across headlines, postings trend, salary trend, hiring vs attrition, layoffs/WARN.
-- [ ] **Task B.7 (Mandatory):** Map view (state choropleth) for postings/hiring/attrition/salary driven by multi tables.
-- [ ] **Task B.8 (Mandatory):** Data Lab: table + time-series builder with CSV/PNG export and shareable URLs.
-- [ ] **Task B.9 (Mandatory):** My Market Check: occupation + state report card with benchmarks and shareable link.
-- [ ] **Task B.10 (Mandatory):** Per-widget loading/error states and inline methodology/source footers.
+- [x] **Task B.6:** Wire stores/widgets to Supabase multi tables so sector/state/occupation filters use full granularity (headlines, salaries, hiring/attrition, layoffs).
+- [ ] **Task B.7 (Mandatory):** Talent Market Scanner UI (sector-first) with sector/state/occupation filters across headlines, postings trend, salary trend, hiring vs attrition, layoffs/WARN.
+- [ ] **Task B.8 (Mandatory):** Map view (state choropleth) for postings/hiring/attrition/salary driven by multi tables.
+- [ ] **Task B.9 (Mandatory):** Data Lab: table + time-series builder with CSV/PNG export and shareable URLs.
+- [ ] **Task B.10 (Mandatory):** My Market Check: occupation + state report card with benchmarks and shareable link.
+- [ ] **Task B.11 (Mandatory):** Per-widget loading/error states and inline methodology/source footers.
 
 ## Epic C: Interactive Filters & Charts (Phase 2)
 - [ ] **Task C.1:** Build a global filter store (date range, sector, occupation, state) with URL sync; add unit tests for reducer logic and serialization.

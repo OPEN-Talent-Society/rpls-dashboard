@@ -83,22 +83,24 @@ function fallbackSectorLabel(id: string, provided?: string | null) {
 
 async function getLatestTwo(
 	table: string,
-	filters: Record<string, string>,
+	filters: Record<string, string | undefined>,
 	dateRange?: { start?: string; end?: string },
-	dedupeByDate = false
+	dedupeByDate = false,
+	columns = '*'
 ) {
-	let query = supabase.from(table).select().order('date', { ascending: false }).limit(dedupeByDate ? 6 : 2);
+	let query = supabase.from(table).select(columns).order('date', { ascending: false }).limit(dedupeByDate ? 24 : 2);
 	for (const [k, v] of Object.entries(filters)) {
-		query = query.eq(k, v);
+		if (v) query = query.eq(k, v);
 	}
 	if (dateRange?.start) query = query.gte('date', `${dateRange.start}-01`);
 	if (dateRange?.end) query = query.lte('date', `${dateRange.end}-31`);
 	const { data, error: err } = await query;
 	if (err) throw err;
-	if (!dedupeByDate) return data ?? [];
+	const rows = (data ?? []) as any[];
+	if (!dedupeByDate) return rows;
 	const uniq: any[] = [];
 	const seen = new Set<string>();
-	for (const row of data ?? []) {
+	for (const row of rows) {
 		if (!row?.date) continue;
 		if (seen.has(row.date)) continue;
 		seen.add(row.date);
@@ -151,21 +153,94 @@ export async function loadAllData(filterState: FilterState = {}) {
 			return query;
 		};
 
-		// Summary pieces
+		// Summary pieces (multi tables to honor filters)
 		const dateRange = { start: filterState.startMonth, end: filterState.endMonth };
-		const [empRows, hireRows, layRows] = await Promise.all([
-			getLatestTwo('fact_employment', { granularity: 'national' }, dateRange, true),
-			getLatestTwo('fact_hiring_attrition', { granularity: 'total' }, dateRange, true),
-			getLatestTwo('fact_layoffs', { granularity: 'total' }, dateRange, true)
-		]);
+		const multiFilters = {
+			sector_id: filterState.sector,
+			occupation_id: filterState.occupation,
+			state_id: filterState.state
+		};
 
-		const latestEmp = empRows[0];
-		const prevEmp = empRows[1];
-		const latestHire = hireRows[0];
-		const latestLay = layRows[0];
-		const prevLay = layRows[1];
+		const empDates = await getLatestTwo('fact_employment_multi', multiFilters, dateRange, true, 'date');
+		const latestEmpDate = empDates[0]?.date;
+		const prevEmpDate = empDates[1]?.date;
+		const hireDates = await getLatestTwo('fact_hiring_attrition_multi', multiFilters, dateRange, true, 'date');
+		const latestHireDate = hireDates[0]?.date;
+		const layFilters: Record<string, string | undefined> = {};
+		if (filterState.sector) layFilters.sector_id = filterState.sector;
+		if (!filterState.sector && filterState.state) layFilters.state_id = filterState.state;
+		const layGranularity = layFilters.sector_id ? 'sector' : layFilters.state_id ? 'state' : 'total';
+		const layDates = await getLatestTwo('fact_layoffs', { ...layFilters, granularity: layGranularity }, dateRange, true, 'date');
+		const latestLayDate = layDates[0]?.date;
+		const prevLayDate = layDates[1]?.date;
 
-		const dataMonthVal = latestEmp?.date?.slice(0, 7) ?? latestHire?.date?.slice(0, 7) ?? '';
+		// Aggregate employment (sum) latest and prev
+		let latestEmp = null;
+		let prevEmp = null;
+		if (latestEmpDate) {
+			let q = supabase.from('fact_employment_multi').select('employment_sa').eq('date', latestEmpDate).range(0, 200000);
+			for (const [k, v] of Object.entries(multiFilters)) {
+				if (v) q = q.eq(k, v);
+			}
+			const { data } = await q;
+			latestEmp = { employment_sa: (data ?? []).reduce((s, r) => s + (r.employment_sa ?? 0), 0) };
+		}
+		if (prevEmpDate) {
+			let q = supabase.from('fact_employment_multi').select('employment_sa').eq('date', prevEmpDate).range(0, 200000);
+			for (const [k, v] of Object.entries(multiFilters)) {
+				if (v) q = q.eq(k, v);
+			}
+			const { data } = await q;
+			prevEmp = { employment_sa: (data ?? []).reduce((s, r) => s + (r.employment_sa ?? 0), 0) };
+		}
+
+		// Aggregate hiring/attrition (average)
+		let latestHire = null;
+		if (latestHireDate) {
+			let q = supabase
+				.from('fact_hiring_attrition_multi')
+				.select('hiring_rate_sa, attrition_rate_sa')
+				.eq('date', latestHireDate)
+				.range(0, 200000);
+			for (const [k, v] of Object.entries(multiFilters)) {
+				if (v) q = q.eq(k, v);
+			}
+			const { data } = await q;
+			const count = (data ?? []).length || 1;
+			const sumHire = (data ?? []).reduce((s, r) => s + (r.hiring_rate_sa ?? 0), 0);
+			const sumAttr = (data ?? []).reduce((s, r) => s + (r.attrition_rate_sa ?? 0), 0);
+			latestHire = {
+				hiring_rate_sa: sumHire / count,
+				attrition_rate_sa: sumAttr / count
+			};
+		}
+
+		let latestLay = null;
+		let prevLay = null;
+		if (latestLayDate) {
+			let q = supabase
+				.from('fact_layoffs')
+				.select('employees_laidoff')
+				.eq('granularity', layGranularity)
+				.eq('date', latestLayDate);
+			if (layFilters.sector_id) q = q.eq('sector_id', layFilters.sector_id);
+			if (layFilters.state_id) q = q.eq('state_id', layFilters.state_id);
+			const { data } = await q;
+			latestLay = { employees_laidoff: (data ?? []).reduce((s, r) => s + (r.employees_laidoff ?? 0), 0) };
+		}
+		if (prevLayDate) {
+			let q = supabase
+				.from('fact_layoffs')
+				.select('employees_laidoff')
+				.eq('granularity', layGranularity)
+				.eq('date', prevLayDate);
+			if (layFilters.sector_id) q = q.eq('sector_id', layFilters.sector_id);
+			if (layFilters.state_id) q = q.eq('state_id', layFilters.state_id);
+			const { data } = await q;
+			prevLay = { employees_laidoff: (data ?? []).reduce((s, r) => s + (r.employees_laidoff ?? 0), 0) };
+		}
+
+		const dataMonthVal = latestEmpDate?.slice(0, 7) ?? latestHireDate?.slice(0, 7) ?? '';
 		const hiringRate = latestHire?.hiring_rate_sa ?? 0;
 		const attritionRate = latestHire?.attrition_rate_sa ?? 0;
 		const layoffsVal = latestLay?.employees_laidoff ?? 0;
@@ -179,7 +254,7 @@ export async function loadAllData(filterState: FilterState = {}) {
 		const spread = Math.max(-0.1, Math.min(0.1, hiringRate - attritionRate));
 		const spreadScore = spread * 400; // max ±40
 		const momentumScore = Math.max(-20, Math.min(20, empPct * 400)); // pct * 400 ≈ ±20 when ±0.05
-		const layPenalty = Math.min(layoffsVal / 75000 * 20, 20); // softer penalty
+		const layPenalty = Math.min(((layoffsVal ?? 0) / 75000) * 20, 20); // softer penalty
 		const rawHealth = 50 + spreadScore + momentumScore - layPenalty;
 		const healthScore = Math.max(0, Math.min(100, rawHealth));
 
@@ -265,16 +340,43 @@ export async function loadAllData(filterState: FilterState = {}) {
 		spotlight.set({ winners, losers });
 
 		// Salaries
-		let salOccQuery = supabase
-			.from('fact_salaries')
-			.select('date, occupation_id, salary_sa')
-			.eq('granularity', 'occupation')
-			.order('date', { ascending: false });
-		if (filterState.occupation) {
-			salOccQuery = salOccQuery.eq('occupation_id', filterState.occupation);
+		let salOcc: any[] | null = null;
+		if (filterState.sector || filterState.state) {
+			const salDates = await getLatestTwo('fact_salaries_multi', multiFilters, dateRange, true, 'date');
+			const salDate = salDates[0]?.date;
+			const salPrevDate = salDates[1]?.date;
+			let salMultiQuery = supabase
+				.from('fact_salaries_multi')
+				.select('date, occupation_id, salary_sa, count')
+				.eq('date', salDate)
+				.range(0, 200000);
+			for (const [k, v] of Object.entries(multiFilters)) {
+				if (v) salMultiQuery = salMultiQuery.eq(k, v);
+			}
+			const { data: salMulti } = await salMultiQuery;
+			let salPrevQuery = supabase
+				.from('fact_salaries_multi')
+				.select('date, occupation_id, salary_sa, count')
+				.eq('date', salPrevDate ?? null)
+				.range(0, 200000);
+			for (const [k, v] of Object.entries(multiFilters)) {
+				if (v) salPrevQuery = salPrevQuery.eq(k, v);
+			}
+			const { data: salPrevData } = salPrevQuery ? await salPrevQuery : { data: [] };
+			salOcc = [...(salMulti ?? []), ...(salPrevData ?? [])];
+		} else {
+			let salOccQuery = supabase
+				.from('fact_salaries')
+				.select('date, occupation_id, salary_sa')
+				.eq('granularity', 'occupation')
+				.order('date', { ascending: false });
+			if (filterState.occupation) {
+				salOccQuery = salOccQuery.eq('occupation_id', filterState.occupation);
+			}
+			salOccQuery = dateFilter(salOccQuery);
+			const { data } = await salOccQuery;
+			salOcc = data;
 		}
-		salOccQuery = dateFilter(salOccQuery);
-		const { data: salOcc } = await salOccQuery;
 		const salLatest = salOcc?.[0]?.date;
 		const salPrev = salOcc?.find((r) => r.date !== salLatest)?.date;
 		const occMap = new Map<string, { curr: number | null; prev: number | null }>();
@@ -296,16 +398,43 @@ export async function loadAllData(filterState: FilterState = {}) {
 		}
 		salariesByOccupation.set(occList);
 
-		let salStateQuery = supabase
-			.from('fact_salaries')
-			.select('date, state_id, salary_sa')
-			.eq('granularity', 'state')
-			.order('date', { ascending: false });
-		if (filterState.state) {
-			salStateQuery = salStateQuery.eq('state_id', filterState.state);
+		let salState: any[] | null = null;
+		if (filterState.sector || filterState.occupation) {
+			const salDates = await getLatestTwo('fact_salaries_multi', multiFilters, dateRange, true, 'date');
+			const salDate = salDates[0]?.date;
+			const salPrevDate = salDates[1]?.date;
+			let salStateQuery = supabase
+				.from('fact_salaries_multi')
+				.select('date, state_id, salary_sa')
+				.eq('date', salDate)
+				.range(0, 200000);
+			for (const [k, v] of Object.entries(multiFilters)) {
+				if (v) salStateQuery = salStateQuery.eq(k, v);
+			}
+			const { data: curr } = await salStateQuery;
+			let salPrevQuery = supabase
+				.from('fact_salaries_multi')
+				.select('date, state_id, salary_sa')
+				.eq('date', salPrevDate ?? null)
+				.range(0, 200000);
+			for (const [k, v] of Object.entries(multiFilters)) {
+				if (v) salPrevQuery = salPrevQuery.eq(k, v);
+			}
+			const { data: prev } = salPrevQuery ? await salPrevQuery : { data: [] };
+			salState = [...(curr ?? []), ...(prev ?? [])];
+		} else {
+			let salStateQuery = supabase
+				.from('fact_salaries')
+				.select('date, state_id, salary_sa')
+				.eq('granularity', 'state')
+				.order('date', { ascending: false });
+			if (filterState.state) {
+				salStateQuery = salStateQuery.eq('state_id', filterState.state);
+			}
+			salStateQuery = dateFilter(salStateQuery);
+			const { data } = await salStateQuery;
+			salState = data;
 		}
-		salStateQuery = dateFilter(salStateQuery);
-		const { data: salState } = await salStateQuery;
 		const stateLatest = salState?.[0]?.date;
 		const statePrev = salState?.find((r) => r.date !== stateLatest)?.date;
 		const stateMap: Record<string, { salary: number | null; yoy_change: number | null }> = {};

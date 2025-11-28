@@ -17,32 +17,35 @@ if (typeof document === 'undefined') {
 
 // Basic canvas stub so Chart.js doesn't blow up in jsdom
 if (!HTMLCanvasElement.prototype.getContext) {
-	HTMLCanvasElement.prototype.getContext = () => ({
-		fillRect: () => {},
-		clearRect: () => {},
-		getImageData: () => ({ data: [] }),
-		putImageData: () => {},
-		createImageData: () => [],
-		setTransform: () => {},
-		drawImage: () => {},
-		save: () => {},
-		fillText: () => {},
-		restore: () => {},
-		beginPath: () => {},
-		moveTo: () => {},
-		lineTo: () => {},
-		closePath: () => {},
-		stroke: () => {},
-		translate: () => {},
-		scale: () => {},
-		rotate: () => {},
-		arc: () => {},
-		rect: () => {},
-		fill: () => {},
-		strokeRect: () => {},
-		measureText: () => ({ width: 0 }),
-		transform: () => {},
-		setLineDash: () => {},
-		getLineDash: () => []
-	});
+	HTMLCanvasElement.prototype.getContext = (() => {
+		const ctx: Partial<CanvasRenderingContext2D> = {
+			fillRect: () => {},
+			clearRect: () => {},
+			getImageData: () => new ImageData(1, 1),
+			putImageData: () => {},
+			createImageData: () => new ImageData(1, 1),
+			setTransform: () => {},
+			drawImage: () => {},
+			save: () => {},
+			fillText: () => {},
+			restore: () => {},
+			beginPath: () => {},
+			moveTo: () => {},
+			lineTo: () => {},
+			closePath: () => {},
+			stroke: () => {},
+			translate: () => {},
+			scale: () => {},
+			rotate: () => {},
+			arc: () => {},
+			rect: () => {},
+			fill: () => {},
+			strokeRect: () => {},
+			measureText: () => ({ width: 0 } as TextMetrics),
+			transform: () => {},
+			setLineDash: () => {},
+			getLineDash: () => []
+		};
+		return ctx as CanvasRenderingContext2D;
+	}) as any;
 }
