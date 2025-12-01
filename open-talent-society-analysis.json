@@ -1,0 +1,245 @@
+{
+  "org": "OPEN-Talent-Society",
+  "analysis_date": "2025-11-30",
+  "repos": [
+    {
+      "name": "rpls-dashboard",
+      "url": "https://github.com/OPEN-Talent-Society/rpls-dashboard",
+      "visibility": "public",
+      "status": "active",
+      "last_pushed": "2025-11-29T23:28:33Z",
+      "description": "Labor market pulse dashboard powered by RPLS data",
+      "tech_stack": {
+        "frontend": {
+          "framework": "SvelteKit",
+          "language": "TypeScript",
+          "styling": "Tailwind CSS",
+          "ui_components": "Svelte"
+        },
+        "backend": {
+          "database": "Supabase (PostgreSQL)",
+          "api": "PostgREST",
+          "etl": "DuckDB + Python (Polars)",
+          "hosting": "Vercel"
+        },
+        "ai_ml": {
+          "primary_model": "Google Gemini 2.5 Flash Lite (speed)",
+          "reasoning_model": "Google Gemini 1.5 Pro",
+          "sdk": "Vercel AI SDK",
+          "validation": "Zod schemas"
+        },
+        "data_processing": {
+          "ingestion": "DuckDB",
+          "transformation": "Python Polars",
+          "storage": "PostgreSQL (Supabase)",
+          "vector_search": "Supabase Vector"
+        }
+      },
+      "languages": {
+        "Python": 89687,
+        "TypeScript": 80427,
+        "Svelte": 40977,
+        "CSS": 17702,
+        "JavaScript": 2064,
+        "HTML": 845
+      },
+      "purpose": "Next-generation labor market intelligence platform that transforms static RPLS (Real-time Pulse of Labor and Skills) CSV data into a real-time, queryable, AI-augmented analytics engine",
+      "features": [
+        "Real-time labor market trends (employment, layoffs, salaries)",
+        "AI-native natural language querying with Gemini",
+        "Dynamic filtering by sector, state, and occupation",
+        "Sector spotlight and industry performance comparison",
+        "Automated insights generation",
+        "Deterministic data engineering (DuckDB/Polars) + Probabilistic AI (Gemini)",
+        "Zod schema validation for AI outputs (no hallucinated SQL)",
+        "High-performance ETL pipeline",
+        "Vector search capabilities via Supabase",
+        "Server-side rendering with SvelteKit"
+      ],
+      "architecture": "Hybrid deterministic/probabilistic system combining DuckDB ETL → PostgreSQL → PostgREST → SvelteKit → Gemini AI → validated JSON filters",
+      "methodology": "Spec-Driven Development (SDD)",
+      "maintenance_status": "actively_maintained",
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "issues_enabled": false,
+        "projects_enabled": true,
+        "open_issues": 0,
+        "pull_requests": 0
+      }
+    },
+    {
+      "name": "JD-Auditor",
+      "url": "https://github.com/OPEN-Talent-Society/JD-Auditor",
+      "visibility": "public",
+      "status": "active",
+      "last_pushed": "2025-11-22T11:41:59Z",
+      "description": "Strategic intelligence tool for the People Industry combining Lightcast Open Skills Taxonomy with Google Gemini's reasoning engine for job description auditing",
+      "tech_stack": {
+        "frontend": {
+          "framework": "React 18 (Vite)",
+          "language": "TypeScript",
+          "styling": "Tailwind CSS (Ghost Theme)",
+          "build_tool": "Vite"
+        },
+        "ai_ml": {
+          "model": "Google Gemini 2.5 Flash",
+          "taxonomy": "Lightcast Open Skills API",
+          "capabilities": "Strategic audit, bias detection, persona generation, competency analysis"
+        },
+        "data": {
+          "skills_taxonomy": "Lightcast Open Skills (global standardization)",
+          "api_integration": "Lightcast API"
+        }
+      },
+      "languages": {
+        "TypeScript": 53340,
+        "HTML": 6441
+      },
+      "purpose": "Strategic intelligence tool for HR/TA/L&D professionals that audits job descriptions for bias, clarity, and strategic alignment while mapping unstructured text to standardized skills taxonomy",
+      "features": [
+        "Strategic audit with clarity scoring (0-100 quantitative assessment)",
+        "Bias and tone detection (exclusionary language, gender-coding, corporate clichés)",
+        "Persona generation (identifies specific archetypes needed)",
+        "Role vitals (AI-estimated seniority and market salary bands)",
+        "Taxonomy standardization (maps to Lightcast Open Skills)",
+        "Confidence scoring for skill matches",
+        "Implicit competencies identification (unspoken soft skills)",
+        "Interview guide generation with behavioral questions",
+        "Bento grid dashboard (data-dense workspace)",
+        "PDF export for hiring managers",
+        "Natural language processing for JD analysis",
+        "Inclusive hiring language recommendations"
+      ],
+      "target_users": [
+        "HR professionals",
+        "Talent Acquisition teams",
+        "Learning & Development",
+        "People Analytics",
+        "People Operations"
+      ],
+      "formerly_known_as": "SkillLens",
+      "organization_context": "Open Talent Society - nonprofit open source community for People Industry professionals",
+      "maintenance_status": "actively_maintained",
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "issues_enabled": true,
+        "projects_enabled": false,
+        "open_issues": 0,
+        "pull_requests": 0
+      }
+    },
+    {
+      "name": "custom-gpts",
+      "url": "https://github.com/OPEN-Talent-Society/custom-gpts",
+      "visibility": "public",
+      "status": "maintained",
+      "last_pushed": "2025-11-19T00:58:22Z",
+      "description": "System Instructions of the Custom GPTs by the OPEN Talent Society",
+      "tech_stack": {
+        "type": "documentation_repository",
+        "content": "Custom GPT system instructions and prompts",
+        "ai_platform": "OpenAI GPTs"
+      },
+      "languages": {},
+      "purpose": "Repository containing system instructions and configurations for custom GPT models built by the Open Talent Society community",
+      "features": [
+        "Custom GPT system instructions",
+        "Prompt templates for People Industry use cases",
+        "OpenAI GPT configurations",
+        "Community-contributed GPT blueprints"
+      ],
+      "content_type": "documentation_and_configurations",
+      "maintenance_status": "maintained",
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "issues_enabled": true,
+        "projects_enabled": false,
+        "open_issues": 0,
+        "pull_requests": 0
+      }
+    },
+    {
+      "name": "OPEN-Talent-Toolbox-for-Hiring-Growth",
+      "url": "https://github.com/OPEN-Talent-Society/OPEN-Talent-Toolbox-for-Hiring-Growth",
+      "visibility": "private",
+      "status": "maintained",
+      "last_pushed": "2025-09-13T18:23:44Z",
+      "description": "Private toolbox repository (description not available)",
+      "tech_stack": {
+        "backend": {
+          "primary_language": "Python",
+          "database": "PostgreSQL (PLpgSQL stored procedures)",
+          "framework_hints": "TypeScript components suggest web application"
+        },
+        "frontend": {
+          "language": "TypeScript",
+          "styling": "CSS"
+        },
+        "testing": {
+          "bdd_framework": "Gherkin (Cucumber-style tests)"
+        }
+      },
+      "languages": {
+        "Python": 144208,
+        "TypeScript": 49677,
+        "PLpgSQL": 2598,
+        "Gherkin": 2595,
+        "CSS": 2000,
+        "JavaScript": 220
+      },
+      "purpose": "Private internal toolbox for hiring and growth operations (exact purpose requires repository access)",
+      "features": [
+        "Python-based backend services",
+        "PostgreSQL database with stored procedures",
+        "TypeScript web components",
+        "BDD testing with Gherkin",
+        "Likely hiring workflow automation",
+        "Growth analytics or talent pipeline management"
+      ],
+      "access_level": "organization_private",
+      "maintenance_status": "maintained",
+      "last_activity": "2025-09-13 (3+ months since last push)",
+      "community": {
+        "stars": 0,
+        "forks": 0,
+        "issues_enabled": true,
+        "projects_enabled": false,
+        "open_issues": 0,
+        "pull_requests": 0
+      }
+    }
+  ],
+  "organization_summary": {
+    "name": "OPEN Talent Society",
+    "mission": "Nonprofit open source community for the People Industry (HR, TA, L&D, People Analytics)",
+    "tagline": "Together We Grow",
+    "website": "https://opentalentsociety.org",
+    "focus_areas": [
+      "Labor market intelligence",
+      "AI-powered HR tools",
+      "Job description analysis",
+      "Skills taxonomy standardization",
+      "Inclusive hiring practices",
+      "People analytics",
+      "Open source HR technology"
+    ],
+    "total_repos": 4,
+    "public_repos": 3,
+    "private_repos": 1,
+    "tech_ecosystem": {
+      "primary_languages": ["TypeScript", "Python"],
+      "ai_platforms": ["Google Gemini", "OpenAI GPTs"],
+      "data_sources": ["Lightcast Open Skills API", "RPLS data"],
+      "frameworks": ["SvelteKit", "React", "Vite"],
+      "databases": ["PostgreSQL", "Supabase"],
+      "data_tools": ["DuckDB", "Polars"]
+    },
+    "activity_level": "active",
+    "most_recent_push": "2025-11-29 (rpls-dashboard)",
+    "development_philosophy": "Spec-Driven Development, AI-native, Open Source",
+    "community_type": "Builders (HR pros, engineers, designers, researchers, marketers)"
+  }
+}

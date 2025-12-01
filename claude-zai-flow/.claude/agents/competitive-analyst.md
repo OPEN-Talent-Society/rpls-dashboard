@@ -1,0 +1,1 @@
+../../../claude-zai/.claude/agents/competitive-analyst.md

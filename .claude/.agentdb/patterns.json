@@ -1,0 +1,428 @@
+{
+  "version": "1.0.0",
+  "created": "2025-12-01T01:50:00Z",
+  "updated": "2025-12-01T19:15:00Z",
+  "patterns": [
+    {
+      "id": "pattern-001",
+      "hash": "cd7d890fcf5a",
+      "name": "Hook Configuration Pattern",
+      "category": "infrastructure",
+      "description": "Settings.json hook configuration with matchers for automatic execution",
+      "template": {
+        "matcher": "ToolName|OtherTool",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'script.sh'"
+          }
+        ]
+      },
+      "use_cases": ["PreToolUse", "PostToolUse", "UserPromptSubmit", "Stop", "Notification"]
+    },
+    {
+      "id": "pattern-002",
+      "hash": "a1b2c3d4e5f6",
+      "name": "Hive Mind Swarm Orchestration",
+      "category": "orchestration",
+      "description": "Deploy 20+ specialized agents in parallel using mesh topology for comprehensive multi-system audits. Each agent type focuses on specific domain: researcher for docs, coder for implementation, analyst for data, optimizer for performance, coordinator for synthesis. Agents share findings via claude-flow memory with namespace segmentation.",
+      "template": {
+        "topology": "mesh",
+        "maxAgents": 20,
+        "strategy": "specialized",
+        "agent_types": ["researcher", "coder", "analyst", "optimizer", "coordinator", "documenter", "tester", "reviewer"],
+        "memory_namespace": "swarm-{id}",
+        "hooks": ["pre-task", "post-edit", "notification", "post-task"]
+      },
+      "use_cases": ["infrastructure-audit", "multi-system-discovery", "knowledge-aggregation", "deep-crawl"]
+    },
+    {
+      "id": "pattern-003",
+      "hash": "b2c3d4e5f6g7",
+      "name": "Dual API Strategy (Z.AI + Anthropic)",
+      "category": "cost-optimization",
+      "description": "Use Z.AI GLM API (claude-zai variants) for cost-effective development and Anthropic API for production/complex tasks. Route based on task complexity. 5 Claude variants: claude (Anthropic standard), claude-zai (Z.AI cost-effective), claude-flow (Anthropic + orchestration), claude-zai-flow (Z.AI + orchestration), claude-zai-agent-flow (Z.AI + full MCP).",
+      "template": {
+        "variants": {
+          "claude": {"api": "anthropic", "use_case": "production"},
+          "claude-zai": {"api": "z.ai", "use_case": "development"},
+          "claude-flow": {"api": "anthropic", "orchestration": "agentic-flow"},
+          "claude-zai-flow": {"api": "z.ai", "orchestration": "agentic-flow"},
+          "claude-zai-agent-flow": {"api": "z.ai", "orchestration": "full-mcp"}
+        },
+        "routing": "complexity-based"
+      },
+      "use_cases": ["api-routing", "cost-management", "multi-provider", "budget-optimization"]
+    },
+    {
+      "id": "pattern-004",
+      "hash": "c3d4e5f6g7h8",
+      "name": "Cloudflare Access Service Token Authentication",
+      "category": "authentication",
+      "description": "Service token authentication for Cloudflare Access protected services (like Cortex). Use CF-Access-Client-Id and CF-Access-Client-Secret headers instead of Bearer token. Token format: CLIENT_ID.SECRET (32+28 chars separated by dot). Implement retry logic with exponential backoff.",
+      "template": {
+        "headers": {
+          "CF-Access-Client-Id": "${CLIENT_ID}",
+          "CF-Access-Client-Secret": "${CLIENT_SECRET}"
+        },
+        "retry": {
+          "attempts": 3,
+          "backoff": "exponential",
+          "initial_delay_ms": 1000
+        }
+      },
+      "use_cases": ["cortex-api", "cloudflare-tunnels", "service-auth", "zero-trust"]
+    },
+    {
+      "id": "pattern-005",
+      "hash": "d4e5f6g7h8i9",
+      "name": "Progressive Disclosure for Token Efficiency",
+      "category": "optimization",
+      "description": "Three-level skills disclosure achieving 98.7% token reduction: Level 1 (metadata only at startup), Level 2 (SKILL.md on-demand), Level 3 (bundled files selective access). Replace static tool definitions with dynamic discovery via tool search meta-tool.",
+      "template": {
+        "levels": [
+          {"level": 1, "content": "metadata", "load": "startup"},
+          {"level": 2, "content": "SKILL.md", "load": "on-demand"},
+          {"level": 3, "content": "bundled_files", "load": "selective"}
+        ],
+        "discovery": "tool_search_meta",
+        "token_reduction": "98.7%"
+      },
+      "use_cases": ["token-optimization", "context-efficiency", "skills-loading", "large-codebase"]
+    },
+    {
+      "id": "pattern-006",
+      "hash": "e5f6g7h8i9j0",
+      "name": "Memory Systems Hierarchy",
+      "category": "data-management",
+      "description": "Three-tier memory architecture: Claude Flow (in-memory, session-only), Supabase agent_memory table (cloud persistence with ON CONFLICT DO UPDATE), AgentDB local JSON (file-based backup). Memory flows from ephemeral to persistent. Use Management API (api.supabase.com) for raw SQL, not REST API.",
+      "template": {
+        "tiers": [
+          {"name": "claude-flow", "type": "in-memory", "persistence": false, "ttl": "session"},
+          {"name": "supabase", "type": "cloud", "persistence": true, "api": "management"},
+          {"name": "agentdb", "type": "local-json", "persistence": true, "backup": true}
+        ],
+        "sync_direction": "claude-flow → supabase → agentdb",
+        "conflict_resolution": "ON CONFLICT DO UPDATE"
+      },
+      "use_cases": ["memory-persistence", "cross-session", "backup", "sync"]
+    },
+    {
+      "id": "pattern-007",
+      "hash": "f6g7h8i9j0k1",
+      "name": "Deep Crawl Methodology",
+      "category": "audit",
+      "description": "Systematic multi-system deep crawl using agent swarm. Phases: 1) Initialize swarm with mesh topology, 2) Spawn specialized agents per domain, 3) Parallel crawl with memory logging, 4) Aggregation and synthesis, 5) Supabase sync. Cover: GitHub repos, Proxmox VMs, Docker containers, OCI infrastructure, Cortex knowledge base.",
+      "template": {
+        "phases": [
+          {"name": "init", "action": "swarm_init", "topology": "mesh"},
+          {"name": "spawn", "action": "agent_spawn", "count": "20+"},
+          {"name": "crawl", "action": "parallel_execute", "memory_log": true},
+          {"name": "aggregate", "action": "coordinator_synthesize"},
+          {"name": "persist", "action": "sync_to_supabase"}
+        ],
+        "domains": ["github", "proxmox", "docker", "oci", "cortex"]
+      },
+      "use_cases": ["infrastructure-audit", "knowledge-discovery", "system-inventory", "security-audit"]
+    },
+    {
+      "id": "pattern-008",
+      "hash": "g7h8i9j0k1l2",
+      "name": "Cortex PARA Knowledge Structure",
+      "category": "knowledge-management",
+      "description": "PARA methodology for Cortex (SiYuan) notebooks: Projects (active project work), Areas (ongoing responsibilities), Resources (reference materials and learnings), Archives (completed work >30 days). SQL queries via siyuan_sql_query for discovery. API token + Cloudflare Access for authentication.",
+      "template": {
+        "notebooks": {
+          "projects": "20231114112233-projects",
+          "areas": "20231114112234-areas",
+          "resources": "20231114112235-resources",
+          "archives": "20231114112236-archives"
+        },
+        "api": {
+          "token": "0fkvtzw0jrat2oht",
+          "url": "https://cortex.aienablement.academy"
+        },
+        "archive_rule": ">30_days_completed"
+      },
+      "use_cases": ["knowledge-management", "documentation", "task-logging", "learning-capture"]
+    },
+    {
+      "id": "pattern-009",
+      "hash": "h8i9j0k1l2m3",
+      "name": "Continuous Improvement Framework",
+      "category": "methodology",
+      "description": "Core philosophy: We should not make the same mistake twice. Implements: 1) Error logging with resolution patterns, 2) Pre-search deduplication to avoid repeating analysis, 3) Solution templates as building blocks, 4) Pattern libraries for recurring problems. Learnings auto-extract from session findings.",
+      "template": {
+        "components": [
+          {"name": "error_logging", "destination": "learnings_table"},
+          {"name": "deduplication", "check": "pre-search", "method": "md5_hash"},
+          {"name": "templates", "storage": "patterns_table"},
+          {"name": "extraction", "trigger": "session-end", "auto": true}
+        ],
+        "principle": "no_repeat_mistakes"
+      },
+      "use_cases": ["error-resolution", "learning-capture", "knowledge-reuse", "automation"]
+    },
+    {
+      "id": "pattern-010",
+      "hash": "i9j0k1l2m3n4",
+      "name": "Multi-Account GitHub Organization",
+      "category": "development",
+      "description": "Separate GitHub accounts by domain: Personal (adambkovacs) for AI/MCP tooling, Company (The-Talent-Foundation) for B2B services, Nonprofit (OPEN-Talent-Society) for People Industry, EdTech (AI-Enablement-Academy) for LMS. Each with distinct focus and repo structure.",
+      "template": {
+        "accounts": {
+          "personal": {"name": "adambkovacs", "focus": "ai-tooling", "repos": 14},
+          "company": {"name": "The-Talent-Foundation", "focus": "b2b-services", "repos": 3},
+          "nonprofit": {"name": "OPEN-Talent-Society", "focus": "people-industry", "repos": 4},
+          "edtech": {"name": "AI-Enablement-Academy", "focus": "lms-platform", "repos": 8}
+        },
+        "total_repos": 29
+      },
+      "use_cases": ["multi-account", "organization-structure", "repo-management", "separation-of-concerns"]
+    },
+    {
+      "id": "pattern-011",
+      "hash": "j0k1l2m3n4o5",
+      "name": "Hook Automation Bridge Pattern",
+      "category": "automation",
+      "description": "Bridge hook that connects memory operations to learnings/patterns capture. When memory-store.sh is called, memory-to-learnings-bridge.sh analyzes content for learning/pattern keywords and triggers log-learning.sh or save-pattern.sh appropriately. Enables automatic knowledge capture without manual intervention.",
+      "template": {
+        "trigger": "memory-store.sh",
+        "bridge": "memory-to-learnings-bridge.sh",
+        "targets": ["log-learning.sh", "save-pattern.sh"],
+        "keywords": {
+          "learning": ["discovered", "learned", "found", "realized", "solution", "fixed"],
+          "pattern": ["pattern", "approach", "method", "strategy", "workflow", "template"]
+        }
+      },
+      "use_cases": ["auto-capture", "knowledge-extraction", "hook-chaining", "automation"]
+    },
+    {
+      "id": "pattern-012",
+      "hash": "k1l2m3n4o5p6",
+      "name": "USACF Multi-Agent Search Framework",
+      "category": "search",
+      "description": "Universal Search Algorithm for Claude Flow implements 20+ AI research techniques including step-back prompting, ambiguity clarification, multi-hop reasoning, and iterative refinement. Enables sophisticated query handling across heterogeneous knowledge sources (Cortex, NocoDB, Supabase, GitHub, external APIs).",
+      "template": {
+        "techniques": ["step-back-prompting", "ambiguity-clarification", "multi-hop-reasoning", "iterative-refinement", "query-decomposition", "semantic-expansion"],
+        "sources": ["cortex", "nocodb", "supabase", "github", "external-apis"],
+        "phases": ["interpret", "decompose", "search", "aggregate", "synthesize"],
+        "agents": ["query-analyzer", "source-router", "result-aggregator", "synthesis-coordinator"]
+      },
+      "use_cases": ["complex-queries", "multi-source-search", "knowledge-discovery", "research-automation"]
+    },
+    {
+      "id": "pattern-013",
+      "hash": "l2m3n4o5p6q7",
+      "name": "Local Development Sync Pattern",
+      "category": "development",
+      "description": "Local development environment synced with production via Cortex and NocoDB integration. Implements retry logic with exponential backoff, graceful error handling, environment variable management (.env.local vs .env), and MCP server health checking. Ensures dev/prod parity.",
+      "template": {
+        "sync_targets": ["cortex", "nocodb", "supabase"],
+        "env_management": {
+          "local": ".env.local",
+          "production": ".env",
+          "override_order": ["system", ".env", ".env.local"]
+        },
+        "retry": {
+          "strategy": "exponential-backoff",
+          "max_attempts": 3,
+          "initial_delay_ms": 1000
+        },
+        "health_check": {
+          "interval_ms": 30000,
+          "timeout_ms": 5000,
+          "endpoints": ["mcp-servers", "api-routes", "db-connections"]
+        }
+      },
+      "use_cases": ["dev-prod-sync", "environment-management", "health-monitoring", "graceful-degradation"]
+    },
+    {
+      "id": "pattern-014",
+      "hash": "m3n4o5p6q7r8",
+      "name": "Security Gap Analysis Pattern",
+      "category": "security",
+      "description": "Systematic security assessment methodology for identifying gaps between documented specifications and actual implementation. Categorizes vulnerabilities by severity (CRITICAL/HIGH/MEDIUM/LOW). Used for project-campfire auth analysis revealing missing middleware, unprotected routes, and spec-implementation mismatches.",
+      "template": {
+        "severity_levels": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+        "gap_categories": ["auth", "authorization", "api-protection", "data-validation", "secrets-management"],
+        "analysis_phases": [
+          {"name": "spec-review", "action": "review-documented-security-requirements"},
+          {"name": "implementation-audit", "action": "scan-actual-code-for-guards"},
+          {"name": "gap-identification", "action": "compare-spec-vs-implementation"},
+          {"name": "risk-scoring", "action": "assign-severity-and-priority"},
+          {"name": "remediation-plan", "action": "create-phased-fix-checklist"}
+        ],
+        "output": "auth_architecture_report.json"
+      },
+      "use_cases": ["security-audit", "compliance-check", "penetration-test-prep", "pre-launch-review"]
+    },
+    {
+      "id": "pattern-015",
+      "hash": "n4o5p6q7r8s9",
+      "name": "Tech Stack Ecosystem Analysis",
+      "category": "audit",
+      "description": "Comprehensive technology stack analysis across multiple repositories. Maps frontend (Next.js, React, SvelteKit), backend (Express, PayloadCMS, FastAPI), databases (PostgreSQL, Supabase, DuckDB), AI/ML (Gemini, OpenAI, Claude/MCP), and DevOps (Docker, GitHub Actions) technologies. Identifies primary languages and framework versions.",
+      "template": {
+        "categories": {
+          "frontend": ["framework", "version", "ui-library", "state-management"],
+          "backend": ["runtime", "framework", "orm", "api-style"],
+          "database": ["type", "provider", "caching", "search"],
+          "ai_ml": ["providers", "models", "mcp-servers", "embeddings"],
+          "devops": ["ci_cd", "containers", "monitoring", "hosting"]
+        },
+        "analysis_method": "repo-by-repo-scan",
+        "output_format": "ecosystem-matrix"
+      },
+      "use_cases": ["tech-debt-assessment", "standardization-planning", "hiring-requirements", "architecture-review"]
+    },
+    {
+      "id": "pattern-016",
+      "hash": "o5p6q7r8s9t0",
+      "name": "Deep Block Analysis Pattern",
+      "category": "knowledge-management",
+      "description": "Full block-level analysis of knowledge bases (Cortex/SiYuan). Goes beyond document counts to analyze 26,937+ blocks by type: paragraphs, list items, headings, tables, code blocks. Code blocks are GOLD - contain scripts, configs, API schemas, Kubernetes manifests. Enables discovery of executable knowledge vs documentation.",
+      "template": {
+        "block_types": {
+          "structural": ["paragraph", "heading", "list", "list-item", "quote"],
+          "rich_content": ["table", "code", "math", "embed"],
+          "metadata": ["doc", "text", "attributes"]
+        },
+        "analysis_priorities": {
+          "highest": "code-blocks",
+          "high": "tables",
+          "medium": "lists",
+          "low": "paragraphs"
+        },
+        "extraction_targets": ["scripts", "configs", "schemas", "manifests", "credentials"]
+      },
+      "use_cases": ["knowledge-mining", "executable-extraction", "documentation-audit", "cortex-optimization"]
+    },
+    {
+      "id": "pattern-017",
+      "hash": "p6q7r8s9t0u1",
+      "name": "Implementation Status Tracking",
+      "category": "project-management",
+      "description": "Track implementation status across agents, hooks, and MCPs. Identifies IMPLEMENTED (working code) vs DOCUMENTED (specs only) vs GAPS (missing entirely). Example: 49 agents in claude-zai, 19 hooks in claude-code, 9 MCPs in mcp-servers. GAPS: claude-code has 0 agents (needs sync from claude-zai).",
+      "template": {
+        "status_categories": ["implemented", "documented", "gap", "deprecated"],
+        "component_types": ["agents", "hooks", "mcps", "skills", "commands"],
+        "locations": {
+          "agents": ".claude/agents/",
+          "hooks": ".claude/hooks/",
+          "mcps": "mcp-servers/",
+          "skills": ".claude/skills/"
+        },
+        "sync_direction": "claude-zai → claude-code",
+        "gap_actions": ["create", "sync", "deprecate", "document"]
+      },
+      "use_cases": ["implementation-audit", "sync-planning", "debt-tracking", "capability-matrix"]
+    },
+    {
+      "id": "pattern-018",
+      "hash": "q7r8s9t0u1v2",
+      "name": "MCP Gap Analysis Pattern",
+      "category": "infrastructure",
+      "description": "Identify MCPs that are DOCUMENTED but NOT IMPLEMENTED. Prioritize by business value: HIGH (docmost-mcp, qdrant-mcp, stripe-agent-toolkit), MEDIUM (oci-mcp, hubspot-mcp, brevo-mcp, proxmox-mcp), LOW (ghost-mcp). Action: Create MCP wrappers in mcp-servers/ directory.",
+      "template": {
+        "priority_matrix": {
+          "high": {"impact": "critical-business-function", "effort": "< 1 week"},
+          "medium": {"impact": "operational-efficiency", "effort": "1-2 weeks"},
+          "low": {"impact": "nice-to-have", "effort": "> 2 weeks"}
+        },
+        "gap_sources": ["cortex-docs", "specs", "integration-requirements"],
+        "implementation_path": "mcp-servers/{service}-mcp/",
+        "template_structure": ["index.ts", "tools.ts", "auth.ts", "README.md"]
+      },
+      "use_cases": ["mcp-roadmap", "integration-planning", "capability-expansion", "developer-prioritization"]
+    },
+    {
+      "id": "pattern-019",
+      "hash": "r8s9t0u1v2w3",
+      "name": "Specs vs Implementation Comparison",
+      "category": "quality",
+      "description": "Systematic comparison of specifications to actual code. Identifies mismatches: roles (specs: 5, code: 3), auth (NextAuth configured but 0% implemented), enrollment (schema exists, no middleware), permissions (611-line RBAC spec, no guards). Outputs gap report with fix priorities.",
+      "template": {
+        "comparison_areas": ["data-models", "api-endpoints", "auth-flows", "permissions", "ui-flows"],
+        "mismatch_types": ["missing", "partial", "outdated", "incorrect", "extra"],
+        "evidence_required": {
+          "spec_reference": "file_path:line_number",
+          "code_reference": "file_path:line_number",
+          "gap_description": "string",
+          "fix_effort": "hours"
+        },
+        "output": "specs-vs-implementation-report.md"
+      },
+      "use_cases": ["qa-review", "tech-debt", "release-readiness", "compliance-audit"]
+    },
+    {
+      "id": "pattern-020",
+      "hash": "s9t0u1v2w3x4",
+      "name": "Security Assessment Methodology",
+      "category": "security",
+      "description": "4-phase security implementation checklist derived from auth_architecture_report.json analysis. Phase 1: NextAuth setup (2h). Phase 2: Middleware creation (4h). Phase 3: API route protection (3h). Phase 4: Enrollment verification (3h). Total: 12h to baseline security.",
+      "template": {
+        "phases": [
+          {"id": 1, "name": "auth-setup", "tasks": ["configure-provider", "create-auth-routes", "setup-session"], "hours": 2},
+          {"id": 2, "name": "middleware", "tasks": ["create-middleware.ts", "define-protected-routes", "add-redirects"], "hours": 4},
+          {"id": 3, "name": "api-protection", "tasks": ["add-session-checks", "validate-permissions", "rate-limiting"], "hours": 3},
+          {"id": 4, "name": "enrollment-verify", "tasks": ["check-course-access", "verify-payment-status", "block-unauthorized"], "hours": 3}
+        ],
+        "total_hours": 12,
+        "blocker": "phase-1-must-complete-first"
+      },
+      "use_cases": ["security-implementation", "sprint-planning", "effort-estimation", "dependency-tracking"]
+    },
+    {
+      "id": "pattern-021",
+      "hash": "t0u1v2w3x4y5",
+      "name": "Epic/Roadmap Planning Pattern",
+      "category": "project-management",
+      "description": "10-epic structure with 102 tasks and 249 hours across 4 sprints. Priorities: P0 (CRITICAL blockers), P1 (important), P2 (standard), P3 (backlog). Epic categories: Landing (38h P0), Authentication (37h P0 BLOCKER), Enrollment (26h P0), Course Delivery (29h P0), Progress (18h P1), Admin (22h P1), Instructor (13h P2), Analytics (9h P2), Integrations (14h P2), AI Features (43h P3).",
+      "template": {
+        "epic_structure": {
+          "id": "epic-X",
+          "name": "string",
+          "priority": "P0|P1|P2|P3",
+          "hours": "number",
+          "tasks": ["task-array"],
+          "dependencies": ["epic-ids"]
+        },
+        "priority_definitions": {
+          "P0": "must-ship-mvp",
+          "P1": "important-not-blocking",
+          "P2": "standard-feature",
+          "P3": "nice-to-have"
+        },
+        "sprint_planning": {
+          "sprint_duration_weeks": 2,
+          "capacity_hours_per_sprint": 60,
+          "buffer_percentage": 20
+        }
+      },
+      "use_cases": ["roadmap-creation", "sprint-planning", "resource-allocation", "stakeholder-communication"]
+    },
+    {
+      "id": "pattern-022",
+      "hash": "u1v2w3x4y5z6",
+      "name": "Prioritized Actionable Steps Pattern",
+      "category": "execution",
+      "description": "Three-tier prioritization: IMMEDIATE (9h - create middleware, configure NextAuth, add session checks), SHORT-TERM (11h - Stripe webhooks, enrollment verification, OAuth, login form), MEDIUM-TERM (56h - instructor portal, AI features). Identifies BLOCKER that must complete before other work proceeds.",
+      "template": {
+        "tiers": [
+          {"name": "immediate", "timeframe": "this-week", "max_hours": 10, "criteria": "unblocks-critical-path"},
+          {"name": "short-term", "timeframe": "next-2-weeks", "max_hours": 20, "criteria": "enables-core-functionality"},
+          {"name": "medium-term", "timeframe": "next-month", "max_hours": 80, "criteria": "completes-feature-set"}
+        ],
+        "task_format": {
+          "description": "string",
+          "hours": "number",
+          "dependencies": ["task-ids"],
+          "blocker": "boolean"
+        },
+        "blocker_handling": "must-resolve-before-other-work"
+      },
+      "use_cases": ["daily-planning", "standup-prep", "dependency-management", "focus-setting"]
+    }
+  ]
+}

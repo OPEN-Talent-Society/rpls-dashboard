@@ -1,0 +1,537 @@
+{
+  "project": "AI Enablement Academy - Project Campfire",
+  "workspace": {
+    "type": "monorepo",
+    "manager": "pnpm",
+    "version": "8.14.0",
+    "rootPath": "/Users/adamkovacs/Documents/codebuild/project-campfire",
+    "structure": {
+      "apps": ["web", "cms"],
+      "packages": ["config", "database", "typescript-config", "ui"]
+    }
+  },
+  "packages": [
+    {
+      "id": 1,
+      "name": "@academy/typescript-config",
+      "version": "1.0.0",
+      "type": "shared-config",
+      "path": "/Users/adamkovacs/Documents/codebuild/project-campfire/packages/typescript-config",
+      "private": true,
+      "description": "Shared TypeScript configuration for monorepo",
+      "files": {
+        "base.json": {
+          "extends": null,
+          "display": "Default",
+          "target": "ES2022",
+          "module": "ESNext",
+          "lib": ["ES2022"],
+          "strict": true,
+          "features": [
+            "declaration",
+            "declarationMap",
+            "esModuleInterop",
+            "isolatedModules",
+            "moduleResolution: node",
+            "resolveJsonModule",
+            "skipLibCheck"
+          ]
+        },
+        "nextjs.json": {
+          "extends": "./base.json",
+          "display": "Next.js",
+          "target": "ES2017",
+          "lib": ["dom", "dom.iterable", "esnext"],
+          "jsx": "preserve",
+          "moduleResolution": "bundler",
+          "plugins": [{"name": "next"}]
+        },
+        "react-library.json": {
+          "note": "Listed in package.json but not present in filesystem"
+        }
+      },
+      "dependencies": [],
+      "exports": ["base.json", "nextjs.json", "react-library.json"]
+    },
+    {
+      "id": 2,
+      "name": "@academy/config",
+      "version": "unknown",
+      "type": "shared-config",
+      "path": "/Users/adamkovacs/Documents/codebuild/project-campfire/packages/config",
+      "private": true,
+      "description": "Shared configuration package",
+      "status": "empty - no files"
+    },
+    {
+      "id": 3,
+      "name": "@academy/database",
+      "version": "unknown",
+      "type": "database-schema",
+      "path": "/Users/adamkovacs/Documents/codebuild/project-campfire/packages/database",
+      "private": true,
+      "description": "Database schema and migrations",
+      "status": "empty - no files"
+    },
+    {
+      "id": 4,
+      "name": "@academy/ui",
+      "version": "unknown",
+      "type": "shared-components",
+      "path": "/Users/adamkovacs/Documents/codebuild/project-campfire/packages/ui",
+      "private": true,
+      "description": "Shared UI component library",
+      "status": "empty - no files"
+    },
+    {
+      "id": 5,
+      "name": "@academy/web",
+      "version": "1.0.0",
+      "type": "next-app",
+      "path": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web",
+      "private": true,
+      "description": "Main web application with Next.js 15, Payload CMS 3.65, and e-learning platform",
+      "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint",
+        "typecheck": "tsc --noEmit"
+      },
+      "coreFrameworks": [
+        "Next.js 15.1.0",
+        "React 19.0.0",
+        "TypeScript 5.3.3",
+        "TailwindCSS 3.4.0",
+        "Payload CMS 3.65.0"
+      ],
+      "dependencies": {
+        "cms": [
+          "@payloadcms/db-postgres 3.65.0",
+          "@payloadcms/next 3.65.0",
+          "@payloadcms/richtext-lexical 3.65.0",
+          "@payloadcms/ui 3.65.0",
+          "payload 3.65.0"
+        ],
+        "auth": [
+          "next-auth 5.0.0-beta.4"
+        ],
+        "ui": [
+          "@radix-ui/react-select 2.2.6",
+          "@radix-ui/react-slot 1.2.4",
+          "class-variance-authority 0.7.1",
+          "clsx 2.1.1",
+          "lucide-react 0.555.0",
+          "tailwind-merge 2.6.0"
+        ],
+        "api": [
+          "graphql 16.8.1"
+        ],
+        "images": [
+          "sharp 0.34.5"
+        ],
+        "validation": [
+          "zod 3.22.4"
+        ],
+        "analytics": [
+          "posthog-js 1.298.1"
+        ]
+      },
+      "collections": {
+        "users": {
+          "slug": "users",
+          "auth": true,
+          "fields": [
+            "firstName",
+            "lastName",
+            "email (auth field)",
+            "role (student|instructor|admin)",
+            "avatar (upload)",
+            "bio",
+            "stripeCustomerId",
+            "enrolledCourses (relationship)"
+          ],
+          "purpose": "User management with authentication and enrollment tracking"
+        },
+        "courses": {
+          "slug": "courses",
+          "fields": [
+            "title",
+            "slug (unique)",
+            "description",
+            "longDescription (richText)",
+            "featuredImage (upload)",
+            "impactLevel (L1|L2|L3)",
+            "capabilityLevel (foundations|essentials|fluent|native)",
+            "price",
+            "currency (usd|eur|gbp)",
+            "stripeProductId",
+            "stripePriceId",
+            "duration",
+            "commitment",
+            "modules (relationship)",
+            "instructor (relationship)",
+            "features (array)",
+            "learningOutcomes (array)",
+            "nextCohortDate",
+            "maxStudents",
+            "published"
+          ],
+          "purpose": "E-learning courses with 3x4 impact/capability matrix"
+        },
+        "modules": {
+          "slug": "modules",
+          "fields": [
+            "title",
+            "description",
+            "order",
+            "lessons (relationship)",
+            "duration"
+          ],
+          "purpose": "Course sections/modules"
+        },
+        "lessons": {
+          "slug": "lessons",
+          "fields": [
+            "title",
+            "slug",
+            "description",
+            "order",
+            "type (video|article|quiz|assignment|live)",
+            "content (richText)",
+            "videoUrl",
+            "videoDuration",
+            "transcript (richText)",
+            "quiz (relationship)",
+            "resources (array)",
+            "isFree"
+          ],
+          "purpose": "Individual lesson content with multiple content types"
+        },
+        "quizzes": {
+          "slug": "quizzes",
+          "fields": [
+            "title",
+            "description",
+            "passingScore (0-100)",
+            "timeLimit (minutes)",
+            "questions (array with types: multiple_choice|true_false|short_answer)"
+          ],
+          "purpose": "Quiz assessments with scoring"
+        },
+        "progress": {
+          "slug": "progress",
+          "fields": [
+            "user (relationship, indexed)",
+            "course (relationship, indexed)",
+            "completedLessons (relationship)",
+            "currentLesson (relationship)",
+            "progressPercentage (0-100)",
+            "quizScores (array with quiz|score|attempts|completedAt)",
+            "timeSpent (minutes)",
+            "lastAccessedAt",
+            "completedAt",
+            "certificateIssued"
+          ],
+          "purpose": "Track student progress in courses"
+        },
+        "enrollments": {
+          "slug": "enrollments",
+          "fields": [
+            "user (relationship, indexed)",
+            "course (relationship, indexed)",
+            "status (active|completed|expired|refunded)",
+            "stripePaymentIntentId",
+            "stripeCheckoutSessionId",
+            "amountPaid",
+            "currency",
+            "enrolledAt",
+            "expiresAt",
+            "cohort"
+          ],
+          "purpose": "Course purchases and enrollment records"
+        },
+        "media": {
+          "slug": "media",
+          "upload": {
+            "staticDir": "media",
+            "mimeTypes": ["image/*", "video/*", "application/pdf"]
+          },
+          "fields": ["alt", "caption"],
+          "purpose": "File and image management"
+        },
+        "testimonials": {
+          "slug": "testimonials",
+          "fields": [
+            "name",
+            "role",
+            "company",
+            "avatar (upload)",
+            "quote",
+            "course (relationship)",
+            "rating (1-5)",
+            "featured"
+          ],
+          "purpose": "Course testimonials"
+        },
+        "form-submissions": {
+          "slug": "form-submissions",
+          "fields": [
+            "formType (contact|newsletter|inquiry|feedback|support)",
+            "email",
+            "name",
+            "company",
+            "message",
+            "data (JSON)",
+            "formbricksResponseId",
+            "submittedAt",
+            "status (new|read|replied|archived)"
+          ],
+          "purpose": "Form submission storage (Formbricks fallback)"
+        },
+        "pages": {
+          "slug": "pages",
+          "fields": [
+            "title",
+            "slug (unique)",
+            "content (richText)",
+            "metaTitle",
+            "metaDescription",
+            "published"
+          ],
+          "purpose": "CMS-managed pages"
+        },
+        "settings": {
+          "slug": "settings",
+          "fields": [
+            "siteName",
+            "siteDescription",
+            "logo (upload)",
+            "socialLinks (group)",
+            "contact (group)"
+          ],
+          "purpose": "Global site configuration"
+        }
+      },
+      "database": {
+        "adapter": "PostgreSQL",
+        "provider": "@payloadcms/db-postgres",
+        "connectionString": "process.env.DATABASE_URL"
+      },
+      "editor": {
+        "type": "Lexical RichText Editor",
+        "package": "@payloadcms/richtext-lexical"
+      },
+      "payloadConfig": {
+        "outputFile": "payload-types.ts",
+        "admin": {
+          "user": "users",
+          "group": "People",
+          "meta": {
+            "titleSuffix": "| AI Enablement Academy",
+            "favicon": "/favicon.ico"
+          }
+        }
+      }
+    }
+  ],
+  "sharedUtilities": [
+    {
+      "name": "cn (className merger)",
+      "path": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/lib/utils.ts",
+      "description": "Tailwind CSS class utility using clsx and tailwind-merge",
+      "exported": true,
+      "usage": "Used throughout UI components for class merging"
+    },
+    {
+      "name": "courses data and utilities",
+      "path": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/lib/courses.ts",
+      "description": "Course catalog with 3x4 matrix framework (L1-L3 impact levels, 4 capability levels)",
+      "exports": [
+        "courses: Course[]",
+        "getPublishedCourses(): Course[]",
+        "getCourseBySlug(slug: string): Course | undefined",
+        "filterCourses(courses, filters): Course[]"
+      ],
+      "courseCount": 12,
+      "priceRange": "$499 - $3,979",
+      "matrix": {
+        "impactLevels": ["L1: Augmentation", "L2: Automation", "L3: Architecture"],
+        "capabilityLevels": ["Foundations", "Essentials", "Fluency", "AI Native"]
+      }
+    },
+    {
+      "name": "Brevo integration",
+      "path": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/lib/brevo.ts",
+      "description": "Email marketing integration with Brevo/Sendinblue",
+      "size": "11KB",
+      "features": ["Contact management", "Email campaigns", "Webhooks"]
+    },
+    {
+      "name": "Stripe integration",
+      "path": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/lib/stripe.ts",
+      "description": "Payment processing integration",
+      "size": "5.7KB",
+      "features": ["Product/pricing management", "Checkout sessions", "Webhooks"]
+    },
+    {
+      "name": "Formbricks integration",
+      "path": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/lib/formbricks.ts",
+      "description": "Survey and feedback form integration",
+      "size": "6.7KB"
+    }
+  ],
+  "uiComponents": {
+    "location": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/components",
+    "directories": ["ui", "elearning"],
+    "components": [
+      {
+        "name": "Button",
+        "path": "/components/ui/button.tsx",
+        "framework": "Radix UI + CVA",
+        "variants": {
+          "variant": ["default", "destructive", "outline", "secondary", "ghost", "link"],
+          "size": ["default", "sm", "lg", "icon"]
+        },
+        "features": ["forwardRef", "asChild prop", "icon support"]
+      },
+      {
+        "name": "Card",
+        "path": "/components/ui/card.tsx",
+        "framework": "Radix UI primitive",
+        "usage": "Container component with semantic HTML"
+      },
+      {
+        "name": "Input",
+        "path": "/components/ui/input.tsx",
+        "framework": "HTML input wrapper",
+        "features": ["className support", "ref forwarding"]
+      },
+      {
+        "name": "Textarea",
+        "path": "/components/ui/textarea.tsx",
+        "framework": "HTML textarea wrapper",
+        "features": ["className support", "ref forwarding"]
+      },
+      {
+        "name": "Select",
+        "path": "/components/ui/select.tsx",
+        "framework": "Radix UI Select",
+        "features": ["Accessible dropdown", "keyboard navigation"]
+      },
+      {
+        "name": "Badge",
+        "path": "/components/ui/badge.tsx",
+        "framework": "CVA-based",
+        "variants": ["default", "secondary", "destructive", "outline"],
+        "usage": "Status indicators, labels, tags"
+      },
+      {
+        "name": "Progress",
+        "path": "/components/ui/progress.tsx",
+        "framework": "Radix UI Progress",
+        "usage": "Progress bars for lessons and courses"
+      },
+      {
+        "name": "LessonViewer",
+        "path": "/components/elearning/LessonViewer.tsx",
+        "type": "Feature component",
+        "description": "Complete lesson player with video, transcript, resources, navigation",
+        "features": [
+          "Video playback tracking",
+          "Auto-completion at 90% watched",
+          "Module navigation sidebar",
+          "Transcript viewer",
+          "Resources section",
+          "Progress tracking",
+          "Access control (enrolled/free lesson)",
+          "Lesson type icons"
+        ],
+        "props": {
+          "lesson": "Lesson data with video/content",
+          "course": "Course metadata",
+          "module": "Module with lessons list",
+          "progress": "User progress data",
+          "nextLesson": "Next lesson navigation",
+          "prevLesson": "Previous lesson navigation",
+          "isEnrolled": "Enrollment status"
+        },
+        "styling": "Tailwind CSS with dark theme (dark-navy, cyan, teal)"
+      }
+    ]
+  },
+  "types": {
+    "course": {
+      "path": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/types/course.ts",
+      "exports": [
+        "ImpactLevel: 'L1' | 'L2' | 'L3'",
+        "CapabilityLevel: 'foundations' | 'essentials' | 'fluent' | 'native'",
+        "Course interface",
+        "CourseFilters interface"
+      ]
+    }
+  },
+  "rootDependencies": {
+    "devTools": [
+      "turbo 1.11.2 (monorepo orchestration)",
+      "typescript 5.3.3",
+      "prettier 3.1.1",
+      "@types/node 20.10.6"
+    ],
+    "engines": {
+      "node": ">=18.0.0",
+      "pnpm": ">=8.0.0"
+    }
+  },
+  "pages": {
+    "location": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/app",
+    "routes": [
+      "/ (home)",
+      "/about (about page)",
+      "/pricing (pricing page)",
+      "/courses (courses listing)",
+      "/courses/[slug]/lessons/[lessonSlug] (lesson viewer)",
+      "/dashboard (user dashboard)",
+      "/academy-admin (admin panel)",
+      "/contact (contact form)",
+      "/faq (FAQ)",
+      "/resources (resources)",
+      "/register (registration)",
+      "/login (login)",
+      "/api/progress/complete-lesson (API)",
+      "/api/webhooks/stripe (Stripe webhooks)",
+      "/api/webhooks/brevo (Brevo webhooks)"
+    ]
+  },
+  "configuration": {
+    "tailwind": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/tailwind.config.ts",
+    "tsconfig": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/tsconfig.json",
+    "payloadCMS": "/Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/payload.config.ts",
+    "nextConfig": "presumed /Users/adamkovacs/Documents/codebuild/project-campfire/apps/web/next.config.js"
+  },
+  "analytics": {
+    "summary": {
+      "totalPackages": 5,
+      "activePackages": 2,
+      "emptyPackages": 3,
+      "totalCollections": 12,
+      "uiComponents": 8,
+      "utilityFunctions": 3
+    },
+    "database": {
+      "backend": "PostgreSQL",
+      "orm": "Payload CMS ORM",
+      "collections": 12,
+      "relatedTables": 8,
+      "indexes": 2
+    },
+    "learningPlatform": {
+      "courses": 12,
+      "impactLevels": 3,
+      "capabilityLevels": 4,
+      "pricePoints": 12,
+      "maxPrice": 3979,
+      "minPrice": 499
+    }
+  }
+}

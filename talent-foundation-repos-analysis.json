@@ -1,0 +1,435 @@
+{
+  "org": "The-Talent-Foundation",
+  "analysis_date": "2025-11-30",
+  "total_repositories": 3,
+  "repos": [
+    {
+      "name": "ttf-web",
+      "url": "https://github.com/The-Talent-Foundation/ttf-web",
+      "visibility": "private",
+      "last_pushed": "2025-09-13T18:15:41Z",
+      "description": "The Talent Foundation replit built - Full-stack talent enablement platform",
+      "status": "ACTIVE - Most recent activity",
+      "tech_stack": {
+        "framework": "React 18 + TypeScript + Vite",
+        "backend": "Express.js + TypeScript",
+        "database": "PostgreSQL (Neon) + Drizzle ORM",
+        "ui_library": "shadcn/ui + Radix UI + Tailwind CSS",
+        "state_management": "TanStack Query (React Query)",
+        "routing": "Wouter (lightweight client-side)",
+        "animation": "Framer Motion",
+        "forms": "React Hook Form + Zod validation",
+        "email": "SendGrid",
+        "auth": "Passport.js + express-session",
+        "hosting": "Replit (development environment)",
+        "pwa": "Service Worker + manifest.json",
+        "icons": "Lucide React",
+        "charts": "Recharts"
+      },
+      "purpose": "B2B talent enablement platform for senior executives showcasing services through the IIEA framework (Illuminate, Innovate, Elevate, Accelerate)",
+      "features": [
+        "Full-stack React/Express application with TypeScript",
+        "Professional B2B talent enablement services showcase",
+        "IIEA framework presentation (Illuminate, Innovate, Elevate, Accelerate)",
+        "Advanced SEO optimization with structured data (JSON-LD)",
+        "AI search agent optimization (ChatGPT, Anthropic, Perplexity)",
+        "PWA features with offline support",
+        "SendGrid email integration",
+        "PostgreSQL database with Drizzle ORM",
+        "User authentication with Passport.js",
+        "Responsive design with TF brand colors (orange #e84e36, blue #02a7e1)",
+        "Performance optimization with lazy loading",
+        "Service Worker caching strategies",
+        "Interactive forms with validation",
+        "Advanced animations and micro-interactions"
+      ],
+      "architecture": {
+        "frontend": "React 18 SPA with Vite bundler",
+        "backend": "Express.js API server",
+        "database": "PostgreSQL with Drizzle ORM migrations",
+        "deployment": "Replit cloud platform",
+        "build_system": "Vite for frontend, esbuild for backend",
+        "session_storage": "PostgreSQL-backed sessions (connect-pg-simple)",
+        "development": "Hot module replacement with tsx"
+      },
+      "key_dependencies": {
+        "core": [
+          "react@18",
+          "express",
+          "drizzle-orm",
+          "@neondatabase/serverless",
+          "typescript",
+          "vite"
+        ],
+        "ui": [
+          "@radix-ui/* (20+ components)",
+          "tailwindcss",
+          "framer-motion",
+          "lucide-react",
+          "recharts"
+        ],
+        "data": [
+          "@tanstack/react-query",
+          "react-hook-form",
+          "zod"
+        ],
+        "integrations": [
+          "@sendgrid/mail",
+          "passport",
+          "passport-local"
+        ]
+      },
+      "languages": {
+        "TypeScript": 617460,
+        "Shell": 22046,
+        "HTML": 18584,
+        "CSS": 16427,
+        "Perl": 4777,
+        "JavaScript": 3642
+      },
+      "recent_activity": [
+        {
+          "date": "2025-09-13",
+          "type": "Git configuration",
+          "description": "Updated Git repository configuration and hooks"
+        },
+        {
+          "date": "2025-09-13",
+          "type": "UI polish",
+          "description": "Logo sizing adjustments to prevent stretching"
+        }
+      ],
+      "relationships": {
+        "ttf-web-nextjs": "Migration target - ttf-web-nextjs is a Next.js rewrite of this application",
+        "CMW-Demo": "Separate project - Different client (ConnectMyVariant)"
+      },
+      "development_focus": "Active development on Replit with focus on SEO, PWA features, and premium UX"
+    },
+    {
+      "name": "ttf-web-nextjs",
+      "url": "https://github.com/The-Talent-Foundation/ttf-web-nextjs",
+      "visibility": "private",
+      "last_pushed": "2025-07-17T05:02:18Z",
+      "description": "Next.js migration of The Talent Foundation website",
+      "status": "COMPLETED MIGRATION - Stable, feature-complete",
+      "tech_stack": {
+        "framework": "Next.js 15 + React 18 + TypeScript",
+        "backend": "Express.js + Next.js API routes",
+        "database": "Supabase (PostgreSQL) + Drizzle ORM",
+        "ui_library": "shadcn/ui + Radix UI + Tailwind CSS",
+        "state_management": "TanStack Query (React Query)",
+        "routing": "Next.js App Router + Wouter (client-side)",
+        "animation": "Framer Motion",
+        "forms": "React Hook Form + Zod validation",
+        "email": "SendGrid",
+        "auth": "JWT + bcrypt + Passport.js + Supabase SSR",
+        "hosting": "Vercel-ready (Next.js optimized)",
+        "database_provider": "Supabase",
+        "icons": "Lucide React",
+        "charts": "Recharts"
+      },
+      "purpose": "Next.js 15 migration of ttf-web with improved SSR/SSG, Supabase integration, and production-ready architecture",
+      "features": [
+        "Complete Next.js 15 migration with App Router",
+        "All 19 pages successfully migrated and building",
+        "Full SSR/SSG support for better SEO",
+        "Supabase integration for production database",
+        "JWT-based authentication with bcrypt password hashing",
+        "Professional Navigation component with TTF logo and branding",
+        "Services dropdown menu with icons and descriptions",
+        "Mobile-responsive navigation with scroll behavior",
+        "Complete TTF brand color system (orange #e84e36, blue #02a7e1)",
+        "Professional Footer component",
+        "All service pages: Illuminate, Innovate, Elevate, Accelerate",
+        "Who We Serve page with strategic positioning",
+        "Professional 404 error page",
+        "Complete content migration from final copy assets",
+        "SEO-optimized metadata across all pages",
+        "Responsive design with mobile optimization",
+        "Card hover effects and visual enhancements",
+        "Cross-page navigation and linking",
+        "ROI analysis and ecosystem integration content"
+      ],
+      "architecture": {
+        "frontend": "Next.js 15 App Router with React 18",
+        "backend": "Next.js API routes + Express.js hybrid",
+        "database": "Supabase PostgreSQL with Drizzle ORM",
+        "deployment": "Vercel-optimized build configuration",
+        "rendering": "Hybrid SSR/SSG with static generation",
+        "auth": "Supabase SSR + JWT tokens",
+        "session_storage": "Supabase-backed authentication",
+        "development": "Next.js dev server with hot reload"
+      },
+      "key_dependencies": {
+        "core": [
+          "next@15",
+          "react@18",
+          "@supabase/supabase-js",
+          "@supabase/ssr",
+          "drizzle-orm",
+          "typescript"
+        ],
+        "ui": [
+          "@radix-ui/* (20+ components)",
+          "tailwindcss",
+          "framer-motion",
+          "lucide-react",
+          "recharts"
+        ],
+        "auth": [
+          "jsonwebtoken",
+          "bcryptjs",
+          "passport",
+          "passport-local"
+        ],
+        "data": [
+          "@tanstack/react-query",
+          "react-hook-form",
+          "zod"
+        ],
+        "database": [
+          "postgres",
+          "@neondatabase/serverless",
+          "dotenv"
+        ]
+      },
+      "pages_migrated": [
+        "Homepage (/) - Complete final copy with hero, problem/pain, ecosystem, differentiation",
+        "About (/about) - Founder profile, principles, boutique model",
+        "Services (/services) - Detailed ecosystem explanation and ROI analysis",
+        "Contact (/contact) - Strategic call booking and inquiry form",
+        "Illuminate (/illuminate) - Market intelligence and strategic foresight",
+        "Innovate (/innovate) - System design and process optimization",
+        "Elevate (/elevate) - AI-savvy team capability building",
+        "Accelerate (/accelerate) - Critical hire execution",
+        "Who We Serve (/who-we-serve) - Strategic positioning and expertise",
+        "404 Not Found - Professional error page"
+      ],
+      "languages": {
+        "TypeScript": 885773,
+        "JavaScript": 29588,
+        "CSS": 19964,
+        "PLpgSQL": 2846,
+        "HTML": 1044
+      },
+      "recent_activity": [
+        {
+          "date": "2025-07-17",
+          "type": "UI/UX completion",
+          "description": "Complete UI/UX migration matching original TTF design with navigation, footer, and brand system"
+        },
+        {
+          "date": "2025-07-17",
+          "type": "Content migration",
+          "description": "Final service pages (Elevate, Accelerate, Who We Serve) and 404 page"
+        },
+        {
+          "date": "2025-07-17",
+          "type": "Service pages",
+          "description": "Illuminate and Innovate service pages with full content"
+        },
+        {
+          "date": "2025-07-17",
+          "type": "Content finalization",
+          "description": "Homepage, About, Services, Contact pages with final copy"
+        }
+      ],
+      "migration_status": {
+        "completion": "100%",
+        "total_pages": 19,
+        "pages_building": "19/19",
+        "static_generation": "Successful",
+        "content_source": "attached_assets final copy files",
+        "design_fidelity": "Carbon copy of original client design"
+      },
+      "relationships": {
+        "ttf-web": "Migration source - This is the Next.js rewrite of ttf-web",
+        "improvements_over_ttf_web": [
+          "Next.js 15 SSR/SSG for better SEO and performance",
+          "Supabase production database instead of Neon",
+          "JWT authentication with bcrypt for better security",
+          "Professional navigation and footer components",
+          "Complete brand system implementation",
+          "All 19 pages with final copy content",
+          "Vercel deployment optimization",
+          "Better mobile responsiveness",
+          "Production-ready architecture"
+        ]
+      },
+      "development_focus": "Production-ready Next.js migration with complete content and professional design system"
+    },
+    {
+      "name": "CMW-Demo",
+      "url": "https://github.com/The-Talent-Foundation/CMW-Demo",
+      "visibility": "private",
+      "last_pushed": "2025-05-08T21:30:52Z",
+      "description": "ConnectMyVariant.org Drupal demo platform",
+      "status": "STABLE DEMO - Deployed and accessible",
+      "tech_stack": {
+        "framework": "Drupal 10",
+        "language": "PHP",
+        "database": "MySQL",
+        "templating": "Twig",
+        "access_control": "Group module",
+        "deployment": "DigitalOcean App Platform",
+        "local_dev": "DDEV + Docker",
+        "dependency_management": "Composer",
+        "modules": [
+          "drupal/core",
+          "drupal/admin_toolbar",
+          "drupal/group",
+          "drupal/forum"
+        ]
+      },
+      "purpose": "Demo platform for ConnectMyVariant.org featuring variant-specific private message boards and secure access control",
+      "features": [
+        "User authentication and registration system",
+        "Variant-specific private message boards",
+        "Admin interface for user and variant group management",
+        "Secure access control based on variant assignments",
+        "Group module for variant-specific access",
+        "Custom Variant Forum module for message board functionality",
+        "Demo credentials for testing (admin and variant users)",
+        "Professional deployment on DigitalOcean",
+        "DDEV-based local development environment",
+        "Docker containerization for consistency"
+      ],
+      "architecture": {
+        "cms": "Drupal 10 core",
+        "access_control": "Group module with custom variant logic",
+        "forums": "Custom Variant Forum module + Drupal Forum",
+        "database": "MySQL with Drupal entity storage",
+        "deployment": "DigitalOcean App Platform",
+        "local_dev": "DDEV (Docker-based development environment)",
+        "build_system": "Composer for PHP dependencies"
+      },
+      "demo_access": {
+        "url": "https://connectmyvariant-demo.ondigitalocean.app",
+        "admin": {
+          "username": "admin",
+          "password": "demo_admin_2024!"
+        },
+        "test_users": [
+          {
+            "variant": "A",
+            "username": "variant_a_user",
+            "password": "demouser2024!"
+          },
+          {
+            "variant": "B",
+            "username": "variant_b_user",
+            "password": "demouser2024!"
+          }
+        ]
+      },
+      "languages": {
+        "PHP": 10708,
+        "Shell": 4446,
+        "Twig": 2226,
+        "CSS": 1867
+      },
+      "recent_activity": [
+        {
+          "date": "2025-05-08",
+          "type": "Deployment fixes",
+          "description": "Apache DocumentRoot and configuration adjustments for DigitalOcean"
+        },
+        {
+          "date": "2025-05-08",
+          "type": "Build system",
+          "description": "Added composer.lock and .htaccess updates for deployment"
+        },
+        {
+          "date": "2025-05-08",
+          "type": "Asset loading",
+          "description": "Fixed CSS/JS loading issues on DigitalOcean deployment"
+        }
+      ],
+      "security_features": [
+        "User authentication required for all message board access",
+        "Variant-specific access control (users can only access assigned variant boards)",
+        "No sensitive medical data storage (privacy-first design)",
+        "Regular security updates via Composer",
+        "Group-based permissions system"
+      ],
+      "relationships": {
+        "ttf_web": "Separate client project - No direct technical relationship",
+        "ttf_web_nextjs": "Separate client project - No direct technical relationship",
+        "client": "ConnectMyVariant.org - Different from The Talent Foundation services"
+      },
+      "development_focus": "Stable demo platform for ConnectMyVariant with variant-specific community features"
+    }
+  ],
+  "organizational_insights": {
+    "primary_business": "The Talent Foundation - B2B talent enablement for senior executives",
+    "service_framework": "IIEA (Illuminate, Innovate, Elevate, Accelerate)",
+    "brand_identity": {
+      "colors": {
+        "primary_orange": "#e84e36",
+        "primary_blue": "#02a7e1"
+      },
+      "positioning": "Boutique talent enablement agency for senior executives",
+      "differentiators": [
+        "Strategic foresight and market intelligence",
+        "Custom system design and process optimization",
+        "AI-savvy team capability building",
+        "Rapid critical hire execution"
+      ]
+    },
+    "technology_strategy": {
+      "main_platform": "ttf-web (React/Vite on Replit)",
+      "migration_target": "ttf-web-nextjs (Next.js 15 on Vercel)",
+      "migration_status": "Completed - 19/19 pages migrated with full content",
+      "preferred_stack": "TypeScript + React + Next.js + Supabase + Tailwind",
+      "client_work": "Custom Drupal solutions (CMW-Demo)"
+    },
+    "activity_timeline": {
+      "2025-09-13": "ttf-web active development (Git config, UI polish)",
+      "2025-07-17": "ttf-web-nextjs migration completed (UI/UX finalization)",
+      "2025-05-08": "CMW-Demo deployment stabilization"
+    },
+    "code_metrics": {
+      "total_typescript": 1503233,
+      "total_javascript": 33230,
+      "total_php": 10708,
+      "primary_language": "TypeScript",
+      "typescript_percentage": "96.8%"
+    },
+    "deployment_platforms": [
+      "Replit (ttf-web development)",
+      "Vercel (ttf-web-nextjs production target)",
+      "DigitalOcean App Platform (CMW-Demo)"
+    ],
+    "common_patterns": {
+      "ui_library": "shadcn/ui + Radix UI across all modern projects",
+      "styling": "Tailwind CSS for utility-first development",
+      "validation": "Zod schemas for type-safe data validation",
+      "forms": "React Hook Form for form state management",
+      "animation": "Framer Motion for UI animations",
+      "icons": "Lucide React for consistent iconography"
+    }
+  },
+  "recommendations": {
+    "next_steps": [
+      "Deploy ttf-web-nextjs to Vercel (migration is complete and production-ready)",
+      "Sunset ttf-web Replit instance once Next.js version is live",
+      "Implement A/B testing between old and new platforms",
+      "Set up monitoring and analytics on Next.js deployment",
+      "Consider migrating CMW-Demo to modern stack if client relationship continues"
+    ],
+    "technical_debt": [
+      "ttf-web uses older Vite-based architecture (superseded by Next.js migration)",
+      "CMW-Demo uses Drupal 10 (consider headless CMS alternative)",
+      "Multiple authentication strategies across projects (standardize)",
+      "Database providers vary (Neon, Supabase, MySQL)"
+    ],
+    "optimization_opportunities": [
+      "Consolidate to single database provider (Supabase recommended)",
+      "Implement shared component library across projects",
+      "Create unified design system package",
+      "Set up monorepo with shared utilities",
+      "Implement E2E testing across platforms",
+      "Add performance monitoring (Vercel Analytics, Sentry)"
+    ]
+  }
+}

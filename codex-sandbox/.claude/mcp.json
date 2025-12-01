@@ -1,0 +1,36 @@
+{
+  "mcpServers": {
+    "cortex": {
+      "type": "stdio",
+      "command": "/Users/adamkovacs/Documents/codebuild/codex-sandbox/scripts/mcp/cortex-mcp.sh"
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ]
+    },
+    "digitalocean-mcp": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@digitalocean/mcp@latest",
+        "--services",
+        "droplets,apps"
+      ],
+      "env": {
+        "DIGITALOCEAN_API_TOKEN": "REPLACE"
+      }
+    },
+    "playwright": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ]
+    }
+  }
+}

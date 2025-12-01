@@ -1,0 +1,92 @@
+{
+  "$schema": "AgentDB Memory Entry Template",
+  "$version": "1.0",
+  "$description": "Template for storing memories in AgentDB/Claude Flow",
+
+  "template": {
+    "type": "{{TYPE}}",
+    "content": "{{CONTENT}}",
+    "context": "{{CONTEXT}}",
+    "agent": "{{AGENT_VARIANT}}",
+    "agent_email": "{{AGENT_EMAIL}}",
+    "session_id": "{{SESSION_ID}}",
+    "timestamp": "{{TIMESTAMP}}",
+    "related_task": "{{NOCODB_TASK_ID}}",
+    "related_memories": ["{{RELATED_KEY_1}}", "{{RELATED_KEY_2}}"],
+    "tags": ["{{TAG_1}}", "{{TAG_2}}"],
+    "ttl_days": 30
+  },
+
+  "type_values": {
+    "learning": "New knowledge or discovery",
+    "decision": "Architectural or implementation decision",
+    "context": "Project or task context",
+    "pattern": "Recognized pattern for future use",
+    "error": "Error and its resolution"
+  },
+
+  "namespace_conventions": {
+    "session/": "Current session state and context",
+    "learnings/": "Persistent learnings and discoveries",
+    "context/": "Project and task context",
+    "decisions/": "Architectural and implementation decisions",
+    "patterns/": "Recognized patterns and solutions",
+    "errors/": "Error resolutions and workarounds"
+  },
+
+  "key_format": "namespace/category/subcategory/specific-topic",
+
+  "examples": {
+    "learning_entry": {
+      "namespace": "learnings",
+      "key": "learnings/technical/database/postgresql-jsonb-performance",
+      "entry": {
+        "type": "learning",
+        "content": "PostgreSQL JSONB is 40% faster than TEXT for structured metadata queries",
+        "context": "Optimizing user preferences storage during auth refactor",
+        "agent": "claude-code",
+        "agent_email": "claude-code@aienablement.academy",
+        "session_id": "session-123",
+        "timestamp": "2024-11-30T12:00:00Z",
+        "related_task": 145,
+        "related_memories": ["learnings/technical/database/indexing-strategies"],
+        "tags": ["database", "performance", "postgresql"]
+      }
+    },
+    "decision_entry": {
+      "namespace": "decisions",
+      "key": "decisions/architecture/auth/jwt-implementation",
+      "entry": {
+        "type": "decision",
+        "content": "Use RS256 algorithm for JWT signing with rotating keys",
+        "context": "Needed secure, scalable authentication for microservices",
+        "agent": "claude-code",
+        "agent_email": "claude-code@aienablement.academy",
+        "timestamp": "2024-11-30T12:00:00Z",
+        "related_task": 142,
+        "tags": ["authentication", "security", "jwt"]
+      }
+    },
+    "error_entry": {
+      "namespace": "errors",
+      "key": "errors/nocodb/token-limit-exceeded",
+      "entry": {
+        "type": "error",
+        "content": "NocoDB queryRecords fails with >25k token response. Solution: Always specify 'fields' parameter to limit response size.",
+        "context": "Querying all task fields for 100+ records",
+        "agent": "claude-code",
+        "timestamp": "2024-11-30T12:00:00Z",
+        "tags": ["nocodb", "mcp", "token-limit"]
+      }
+    }
+  },
+
+  "best_practices": [
+    "Use hierarchical keys for organization",
+    "Always include timestamp and agent",
+    "Link related memories for context",
+    "Set appropriate TTL (default 30 days)",
+    "Search before storing to avoid duplicates",
+    "Include enough context for future understanding"
+  ]
+}

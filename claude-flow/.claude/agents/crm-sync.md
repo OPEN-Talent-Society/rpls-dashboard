@@ -1,0 +1,1 @@
+../../../claude-zai/.claude/agents/crm-sync.md

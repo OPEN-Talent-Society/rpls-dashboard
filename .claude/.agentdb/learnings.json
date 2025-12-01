@@ -1,0 +1,430 @@
+{
+  "version": "1.0.0",
+  "created": "2025-12-01T01:50:00Z",
+  "updated": "2025-12-01T17:40:47Z",
+  "entries": [
+    {
+      "id": "learning-codebuild-audit-001",
+      "timestamp": "2025-11-30T09:45:00Z",
+      "topic": "Codebuild Folder Audit - Complete Structure",
+      "category": "infrastructure",
+      "agent": "claude-code",
+      "content": "Comprehensive audit of /Users/adamkovacs/Documents/codebuild: 14 git repositories across 5 categories. Main Projects: project-campfire (AI Enablement Academy, 1.1G), ttf-web/ttf-web-nextjs (TTF platform), labor-market-dashboard/pulse (workforce analytics), openskills (skills taxonomy). Claude Infrastructure: 3 variants (claude-code, claude-zai, claude-zai-flow) with hardlinked hooks and symlinked .agentdb for shared state. Skills Ecosystem: 51 skills installed, universal-skills MCP server. MCP Servers: mcp-servers (collection), codex-subagents-mcp, universal-skills-mcp. Sandboxes: codex-sandbox, taylormade. Central .env at codebuild root provides all credentials.",
+      "tags": [
+        "codebuild",
+        "audit",
+        "infrastructure",
+        "projects"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-codebuild-audit-002",
+      "timestamp": "2025-11-30T09:45:00Z",
+      "topic": "Codebuild Projects Catalog",
+      "category": "projects",
+      "agent": "claude-code",
+      "content": "14 active projects: project-campfire (Next.js 15, React 19 learning platform), ttf-web-nextjs (workforce analytics Next.js), labor-market-dashboard (React dashboard), labor-market-pulse (data pipeline), openskills (skills taxonomy), opentalent-skills-app (skills matching), universal-agents (agent framework), universal-skills (MCP skills server), reasoningbank (reasoning patterns), skills-to-agents (agent compilation), mcp-servers (MCP collection), codex-subagents-mcp (Codex subagents), codex-sandbox (experimental), taylormade (custom solutions).",
+      "tags": [
+        "projects",
+        "catalog",
+        "codebuild"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-codebuild-audit-003",
+      "timestamp": "2025-11-30T09:45:00Z",
+      "topic": "Claude Infrastructure Architecture",
+      "category": "infrastructure",
+      "agent": "claude-code",
+      "content": "Three Claude Code variants share infrastructure: claude-code (base), claude-zai (Z.AI integration), claude-zai-flow (swarm orchestration). Hardlinked hooks ensure all variants execute same automation. Symlinked .agentdb provides unified local JSON storage. Each variant has specific MCP server configurations in settings.json. Memory flows: Claude Flow (in-memory) → Supabase (cloud persistence) → AgentDB (local JSON). Skills folder contains 51 skills from anthropics/skills, ComposioHQ/awesome-claude-skills, and custom skills.",
+      "tags": [
+        "claude",
+        "infrastructure",
+        "variants",
+        "memory"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-001",
+      "timestamp": "2025-11-30T01:50:00Z",
+      "topic": "Hook Automation Configuration",
+      "category": "infrastructure",
+      "agent": "claude-code",
+      "content": "Configured settings.json to automatically trigger hooks on all tool operations. PreToolUse/PostToolUse for Bash, Write/Edit, and Search operations. UserPromptSubmit for solution checking. Stop for session cleanup. Notification for error handling.",
+      "tags": [
+        "hooks",
+        "automation",
+        "settings"
+      ],
+      "related_docs": [
+        "20251201014848-7lsbbhp",
+        "20251201014907-ke8xjvt"
+      ]
+    },
+    {
+      "id": "learning-002",
+      "timestamp": "2025-11-30T01:45:00Z",
+      "topic": "Progressive Disclosure Pattern",
+      "category": "patterns",
+      "agent": "claude-code",
+      "content": "Implemented progressive disclosure skill for context efficiency. Three-level loading (metadata → content → deep context) reduces token usage by up to 98.7%. Tool search pattern replaces static tool definitions.",
+      "tags": [
+        "progressive-disclosure",
+        "tokens",
+        "efficiency"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-003",
+      "timestamp": "2025-11-30T01:30:00Z",
+      "topic": "Memory Systems Reality Check",
+      "category": "infrastructure",
+      "agent": "claude-code",
+      "content": "Claude Flow memory is IN-MEMORY ONLY - not persistent. AgentDB, RUVector, Synapse, ReasoningBank are skills/concepts, not running services. Actual persistent storage requires: Cortex (SiYuan), NocoDB, Supabase, or file-based JSON.",
+      "tags": [
+        "memory",
+        "persistence",
+        "infrastructure"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-d263c7fd8fc41d72",
+      "timestamp": "2025-12-01T02:08:03Z",
+      "topic": "Dual Storage Test",
+      "category": "infrastructure",
+      "agent": "claude-code",
+      "content": "Testing that both local file and Supabase cloud storage work correctly after context continuation\n",
+      "tags": [
+        "infrastructure",
+        "automated"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-4ca5f8209641aef3",
+      "timestamp": "2025-12-01T02:15:24Z",
+      "topic": "Progressive Disclosure Methodology",
+      "category": "methodology",
+      "agent": "claude-code",
+      "content": "Token efficiency pattern achieving 98.7% reduction through three-level skills disclosure (metadata only at startup, SKILL.md on-demand, bundled files selective access) and tool search meta-tool. Replaces static tool definitions with dynamic discovery.\n",
+      "tags": [
+        "methodology",
+        "automated"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cc0aa0bc1e6bf903",
+      "timestamp": "2025-12-01T02:15:29Z",
+      "topic": "Continuous Improvement Framework",
+      "category": "methodology",
+      "agent": "claude-code",
+      "content": "Core philosophy: We should not make the same mistake twice. Implements error logging with resolution patterns, pre-search deduplication to avoid repeating analysis, solution templates as building blocks, and pattern libraries for recurring problems.\n",
+      "tags": [
+        "methodology",
+        "automated"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-8654075db71db066",
+      "timestamp": "2025-12-01T02:15:32Z",
+      "topic": "Cortex Cloudflare Access Authentication",
+      "category": "infrastructure",
+      "agent": "claude-code",
+      "content": "Service token authentication is the correct method for Cortex API access. Use CF-Access-Client-Id and CF-Access-Client-Secret headers instead of Bearer token. CortexAuthService class implements retry logic with exponential backoff. Token format: CLIENT_ID.SECRET (32+28 chars separated by dot).\n",
+      "tags": [
+        "infrastructure",
+        "automated"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-8e93ad067f02d85b",
+      "timestamp": "2025-12-01T02:15:36Z",
+      "topic": "USACF Multi-Agent Search Framework",
+      "category": "framework",
+      "agent": "claude-code",
+      "content": "Universal Search Algorithm for Claude Flow implements 20+ AI research techniques including step-back prompting, ambiguity clarification, multi-hop reasoning, and iterative refinement. Enables sophisticated query handling across heterogeneous knowledge sources.\n",
+      "tags": [
+        "framework",
+        "automated"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-934bd44ce84d5835",
+      "timestamp": "2025-12-01T02:15:40Z",
+      "topic": "Local Development Sync Patterns",
+      "category": "development",
+      "agent": "claude-code",
+      "content": "Local development environment synced with production via Cortex and NocoDB integration. Key patterns: retry logic with exponential backoff, graceful error handling, environment variable management (.env.local vs .env), and MCP server health checking.\n",
+      "tags": [
+        "development",
+        "automated"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-2b2e48928ca7a96a",
+      "timestamp": "2025-12-01T02:15:43Z",
+      "topic": "Claude Environments Configuration",
+      "category": "infrastructure",
+      "agent": "claude-code",
+      "content": "Unified Claude Code environment with multiple variants: claude (base), claude-zai (Z.AI integration), claude-flow (swarm orchestration). Each has specific MCP server configurations and capabilities. Central .env file at codebuild root provides all credentials.\n",
+      "tags": [
+        "infrastructure",
+        "automated"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-deep-crawl-campfire-001",
+      "timestamp": "2025-12-01T05:20:00Z",
+      "topic": "Project-Campfire Deep Crawl - Complete Architecture",
+      "category": "deep-crawl",
+      "agent": "claude-code",
+      "content": "20-agent swarm deep crawl of project-campfire: Next.js 15.1.0 + React 19.0.0 LMS with PayloadCMS 3.65.0 backend. 22 files in apps/web, 13 PayloadCMS collections (150+ fields), 4 API routes (checkout, progress, stripe/brevo webhooks). Turborepo monorepo with pnpm. Prism Refraction design system. 12 courses with 3 impact levels x 4 capability levels pricing ($499-$3,979). CRITICAL: Auth not implemented - NextAuth.js 5.0.0-beta.4 configured but no middleware/permission checks.",
+      "tags": [
+        "deep-crawl",
+        "project-campfire",
+        "architecture",
+        "swarm"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-deep-crawl-campfire-002",
+      "timestamp": "2025-12-01T05:20:00Z",
+      "topic": "Project-Campfire Integrations & Security Gaps",
+      "category": "deep-crawl",
+      "agent": "claude-code",
+      "content": "Integrations: Stripe (fully implemented), Brevo (transactional email), Formbricks (surveys), PostHog (analytics). NOT IMPLEMENTED: Cal.com (scheduling), OpenAI (AI features). SECURITY GAPS: No auth middleware, all routes publicly accessible, no permission system despite 5 roles defined (anonymous, free, business, instructor, admin). Specs v2.0.0 approved (102 tasks, 249 hours planned).",
+      "tags": [
+        "deep-crawl",
+        "integrations",
+        "security",
+        "gaps"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-github-crawl-001",
+      "timestamp": "2025-12-01T05:29:00Z",
+      "topic": "GitHub Repos Crawl - Complete Inventory",
+      "category": "github-crawl",
+      "agent": "claude-code",
+      "content": "20-agent swarm crawled 29 repos across 4 GitHub accounts. Personal (adambkovacs): 14 repos, 9 active in 2025, focus on AI/MCP tools (claude-flow, codex, whisper-x). The-Talent-Foundation: 3 repos, ttf-web-nextjs ready for Vercel. OPEN-Talent-Society: 4 repos (3 public), focus on People Industry AI (rpls-dashboard, JD-Auditor). AI-Enablement-Academy: 8 repos, project-campfire is primary LMS (Next.js 15/PayloadCMS).",
+      "tags": [
+        "github-crawl",
+        "inventory",
+        "swarm"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-github-crawl-002",
+      "timestamp": "2025-12-01T05:29:00Z",
+      "topic": "GitHub Tech Ecosystem Summary",
+      "category": "github-crawl",
+      "agent": "claude-code",
+      "content": "Tech ecosystem across 29 repos: Frontend (Next.js 15, React 18, SvelteKit, Vite), Backend (Express, PayloadCMS 3, Drupal 10), Databases (PostgreSQL, Supabase, Neon, DuckDB), AI/ML (Google Gemini 2.5, OpenAI GPTs, Lightcast API, Claude/MCP), DevOps (Docker, GitHub Actions, Netdata/Kuma/Dozzle). Primary languages: TypeScript (12), JavaScript (5), Python (4), Shell (4), Rust (1).",
+      "tags": [
+        "github-crawl",
+        "tech-stack",
+        "ecosystem"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-crawl-001",
+      "timestamp": "2025-12-01T05:35:00Z",
+      "topic": "Cortex Knowledge Base Crawl - Complete Inventory",
+      "category": "cortex-crawl",
+      "agent": "claude-code",
+      "content": "15-agent swarm crawled Cortex knowledge base (https://cortex.aienablement.academy): SiYuan platform with 10 notebooks, 342 total documents. Top notebooks: Agents (101 automation runbooks), Projects (90 docs), Knowledge Base (81 docs), Logs & Change History (33 docs). Key capabilities: doc-ingest, cortex-siyuan-ops, n8n-operations, research-intelligence. Stewardship workflow: Git sync → Cortex import → Claude sync → Automation Inventory dashboard.",
+      "tags": [
+        "cortex-crawl",
+        "knowledge-base",
+        "swarm"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-crawl-002",
+      "timestamp": "2025-12-01T05:35:00Z",
+      "topic": "Cortex Architecture & Integrations",
+      "category": "cortex-crawl",
+      "agent": "claude-code",
+      "content": "Cortex architecture: 5 core skills (cortex-task-log, cortex-notebook-curation, doc-sync, backup-rotation, embedding-refresh). Key integrations: NocoDB (task management), Hook automation, Claude sync. Templates: Technical-Documentation, Integration-Testing, Sprint-Planning, Learning-Capture, Task-Planning. Infrastructure docs: Credential-Management-System, NocoDB-Task-Assignment-Protocol, Claude Environments. API: Token 0fkvtzw0jrat2oht with Cloudflare Access protection.",
+      "tags": [
+        "cortex-crawl",
+        "architecture",
+        "integrations"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-deep-crawl-001",
+      "timestamp": "2025-12-01T06:00:00Z",
+      "topic": "Cortex Deep Crawl - Full Block Analysis",
+      "category": "cortex-deep-crawl",
+      "agent": "claude-code",
+      "content": "20-agent swarm FULL deep crawl of Cortex: 26,937 total blocks analyzed (not just 342 documents). Block types: 13,261 paragraphs, 7,314 list items, 2,659 headings, 1,999 lists, 531 tables, 471 code blocks (GOLD - scripts/configs), 342 docs, 302 text, 54 quotes. Code blocks contain: agent implementations, MCP configs, hook scripts, API schemas, Kubernetes manifests, Docker compose files.",
+      "tags": [
+        "cortex-deep-crawl",
+        "full-analysis",
+        "swarm"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-deep-crawl-002",
+      "timestamp": "2025-12-01T06:00:00Z",
+      "topic": "Implementation Status - Agents, Hooks, MCPs",
+      "category": "cortex-deep-crawl",
+      "agent": "claude-code",
+      "content": "IMPLEMENTED: 49 agents in claude-zai (doc-ingest, cortex-siyuan-ops, nocodb-admin, ollama-orchestrator, proxmox-ops, etc.), 19 hooks in claude-code (pre-task, post-task, memory-store, sync-memory-to-supabase, etc.), 9 MCPs in mcp-servers (cortex, github, perplexity, context7, codex-subagents, etc.). GAPS: claude-code has 0 agents (needs sync from claude-zai).",
+      "tags": [
+        "cortex-deep-crawl",
+        "implementation-status",
+        "gaps"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-deep-crawl-003",
+      "timestamp": "2025-12-01T06:00:00Z",
+      "topic": "Actionable Gaps - MCPs to Create",
+      "category": "cortex-deep-crawl",
+      "agent": "claude-code",
+      "content": "MCPs DOCUMENTED but NOT IMPLEMENTED: HIGH PRIORITY: docmost-mcp (wiki), qdrant-mcp (vector DB), stripe-agent-toolkit (payments). MEDIUM: oci-mcp (Oracle Cloud), hubspot-mcp (CRM), brevo-mcp (email), proxmox-mcp (VM management). LOW: ghost-mcp (blog). Action: Create MCP wrappers in mcp-servers/ directory.",
+      "tags": [
+        "cortex-deep-crawl",
+        "mcp-gaps",
+        "actionable"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-deep-crawl-004",
+      "timestamp": "2025-12-01T06:00:00Z",
+      "topic": "Actionable Gaps - Infrastructure to Deploy",
+      "category": "cortex-deep-crawl",
+      "agent": "claude-code",
+      "content": "INFRASTRUCTURE DOCUMENTED but NOT DEPLOYED: Kubernetes deployment (k8s/deployment.yml), ZAI-Flow API stack (Docker compose with postgres/redis/nginx), Prometheus monitoring, Cloudflare Workers MCP architecture. All configs exist in Cortex code blocks - need to extract and deploy.",
+      "tags": [
+        "cortex-deep-crawl",
+        "infrastructure-gaps",
+        "actionable"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-deep-crawl-api-003",
+      "timestamp": "2025-12-01T07:15:00Z",
+      "topic": "Project-Campfire API Routes - Deep Analysis",
+      "category": "campfire-deep-crawl",
+      "agent": "claude-code",
+      "content": "4 API routes analyzed in depth: (1) /api/checkout (201 lines) - Stripe checkout WORKING but NO AUTH CHECK, userId optional parameter. (2) /api/progress/complete-lesson - Returns dummy success, implementation commented out with TODO. (3) /api/webhooks/stripe (209 lines) - Signature verification implemented, event handlers all TODO comments. (4) /api/webhooks/brevo - Working webhook handler. Libs: brevo.ts (463 lines COMPLETE), stripe.ts (232 lines partial).",
+      "tags": [
+        "campfire-deep-crawl",
+        "api-routes",
+        "security",
+        "swarm"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-deep-crawl-gaps-004",
+      "timestamp": "2025-12-01T07:15:00Z",
+      "topic": "Project-Campfire Specs vs Implementation Gap",
+      "category": "campfire-deep-crawl",
+      "agent": "claude-code",
+      "content": "CRITICAL GAPS between specs and implementation: (1) Roles: specs define 5 (anonymous/free/business/instructor/admin), code has 3 (student/instructor/admin). (2) Auth: NextAuth 5.0.0-beta.4 installed but 0% configured - missing middleware.ts, auth routes, auth config. (3) Enrollment: Schema exists but no verification middleware. (4) Permissions: RBAC spec is 611 lines, no guards implemented. (5) Stripe webhooks: Mostly TODO comments. (6) Login page: UI complete but form not connected.",
+      "tags": [
+        "campfire-deep-crawl",
+        "specs-vs-code",
+        "gaps"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-deep-crawl-security-005",
+      "timestamp": "2025-12-01T07:15:00Z",
+      "topic": "Project-Campfire Security Assessment Summary",
+      "category": "campfire-deep-crawl",
+      "agent": "claude-code",
+      "content": "EXISTING auth_architecture_report.json (512 lines) documents ALL vulnerabilities. CRITICAL: No middleware.ts (all routes public), no permission checks, any user can modify any data. HIGH: Enrollment not verified (unenrolled users access courses), API routes unprotected (public can create checkouts). MEDIUM: OAuth UI placeholders only, admin routes unprotected. 4-phase implementation checklist defined: (1) NextAuth setup, (2) Middleware, (3) API protection, (4) Enrollment verification.",
+      "tags": [
+        "campfire-deep-crawl",
+        "security",
+        "vulnerabilities",
+        "checklist"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-deep-crawl-collections-006",
+      "timestamp": "2025-12-01T07:15:00Z",
+      "topic": "Project-Campfire PayloadCMS Collections",
+      "category": "campfire-deep-crawl",
+      "agent": "claude-code",
+      "content": "13 PayloadCMS 3.65.0 collections in payload.config.ts (891 lines): users (auth enabled, 3 roles, stripeCustomerId, enrolledCourses), courses (title, slug, impactLevel 1-3, capabilityLevel 1-4, pricing $499-$3,979), modules, lessons (video/article/quiz/assignment/live types), quizzes, progress (completedLessons, progressPercentage 0-100, quizScores, certificateIssued), enrollments (status: active/completed/expired/refunded, Stripe IDs, dates), media, testimonials, form-submissions, pages, settings, course-categories.",
+      "tags": [
+        "campfire-deep-crawl",
+        "payloadcms",
+        "schema"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-deep-crawl-roadmap-007",
+      "timestamp": "2025-12-01T07:15:00Z",
+      "topic": "Project-Campfire Implementation Roadmap",
+      "category": "campfire-deep-crawl",
+      "agent": "claude-code",
+      "content": "EPICS.md defines 10 epics, 102 tasks, 249 hours: Epic 1 Landing & Marketing (38h, P0), Epic 2 Authentication (37h, P0 - CRITICAL BLOCKER), Epic 3 Enrollment & Payments (26h, P0), Epic 4 Course Delivery (29h, P0), Epic 5 Progress Tracking (18h, P1), Epic 6 Admin Dashboard (22h, P1), Epic 7 Instructor Portal (13h, P2), Epic 8 Analytics (9h, P2), Epic 9 Integrations (14h, P2), Epic 10 AI Features (43h, P3). 4 sprints, ~55 days estimated.",
+      "tags": [
+        "campfire-deep-crawl",
+        "roadmap",
+        "epics",
+        "planning"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-deep-crawl-actionable-008",
+      "timestamp": "2025-12-01T07:15:00Z",
+      "topic": "Project-Campfire Actionable Next Steps",
+      "category": "campfire-deep-crawl",
+      "agent": "claude-code",
+      "content": "IMMEDIATE (9h): Create middleware.ts (2h), Configure NextAuth with credentials provider (4h), Add session checks to API routes (3h). SHORT-TERM (11h): Complete Stripe webhook handlers (4h), Add enrollment verification middleware (3h), Configure OAuth providers (2h), Connect login form (2h). MEDIUM-TERM (56h): Implement instructor portal (13h), Add AI features (43h). BLOCKER: Epic 2 Authentication must be completed before any other work can proceed safely.",
+      "tags": [
+        "campfire-deep-crawl",
+        "actionable",
+        "priorities",
+        "effort"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-b3ae597e5b9896cf",
+      "timestamp": "2025-12-01T17:40:47Z",
+      "topic": "Learnings and Patterns Hooks Require Manual Invocation",
+      "category": "automation",
+      "agent": "claude-code",
+      "content": "The .claude/hooks/log-learning.sh and save-pattern.sh scripts exist and correctly write to Supabase learnings/patterns tables. However, they require MANUAL invocation - they are NOT automatically triggered by claude-flow swarm operations or MCP memory tools. Swarm agents only auto-populate agent_memory via mcp__claude-flow__memory_usage. To capture learnings/patterns during swarm work, agents must explicitly call these bash hooks or the hooks must be integrated into post-task workflows.\n",
+      "tags": [
+        "automation",
+        "automated"
+      ],
+      "related_docs": []
+    }
+  ]
+}

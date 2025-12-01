@@ -1,0 +1,1 @@
+../../../claude-zai/.claude/agents/bmad-analyst.md
