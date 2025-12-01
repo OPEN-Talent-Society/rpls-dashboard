@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "created": "2025-12-01T01:50:00Z",
-  "updated": "2025-12-01T17:40:47Z",
+  "updated": "2025-12-01T22:55:00Z",
   "entries": [
     {
       "id": "learning-codebuild-audit-001",
@@ -422,6 +422,184 @@
       "content": "The .claude/hooks/log-learning.sh and save-pattern.sh scripts exist and correctly write to Supabase learnings/patterns tables. However, they require MANUAL invocation - they are NOT automatically triggered by claude-flow swarm operations or MCP memory tools. Swarm agents only auto-populate agent_memory via mcp__claude-flow__memory_usage. To capture learnings/patterns during swarm work, agents must explicitly call these bash hooks or the hooks must be integrated into post-task workflows.\n",
       "tags": [
         "automation",
+        "automated"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-6264a4615912c3d1",
+      "timestamp": "2025-12-01T21:14:47Z",
+      "topic": "Payload CMS v3 RootLayout ServerFunction Fix",
+      "category": "PayloadCMS v3.65.0 with Next.js 15 requires serverFunction prop on RootLayout. Auto-generated layout.tsx is missing this prop causing 500 error: 'ServerFunctionsProvider requires a serverFunction prop'. FIX: Import handleServerFunctions from @payloadcms/next/layouts and wrap in async server action with 'use server' directive. Pass as serverFunction prop to RootLayout along with config and importMap.",
+      "agent": "claude-code",
+      "content": "infrastructure\n",
+      "tags": [
+        "PayloadCMS v3.65.0 with Next.js 15 requires serverFunction prop on RootLayout. Auto-generated layout.tsx is missing this prop causing 500 error: 'ServerFunctionsProvider requires a serverFunction prop'. FIX: Import handleServerFunctions from @payloadcms/next/layouts and wrap in async server action with 'use server' directive. Pass as serverFunction prop to RootLayout along with config and importMap.",
+        "automated"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-excellence-001",
+      "timestamp": "2025-12-01T22:30:00Z",
+      "topic": "SiYuan Block Reference Creation - insertBlock vs setBlockAttrs",
+      "category": "cortex-siyuan",
+      "agent": "claude-code",
+      "content": "CRITICAL DISTINCTION: Use /api/block/insertBlock with ((block-id)) syntax to create refs. The refs table stores block_id (source) and def_block_id (target where backlinks appear). /api/attr/setBlockAttrs does NOT create refs - it only sets metadata attributes. For backlinks to appear, you MUST inject ((block-id)) syntax into content via insertBlock or appendBlock API calls.",
+      "tags": [
+        "cortex",
+        "siyuan",
+        "refs",
+        "backlinks",
+        "api"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-excellence-002",
+      "timestamp": "2025-12-01T22:30:00Z",
+      "topic": "Progressive Disclosure Patterns for AI+Human Documents",
+      "category": "cortex-siyuan",
+      "agent": "claude-code",
+      "content": "Progressive disclosure methodology for Cortex documents optimized for both AI agents and humans: (1) TLDR Pattern - Always start with one-sentence summary AI can use without reading full doc. (2) Fold Pattern - Use data-fold='0' (collapsed) and data-fold='1' (expanded) to hide details by default. (3) Structured Metadata - YAML front matter enables SQL queries and AI parsing. (4) Block Attributes - custom-* attributes for queryability. Best practice: Summary first, Quick Reference expanded, Technical Details/Code Examples/API Reference collapsed.",
+      "tags": [
+        "cortex",
+        "progressive-disclosure",
+        "ai-optimization",
+        "documentation"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-excellence-003",
+      "timestamp": "2025-12-01T22:30:00Z",
+      "topic": "SiYuan Templates API - Underutilized Feature",
+      "category": "cortex-siyuan",
+      "agent": "claude-code",
+      "content": "SiYuan Templates API is underutilized (part of the 81% unused features). Created cortex-template-create.sh hook that implements consistent document creation using /api/filetree/createDocWithMd. Template types: learning, task, adr, sop, meeting, daily, project, reference. Each template auto-sets custom attributes (custom-type, custom-agent, custom-status) for SQL queryability. Templates auto-route to correct PARA notebook based on type.",
+      "tags": [
+        "cortex",
+        "templates",
+        "automation",
+        "hooks"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-excellence-004",
+      "timestamp": "2025-12-01T22:30:00Z",
+      "topic": "SiYuan Export API Capabilities",
+      "category": "cortex-siyuan",
+      "agent": "claude-code",
+      "content": "SiYuan provides comprehensive export APIs: (1) /api/export/exportMdContent - Export single document to markdown. (2) /api/export/exportHTML - Export to HTML with assets. (3) /api/export/exportNotebookMd - Export entire notebook as markdown archive. (4) /api/export/exportSY - Export in SiYuan native format. (5) /api/export/preview - Get HTML preview of single block. Created cortex-export.md command documenting all endpoints with curl examples and MCP tool patterns.",
+      "tags": [
+        "cortex",
+        "export",
+        "api",
+        "backup"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-excellence-005",
+      "timestamp": "2025-12-01T22:30:00Z",
+      "topic": "PARA Notebook ID Migration 2023 to 2025",
+      "category": "cortex-infrastructure",
+      "agent": "claude-code",
+      "content": "PARA notebook IDs were migrated from 2023* format to 2025* format. Updated IDs (effective 2025-12-01): Projects=20251103053911-8ex6uns, Areas=20251201183343-543piyt, Resources=20251201183343-ujsixib, Archives=20251201183343-xf2snc8, Knowledge Base=20251103053840-moamndp. Updated 7 files: agents.json, 3 hooks, 3 docs. Grep verification confirmed no remaining old IDs in functional code.",
+      "tags": [
+        "cortex",
+        "para",
+        "migration",
+        "notebook-ids"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-excellence-006",
+      "timestamp": "2025-12-01T22:30:00Z",
+      "topic": "Orphan Detection and Fix Strategy",
+      "category": "cortex-siyuan",
+      "agent": "claude-code",
+      "content": "Orphan documents are blocks with no incoming refs in def_block_id column. Detection SQL: SELECT id FROM blocks WHERE type='d' AND id NOT IN (SELECT DISTINCT def_block_id FROM refs). Fix strategy: (1) Identify well-connected hub documents. (2) Use insertBlock to inject ((orphan-id)) refs from hubs to orphans. (3) Verify refs table has new entries. (4) Rebuild search index. Achieved 1.41% orphan rate (down from ~85%) using this approach.",
+      "tags": [
+        "cortex",
+        "orphans",
+        "refs",
+        "sql"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-excellence-007",
+      "timestamp": "2025-12-01T22:30:00Z",
+      "topic": "SiYuan Feature Utilization - 19% Used, 81% Untapped",
+      "category": "cortex-siyuan",
+      "agent": "claude-code",
+      "content": "Cortex Excellence Audit revealed only 19% of SiYuan API features utilized. Currently used: createDocWithMd, appendBlock, insertBlock, getBlockAttrs, setBlockAttrs, SQL queries, fullTextSearch, listNotebooks, getNotebookConf. HIGH ROI underutilized features: Templates API, Export/Import, Notifications, Assets/file attachments, foldBlock/unfoldBlock for progressive disclosure, Dashboards for visual knowledge maps.",
+      "tags": [
+        "cortex",
+        "siyuan",
+        "features",
+        "audit"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-excellence-008",
+      "timestamp": "2025-12-01T22:30:00Z",
+      "topic": "Cortex Authentication - Dual Auth Required",
+      "category": "cortex-infrastructure",
+      "agent": "claude-code",
+      "content": "Cortex API requires dual authentication: (1) SiYuan token via Authorization: Token header. (2) Cloudflare Zero Trust via CF-Access-Client-Id and CF-Access-Client-Secret headers. Both must be present for all API calls. Current credentials: Token=0fkvtzw0jrat2oht, CF-Client-Id=6c0fe301311410aea8ca6e236a176938.access, CF-Client-Secret=714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3.",
+      "tags": [
+        "cortex",
+        "authentication",
+        "cloudflare",
+        "security"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-excellence-009",
+      "timestamp": "2025-12-01T22:30:00Z",
+      "topic": "Cortex-Ops Agent Created - Knowledge Management Excellence",
+      "category": "cortex-agent",
+      "agent": "claude-code",
+      "content": "Created cortex-ops.md agent (HIGH priority gap filled). Agent responsibilities: Knowledge capture, PARA organization, Cross-system integration (NocoDB tasks), Progressive disclosure, Block excellence. Documents complete SiYuan API operations, templates for learning/task/ADR documents, workflows for task documentation/learning capture/orphan prevention/archive migration, integration with 3-layer memory architecture.",
+      "tags": [
+        "cortex",
+        "agent",
+        "knowledge-management",
+        "para"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-excellence-010",
+      "timestamp": "2025-12-01T22:30:00Z",
+      "topic": "3-Layer Memory Architecture Sync",
+      "category": "infrastructure",
+      "agent": "claude-code",
+      "content": "3-layer memory architecture for persistent AI agent memory: Layer 1 - Supabase Cloud DB (https://zxcrbcmdxpqprpxhsntc.supabase.co) for persistent, queryable data synced on task completion. Layer 2 - File-based AgentDB (.claude/.agentdb/learnings.json, patterns.json) for fast local access synced on learning. Layer 3 - Cortex/SiYuan for human+AI knowledge base synced on document creation. All layers must be kept in sync for continuity.",
+      "tags": [
+        "memory",
+        "3-layer",
+        "supabase",
+        "agentdb",
+        "cortex"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-8f9fc944a1cebfcb",
+      "timestamp": "2025-12-01T22:55:00Z",
+      "topic": "Cortex Excellence Audit - Complete Summary",
+      "category": "Comprehensive audit of SiYuan/Cortex capabilities achieved: 1.41% orphan rate (down from ~85%), identified 19% feature utilization with 81% untapped potential. Key deliverables: cortex-ops.md agent, cortex-export.md command, cortex-progressive-disclosure.md skill, cortex-template-create.sh hook. Critical learnings: insertBlock creates refs (not setBlockAttrs), progressive disclosure patterns, Templates API, Export APIs, PARA notebook ID migration, 3-layer memory sync. Updated 7 files with new notebook IDs.",
+      "agent": "claude-code",
+      "content": "cortex-audit\n",
+      "tags": [
+        "Comprehensive audit of SiYuan/Cortex capabilities achieved: 1.41% orphan rate (down from ~85%), identified 19% feature utilization with 81% untapped potential. Key deliverables: cortex-ops.md agent, cortex-export.md command, cortex-progressive-disclosure.md skill, cortex-template-create.sh hook. Critical learnings: insertBlock creates refs (not setBlockAttrs), progressive disclosure patterns, Templates API, Export APIs, PARA notebook ID migration, 3-layer memory sync. Updated 7 files with new notebook IDs.",
         "automated"
       ],
       "related_docs": []

@@ -120,12 +120,12 @@ Cortex (powered by SiYuan) is our **knowledge management system**. It's a block-
 
 **MCP Server**: `cortex`
 
-**Notebooks (PARA)**:
-- `projects` (20231114112233) - Active project documentation
-- `areas` (20231114112234) - Ongoing responsibilities
-- `resources` (20231114112235) - Reference materials, learnings
-- `archives` (20231114112236) - Completed work (>30 days old)
-- `agent_logs` (20231114112237) - Automated agent activity logs
+**Notebooks (PARA)** - Updated 2025-12-01:
+- `projects` (20251103053911-8ex6uns) - Active project documentation
+- `areas` (20251201183343-543piyt) - Ongoing responsibilities
+- `resources` (20251201183343-ujsixib) - Reference materials, learnings
+- `archives` (20251201183343-xf2snc8) - Completed work (>30 days old)
+- `knowledge_base` (20251103053840-moamndp) - Core knowledge base
 
 **Key Operations**:
 ```javascript

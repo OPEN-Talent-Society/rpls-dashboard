@@ -208,12 +208,12 @@ Each variant has its OWN `.claude/` directory with 72 skills (copies, not symlin
 ### Cortex (Knowledge Management)
 - **URL**: https://cortex.aienablement.academy
 - **Token**: `0fkvtzw0jrat2oht`
-- **Notebooks** (PARA methodology):
-  - Projects: `20231114112233-projects`
-  - Areas: `20231114112234-areas`
-  - Resources: `20231114112235-resources`
-  - Archives: `20231114112236-archives`
-  - Agent Logs: `20231114112237-agent-logs`
+- **Notebooks** (PARA methodology) - Updated 2025-12-01:
+  - Projects: `20251103053911-8ex6uns`
+  - Areas: `20251201183343-543piyt`
+  - Resources: `20251201183343-ujsixib`
+  - Archives: `20251201183343-xf2snc8`
+  - Knowledge Base: `20251103053840-moamndp`
 
 ### Memory Systems (ACTUAL STATUS)
 - **Supabase Cloud DB**: ✅ Active (https://zxcrbcmdxpqprpxhsntc.supabase.co)
