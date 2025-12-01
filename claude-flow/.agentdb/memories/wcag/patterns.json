@@ -1,0 +1,65 @@
+{
+  "id": "wcag-2.2-aa-patterns",
+  "type": "knowledge",
+  "domain": "accessibility",
+  "title": "WCAG 2.2 AA Compliance Patterns",
+  "created_at": "2025-12-01T23:10:00.000Z",
+  "version": "1.0",
+  "patterns": [
+    {
+      "name": "Accessible Form Labels",
+      "description": "Use sr-only class for visually hidden but screen-reader accessible labels",
+      "code": "<label htmlFor=\"input-id\" className=\"sr-only\">Label text</label><Input id=\"input-id\" .../>",
+      "wcag": ["1.3.1", "2.4.6"]
+    },
+    {
+      "name": "Fieldset/Legend for Groups",
+      "description": "Wrap related form controls in fieldset with legend for screen readers",
+      "code": "<fieldset className=\"border-0 p-0 m-0\"><legend className=\"sr-only\">Filter options</legend>...controls...</fieldset>",
+      "wcag": ["1.3.1"]
+    },
+    {
+      "name": "aria-live for Dynamic Content",
+      "description": "Announce content changes to screen readers",
+      "code": "<div id=\"results\" aria-live=\"polite\" aria-atomic=\"true\">{count} results found</div>",
+      "wcag": ["4.1.3"]
+    },
+    {
+      "name": "Semantic List Structure",
+      "description": "Use ul/li for card grids instead of divs",
+      "code": "<ul role=\"list\"><li role=\"article\" aria-labelledby=\"title-id\">...</li></ul>",
+      "wcag": ["1.3.1"]
+    },
+    {
+      "name": "Decorative Elements Hidden",
+      "description": "Hide purely visual elements from screen readers",
+      "code": "<div aria-hidden=\"true\" className=\"decorative-bg\"></div>",
+      "wcag": ["1.1.1"]
+    },
+    {
+      "name": "Video Accessibility",
+      "description": "Include captions and audio descriptions for video content",
+      "code": "<video><track kind=\"captions\" src=\"/api/captions/{id}\" default /><track kind=\"descriptions\" src=\"/api/descriptions/{id}\" /></video>",
+      "wcag": ["1.2.2", "1.2.3", "1.2.5"]
+    },
+    {
+      "name": "Skip to Content Link",
+      "description": "Allow keyboard users to bypass navigation",
+      "code": "<a href=\"#main-content\" className=\"skip-link sr-only focus:not-sr-only\">Skip to main content</a>",
+      "wcag": ["2.4.1"]
+    },
+    {
+      "name": "Touch Target Size",
+      "description": "Ensure interactive elements are at least 44x44px",
+      "code": "className=\"min-h-[44px] min-w-[44px]\"",
+      "wcag": ["2.5.5"]
+    }
+  ],
+  "insights": [
+    "ARIA should enhance semantic HTML, not replace it",
+    "aria-hidden removes elements entirely from accessibility tree",
+    "aria-live='polite' waits for pause before announcing",
+    "fieldset/legend provides context aria-label cannot",
+    "sr-only is preferred over visibility:hidden for labels"
+  ]
+}
