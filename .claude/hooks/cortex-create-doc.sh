@@ -16,14 +16,15 @@ NOCODB_TASK_ID="${7:-}"
 TIMESTAMP=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 DATE=$(date +"%Y-%m-%d")
 
-# Map notebook names to IDs
+# Map notebook names to IDs (Updated 2025-12-01 after PARA migration)
 case "$NOTEBOOK" in
-    projects) NOTEBOOK_ID="20231114112233-projects" ;;
-    areas) NOTEBOOK_ID="20231114112234-areas" ;;
-    resources) NOTEBOOK_ID="20231114112235-resources" ;;
-    archives) NOTEBOOK_ID="20231114112236-archives" ;;
-    agent_logs) NOTEBOOK_ID="20231114112237-agent-logs" ;;
-    *) NOTEBOOK_ID="20231114112235-resources" ;;
+    projects) NOTEBOOK_ID="20251103053911-8ex6uns" ;;
+    areas) NOTEBOOK_ID="20251201183343-543piyt" ;;
+    resources) NOTEBOOK_ID="20251201183343-ujsixib" ;;
+    archives) NOTEBOOK_ID="20251201183343-xf2snc8" ;;
+    knowledge_base) NOTEBOOK_ID="20251103053840-moamndp" ;;
+    agent_logs) NOTEBOOK_ID="20251201183343-ujsixib" ;;  # Use resources for agent logs
+    *) NOTEBOOK_ID="20251201183343-ujsixib" ;;  # Default to resources
 esac
 
 # Generate path if not provided

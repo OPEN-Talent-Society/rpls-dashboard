@@ -214,12 +214,12 @@ npx claude-flow memory store \
     \"agent\": \"$CLAUDE_VARIANT\"
   }"
 
-# Also log to Cortex for human visibility
+# Also log to Cortex for human visibility (Updated 2025-12-01)
 curl -X POST "https://cortex.aienablement.academy/api/block/appendBlock" \
   -H "Authorization: Token 0fkvtzw0jrat2oht" \
   -H "Content-Type: application/json" \
   -d "{
-    \"id\": \"20231114112235-resources\",
+    \"id\": \"20251201183343-ujsixib\",
     \"data\": \"## Error: $ERROR_MESSAGE\n\n**Resolution**: $RESOLUTION\n\n**Prevention**: $PREVENTION\",
     \"dataType\": \"markdown\"
   }"

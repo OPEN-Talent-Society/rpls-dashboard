@@ -50,7 +50,7 @@ cat << EOF
 {
   "mcp_tool": "mcp__cortex__siyuan_create_doc",
   "parameters": {
-    "notebook": "20231114112235-resources",
+    "notebook": "20251201183343-ujsixib",
     "path": "$DOC_PATH",
     "markdown": $(echo "$MARKDOWN" | jq -Rs .)
   }
