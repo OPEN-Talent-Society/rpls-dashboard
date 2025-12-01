@@ -1,0 +1,49 @@
+{
+  "$schema": "NocoDB Task Template",
+  "$version": "1.0",
+  "$description": "Template for creating tasks in NocoDB",
+
+  "template": {
+    "task name": "[{{CATEGORY}}] {{TASK_TITLE}}",
+    "Description": "## Objective\n{{OBJECTIVE}}\n\n## Acceptance Criteria\n{{CRITERIA}}\n\n## Notes\n{{NOTES}}",
+    "Status": "To Do",
+    "Priority": "{{PRIORITY}}",
+    "Assignee": [{"id": "{{AGENT_USER_ID}}", "email": "{{AGENT_EMAIL}}"}],
+    "SPRINTS_id": "{{SPRINT_ID}}",
+    "Tags": "{{TAGS}}, automated, {{AGENT_VARIANT}}",
+    "Dependencies": "{{DEPENDENCY_IDS}}"
+  },
+
+  "field_descriptions": {
+    "CATEGORY": "Category prefix: Dev, Docs, Research, Design, Ops, etc.",
+    "TASK_TITLE": "Brief descriptive title",
+    "OBJECTIVE": "What should be accomplished",
+    "CRITERIA": "- Criterion 1\n- Criterion 2",
+    "NOTES": "Additional context or links",
+    "PRIORITY": "P1 (Critical), P2 (High), P3 (Medium), P4 (Low)",
+    "AGENT_USER_ID": "User ID from agents.json",
+    "AGENT_EMAIL": "Email from agents.json",
+    "SPRINT_ID": "Current sprint ID",
+    "TAGS": "Comma-separated tags",
+    "DEPENDENCY_IDS": "Array of task IDs this depends on"
+  },
+
+  "status_values": ["To Do", "In Progress", "Review/QA", "Done", "Blocked", "Backlog"],
+
+  "priority_values": {
+    "P1": "Critical - Immediate attention",
+    "P2": "High - Do soon",
+    "P3": "Medium - Normal priority",
+    "P4": "Low - Do when possible"
+  },
+
+  "example": {
+    "task name": "[Dev] Implement user authentication",
+    "Description": "## Objective\nAdd JWT-based authentication to the API\n\n## Acceptance Criteria\n- User can register\n- User can login\n- Protected routes require valid token\n\n## Notes\nUse bcrypt for password hashing",
+    "Status": "To Do",
+    "Priority": "P2",
+    "Assignee": [{"id": "uskfxdybo8kofowf", "email": "claude-code@aienablement.academy"}],
+    "SPRINTS_id": 1,
+    "Tags": "authentication, api, automated, claude-code"
+  }
+}

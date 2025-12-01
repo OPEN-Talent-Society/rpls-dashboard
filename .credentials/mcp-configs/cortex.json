@@ -1,0 +1,62 @@
+{
+  "name": "cortex",
+  "description": "SiYuan knowledge base with Cloudflare Zero Trust",
+  "mcp_config": {
+    "type": "stdio",
+    "command": "node",
+    "args": [
+      "/Users/adamkovacs/Documents/codebuild/mcp-servers/cortex/dist/index.js"
+    ],
+    "env": {
+      "SIYUAN_BASE_URL": "https://cortex.aienablement.academy",
+      "SIYUAN_API_TOKEN": "0fkvtzw0jrat2oht",
+      "CF_ACCESS_CLIENT_ID": "6c0fe301311410aea8ca6e236a176938.access",
+      "CF_ACCESS_CLIENT_SECRET": "714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3"
+    }
+  },
+  "authentication": {
+    "type": "dual",
+    "methods": [
+      {
+        "name": "SiYuan API Token",
+        "header": "Authorization",
+        "format": "Token {SIYUAN_API_TOKEN}",
+        "required": true
+      },
+      {
+        "name": "Cloudflare Zero Trust Service Token",
+        "headers": {
+          "CF-Access-Client-Id": "{CF_ACCESS_CLIENT_ID}",
+          "CF-Access-Client-Secret": "{CF_ACCESS_CLIENT_SECRET}"
+        },
+        "required": true,
+        "note": "Required for CLI/automation access. Browser users authenticate via Cloudflare Access login."
+      }
+    ]
+  },
+  "testing": {
+    "curl_command": "curl -X POST -H 'Content-Type: application/json' -H 'Authorization: Token {SIYUAN_API_TOKEN}' -H 'CF-Access-Client-Id: {CF_ACCESS_CLIENT_ID}' -H 'CF-Access-Client-Secret: {CF_ACCESS_CLIENT_SECRET}' -d '{}' https://cortex.aienablement.academy/api/notebook/lsNotebooks",
+    "expected_response": {
+      "code": 0,
+      "msg": "",
+      "data": {
+        "notebooks": []
+      }
+    }
+  },
+  "notebooks": [
+    "Knowledge Base",
+    "Ops Runbooks",
+    "Projects",
+    "Agents",
+    "Skills Catalog",
+    "Templates",
+    "Tools & Scripts",
+    "Logs & Change History",
+    "0-Inbox",
+    "Growth Experiments"
+  ],
+  "rotation_schedule": "180 days",
+  "last_rotated": "2025-11-03",
+  "next_rotation": "2026-05-02"
+}

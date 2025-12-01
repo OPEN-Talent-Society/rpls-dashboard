@@ -1,0 +1,173 @@
+{
+  "env": {
+    "CLAUDE_FLOW_AUTO_COMMIT": "false",
+    "CLAUDE_FLOW_AUTO_PUSH": "false",
+    "CLAUDE_FLOW_HOOKS_ENABLED": "true",
+    "CLAUDE_FLOW_TELEMETRY_ENABLED": "true",
+    "CLAUDE_FLOW_REMOTE_EXECUTION": "true",
+    "CLAUDE_FLOW_CHECKPOINTS_ENABLED": "true"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(pnpm dlx agentic-flow:*)",
+      "Bash(pnpm run lint)",
+      "Bash(pnpm run test:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm:*)",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(git config:*)",
+      "Bash(git tag:*)",
+      "Bash(git branch:*)",
+      "Bash(git checkout:*)",
+      "Bash(git stash:*)",
+      "Bash(node:*)",
+      "Bash(which:*)",
+      "Bash(pwd)",
+      "Bash(ls:*)",
+      "Bash(jq:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf /)",
+      "Bash(npm:*)",
+      "Bash(yarn:*)"
+    ]
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "claude-flow",
+    "claude-flow-alpha",
+    "ruv-swarm",
+    "flow-nexus",
+    "supabase",
+    "context7",
+    "digitalocean-mcp",
+    "playwright",
+    "zai-mcp-server",
+    "zai-search",
+    "nocodb-base-ops",
+    "cortex",
+    "codex-subagents",
+    "svelte",
+    "vercel"
+  ],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | jq -r '.tool_input.command // \"\"' | xargs -I {} pnpm dlx agentic-flow hooks pre-command --command \"{}\" --validate-safety true --prepare-resources true"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | jq -r '.tool_input.file_path // .tool_input.path // \"\"' | xargs -I {} pnpm dlx agentic-flow hooks pre-edit --file \"{}\" --auto-assign-agents true --load-context true"
+          },
+          {
+            "type": "command",
+            "command": "./.claude/helpers/standard-checkpoint-hooks.sh pre-edit \"{{tool_input}}\""
+          }
+        ]
+      },
+      {
+        "matcher": "Grep|Read|WebSearch|WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'if [ -f ./.claude/hooks/pre-search.sh ]; then ./.claude/hooks/pre-search.sh \"search\" \"general\"; fi'"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | jq -r '.tool_input.command // \"\"' | xargs -I {} pnpm dlx agentic-flow hooks post-command --command \"{}\" --track-metrics true --store-results true"
+          }
+        ]
+      },
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cat | jq -r '.tool_input.file_path // .tool_input.path // \"\"' | xargs -I {} pnpm dlx agentic-flow hooks post-edit --file \"{}\" --format true --update-memory true --train-neural true"
+          },
+          {
+            "type": "command",
+            "command": "./.claude/helpers/standard-checkpoint-hooks.sh post-edit \"{{tool_input}}\""
+          }
+        ]
+      },
+      {
+        "matcher": "Grep|Read|WebSearch|WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'if [ -f ./.claude/hooks/post-search.sh ]; then ./.claude/hooks/post-search.sh \"search-result\" \"general\" \"7\"; fi'"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./.claude/helpers/standard-checkpoint-hooks.sh task \"{{user_prompt}}\""
+          },
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'if [ -f ./.claude/hooks/check-existing-solution.sh ]; then ./.claude/hooks/check-existing-solution.sh \"{{user_prompt}}\" \"general\"; fi'"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'if command -v pnpm >/dev/null 2>&1; then pnpm dlx agentic-flow hooks session-end --generate-summary true --persist-state true --export-metrics true; else echo \"⚠️  pnpm not available, skipping Agentic Flow session-end hook\"; fi'"
+          },
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'if [ -f ./.claude/helpers/standard-checkpoint-hooks.sh ]; then ./.claude/helpers/standard-checkpoint-hooks.sh session-end; else echo \"⚠️  Checkpoint hooks not found\"; fi'"
+          },
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'if [ -f ./.claude/hooks/session-end.sh ]; then ./.claude/hooks/session-end.sh; fi'"
+          }
+        ]
+      }
+    ],
+    "Notification": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'if [ -f ./.claude/hooks/post-error.sh ]; then ./.claude/hooks/post-error.sh \"{{notification}}\" \"unknown\" \"Check logs\"; fi'"
+          }
+        ]
+      }
+    ]
+  },
+  "includeCoAuthoredBy": true,
+  "statusLine": {
+    "type": "command",
+    "command": ".claude/statusline-command.sh"
+  }
+}

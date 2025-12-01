@@ -1,0 +1,88 @@
+{
+  "project": {
+    "name": "AI Enablement Academy",
+    "id": "zxcrbcmdxpqprpxhsntc",
+    "url": "https://zxcrbcmdxpqprpxhsntc.supabase.co",
+    "db_host": "db.zxcrbcmdxpqprpxhsntc.supabase.co",
+    "region": "us-east-2",
+    "status": "ACTIVE_HEALTHY"
+  },
+  "credentials": {
+    "note": "Actual secrets stored in .env file",
+    "env_vars": {
+      "SUPABASE_URL": "https://zxcrbcmdxpqprpxhsntc.supabase.co",
+      "SUPABASE_ACCESS_TOKEN": "sbp_d43129bca38ecdf4008ad3622f6f84ec866a84d0",
+      "SUPABASE_ANON_KEY": "sb_publishable_BI1-ojV23xWqWShHnXAKLQ_P8-XP4oi",
+      "SUPABASE_SERVICE_ROLE_KEY": "sb_secret_g87UniWlZT7GYIQsrWEYYw_VJs7i0Ei"
+    }
+  },
+  "tables": {
+    "agent_memory": {
+      "description": "Persistent memory storage for Claude agents",
+      "status": "ACTIVE",
+      "schema": {
+        "id": "UUID PRIMARY KEY",
+        "agent_id": "TEXT NOT NULL",
+        "agent_email": "TEXT",
+        "namespace": "TEXT DEFAULT 'default'",
+        "key": "TEXT NOT NULL",
+        "value": "JSONB NOT NULL",
+        "metadata": "JSONB DEFAULT '{}'",
+        "ttl_seconds": "INTEGER",
+        "expires_at": "TIMESTAMPTZ",
+        "created_at": "TIMESTAMPTZ DEFAULT NOW()",
+        "updated_at": "TIMESTAMPTZ DEFAULT NOW()"
+      },
+      "indexes": ["idx_agent_memory_lookup", "idx_agent_memory_expires"],
+      "unique_constraint": "(agent_id, namespace, key)"
+    },
+    "learnings": {
+      "description": "Captured learnings and patterns from agent sessions",
+      "status": "ACTIVE",
+      "schema": {
+        "id": "UUID PRIMARY KEY",
+        "learning_id": "TEXT UNIQUE NOT NULL",
+        "topic": "TEXT NOT NULL",
+        "category": "TEXT DEFAULT 'general'",
+        "content": "TEXT NOT NULL",
+        "context": "TEXT",
+        "agent_id": "TEXT NOT NULL",
+        "agent_email": "TEXT",
+        "tags": "TEXT[] DEFAULT ARRAY[]::TEXT[]",
+        "related_docs": "TEXT[] DEFAULT ARRAY[]::TEXT[]",
+        "metadata": "JSONB DEFAULT '{}'",
+        "created_at": "TIMESTAMPTZ DEFAULT NOW()",
+        "updated_at": "TIMESTAMPTZ DEFAULT NOW()"
+      },
+      "indexes": ["idx_learnings_category", "idx_learnings_agent", "idx_learnings_tags"]
+    },
+    "patterns": {
+      "description": "Stores reusable patterns and templates",
+      "status": "ACTIVE",
+      "schema": {
+        "id": "UUID PRIMARY KEY",
+        "pattern_id": "TEXT UNIQUE NOT NULL",
+        "name": "TEXT NOT NULL",
+        "category": "TEXT DEFAULT 'general'",
+        "description": "TEXT",
+        "template": "JSONB NOT NULL",
+        "use_cases": "TEXT[] DEFAULT ARRAY[]::TEXT[]",
+        "success_count": "INTEGER DEFAULT 0",
+        "created_at": "TIMESTAMPTZ DEFAULT NOW()",
+        "updated_at": "TIMESTAMPTZ DEFAULT NOW()"
+      },
+      "indexes": ["idx_patterns_category"]
+    }
+  },
+  "api": {
+    "management_endpoint": "https://api.supabase.com/v1/projects/zxcrbcmdxpqprpxhsntc",
+    "rest_endpoint": "https://zxcrbcmdxpqprpxhsntc.supabase.co/rest/v1",
+    "query_endpoint": "https://api.supabase.com/v1/projects/zxcrbcmdxpqprpxhsntc/database/query"
+  },
+  "rls": {
+    "enabled": true,
+    "policies": ["Service role has full access to all tables"]
+  },
+  "created": "2025-12-01T02:02:00Z",
+  "updated": "2025-12-01T02:02:00Z"
+}

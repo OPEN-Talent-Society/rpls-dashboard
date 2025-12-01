@@ -1,0 +1,72 @@
+{
+  "agents": {
+    "claude-code": {
+      "email": "claude-code@aienablement.academy",
+      "user_id": "uskfxdybo8kofowf",
+      "display_name": "Claude Code",
+      "role": "developer"
+    },
+    "claude-flow": {
+      "email": "claude-flow@aienablement.academy",
+      "user_id": "uskflow001",
+      "display_name": "Claude Flow",
+      "role": "orchestrator"
+    },
+    "claude-zai": {
+      "email": "claude-zai@aienablement.academy",
+      "user_id": "uskzai001",
+      "display_name": "Claude ZAI",
+      "role": "intelligence"
+    },
+    "claude-zai-flow": {
+      "email": "claude-zai-flow@aienablement.academy",
+      "user_id": "uskzaiflow001",
+      "display_name": "Claude ZAI Flow",
+      "role": "hybrid"
+    },
+    "claude-zai-agent-flow": {
+      "email": "agent-flow@aienablement.academy",
+      "user_id": "uskagentflow001",
+      "display_name": "Agent Flow",
+      "role": "multi-agent"
+    }
+  },
+  "nocodb": {
+    "base_id": "pz7wdven8yqgx3r",
+    "tasks_table": "mmx3z4zxdj9ysfk",
+    "sprints_table": "mtkfphwlmiv8mzp",
+    "default_assignee_id": "uskfxdybo8kofowf"
+  },
+  "cortex": {
+    "api_url": "https://cortex.aienablement.academy",
+    "token": "0fkvtzw0jrat2oht",
+    "notebooks": {
+      "projects": "20231114112233-projects",
+      "areas": "20231114112234-areas",
+      "resources": "20231114112235-resources",
+      "archives": "20231114112236-archives",
+      "agent_logs": "20231114112237-agent-logs"
+    }
+  },
+  "memory_systems": {
+    "agentdb": {
+      "enabled": true,
+      "sync_interval": "on_task_complete"
+    },
+    "ruvector": {
+      "enabled": true,
+      "sync_interval": "on_learning"
+    },
+    "synapse": {
+      "enabled": true,
+      "sync_interval": "on_session_end"
+    }
+  },
+  "sops": {
+    "always_log_to_nocodb": true,
+    "always_log_to_cortex": true,
+    "use_full_siyuan_features": true,
+    "cross_session_memory": true,
+    "coordinate_with_other_agents": true
+  }
+}

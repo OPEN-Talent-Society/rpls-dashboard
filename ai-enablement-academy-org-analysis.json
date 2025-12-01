@@ -1,0 +1,528 @@
+{
+  "org": "AI-Enablement-Academy",
+  "analysis_date": "2025-11-30",
+  "summary": {
+    "total_repos": 8,
+    "active_repos": 2,
+    "infrastructure_repos": 6,
+    "primary_languages": {
+      "TypeScript": 2,
+      "Shell": 3,
+      "JavaScript": 1,
+      "HTML": 1
+    },
+    "architecture": "Microservices with centralized ops infrastructure"
+  },
+  "repos": [
+    {
+      "name": "project-campfire",
+      "category": "Application - Primary Platform",
+      "visibility": "private",
+      "status": "ACTIVE - Most Recent Activity",
+      "last_push": "2025-11-30T19:18:44Z",
+      "created": "2025-11-28T22:23:27Z",
+      "size_kb": 4275,
+      "tech_stack": {
+        "framework": "Next.js 15.5.6 (App Router, RSC)",
+        "cms": "PayloadCMS 3.x",
+        "database": "PostgreSQL",
+        "orm": "Drizzle (via Payload)",
+        "auth": "NextAuth.js v5",
+        "payments": "Stripe",
+        "email": "Brevo",
+        "forms": "Formbricks",
+        "analytics": "PostHog",
+        "crm": "NocoDB",
+        "styling": "Tailwind CSS + shadcn/ui",
+        "monorepo": "pnpm workspaces + Turbo",
+        "additional_deps": [
+          "@payloadcms/db-postgres",
+          "@payloadcms/richtext-lexical",
+          "@radix-ui (multiple components)",
+          "graphql",
+          "zod",
+          "lucide-react",
+          "sharp"
+        ]
+      },
+      "purpose": "Self-hosted learning management system (LMS) for AI enablement training",
+      "architecture": {
+        "type": "Monorepo",
+        "structure": {
+          "apps": ["web"],
+          "packages": ["typescript-config"]
+        }
+      },
+      "key_features": [
+        "E-learning lesson viewer with video player",
+        "Course progress tracking API",
+        "Stripe checkout integration with webhooks",
+        "Brevo webhook integration for cohort management",
+        "Scientific Cubism design language",
+        "PayloadCMS admin panel",
+        "Custom business dashboard (/academy-admin)",
+        "User roles: anonymous, free, business, instructor, admin"
+      ],
+      "recent_activity": {
+        "last_commit": "2025-11-30T19:18:36Z",
+        "last_commit_message": "docs: Standardize all specifications v2.0.0",
+        "highlights": [
+          "Simplified roles from 9 to 5",
+          "Created EPICS.md with 10 epics and 102 tasks (~249h total)",
+          "Added full tech stack integrations",
+          "Established business priority ordering: P0 Landing/Stripe → P1 Auth/Email → P2 B2B → P3 AI"
+        ]
+      },
+      "relationships": [
+        {
+          "repo": "infrastructure",
+          "type": "deployment_target",
+          "description": "Deployed via infrastructure orchestration"
+        },
+        {
+          "repo": "ops-dashboard",
+          "type": "monitoring",
+          "description": "Monitored by ops dashboard"
+        },
+        {
+          "repo": "monitoring-stack",
+          "type": "observability",
+          "description": "Metrics and logs collected by monitoring stack"
+        }
+      ],
+      "url": "https://github.com/AI-Enablement-Academy/project-campfire"
+    },
+    {
+      "name": "enablement-academy-face",
+      "category": "Application - Frontend Prototype",
+      "visibility": "private",
+      "status": "ACTIVE - Secondary Development",
+      "last_push": "2025-11-28T05:38:16Z",
+      "created": "2025-10-31T13:52:26Z",
+      "size_kb": 10613,
+      "tech_stack": {
+        "framework": "Vite + React (SWC)",
+        "language": "TypeScript",
+        "ui_library": "shadcn/ui (extensive Radix UI components)",
+        "state_management": "@tanstack/react-query",
+        "forms": "react-hook-form + @hookform/resolvers + zod",
+        "routing": "react-router-dom",
+        "styling": "Tailwind CSS + @tailwindcss/typography",
+        "theming": "next-themes",
+        "charts": "recharts",
+        "date_handling": "date-fns + react-day-picker",
+        "notifications": "sonner",
+        "icons": "lucide-react",
+        "dev_platform": "Lovable (AI-assisted development)"
+      },
+      "purpose": "Frontend prototype/experimental UI development platform using Lovable AI builder",
+      "architecture": {
+        "type": "Single-page application",
+        "build_tool": "Vite",
+        "bundler": "SWC (fast refresh)"
+      },
+      "key_features": [
+        "Comprehensive Radix UI component library (24+ components)",
+        "Form validation with Zod schemas",
+        "React Query for server state management",
+        "Responsive design with Tailwind",
+        "Dark/light theme support",
+        "Carousel components (embla-carousel)",
+        "Input OTP components",
+        "Resizable panels",
+        "Drawer components (vaul)",
+        "Charts and data visualization"
+      ],
+      "lovable_integration": {
+        "project_id": "b750f42f-cdcf-455b-81a2-e300393dc8cc",
+        "url": "https://lovable.dev/projects/b750f42f-cdcf-455b-81a2-e300393dc8cc",
+        "workflow": "AI-assisted prompting with automatic commits"
+      },
+      "relationships": [
+        {
+          "repo": "project-campfire",
+          "type": "prototype_for",
+          "description": "UI experiments and component testing for main platform"
+        }
+      ],
+      "url": "https://github.com/AI-Enablement-Academy/enablement-academy-face"
+    },
+    {
+      "name": "infrastructure",
+      "category": "Operations - Infrastructure Orchestration",
+      "visibility": "private",
+      "status": "STABLE - Maintenance Mode",
+      "last_push": "2025-10-24T06:09:45Z",
+      "created": "2025-10-23T17:49:10Z",
+      "size_kb": 115,
+      "tech_stack": {
+        "language": "Shell scripts",
+        "orchestration": "repos.yaml manifest",
+        "tools": ["yq (YAML processor)"]
+      },
+      "purpose": "Core documentation, migration history, and manifest for AI Enablement Academy operations stack",
+      "architecture": {
+        "type": "Meta-repository",
+        "structure": {
+          "docs": "Internal runbooks and operational guides",
+          "scripts": "Utilities like sync_repos.sh",
+          "oci": "OCI host tooling and notes",
+          "manifest": "repos.yaml - links to all service repos"
+        }
+      },
+      "key_features": [
+        "Single source of truth for infrastructure",
+        "Repository manifest (repos.yaml)",
+        "Migration tracking (MIGRATION_TASKS.md)",
+        "Agent coordination documentation (AGENTS.md)",
+        "Runbooks in .docs/ directory",
+        "Repository sync utilities",
+        "Dashboard activity feed export scripts"
+      ],
+      "managed_services": [
+        "ops-backup",
+        "ops-dashboard",
+        "monitoring-stack",
+        "ops-docmost-exporter",
+        "ops-dashboard-actions"
+      ],
+      "relationships": [
+        {
+          "repo": "ops-backup",
+          "type": "orchestrates",
+          "description": "Manages backup procedures and documentation"
+        },
+        {
+          "repo": "ops-dashboard",
+          "type": "orchestrates",
+          "description": "Provides activity feed data"
+        },
+        {
+          "repo": "monitoring-stack",
+          "type": "orchestrates",
+          "description": "Configures monitoring services"
+        },
+        {
+          "repo": "ops-docmost-exporter",
+          "type": "orchestrates",
+          "description": "Coordinates documentation exports"
+        },
+        {
+          "repo": "project-campfire",
+          "type": "deploys",
+          "description": "Target for main application deployment"
+        }
+      ],
+      "url": "https://github.com/AI-Enablement-Academy/infrastructure"
+    },
+    {
+      "name": "ops-backup",
+      "category": "Operations - Data Protection",
+      "visibility": "private",
+      "status": "STABLE - Production Service",
+      "last_push": "2025-10-24T10:12:29Z",
+      "created": "2025-10-23T18:17:42Z",
+      "size_kb": 9,
+      "tech_stack": {
+        "language": "Shell scripts",
+        "systemd": "Service units and timers",
+        "database": "PostgreSQL (pg_dump)",
+        "sync_tools": ["rclone (Google Drive)", "OCI Object Storage CLI"],
+        "containerization": "Docker Compose (optional deployment)"
+      },
+      "purpose": "Backup scripts, exporters, and scheduled tasks for Docmost/NocoDB data protection",
+      "architecture": {
+        "type": "Scheduled service",
+        "deployment_options": ["systemd timers", "Docker Compose with cron"]
+      },
+      "key_features": [
+        "Nightly PostgreSQL dumps",
+        "File archive backups",
+        "NocoDB CSV exports",
+        "Google Drive synchronization (rclone)",
+        "OCI Object Storage promotion (weekly/monthly)",
+        "Systemd timer integration",
+        "Docker Compose deployment option"
+      ],
+      "backup_targets": [
+        "Docmost (documentation platform)",
+        "NocoDB (CRM/database)",
+        "File system archives"
+      ],
+      "backup_schedule": {
+        "nightly": "Postgres dumps + file archives",
+        "continuous": "Google Drive sync",
+        "weekly_monthly": "OCI Object Storage promotion"
+      },
+      "relationships": [
+        {
+          "repo": "infrastructure",
+          "type": "managed_by",
+          "description": "Documented in infrastructure SOPs"
+        },
+        {
+          "repo": "ops-docmost-exporter",
+          "type": "integrates_with",
+          "description": "Uses Docmost exporter for markdown backups"
+        },
+        {
+          "repo": "ops-dashboard",
+          "type": "monitored_by",
+          "description": "Backup status displayed in ops dashboard"
+        }
+      ],
+      "url": "https://github.com/AI-Enablement-Academy/ops-backup"
+    },
+    {
+      "name": "ops-docmost-exporter",
+      "category": "Operations - Documentation Export",
+      "visibility": "private",
+      "status": "STABLE - Production Service",
+      "last_push": "2025-10-24T06:08:27Z",
+      "created": "2025-10-23T18:18:28Z",
+      "size_kb": 6,
+      "tech_stack": {
+        "language": "Shell scripts",
+        "containerization": "Docker container image",
+        "export_format": "Markdown"
+      },
+      "purpose": "Docmost markdown exporter container image and scripts for documentation backup",
+      "architecture": {
+        "type": "Container service",
+        "deployment": "Docker Compose integration"
+      },
+      "key_features": [
+        "Markdown export from Docmost",
+        "Container-based deployment",
+        "Volume-mounted exports",
+        "Secret management integration"
+      ],
+      "export_targets": [
+        "Docmost documentation spaces"
+      ],
+      "relationships": [
+        {
+          "repo": "ops-backup",
+          "type": "used_by",
+          "description": "Called by backup scripts for Docmost exports"
+        },
+        {
+          "repo": "infrastructure",
+          "type": "managed_by",
+          "description": "Configured in infrastructure repo"
+        }
+      ],
+      "url": "https://github.com/AI-Enablement-Academy/ops-docmost-exporter"
+    },
+    {
+      "name": "monitoring-stack",
+      "category": "Operations - Observability",
+      "visibility": "private",
+      "status": "STABLE - Production Service",
+      "last_push": "2025-10-24T05:40:25Z",
+      "created": "2025-10-23T18:19:32Z",
+      "size_kb": 3,
+      "tech_stack": {
+        "language": "JavaScript (Node.js)",
+        "framework": "Express.js",
+        "containerization": "Docker",
+        "monitoring_tools": ["Netdata", "Uptime Kuma", "Dozzle"],
+        "security": "Cloudflare Access"
+      },
+      "purpose": "Monitoring portal for metrics collection and visualization behind Cloudflare Access",
+      "architecture": {
+        "type": "Proxy service",
+        "components": {
+          "netdata_portal": "HTML login portal with Express proxy",
+          "uptime_kuma": "Configured in infrastructure repo",
+          "dozzle": "Configured in infrastructure repo"
+        }
+      },
+      "key_features": [
+        "Netdata metrics portal",
+        "Cloudflare Access integration",
+        "Express-based authentication proxy",
+        "Container-based deployment",
+        "Uptime monitoring (Kuma)",
+        "Container log viewer (Dozzle)"
+      ],
+      "monitored_services": [
+        "project-campfire",
+        "ops-backup",
+        "ops-dashboard",
+        "Infrastructure services"
+      ],
+      "relationships": [
+        {
+          "repo": "infrastructure",
+          "type": "managed_by",
+          "description": "Kuma and Dozzle configs in infrastructure repo"
+        },
+        {
+          "repo": "project-campfire",
+          "type": "monitors",
+          "description": "Collects metrics from main application"
+        },
+        {
+          "repo": "ops-dashboard",
+          "type": "complements",
+          "description": "Provides raw metrics for dashboard visualization"
+        }
+      ],
+      "url": "https://github.com/AI-Enablement-Academy/monitoring-stack"
+    },
+    {
+      "name": "ops-dashboard",
+      "category": "Operations - Dashboard",
+      "visibility": "private",
+      "status": "STABLE - Production Service",
+      "last_push": "2025-10-24T05:40:00Z",
+      "created": "2025-10-23T18:17:31Z",
+      "size_kb": 23,
+      "tech_stack": {
+        "language": "HTML + JavaScript (Node.js)",
+        "framework": "Express.js",
+        "containerization": "Docker Compose",
+        "deployment": "Reverse proxy (Nginx/Caddy)"
+      },
+      "purpose": "Node-based dashboard service providing UI and REST endpoints for ops activity/status feeds",
+      "architecture": {
+        "type": "Web service",
+        "structure": {
+          "app": "Node service with Express",
+          "routes": "REST API endpoints",
+          "static_assets": "Dashboard UI",
+          "data": "activity.json feed"
+        }
+      },
+      "key_features": [
+        "Static HTML/CSS/JS dashboard UI",
+        "REST API for activity feeds",
+        "Status monitoring endpoints",
+        "Docker Compose deployment",
+        "Reverse proxy integration",
+        "Activity feed from infrastructure exports"
+      ],
+      "data_sources": [
+        {
+          "source": "infrastructure",
+          "script": "export_ops_activity.py",
+          "output": "app/data/activity.json"
+        }
+      ],
+      "relationships": [
+        {
+          "repo": "infrastructure",
+          "type": "data_from",
+          "description": "Activity feed generated by infrastructure scripts"
+        },
+        {
+          "repo": "monitoring-stack",
+          "type": "visualizes",
+          "description": "Displays monitoring data in dashboard UI"
+        },
+        {
+          "repo": "ops-backup",
+          "type": "displays_status",
+          "description": "Shows backup job status and history"
+        },
+        {
+          "repo": "ops-dashboard-actions",
+          "type": "ci_cd",
+          "description": "CI/CD workflows for deployment"
+        }
+      ],
+      "url": "https://github.com/AI-Enablement-Academy/ops-dashboard"
+    },
+    {
+      "name": "ops-dashboard-actions",
+      "category": "Operations - CI/CD",
+      "visibility": "private",
+      "status": "STABLE - Automation Service",
+      "last_push": "2025-10-24T03:01:16Z",
+      "created": "2025-10-23T18:20:49Z",
+      "size_kb": 0,
+      "tech_stack": {
+        "platform": "GitHub Actions",
+        "workflows": "YAML configuration"
+      },
+      "purpose": "CI workflows for ops-dashboard service deployment and testing",
+      "architecture": {
+        "type": "GitHub Actions repository"
+      },
+      "key_features": [
+        "Automated build workflows",
+        "Deployment automation",
+        "Testing pipelines"
+      ],
+      "relationships": [
+        {
+          "repo": "ops-dashboard",
+          "type": "deploys",
+          "description": "Automates ops-dashboard deployments"
+        }
+      ],
+      "url": "https://github.com/AI-Enablement-Academy/ops-dashboard-actions"
+    }
+  ],
+  "infrastructure_patterns": {
+    "deployment_strategy": "Containerized microservices with systemd and Docker Compose",
+    "monitoring_approach": "Multi-layer: Netdata (metrics) + Uptime Kuma (uptime) + Dozzle (logs)",
+    "backup_strategy": "Multi-tier: Nightly Postgres dumps + Google Drive sync + OCI Object Storage",
+    "security": "Cloudflare Access for monitoring portals",
+    "orchestration": "Centralized in infrastructure repo with repos.yaml manifest",
+    "ci_cd": "GitHub Actions (dedicated repos like ops-dashboard-actions)"
+  },
+  "technology_ecosystem": {
+    "primary_application": {
+      "name": "project-campfire",
+      "type": "Next.js 15 + PayloadCMS 3 LMS",
+      "database": "PostgreSQL",
+      "integrations": [
+        "Stripe (payments)",
+        "Brevo (email)",
+        "Formbricks (forms)",
+        "PostHog (analytics)",
+        "NocoDB (CRM)"
+      ]
+    },
+    "operations_stack": {
+      "monitoring": ["Netdata", "Uptime Kuma", "Dozzle"],
+      "backup": ["pg_dump", "rclone", "OCI Object Storage"],
+      "dashboard": "Custom Node.js Express service",
+      "documentation": "Docmost (with markdown exports)",
+      "infrastructure_as_code": "Shell scripts + Docker Compose + systemd"
+    },
+    "development_tools": {
+      "monorepo": "pnpm workspaces + Turbo",
+      "frontend_prototype": "Lovable AI builder + Vite + React",
+      "version_control": "GitHub (private repos)"
+    }
+  },
+  "activity_summary": {
+    "most_active": "project-campfire (daily commits)",
+    "active": "enablement-academy-face (last push 2025-11-28)",
+    "stable": [
+      "infrastructure",
+      "ops-backup",
+      "ops-docmost-exporter",
+      "monitoring-stack",
+      "ops-dashboard",
+      "ops-dashboard-actions"
+    ],
+    "recent_focus": [
+      "LMS feature development (project-campfire)",
+      "Specification standardization (v2.0.0)",
+      "Epic and task planning (EPICS.md - 10 epics, 102 tasks)",
+      "Integration of Stripe, Brevo, Formbricks, PostHog, NocoDB"
+    ]
+  },
+  "business_context": {
+    "mission": "AI enablement training platform",
+    "architecture_phase": "Active development (project-campfire) + stable operations (monitoring/backup)",
+    "deployment_maturity": "Production infrastructure with monitoring and backup",
+    "priority_order": "P0: Landing/Stripe → P1: Auth/Email → P2: B2B → P3: AI features",
+    "total_effort_estimate": "~249 hours (from EPICS.md)",
+    "user_roles": ["anonymous", "free", "business", "instructor", "admin"]
+  }
+}

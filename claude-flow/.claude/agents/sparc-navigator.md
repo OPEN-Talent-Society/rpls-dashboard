@@ -1,0 +1,1 @@
+../../../claude-zai/.claude/agents/sparc-navigator.md
