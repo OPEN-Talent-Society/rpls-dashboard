@@ -120,6 +120,33 @@
             "command": "/usr/bin/env bash -c 'if [ -f ./.claude/hooks/post-search.sh ]; then ./.claude/hooks/post-search.sh \"search-result\" \"general\" \"7\"; fi'"
           }
         ]
+      },
+      {
+        "matcher": "mcp__claude-flow__memory_usage",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'INPUT=$(cat); KEY=$(echo \"$INPUT\" | jq -r \".tool_input.key // \\\"\\\"\" 2>/dev/null); VALUE=$(echo \"$INPUT\" | jq -r \".tool_input.value // \\\"\\\"\" 2>/dev/null); NS=$(echo \"$INPUT\" | jq -r \".tool_input.namespace // \\\"default\\\"\" 2>/dev/null); ACTION=$(echo \"$INPUT\" | jq -r \".tool_input.action // \\\"\\\"\" 2>/dev/null); if [ \"$ACTION\" = \"store\" ] && [ -n \"$KEY\" ]; then ./.claude/hooks/memory-to-learnings-bridge.sh \"$KEY\" \"$VALUE\" \"$NS\" 2>/dev/null & fi'"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__claude-flow__neural_patterns",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'INPUT=$(cat); ACTION=$(echo \"$INPUT\" | jq -r \".tool_input.action // \\\"\\\"\" 2>/dev/null); if [ \"$ACTION\" = \"learn\" ]; then OP=$(echo \"$INPUT\" | jq -r \".tool_input.operation // \\\"neural-pattern\\\"\" 2>/dev/null); OUTCOME=$(echo \"$INPUT\" | jq -r \".tool_input.outcome // \\\"\\\"\" 2>/dev/null); ./.claude/hooks/log-learning.sh \"Neural Pattern: $OP\" \"$OUTCOME\" \"neural\" \"Learned from neural_patterns MCP\" 2>/dev/null & fi'"
+          }
+        ]
+      },
+      {
+        "matcher": "mcp__flow-nexus__storage_upload",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'INPUT=$(cat); BUCKET=$(echo \"$INPUT\" | jq -r \".tool_input.bucket // \\\"\\\"\" 2>/dev/null); PATH=$(echo \"$INPUT\" | jq -r \".tool_input.path // \\\"\\\"\" 2>/dev/null); echo \"[3-Layer Sync] flow-nexus storage: $BUCKET/$PATH\" >> /tmp/memory-chain.log'"
+          }
+        ]
       }
     ],
     "UserPromptSubmit": [
