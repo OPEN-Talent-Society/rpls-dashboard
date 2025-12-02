@@ -4,7 +4,7 @@ Manage operation cache for performance.
 
 ## Usage
 ```bash
-npx claude-flow optimization cache-manage [options]
+pnpm dlx claude-flow optimization cache-manage [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ npx claude-flow optimization cache-manage [options]
 ## Examples
 ```bash
 # View cache stats
-npx claude-flow optimization cache-manage --action view
+pnpm dlx claude-flow optimization cache-manage --action view
 
 # Clear cache
-npx claude-flow optimization cache-manage --action clear
+pnpm dlx claude-flow optimization cache-manage --action clear
 
 # Set limits
-npx claude-flow optimization cache-manage --max-size 100 --ttl 3600
+pnpm dlx claude-flow optimization cache-manage --max-size 100 --ttl 3600
 ```

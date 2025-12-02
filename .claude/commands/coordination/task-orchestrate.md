@@ -4,7 +4,7 @@ Orchestrate complex tasks across the swarm.
 
 ## Usage
 ```bash
-npx claude-flow task orchestrate [options]
+pnpm dlx claude-flow task orchestrate [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ npx claude-flow task orchestrate [options]
 ## Examples
 ```bash
 # Orchestrate development task
-npx claude-flow task orchestrate --task "Implement user authentication"
+pnpm dlx claude-flow task orchestrate --task "Implement user authentication"
 
 # High priority task
-npx claude-flow task orchestrate --task "Fix production bug" --priority critical
+pnpm dlx claude-flow task orchestrate --task "Fix production bug" --priority critical
 
 # With specific strategy
-npx claude-flow task orchestrate --task "Refactor codebase" --strategy parallel
+pnpm dlx claude-flow task orchestrate --task "Refactor codebase" --strategy parallel
 ```

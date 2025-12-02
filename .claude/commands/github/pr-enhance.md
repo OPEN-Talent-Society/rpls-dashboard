@@ -4,7 +4,7 @@ AI-powered pull request enhancements.
 
 ## Usage
 ```bash
-npx claude-flow github pr-enhance [options]
+pnpm dlx claude-flow github pr-enhance [options]
 ```
 
 ## Options
@@ -16,11 +16,11 @@ npx claude-flow github pr-enhance [options]
 ## Examples
 ```bash
 # Enhance PR
-npx claude-flow github pr-enhance --pr-number 123
+pnpm dlx claude-flow github pr-enhance --pr-number 123
 
 # Add tests
-npx claude-flow github pr-enhance --pr-number 123 --add-tests
+pnpm dlx claude-flow github pr-enhance --pr-number 123 --add-tests
 
 # Full enhancement
-npx claude-flow github pr-enhance --pr-number 123 --add-tests --improve-docs
+pnpm dlx claude-flow github pr-enhance --pr-number 123 --add-tests --improve-docs
 ```

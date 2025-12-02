@@ -2,10 +2,11 @@
 import fetch from "node-fetch";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
 
 const server = new McpServer({
   name: "cortex-siyuan-mcp",
-  version: "0.1.0",
+  version: "0.2.0",
 });
 
 const BASE_URL =
@@ -65,91 +66,81 @@ async function callSiyuan(endpoint, payload = {}) {
   return data;
 }
 
-server.registerTool(
+// Register siyuan_request tool with Zod schema
+server.tool(
   "siyuan_request",
+  "POST to a SiYuan API endpoint (e.g. /api/notebook/lsNotebooks). Provide payload as an object.",
   {
-    title: "SiYuan Raw Request",
-    description:
-      "POST to a SiYuan API endpoint (e.g. /api/notebook/lsNotebooks). Provide payload as an object.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        endpoint: {
-          type: "string",
-          description:
-            "Endpoint path or full URL (e.g. /api/notebook/lsNotebooks).",
-        },
-        payload: {
-          type: "object",
-          additionalProperties: true,
-        },
-      },
-      required: ["endpoint"],
-    },
-    outputSchema: {
-      type: "object",
-      properties: {
-        response: {},
-      },
-    },
+    endpoint: z.string().optional().describe("Endpoint path or full URL (e.g. /api/notebook/lsNotebooks)."),
+    payload: z.record(z.any()).optional().describe("Request payload object"),
   },
   async ({ endpoint, payload }) => {
-    const result = await callSiyuan(endpoint, payload ?? {});
-    return {
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-      structuredContent: { response: result },
-    };
+    try {
+      const result = await callSiyuan(endpoint || "/api/notebook/lsNotebooks", payload ?? {});
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error: ${error.message}`,
+          },
+        ],
+        isError: true,
+      };
+    }
   }
 );
 
-server.registerTool(
+// Register siyuan_search tool with Zod schema
+server.tool(
   "siyuan_search",
+  "Search SiYuan documents by keyword.",
   {
-    title: "Search Docs",
-    description: "Search SiYuan documents by keyword.",
-    inputSchema: {
-      type: "object",
-      properties: {
-        keyword: { type: "string" },
-        page: { type: "integer", default: 1 },
-        pageSize: { type: "integer", default: 20 },
-      },
-      required: ["keyword"],
-    },
-    outputSchema: {
-      type: "object",
-      properties: {
-        response: {},
-      },
-    },
+    keyword: z.string().optional().describe("Search keyword"),
+    page: z.number().optional().default(1).describe("Page number"),
+    pageSize: z.number().optional().default(20).describe("Results per page"),
   },
   async ({ keyword, page = 1, pageSize = 20 }) => {
-    const result = await callSiyuan("/api/search/searchDoc", {
-      k: keyword,
-      page,
-      pageSize,
-    });
-    return {
-      content: [
-        {
-          type: "text",
-          text: JSON.stringify(result, null, 2),
-        },
-      ],
-      structuredContent: { response: result },
-    };
+    try {
+      const result = await callSiyuan("/api/search/searchDoc", {
+        k: keyword || "",
+        page,
+        pageSize,
+      });
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(result, null, 2),
+          },
+        ],
+      };
+    } catch (error) {
+      return {
+        content: [
+          {
+            type: "text",
+            text: `Error: ${error.message}`,
+          },
+        ],
+        isError: true,
+      };
+    }
   }
 );
 
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("[cortex-mcp] ready");
+  console.error("[cortex-mcp] ready (v0.2.0 - Zod schemas)");
 }
 
 main().catch((err) => {

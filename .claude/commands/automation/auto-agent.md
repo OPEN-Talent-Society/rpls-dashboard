@@ -4,7 +4,7 @@ Automatically assign agents based on task analysis.
 
 ## Usage
 ```bash
-npx claude-flow automation auto-agent [options]
+pnpm dlx claude-flow automation auto-agent [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ npx claude-flow automation auto-agent [options]
 ## Examples
 ```bash
 # Auto-assign for task
-npx claude-flow automation auto-agent --task "Build REST API"
+pnpm dlx claude-flow automation auto-agent --task "Build REST API"
 
 # Limit agents
-npx claude-flow automation auto-agent --task "Fix bugs" --max-agents 3
+pnpm dlx claude-flow automation auto-agent --task "Fix bugs" --max-agents 3
 
 # Use specific strategy
-npx claude-flow automation auto-agent --strategy specialized
+pnpm dlx claude-flow automation auto-agent --strategy specialized
 ```

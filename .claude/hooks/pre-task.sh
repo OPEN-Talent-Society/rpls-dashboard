@@ -38,9 +38,9 @@ echo "Session file created: $SESSION_FILE" >&2
 echo "Loading context from memory systems..." >&2
 
 # 1. Check AgentDB for relevant context
-if command -v npx &> /dev/null; then
+if command -v pnpm dlx &> /dev/null; then
     echo "  - AgentDB: Loading relevant memories..." >&2
-    # npx claude-flow memory_search --pattern "$TASK_NAME" --limit 5 2>/dev/null || true
+    # pnpm dlx claude-flow memory_search --pattern "$TASK_NAME" --limit 5 2>/dev/null || true
 fi
 
 # 2. Check RuVector for similar past work

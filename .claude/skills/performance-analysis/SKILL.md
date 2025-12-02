@@ -23,17 +23,17 @@ This skill consolidates all performance analysis capabilities:
 
 ### Basic Bottleneck Detection
 ```bash
-npx claude-flow bottleneck detect
+pnpm dlx claude-flow bottleneck detect
 ```
 
 ### Generate Performance Report
 ```bash
-npx claude-flow analysis performance-report --format html --include-metrics
+pnpm dlx claude-flow analysis performance-report --format html --include-metrics
 ```
 
 ### Analyze and Auto-Fix
 ```bash
-npx claude-flow bottleneck detect --fix --threshold 15
+pnpm dlx claude-flow bottleneck detect --fix --threshold 15
 ```
 
 ## Core Capabilities
@@ -42,7 +42,7 @@ npx claude-flow bottleneck detect --fix --threshold 15
 
 #### Command Syntax
 ```bash
-npx claude-flow bottleneck detect [options]
+pnpm dlx claude-flow bottleneck detect [options]
 ```
 
 #### Options
@@ -55,19 +55,19 @@ npx claude-flow bottleneck detect [options]
 #### Usage Examples
 ```bash
 # Basic detection for current swarm
-npx claude-flow bottleneck detect
+pnpm dlx claude-flow bottleneck detect
 
 # Analyze specific swarm over 24 hours
-npx claude-flow bottleneck detect --swarm-id swarm-123 -t 24h
+pnpm dlx claude-flow bottleneck detect --swarm-id swarm-123 -t 24h
 
 # Export detailed analysis
-npx claude-flow bottleneck detect -t 24h -e bottlenecks.json
+pnpm dlx claude-flow bottleneck detect -t 24h -e bottlenecks.json
 
 # Auto-fix detected issues
-npx claude-flow bottleneck detect --fix --threshold 15
+pnpm dlx claude-flow bottleneck detect --fix --threshold 15
 
 # Low threshold for sensitive detection
-npx claude-flow bottleneck detect --threshold 10 --export critical-issues.json
+pnpm dlx claude-flow bottleneck detect --threshold 10 --export critical-issues.json
 ```
 
 #### Metrics Analyzed
@@ -217,7 +217,7 @@ mcp__claude-flow__task_results({
 
 #### Command Syntax
 ```bash
-npx claude-flow analysis performance-report [options]
+pnpm dlx claude-flow analysis performance-report [options]
 ```
 
 #### Options
@@ -263,26 +263,26 @@ npx claude-flow analysis performance-report [options]
 #### Usage Examples
 ```bash
 # Generate HTML report with all metrics
-npx claude-flow analysis performance-report --format html --include-metrics
+pnpm dlx claude-flow analysis performance-report --format html --include-metrics
 
 # Compare current swarm with previous
-npx claude-flow analysis performance-report --compare swarm-123 --format markdown
+pnpm dlx claude-flow analysis performance-report --compare swarm-123 --format markdown
 
 # Custom output with specific sections
-npx claude-flow analysis performance-report \
+pnpm dlx claude-flow analysis performance-report \
   --sections summary,metrics,recommendations \
   --output reports/perf-analysis.html \
   --format html
 
 # Weekly performance report
-npx claude-flow analysis performance-report \
+pnpm dlx claude-flow analysis performance-report \
   --time-range 7d \
   --include-metrics \
   --format markdown \
   --output docs/weekly-performance.md
 
 # JSON format for CI/CD integration
-npx claude-flow analysis performance-report \
+pnpm dlx claude-flow analysis performance-report \
   --format json \
   --output build/performance.json
 ```
@@ -371,11 +371,11 @@ Typical improvements after bottleneck resolution:
 ### Continuous Monitoring
 ```bash
 # Monitor performance in real-time
-npx claude-flow swarm monitor --interval 5
+pnpm dlx claude-flow swarm monitor --interval 5
 
 # Generate hourly reports
 while true; do
-  npx claude-flow analysis performance-report \
+  pnpm dlx claude-flow analysis performance-report \
     --format json \
     --output logs/perf-$(date +%Y%m%d-%H%M).json
   sleep 3600
@@ -395,12 +395,12 @@ jobs:
       - uses: actions/checkout@v2
       - name: Run Performance Analysis
         run: |
-          npx claude-flow analysis performance-report \
+          pnpm dlx claude-flow analysis performance-report \
             --format json \
             --output performance.json
       - name: Check Performance Thresholds
         run: |
-          npx claude-flow bottleneck detect \
+          pnpm dlx claude-flow bottleneck detect \
             --threshold 15 \
             --export bottlenecks.json
       - name: Upload Reports
@@ -421,12 +421,12 @@ const fs = require('fs');
 async function analyzePerformance() {
   // Run bottleneck detection
   const bottlenecks = await runCommand(
-    'npx claude-flow bottleneck detect --format json'
+    'pnpm dlx claude-flow bottleneck detect --format json'
   );
 
   // Generate performance report
   const report = await runCommand(
-    'npx claude-flow analysis performance-report --format json'
+    'pnpm dlx claude-flow analysis performance-report --format json'
   );
 
   // Analyze results
@@ -500,37 +500,37 @@ analyzePerformance().catch(console.error);
 **High Memory Usage**
 ```bash
 # Analyze memory bottlenecks
-npx claude-flow bottleneck detect --threshold 10
+pnpm dlx claude-flow bottleneck detect --threshold 10
 
 # Check cache performance
-npx claude-flow cache manage --action stats
+pnpm dlx claude-flow cache manage --action stats
 
 # Review memory metrics
-npx claude-flow memory usage
+pnpm dlx claude-flow memory usage
 ```
 
 **Slow Task Execution**
 ```bash
 # Identify slow tasks
-npx claude-flow task status --detailed
+pnpm dlx claude-flow task status --detailed
 
 # Analyze coordination overhead
-npx claude-flow bottleneck detect --time-range 1h
+pnpm dlx claude-flow bottleneck detect --time-range 1h
 
 # Check agent utilization
-npx claude-flow agent metrics
+pnpm dlx claude-flow agent metrics
 ```
 
 **Poor Cache Performance**
 ```bash
 # Analyze cache hit rates
-npx claude-flow analysis performance-report --sections metrics
+pnpm dlx claude-flow analysis performance-report --sections metrics
 
 # Review cache strategy
-npx claude-flow cache manage --action analyze
+pnpm dlx claude-flow cache manage --action analyze
 
 # Enable cache warming
-npx claude-flow bottleneck detect --fix
+pnpm dlx claude-flow bottleneck detect --fix
 ```
 
 ## Integration with Other Skills
@@ -542,11 +542,11 @@ npx claude-flow bottleneck detect --fix
 
 ## Related Commands
 
-- `npx claude-flow swarm monitor` - Real-time monitoring
-- `npx claude-flow token usage` - Token optimization analysis
-- `npx claude-flow cache manage` - Cache optimization
-- `npx claude-flow agent metrics` - Agent performance metrics
-- `npx claude-flow task status` - Task execution analysis
+- `pnpm dlx claude-flow swarm monitor` - Real-time monitoring
+- `pnpm dlx claude-flow token usage` - Token optimization analysis
+- `pnpm dlx claude-flow cache manage` - Cache optimization
+- `pnpm dlx claude-flow agent metrics` - Agent performance metrics
+- `pnpm dlx claude-flow task status` - Task execution analysis
 
 ## See Also
 

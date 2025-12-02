@@ -4,7 +4,7 @@ Create a specialized swarm for GitHub repository management.
 
 ## Usage
 ```bash
-npx claude-flow github swarm [options]
+pnpm dlx claude-flow github swarm [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ npx claude-flow github swarm [options]
 ## Examples
 ```bash
 # Create GitHub swarm
-npx claude-flow github swarm --repository myorg/myrepo
+pnpm dlx claude-flow github swarm --repository myorg/myrepo
 
 # With specific focus
-npx claude-flow github swarm --repository myorg/myrepo --focus security
+pnpm dlx claude-flow github swarm --repository myorg/myrepo --focus security
 
 # Custom agent count
-npx claude-flow github swarm --repository myorg/myrepo --agents 6
+pnpm dlx claude-flow github swarm --repository myorg/myrepo --agents 6
 ```

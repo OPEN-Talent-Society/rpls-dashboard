@@ -177,6 +177,10 @@
           {
             "type": "command",
             "command": "/usr/bin/env bash -c 'if [ -f ./.claude/hooks/session-end.sh ]; then ./.claude/hooks/session-end.sh; fi'"
+          },
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'if [ -f ./.claude/hooks/agentdb-supabase-sync.sh ]; then ./.claude/hooks/agentdb-supabase-sync.sh all incremental 2>/dev/null; fi'"
           }
         ]
       }

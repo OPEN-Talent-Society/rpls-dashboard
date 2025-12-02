@@ -57,6 +57,13 @@ if [ -d "$AGENTDB_DIR" ]; then
     echo "    ✅ Local JSON files synced" >&2
 fi
 
+# === AGENTDB → SUPABASE SYNC (Dynamic) ===
+echo "  [AgentDB → Supabase] Syncing local JSON to cloud..." >&2
+if [ -f "$SCRIPT_DIR/agentdb-supabase-sync.sh" ]; then
+    "$SCRIPT_DIR/agentdb-supabase-sync.sh" all incremental 2>/dev/null || echo "    Warning: AgentDB cloud sync failed" >&2
+    echo "    ✅ AgentDB cloud sync complete" >&2
+fi
+
 # === LEARNINGS & PATTERNS EXTRACTION (Fixed 2025-12-01) ===
 
 # Log to learnings.json and Supabase

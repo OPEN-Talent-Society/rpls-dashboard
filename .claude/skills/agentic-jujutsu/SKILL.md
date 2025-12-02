@@ -24,7 +24,7 @@ Use **agentic-jujutsu** when you need:
 ### Installation
 
 ```bash
-npx agentic-jujutsu
+pnpm dlx agentic-jujutsu
 ```
 
 ### Basic Usage

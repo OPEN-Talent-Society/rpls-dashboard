@@ -360,9 +360,26 @@ default_assignee: claude-code@aienablement.academy (uskfxdybo8kofowf)
 
 | Layer | System | Purpose | Sync |
 |-------|--------|---------|------|
-| 1 | Supabase Cloud DB | Persistent, queryable | On task complete |
-| 2 | File-based AgentDB | Fast local access | On learning |
-| 3 | Cortex/SiYuan | Human+AI knowledge base | On document create |
+| 1 | Claude-flow Memory | In-session coordination | Immediate |
+| 2 | Supabase AgentDB | Persistent, queryable, cloud | On task complete |
+| 3 | Cortex/SiYuan + ReasoningBank | Human+AI knowledge + patterns | On document create |
+
+### Active MCP Servers (as of 2025-12-02)
+
+| MCP | Tools | Purpose |
+|-----|-------|---------|
+| claude-flow | 88 | Swarm orchestration, memory, neural |
+| context7 | 2 | Library documentation lookup |
+| playwright | 25 | Browser automation |
+| zai-mcp-server | 2 | Vision/image analysis |
+| cortex | 2 | SiYuan knowledge management |
+| brevo-mcp | 13 | Email marketing operations |
+
+**On-demand MCPs** (load via skills when needed):
+- `ruv-swarm` - DAA, neural training (skill: ruv-swarm-operations)
+- `flow-nexus` - Cloud swarm deployment (skill: flow-nexus-swarm)
+- `digitalocean-mcp` - Infrastructure (skill: digitalocean-infrastructure)
+- `codex-subagents` - Agent delegation (skill: codex-subagents)
 
 ### Hooks Integration
 

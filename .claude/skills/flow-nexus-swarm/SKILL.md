@@ -1,12 +1,20 @@
 ---
 name: flow-nexus-swarm
-description: Cloud-based AI swarm deployment and event-driven workflow automation with Flow Nexus platform
+description: Cloud-based AI swarm deployment and event-driven workflow automation with Flow Nexus platform. ON-DEMAND - MCP not always loaded.
 category: orchestration
-tags: [swarm, workflow, cloud, agents, automation, message-queue]
-version: 1.0.0
+tags: [swarm, workflow, cloud, agents, automation, message-queue, on-demand]
+version: 1.1.0
+status: on-demand
+mcp_install: |
+  # Enable flow-nexus MCP when needed:
+  claude mcp add flow-nexus pnpm dlx flow-nexus@latest mcp start
+  # Remove when done: claude mcp remove flow-nexus
 requires:
-  - flow-nexus MCP server
   - Active Flow Nexus account (register at flow-nexus.ruv.io)
+notes: |
+  As of 2025-12-02, flow-nexus MCP is NOT always loaded (99 tools = high token cost).
+  Use claude-flow (agentic-flow) for basic swarm operations.
+  Load flow-nexus only for cloud deployment and advanced workflow features.
 ---
 
 # Flow Nexus Swarm & Workflow Orchestration

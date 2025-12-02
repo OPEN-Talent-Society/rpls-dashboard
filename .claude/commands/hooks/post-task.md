@@ -4,7 +4,7 @@ Hook executed after task completion.
 
 ## Usage
 ```bash
-npx claude-flow hook post-task [options]
+pnpm dlx claude-flow hook post-task [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ npx claude-flow hook post-task [options]
 ## Examples
 ```bash
 # Basic post-task
-npx claude-flow hook post-task --task-id task-123
+pnpm dlx claude-flow hook post-task --task-id task-123
 
 # With performance analysis
-npx claude-flow hook post-task --task-id task-123 --analyze-performance
+pnpm dlx claude-flow hook post-task --task-id task-123 --analyze-performance
 
 # Update memory
-npx claude-flow hook post-task --task-id task-123 --update-memory
+pnpm dlx claude-flow hook post-task --task-id task-123 --update-memory
 ```

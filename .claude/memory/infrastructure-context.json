@@ -1,0 +1,148 @@
+{
+  "lastUpdated": "2025-12-02T03:50:00Z",
+  "infrastructure": {
+    "oci": {
+      "description": "Oracle Cloud Infrastructure - Production workloads",
+      "tenancy": "hello7142",
+      "region": "us-sanjose-1",
+      "servers": [
+        {
+          "name": "docker-host",
+          "ip": "163.192.41.116",
+          "user": "ubuntu",
+          "sshKey": "~/Downloads/ssh-key-2025-10-17.key",
+          "specs": "Ampere A1 (4 OCPUs / 24 GB RAM), Ubuntu 22.04",
+          "purpose": "Production Docker host - Docmost, NocoDB, Cortex, Formbricks, Uptime Kuma, Cal.com",
+          "access": "ssh -i ~/Downloads/ssh-key-2025-10-17.key ubuntu@163.192.41.116"
+        }
+      ],
+      "reservedIPs": ["192.18.138.10"],
+      "mcp": {
+        "path": "~/OCI-MCP-Servers",
+        "activate": "source ~/OCI-MCP-Servers/.venv/bin/activate"
+      },
+      "cli": {
+        "path": "/Users/adamkovacs/bin/oci",
+        "config": "~/.oci/config",
+        "key": "~/.oci/oci_api_key.pem"
+      }
+    },
+    "digitalocean": {
+      "description": "DigitalOcean - Secondary cloud infrastructure",
+      "account": "learn@aienablement.academy",
+      "team": "AI Enablement Academy",
+      "note": "Updated 2025-12-01 from opentalentsociety.org to aienablement.academy account",
+      "servers": []
+    },
+    "homelab": {
+      "description": "Proxmox home server - Local development/testing (NOT OCI)",
+      "network": "192.168.50.x",
+      "servers": [
+        {
+          "name": "Proxmox",
+          "host": "proxmox",
+          "ip": "192.168.50.10",
+          "user": "root",
+          "purpose": "Hypervisor"
+        },
+        {
+          "name": "Docker Host",
+          "host": "docker",
+          "ip": "192.168.50.149",
+          "user": "root",
+          "purpose": "Container hosting"
+        },
+        {
+          "name": "Proxy",
+          "host": "proxy",
+          "ip": "192.168.50.45",
+          "user": "root",
+          "purpose": "Reverse proxy"
+        },
+        {
+          "name": "Plex",
+          "host": "plex",
+          "ip": "192.168.50.47",
+          "user": "root",
+          "purpose": "Media server"
+        }
+      ],
+      "sshKey": "~/.ssh/id_ed25519_homelab"
+    }
+  },
+  "cloudflare": {
+    "credentialsFile": "/Users/adamkovacs/Documents/codebuild/.credentials/cloudflare/aienablement-academy.env",
+    "zone": {
+      "name": "aienablement.academy",
+      "id": "78bc8afbb8fbc182da21dde984fd005f"
+    },
+    "skill": "/Users/adamkovacs/Documents/codebuild/.claude/skills/cloudflare-dns/SKILL.md",
+    "agent": "/Users/adamkovacs/Documents/codebuild/.claude/agents/core/cloudflare-dns.md",
+    "scripts": {
+      "createSubdomain": ".claude/skills/cloudflare-dns/scripts/create-subdomain.sh",
+      "enableProxy": ".claude/skills/cloudflare-dns/scripts/enable-proxy.sh",
+      "listRecords": ".claude/skills/cloudflare-dns/scripts/list-records.sh"
+    }
+  },
+  "brevo": {
+    "credentialsFile": "/Users/adamkovacs/Documents/codebuild/.credentials/brevo/api.env",
+    "skill": "/Users/adamkovacs/Documents/codebuild/.claude/skills/brevo-email/SKILL.md",
+    "smtp": {
+      "host": "smtp-relay.brevo.com",
+      "port": 587,
+      "user": "99a389001@smtp-brevo.com"
+    },
+    "scripts": {
+      "testEmail": ".claude/skills/brevo-email/scripts/test-email.sh"
+    }
+  },
+  "ociServer": {
+    "skill": "/Users/adamkovacs/Documents/codebuild/.claude/skills/oci-server/SKILL.md",
+    "scripts": {
+      "checkServices": ".claude/skills/oci-server/scripts/check-services.sh",
+      "quickSsh": ".claude/skills/oci-server/scripts/quick-ssh.sh"
+    }
+  },
+  "domains": {
+    "aienablement.academy": {
+      "dns": "Cloudflare",
+      "zoneId": "78bc8afbb8fbc182da21dde984fd005f",
+      "subdomains": {
+        "calendar": {
+          "target": "Cal.com on OCI",
+          "container": "calcom-app:3000",
+          "status": "active",
+          "dnsRecordId": "27d2af99b06a3a0d8d0b6bac8594a250",
+          "config": {
+            "dockerCompose": "/srv/calcom/docker-compose.yml",
+            "criticalEnvVars": {
+              "ALLOWED_HOSTNAMES": "Must be JSON array: '[\"domain\"]'",
+              "STRIPE_PRIVATE_KEY": "Required even with placeholder",
+              "CALENDSO_ENCRYPTION_KEY": "Must be 32 hex chars",
+              "GOOGLE_API_CREDENTIALS": "JSON with client_id, client_secret, redirect_uris"
+            },
+            "smtp": "Brevo configured",
+            "googleOAuth": {
+              "gcpProject": "calcom-oauth-aea",
+              "clientId": "35519749364-dml42gbm9thto1b36lf322ncuu57h2jo.apps.googleusercontent.com",
+              "redirectUri": "https://calendar.aienablement.academy/api/integrations/googlecalendar/callback"
+            }
+          }
+        },
+        "wiki": { "target": "Docmost", "status": "active" },
+        "ops": { "target": "NocoDB", "status": "active" },
+        "cortex": { "target": "SiYuan", "status": "active" },
+        "forms": { "target": "Formbricks", "status": "active" },
+        "status": { "target": "Uptime Kuma", "status": "active" },
+        "monitor": { "target": "Dozzle", "status": "active" },
+        "n8n": { "target": "n8n", "status": "active" },
+        "dash": { "target": "Dashboard", "status": "active" }
+      }
+    }
+  },
+  "notes": [
+    "CRITICAL: Homelab (Proxmox) is NOT the same as OCI server",
+    "OCI server requires OCI MCP for remote management",
+    "Homelab uses local SSH with id_ed25519_homelab key"
+  ]
+}
