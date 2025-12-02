@@ -1,0 +1,28 @@
+{
+  "name": "brevo-mcp-server",
+  "version": "0.1.0",
+  "description": "MCP server for Brevo email marketing platform - send transactional emails, manage contacts, lists, and campaigns",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "brevo-server": "./build/index.js"
+  },
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
+    "prepare": "pnpm run build",
+    "watch": "tsc --watch",
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js",
+    "test": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "0.6.0",
+    "axios": "^1.7.9"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.24",
+    "typescript": "^5.3.3"
+  }
+}
