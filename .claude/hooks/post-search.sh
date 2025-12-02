@@ -12,7 +12,7 @@ QUERY_HASH=$(echo "${SEARCH_TYPE}:${SEARCH_QUERY}" | md5 | cut -c1-12)
 TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 
 # Store the search result
-npx claude-flow memory store \
+pnpm dlx claude-flow memory store \
   --namespace "searches" \
   --key "searches/${SEARCH_TYPE}/${QUERY_HASH}" \
   --value "{

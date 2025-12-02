@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "created": "2025-12-01T01:50:00Z",
-  "updated": "2025-12-01T22:55:00Z",
+  "updated": "2025-12-02T03:30:00Z",
   "entries": [
     {
       "id": "learning-codebuild-audit-001",
@@ -693,6 +693,126 @@
         "categories",
         "governance"
       ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-mcp-optimization-001",
+      "timestamp": "2025-12-02T02:15:00Z",
+      "topic": "MCP Token Optimization - Config Location Discovery",
+      "category": "infrastructure",
+      "agent": "claude-code",
+      "content": "CRITICAL DISCOVERY: Claude Code stores MCP configuration in ~/.claude_code/.claude.json under projects[path].mcpServers, NOT in .claude/mcp.json as expected. Project-level mcp.json files are IGNORED. To change MCPs, edit ~/.claude_code/.claude.json directly. Reduced token usage from 213.9k (107%) to ~80k (~40%) by converting heavy MCPs to on-demand skills.",
+      "tags": [
+        "mcp",
+        "token-optimization",
+        "configuration",
+        "claude-code"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-mcp-optimization-002",
+      "timestamp": "2025-12-02T02:15:00Z",
+      "topic": "MCP to Skill Conversion Strategy",
+      "category": "optimization",
+      "agent": "claude-code",
+      "content": "Strategy for reducing MCP token overhead: Convert heavy MCPs (>20 tools) to on-demand skills. Skills load only when invoked, costing 0 tokens at startup. Removed MCPs: digitalocean-mcp (13 tools), codex-subagents (4 tools), flow-nexus (99 tools!), ruv-swarm (25 tools). Kept essential MCPs: claude-flow (88 tools, core), context7 (2), playwright (25), zai-mcp-server (2), cortex (2), brevo-mcp (13). Each skill includes mcp_install instructions for temporary enablement.",
+      "tags": [
+        "mcp",
+        "skills",
+        "token-optimization",
+        "on-demand"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-agentdb-auto-sync-001",
+      "timestamp": "2025-12-02T02:40:00Z",
+      "topic": "AgentDB Automatic Supabase Sync Implementation",
+      "category": "infrastructure",
+      "agent": "claude-code",
+      "content": "Implemented automatic 3-layer memory sync from local AgentDB JSON files to Supabase cloud. Created agentdb-supabase-sync.sh hook that: (1) Reads learnings.json and patterns.json from .agentdb folder, (2) Syncs to Supabase REST API with upsert (Prefer: resolution=merge-duplicates), (3) Tracks last sync timestamp in /tmp/agentdb-sync-state.json for incremental sync, (4) Supports both full and incremental modes. Hook integrated into: Stop hooks in settings.json, session-end.sh workflow. Also created /sync-agentdb slash command for manual sync. This ensures ALL learnings and patterns are automatically persisted to Supabase cloud on session end.",
+      "tags": [
+        "agentdb",
+        "supabase",
+        "automation",
+        "hooks",
+        "3-layer-memory"
+      ],
+      "related_docs": [
+        "agentdb-supabase-sync.sh",
+        "session-end.sh",
+        "settings.json"
+      ]
+    },
+    {
+      "id": "learning-campfire-auth-simplify-001",
+      "timestamp": "2025-12-02T03:30:00Z",
+      "topic": "Project Campfire Auth Simplification - 5 Methods to 2",
+      "category": "authentication",
+      "agent": "claude-code",
+      "content": "Simplified authentication from 5 methods (email+password, email+code, Google, GitHub, LinkedIn, Microsoft) to 2 (Google OAuth + Magic Link). Removed CredentialsProvider and GitHubProvider from auth.ts. Magic link via Brevo API with template ID 3. Google OAuth covers 95% of use cases. Clean login page UI with just 2 options.",
+      "tags": ["project-campfire", "authentication", "simplification", "magic-link", "oauth"],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-onboarding-001",
+      "timestamp": "2025-12-02T03:30:00Z",
+      "topic": "Project Campfire 2-Step Onboarding Flow",
+      "category": "user-experience",
+      "agent": "claude-code",
+      "content": "Created 2-step onboarding at /onboarding: Step 1 collects firstName/lastName, Step 2 collects intent (personal_learning, team_training, exploring, instructor) with conditional company field for B2B. API at /api/onboarding/complete updates PayloadCMS user and sets onboardingCompleted=true. Session refresh after completion redirects to dashboard.",
+      "tags": ["project-campfire", "onboarding", "user-flow", "payloadcms"],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-sessionprovider-001",
+      "timestamp": "2025-12-02T03:30:00Z",
+      "topic": "NextAuth SessionProvider in Route Group Layouts",
+      "category": "nextjs",
+      "agent": "claude-code",
+      "content": "CRITICAL: useSession() hook requires SessionProvider context. In Next.js 15 with route groups, SessionProvider must be added to EACH route group layout that uses useSession(). Created AuthProvider wrapper component ('use client') and added to marketing layout. The 'use client' directive alone doesn't prevent prerendering - SessionProvider context is required. export const dynamic = 'force-dynamic' doesn't work with client components.",
+      "tags": ["project-campfire", "nextjs", "nextauth", "sessionprovider", "prerendering"],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-payloadcms-local-api-001",
+      "timestamp": "2025-12-02T03:30:00Z",
+      "topic": "PayloadCMS Local API Patterns for Admin Pages",
+      "category": "payloadcms",
+      "agent": "claude-code",
+      "content": "PayloadCMS Local API patterns for server components: (1) Initialize with getPayload({ config }). (2) Use payload.find() with where, limit, sort, depth params. (3) For relationships, use depth:1 to populate related docs. (4) Handle hasMany relationships with Array.isArray() checks. (5) N+1 queries acceptable for admin pages but should batch for production scale. Wired up 4 admin pages: students, courses, cohorts, events.",
+      "tags": ["project-campfire", "payloadcms", "local-api", "admin", "data-fetching"],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-payloadcms-vs-nextauth-001",
+      "timestamp": "2025-12-02T03:30:00Z",
+      "topic": "PayloadCMS Auth vs NextAuth Assessment",
+      "category": "architecture",
+      "agent": "claude-code",
+      "content": "PayloadCMS auth assessment: Built-in email/password and JWT auth are good. BUT OAuth (Google, GitHub) requires Enterprise license or community plugins. Magic link is NOT built-in - requires custom implementation or payload-auth package. RECOMMENDATION: Keep NextAuth for OAuth/magic link (already working), use PayloadCMS for user data storage. Hybrid approach is optimal - NextAuth handles auth, PayloadCMS handles data.",
+      "tags": ["project-campfire", "payloadcms", "nextauth", "architecture", "assessment"],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-collections-001",
+      "timestamp": "2025-12-02T03:30:00Z",
+      "topic": "Project Campfire PayloadCMS Collections Extended",
+      "category": "schema",
+      "agent": "claude-code",
+      "content": "Extended PayloadCMS collections: (1) Users - added headline, socials (linkedin, twitter, website, github), company, intent, onboardingCompleted, createdVia. (2) Cohorts - new collection with name, slug, course, startDate, endDate, maxParticipants, instructor, participants, status (upcoming/active/completed/cancelled), timezone, meetingLink. (3) Events - hackathon/workshop/webinar/impact_workshop types with full registration system.",
+      "tags": ["project-campfire", "payloadcms", "schema", "collections", "cohorts", "events"],
+      "related_docs": []
+    },
+    {
+      "id": "learning-campfire-dashboard-001",
+      "timestamp": "2025-12-02T03:30:00Z",
+      "topic": "Project Campfire Dashboard Architecture",
+      "category": "frontend",
+      "agent": "claude-code",
+      "content": "Dashboard architecture: (1) Route group (dashboard) with shared layout containing SessionProvider, sidebar, header. (2) Role-based navigation - students see My Courses/Certificates, instructors/admins see Academy Admin section. (3) Pages: /dashboard (overview), /dashboard/courses (enrolled), /dashboard/certificates, /dashboard/profile (settings). (4) Academy Admin: /academy-admin/* for courses, cohorts, events, students management.",
+      "tags": ["project-campfire", "dashboard", "role-based", "navigation", "layout"],
       "related_docs": []
     }
   ]

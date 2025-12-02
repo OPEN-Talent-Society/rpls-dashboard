@@ -1,0 +1,32 @@
+{
+  "timestamp": "2025-12-02T02:15:00Z",
+  "config_change": "mcp-token-optimization",
+  "previous_token_usage": "213.9k (107%)",
+  "expected_token_usage": "~80k (~40%)",
+  "mcps_removed": [
+    {"name": "digitalocean-mcp", "tools": 13, "reason": "Heavy, converted to skill"},
+    {"name": "codex-subagents", "tools": 4, "reason": "Rarely used, converted to skill"},
+    {"name": "flow-nexus", "tools": 99, "reason": "Very heavy, converted to skill"},
+    {"name": "ruv-swarm", "tools": 25, "reason": "Advanced features only, converted to skill"}
+  ],
+  "mcps_kept": [
+    {"name": "claude-flow", "tools": 88, "reason": "Core orchestration"},
+    {"name": "context7", "tools": 2, "reason": "Lightweight, essential"},
+    {"name": "playwright", "tools": 25, "reason": "Browser automation needed"},
+    {"name": "zai-mcp-server", "tools": 2, "reason": "Lightweight, vision"},
+    {"name": "cortex", "tools": 2, "reason": "Knowledge management"},
+    {"name": "brevo-mcp", "tools": 13, "reason": "Email operations"}
+  ],
+  "skills_created": [
+    "ruv-swarm-operations",
+    "codex-subagents",
+    "digitalocean-infrastructure",
+    "vercel-deployment",
+    "svelte-framework"
+  ],
+  "key_learning": "Claude Code stores MCP config in ~/.claude_code/.claude.json under projects key, NOT in .claude/mcp.json",
+  "config_files_updated": [
+    "~/.claude_code/.claude.json",
+    "~/.claude_code/settings.json"
+  ]
+}

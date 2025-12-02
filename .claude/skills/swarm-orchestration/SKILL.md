@@ -19,15 +19,15 @@ Orchestrates multi-agent swarms using agentic-flow's advanced coordination syste
 
 ```bash
 # Initialize swarm
-npx agentic-flow hooks swarm-init --topology mesh --max-agents 5
+pnpm dlx agentic-flow hooks swarm-init --topology mesh --max-agents 5
 
 # Spawn agents
-npx agentic-flow hooks agent-spawn --type coder
-npx agentic-flow hooks agent-spawn --type tester
-npx agentic-flow hooks agent-spawn --type reviewer
+pnpm dlx agentic-flow hooks agent-spawn --type coder
+pnpm dlx agentic-flow hooks agent-spawn --type tester
+pnpm dlx agentic-flow hooks agent-spawn --type reviewer
 
 # Orchestrate task
-npx agentic-flow hooks task-orchestrate \
+pnpm dlx agentic-flow hooks task-orchestrate \
   --task "Build REST API with tests" \
   --mode parallel
 ```
@@ -147,13 +147,13 @@ const metrics = await swarm.getMetrics();
 
 ```bash
 # Pre-task coordination
-npx agentic-flow hooks pre-task --description "Build API"
+pnpm dlx agentic-flow hooks pre-task --description "Build API"
 
 # Post-task synchronization
-npx agentic-flow hooks post-task --task-id "task-123"
+pnpm dlx agentic-flow hooks post-task --task-id "task-123"
 
 # Session restore
-npx agentic-flow hooks session-restore --session-id "swarm-001"
+pnpm dlx agentic-flow hooks session-restore --session-id "swarm-001"
 ```
 
 ## Best Practices

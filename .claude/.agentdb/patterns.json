@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "created": "2025-12-01T01:50:00Z",
-  "updated": "2025-12-01T21:14:54Z",
+  "updated": "2025-12-02T04:30:00Z",
   "patterns": [
     {
       "id": "pattern-001",
@@ -988,6 +988,97 @@
         "cortex-cleanup"
       ],
       "timestamp": "2025-12-02T00:45:00Z",
+      "agent": "claude-code"
+    },
+    {
+      "id": "pattern-mcp-to-skill-001",
+      "hash": "d4e5f6g7h8i9",
+      "name": "MCP to Skill Conversion Pattern",
+      "category": "token-optimization",
+      "description": "Convert heavy MCP servers (>20 tools) to on-demand skills to reduce token overhead. Skills cost 0 tokens at startup but provide same functionality when invoked.",
+      "template": {
+        "trigger": "MCP token usage >100% context OR MCP has >20 tools",
+        "criteria": {
+          "remove_if": "tools > 20 AND not_always_needed",
+          "keep_if": "tools < 20 OR always_essential"
+        },
+        "skill_structure": {
+          "path": ".claude/skills/{mcp-name}/SKILL.md",
+          "required_fields": ["name", "description", "mcp_install", "status: on-demand"],
+          "mcp_install_format": "claude mcp add {name} {command} {args}"
+        },
+        "config_location": "~/.claude_code/.claude.json -> projects[path].mcpServers",
+        "restart_required": true
+      },
+      "use_cases": [
+        "token-optimization",
+        "mcp-reduction",
+        "context-efficiency",
+        "skill-creation"
+      ],
+      "timestamp": "2025-12-02T02:15:00Z",
+      "agent": "claude-code"
+    },
+    {
+      "id": "pattern-auto-sync-hooks-001",
+      "name": "Automatic Memory Sync via Hooks",
+      "category": "automation",
+      "description": "Pattern for automating memory persistence across 3-layer architecture using Claude Code hooks. Local JSON -> Supabase Cloud -> Cortex/SiYuan flow ensures no knowledge is lost.",
+      "template": {
+        "hook_script": "#!/bin/bash\n# Sync hook template\nSOURCE_DIR=\"$1\"\nTABLE=\"${2:-all}\"\nMODE=\"${3:-incremental}\"\n\n# Track sync state for incremental\nSYNC_STATE=\"/tmp/sync-state.json\"\n\n# Use REST API with upsert for idempotent sync\ncurl -X POST \"$SUPABASE_URL/rest/v1/$TABLE\" \\\n  -H \"Prefer: resolution=merge-duplicates\" \\\n  -d \"$DATA\"",
+        "settings_integration": "Add to Stop hooks in settings.json for automatic session-end sync",
+        "state_tracking": "Use /tmp/*.json for tracking sync timestamps between sessions",
+        "error_handling": "Use 2>/dev/null || echo 'Warning' for graceful failure"
+      },
+      "use_cases": [
+        "learnings-persistence",
+        "patterns-persistence",
+        "memory-backup",
+        "session-end-sync",
+        "3-layer-memory"
+      ],
+      "timestamp": "2025-12-02T02:40:00Z",
+      "agent": "claude-code"
+    },
+    {
+      "id": "pattern-calcom-deployment-001",
+      "name": "Cal.com Self-Hosted Deployment Pattern",
+      "category": "infrastructure",
+      "description": "Complete self-hosted Cal.com deployment on OCI Docker host with Brevo SMTP, Cloudflare DNS, and Caddy TLS.",
+      "template": {
+        "deployment": {
+          "compose_path": "/srv/calcom/docker-compose.yml",
+          "env_path": "/srv/calcom/.env",
+          "containers": ["calcom-app", "calcom-db", "calcom-redis"],
+          "network": "reverse-proxy"
+        },
+        "dns": {
+          "provider": "cloudflare",
+          "zone_id": "78bc8afbb8fbc182da21dde984fd005f",
+          "credentials": "/Users/adamkovacs/Documents/codebuild/.credentials/cloudflare/aienablement-academy.env",
+          "ssl_workflow": "1. Create A record proxied=false, 2. Reload Caddy, 3. Wait for cert, 4. Enable proxy"
+        },
+        "email": {
+          "provider": "brevo",
+          "host": "smtp-relay.brevo.com",
+          "port": 587,
+          "env_vars": ["EMAIL_FROM", "EMAIL_SERVER_HOST", "EMAIL_SERVER_PORT", "EMAIL_SERVER_USER", "EMAIL_SERVER_PASSWORD"],
+          "reuse_from": "/srv/formbricks/.env"
+        },
+        "caddy": {
+          "config_path": "/home/ubuntu/reverse-proxy/Caddyfile",
+          "NOT": "/srv/proxy/Caddyfile",
+          "reload_cmd": "docker exec edge-proxy caddy reload --config /etc/caddy/Caddyfile"
+        }
+      },
+      "use_cases": [
+        "calcom-deploy",
+        "scheduling-platform",
+        "brevo-smtp",
+        "cloudflare-dns",
+        "caddy-tls"
+      ],
+      "timestamp": "2025-12-02T04:30:00Z",
       "agent": "claude-code"
     }
   ]

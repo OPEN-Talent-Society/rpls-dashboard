@@ -58,45 +58,45 @@ Requires 2/3 majority for decision approval, ensuring robust consensus even with
 
 ```bash
 # Basic initialization
-npx claude-flow hive-mind init
+pnpm dlx claude-flow hive-mind init
 
 # Force reinitialize
-npx claude-flow hive-mind init --force
+pnpm dlx claude-flow hive-mind init --force
 
 # Custom configuration
-npx claude-flow hive-mind init --config hive-config.json
+pnpm dlx claude-flow hive-mind init --config hive-config.json
 ```
 
 ### 2. Spawn a Swarm
 
 ```bash
 # Basic spawn with objective
-npx claude-flow hive-mind spawn "Build microservices architecture"
+pnpm dlx claude-flow hive-mind spawn "Build microservices architecture"
 
 # Strategic queen type
-npx claude-flow hive-mind spawn "Research AI patterns" --queen-type strategic
+pnpm dlx claude-flow hive-mind spawn "Research AI patterns" --queen-type strategic
 
 # Tactical queen with max workers
-npx claude-flow hive-mind spawn "Implement API" --queen-type tactical --max-workers 12
+pnpm dlx claude-flow hive-mind spawn "Implement API" --queen-type tactical --max-workers 12
 
 # Adaptive queen with consensus
-npx claude-flow hive-mind spawn "Optimize system" --queen-type adaptive --consensus byzantine
+pnpm dlx claude-flow hive-mind spawn "Optimize system" --queen-type adaptive --consensus byzantine
 
 # Generate Claude Code commands
-npx claude-flow hive-mind spawn "Build full-stack app" --claude
+pnpm dlx claude-flow hive-mind spawn "Build full-stack app" --claude
 ```
 
 ### 3. Monitor Status
 
 ```bash
 # Check hive mind status
-npx claude-flow hive-mind status
+pnpm dlx claude-flow hive-mind status
 
 # Get detailed metrics
-npx claude-flow hive-mind metrics
+pnpm dlx claude-flow hive-mind metrics
 
 # Monitor collective memory
-npx claude-flow hive-mind memory
+pnpm dlx claude-flow hive-mind memory
 ```
 
 ## Advanced Workflows
@@ -107,16 +107,16 @@ npx claude-flow hive-mind memory
 
 ```bash
 # List active sessions
-npx claude-flow hive-mind sessions
+pnpm dlx claude-flow hive-mind sessions
 
 # Pause a session
-npx claude-flow hive-mind pause <session-id>
+pnpm dlx claude-flow hive-mind pause <session-id>
 
 # Resume a paused session
-npx claude-flow hive-mind resume <session-id>
+pnpm dlx claude-flow hive-mind resume <session-id>
 
 # Stop a running session
-npx claude-flow hive-mind stop <session-id>
+pnpm dlx claude-flow hive-mind stop <session-id>
 ```
 
 **Session Features**
@@ -226,7 +226,7 @@ const config = {
 Generate Claude Code spawn commands directly:
 
 ```bash
-npx claude-flow hive-mind spawn "Build REST API" --claude
+pnpm dlx claude-flow hive-mind spawn "Build REST API" --claude
 ```
 
 Output:
@@ -241,7 +241,7 @@ Task("Test Engineer", "Create Jest test suite...", "tester")
 
 ```bash
 # Use hive mind for SPARC workflow
-npx claude-flow sparc tdd "User authentication" --hive-mind
+pnpm dlx claude-flow sparc tdd "User authentication" --hive-mind
 
 # Spawns:
 # - Specification agent
@@ -255,10 +255,10 @@ npx claude-flow sparc tdd "User authentication" --hive-mind
 
 ```bash
 # Repository analysis with hive mind
-npx claude-flow hive-mind spawn "Analyze repo quality" --objective "owner/repo"
+pnpm dlx claude-flow hive-mind spawn "Analyze repo quality" --objective "owner/repo"
 
 # PR review coordination
-npx claude-flow hive-mind spawn "Review PR #123" --queen-type tactical
+pnpm dlx claude-flow hive-mind spawn "Review PR #123" --queen-type tactical
 ```
 
 ## Performance Optimization
@@ -372,17 +372,17 @@ Hive Mind integrates with Claude Flow hooks for automation:
 
 **Strategic Queens** - For research, planning, and analysis
 ```bash
-npx claude-flow hive-mind spawn "Research ML frameworks" --queen-type strategic
+pnpm dlx claude-flow hive-mind spawn "Research ML frameworks" --queen-type strategic
 ```
 
 **Tactical Queens** - For implementation and execution
 ```bash
-npx claude-flow hive-mind spawn "Build authentication" --queen-type tactical
+pnpm dlx claude-flow hive-mind spawn "Build authentication" --queen-type tactical
 ```
 
 **Adaptive Queens** - For optimization and dynamic tasks
 ```bash
-npx claude-flow hive-mind spawn "Optimize performance" --queen-type adaptive
+pnpm dlx claude-flow hive-mind spawn "Optimize performance" --queen-type adaptive
 ```
 
 ### 2. Leverage Consensus
@@ -418,13 +418,13 @@ await memory.associate('jwt-auth', 'oauth2', 0.7);
 
 ```bash
 # Regular status checks
-npx claude-flow hive-mind status
+pnpm dlx claude-flow hive-mind status
 
 # Track metrics
-npx claude-flow hive-mind metrics
+pnpm dlx claude-flow hive-mind metrics
 
 # Analyze memory usage
-npx claude-flow hive-mind memory
+pnpm dlx claude-flow hive-mind memory
 ```
 
 ### 5. Session Management
@@ -442,7 +442,7 @@ await sessionManager.saveCheckpoint(
 **Resume Sessions**
 ```bash
 # Resume from any previous state
-npx claude-flow hive-mind resume <session-id>
+pnpm dlx claude-flow hive-mind resume <session-id>
 ```
 
 ## Troubleshooting
@@ -452,13 +452,13 @@ npx claude-flow hive-mind resume <session-id>
 **High Memory Usage**
 ```bash
 # Run garbage collection
-npx claude-flow hive-mind memory --gc
+pnpm dlx claude-flow hive-mind memory --gc
 
 # Optimize database
-npx claude-flow hive-mind memory --optimize
+pnpm dlx claude-flow hive-mind memory --optimize
 
 # Export and clear
-npx claude-flow hive-mind memory --export --clear
+pnpm dlx claude-flow hive-mind memory --export --clear
 ```
 
 **Low Cache Hit Rate**
@@ -492,10 +492,10 @@ npx claude-flow hive-mind memory --export --clear
 **No Consensus Reached (Byzantine)**
 ```bash
 # Switch to weighted consensus for more decisive results
-npx claude-flow hive-mind spawn "..." --consensus weighted
+pnpm dlx claude-flow hive-mind spawn "..." --consensus weighted
 
 # Or use simple majority
-npx claude-flow hive-mind spawn "..." --consensus majority
+pnpm dlx claude-flow hive-mind spawn "..." --consensus majority
 ```
 
 ## Advanced Topics
@@ -532,10 +532,10 @@ Run multiple hive minds simultaneously:
 
 ```bash
 # Frontend hive
-npx claude-flow hive-mind spawn "Build UI" --name frontend-hive
+pnpm dlx claude-flow hive-mind spawn "Build UI" --name frontend-hive
 
 # Backend hive
-npx claude-flow hive-mind spawn "Build API" --name backend-hive
+pnpm dlx claude-flow hive-mind spawn "Build API" --name backend-hive
 
 # They share collective memory for coordination
 ```
@@ -544,10 +544,10 @@ npx claude-flow hive-mind spawn "Build API" --name backend-hive
 
 ```bash
 # Export session for backup
-npx claude-flow hive-mind export <session-id> --output backup.json
+pnpm dlx claude-flow hive-mind export <session-id> --output backup.json
 
 # Import session
-npx claude-flow hive-mind import backup.json
+pnpm dlx claude-flow hive-mind import backup.json
 ```
 
 ## API Reference
@@ -614,10 +614,10 @@ await sessionManager.completeSession(sessionId);
 
 ```bash
 # Initialize hive mind
-npx claude-flow hive-mind init
+pnpm dlx claude-flow hive-mind init
 
 # Spawn full-stack hive
-npx claude-flow hive-mind spawn "Build e-commerce platform" \
+pnpm dlx claude-flow hive-mind spawn "Build e-commerce platform" \
   --queen-type strategic \
   --max-workers 10 \
   --consensus weighted \
@@ -638,7 +638,7 @@ npx claude-flow hive-mind spawn "Build e-commerce platform" \
 
 ```bash
 # Spawn research hive
-npx claude-flow hive-mind spawn "Research GraphQL vs REST" \
+pnpm dlx claude-flow hive-mind spawn "Research GraphQL vs REST" \
   --queen-type adaptive \
   --consensus byzantine
 
@@ -652,7 +652,7 @@ npx claude-flow hive-mind spawn "Research GraphQL vs REST" \
 
 ```bash
 # Review coordination
-npx claude-flow hive-mind spawn "Review PR #456" \
+pnpm dlx claude-flow hive-mind spawn "Review PR #456" \
   --queen-type tactical \
   --max-workers 6
 

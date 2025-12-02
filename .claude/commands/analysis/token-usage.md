@@ -4,7 +4,7 @@ Analyze token usage patterns and optimize for efficiency.
 
 ## Usage
 ```bash
-npx claude-flow analysis token-usage [options]
+pnpm dlx claude-flow analysis token-usage [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ npx claude-flow analysis token-usage [options]
 ## Examples
 ```bash
 # Last 24 hours token usage
-npx claude-flow analysis token-usage --period 24h
+pnpm dlx claude-flow analysis token-usage --period 24h
 
 # By agent breakdown
-npx claude-flow analysis token-usage --by-agent
+pnpm dlx claude-flow analysis token-usage --by-agent
 
 # Export detailed report
-npx claude-flow analysis token-usage --period 7d --export tokens.csv
+pnpm dlx claude-flow analysis token-usage --period 7d --export tokens.csv
 ```

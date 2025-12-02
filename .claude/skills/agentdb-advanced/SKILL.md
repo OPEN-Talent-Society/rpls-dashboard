@@ -104,7 +104,7 @@ Best for normalized vectors, semantic similarity:
 
 ```bash
 # CLI
-npx agentdb@latest query ./vectors.db "[0.1,0.2,...]" -m cosine
+pnpm dlx agentdb@latest query ./vectors.db "[0.1,0.2,...]" -m cosine
 
 # API
 const result = await adapter.retrieveWithReasoning(queryEmbedding, {
@@ -128,7 +128,7 @@ Best for spatial data, geometric similarity:
 
 ```bash
 # CLI
-npx agentdb@latest query ./vectors.db "[0.1,0.2,...]" -m euclidean
+pnpm dlx agentdb@latest query ./vectors.db "[0.1,0.2,...]" -m euclidean
 
 # API
 const result = await adapter.retrieveWithReasoning(queryEmbedding, {
@@ -152,7 +152,7 @@ Best for pre-normalized vectors, fast computation:
 
 ```bash
 # CLI
-npx agentdb@latest query ./vectors.db "[0.1,0.2,...]" -m dot
+pnpm dlx agentdb@latest query ./vectors.db "[0.1,0.2,...]" -m dot
 
 # API
 const result = await adapter.retrieveWithReasoning(queryEmbedding, {
@@ -446,13 +446,13 @@ console.log('Database Stats:', {
 
 ```bash
 # Export with compression
-npx agentdb@latest export ./vectors.db ./backup.json.gz --compress
+pnpm dlx agentdb@latest export ./vectors.db ./backup.json.gz --compress
 
 # Import from backup
-npx agentdb@latest import ./backup.json.gz --decompress
+pnpm dlx agentdb@latest import ./backup.json.gz --decompress
 
 # Merge databases
-npx agentdb@latest merge ./db1.sqlite ./db2.sqlite ./merged.sqlite
+pnpm dlx agentdb@latest merge ./db1.sqlite ./db2.sqlite ./merged.sqlite
 ```
 
 ### Database Optimization
@@ -465,7 +465,7 @@ sqlite3 .agentdb/vectors.db "VACUUM;"
 sqlite3 .agentdb/vectors.db "ANALYZE;"
 
 # Rebuild indices
-npx agentdb@latest reindex ./vectors.db
+pnpm dlx agentdb@latest reindex ./vectors.db
 ```
 
 ---

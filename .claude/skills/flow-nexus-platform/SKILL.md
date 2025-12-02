@@ -132,7 +132,7 @@ mcp__flow-nexus__sandbox_create({
     DATABASE_URL: "postgres://..."
   },
   install_packages: ["express", "cors", "dotenv"],
-  startup_script: "pnpm run dev",
+  startup_script: "ppnpm run dev",
   timeout: 3600, // seconds
   metadata: {
     project: "my-project",
@@ -149,7 +149,7 @@ mcp__flow-nexus__sandbox_configure({
     NEW_VAR: "value"
   },
   install_packages: ["axios", "lodash"],
-  run_commands: ["pnpm run migrate", "pnpm run seed"],
+  run_commands: ["ppnpm run migrate", "ppnpm run seed"],
   anthropic_key: "sk-ant-..." // For Claude Code integration
 })
 ```
@@ -252,7 +252,7 @@ mcp__flow-nexus__sandbox_create({
     PORT: "3000",
     NODE_ENV: "development"
   },
-  startup_script: "pnpm run dev"
+  startup_script: "ppnpm run dev"
 })
 ```
 
@@ -1052,7 +1052,7 @@ mcp__flow-nexus__sandbox_create({
     apt-get update
     apt-get install -y custom-package
     git clone https://github.com/user/repo
-    cd repo && pnpm install
+    cd repo && ppnpm add
   `
 })
 ```
@@ -1062,7 +1062,7 @@ mcp__flow-nexus__sandbox_create({
 // Stage 1: Setup
 mcp__flow-nexus__sandbox_execute({
   sandbox_id: "id",
-  code: "pnpm install && pnpm run build"
+  code: "ppnpm add && ppnpm run build"
 })
 
 // Stage 2: Run

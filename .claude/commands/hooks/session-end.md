@@ -4,7 +4,7 @@ Hook executed at session end.
 
 ## Usage
 ```bash
-npx claude-flow hook session-end [options]
+pnpm dlx claude-flow hook session-end [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ npx claude-flow hook session-end [options]
 ## Examples
 ```bash
 # End session
-npx claude-flow hook session-end
+pnpm dlx claude-flow hook session-end
 
 # Export metrics
-npx claude-flow hook session-end --export-metrics
+pnpm dlx claude-flow hook session-end --export-metrics
 
 # Full closure
-npx claude-flow hook session-end --export-metrics --generate-summary --persist-state
+pnpm dlx claude-flow hook session-end --export-metrics --generate-summary --persist-state
 ```

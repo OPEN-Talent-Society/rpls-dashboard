@@ -19,7 +19,7 @@ Master advanced swarm patterns for distributed research, development, and testin
 pnpm add -g claude-flow@alpha
 
 # Add MCP server (if using MCP tools)
-claude mcp add claude-flow npx claude-flow@alpha mcp start
+claude mcp add claude-flow pnpm dlx claude-flow@alpha mcp start
 ```
 
 ### Basic Pattern
@@ -240,7 +240,7 @@ mcp__claude-flow__workflow_execute({
 ### CLI Fallback
 ```bash
 # Quick research swarm
-npx claude-flow swarm "research AI trends in 2025" \
+pnpm dlx claude-flow swarm "research AI trends in 2025" \
   --strategy research \
   --mode distributed \
   --max-agents 6 \
@@ -384,7 +384,7 @@ mcp__claude-flow__pipeline_create({
 ### CLI Fallback
 ```bash
 # Quick development swarm
-npx claude-flow swarm "build REST API with authentication" \
+pnpm dlx claude-flow swarm "build REST API with authentication" \
   --strategy development \
   --mode hierarchical \
   --monitor \
@@ -497,27 +497,27 @@ mcp__claude-flow__parallel_execute({
   "tasks": [
     {
       "id": "unit-tests",
-      "command": "pnpm run test:unit",
+      "command": "ppnpm run test:unit",
       "assignTo": "Unit Test Coordinator"
     },
     {
       "id": "integration-tests",
-      "command": "pnpm run test:integration",
+      "command": "ppnpm run test:integration",
       "assignTo": "Integration Tester"
     },
     {
       "id": "e2e-tests",
-      "command": "pnpm run test:e2e",
+      "command": "ppnpm run test:e2e",
       "assignTo": "E2E Tester"
     },
     {
       "id": "performance-tests",
-      "command": "pnpm run test:performance",
+      "command": "ppnpm run test:performance",
       "assignTo": "Performance Tester"
     },
     {
       "id": "security-tests",
-      "command": "pnpm run test:security",
+      "command": "ppnpm run test:security",
       "assignTo": "Security Tester"
     }
   ]
@@ -584,7 +584,7 @@ mcp__claude-flow__trend_analysis({
 ### CLI Fallback
 ```bash
 # Quick testing swarm
-npx claude-flow swarm "test application comprehensively" \
+pnpm dlx claude-flow swarm "test application comprehensively" \
   --strategy testing \
   --mode star \
   --parallel \

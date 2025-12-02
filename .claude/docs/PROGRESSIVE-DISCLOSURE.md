@@ -207,7 +207,7 @@ description: "Helps with documents"
 TASK="$1"
 
 # Check if we have cached knowledge about this task type
-CACHED=$(npx claude-flow memory search \
+CACHED=$(pnpm dlx claude-flow memory search \
   --pattern "patterns/${TASK_TYPE}/*" \
   --limit 3)
 

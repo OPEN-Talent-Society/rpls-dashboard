@@ -47,7 +47,7 @@ if [ -n "$SUPABASE_ACCESS_TOKEN" ]; then
 fi
 
 # Store the learning in AgentDB
-npx claude-flow memory store \
+pnpm dlx claude-flow memory store \
   --namespace "learnings" \
   --key "learnings/${LEARNING_CATEGORY}/${LEARNING_HASH}" \
   --value "{

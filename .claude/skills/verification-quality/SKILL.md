@@ -431,7 +431,7 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Install Dependencies
-        run: pnpm install
+        run: ppnpm add
 
       - name: Run Verification
         run: |

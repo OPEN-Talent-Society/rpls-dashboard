@@ -114,7 +114,7 @@ git push --follow-tags
 #### Simple Deployment
 ```bash
 # Build and publish npm package
-pnpm run build
+ppnpm run build
 pnpm publish
 
 # Create GitHub release
@@ -185,7 +185,7 @@ gh release create $(pnpm pkg get version) \
   Write("RELEASE_NOTES.md", "[detailed notes]")
 
   // Run comprehensive validation
-  Bash("pnpm install && pnpm test && pnpm run lint && pnpm run build")
+  Bash("ppnpm add && ppnpm test && ppnpm run lint && ppnpm run build")
 
   // Create release PR
   Bash(`gh pr create \
@@ -323,9 +323,9 @@ pnpm dlx agentic-flow github release-deploy \
   Write("CHANGELOG.md", "[consolidated changelog]")
 
   // Run cross-package validation
-  Bash("cd packages/claude-flow && pnpm install && pnpm test")
-  Bash("cd packages/ruv-swarm && pnpm install && pnpm test")
-  Bash("pnpm run test:integration")
+  Bash("cd packages/claude-flow && ppnpm add && ppnpm test")
+  Bash("cd packages/ruv-swarm && ppnpm add && ppnpm test")
+  Bash("ppnpm run test:integration")
 
   // Create unified release PR
   Bash(`gh pr create \
@@ -436,7 +436,7 @@ pnpm dlx agentic-flow github emergency-release \
   Bash("git cherry-pick abc123def")
 
   // Fast validation
-  Bash("pnpm run test:critical && pnpm run build")
+  Bash("ppnpm run test:critical && ppnpm run build")
 
   // Create emergency release
   Bash(`gh release create v1.2.4 \
@@ -492,14 +492,14 @@ release:
 
   artifacts:
     - name: npm-package
-      build: pnpm run build
-      test: pnpm run test:all
+      build: ppnpm run build
+      test: ppnpm run test:all
       publish: pnpm publish
       registry: https://registry.npmjs.org
 
     - name: docker-image
       build: docker build -t app:$VERSION .
-      test: docker run app:$VERSION pnpm test
+      test: docker run app:$VERSION ppnpm test
       publish: docker push app:$VERSION
       platforms: [linux/amd64, linux/arm64]
 
@@ -512,23 +512,23 @@ release:
 
   validation:
     pre-release:
-      - lint: pnpm run lint
-      - typecheck: pnpm run typecheck
-      - unit-tests: pnpm run test:unit
-      - integration-tests: pnpm run test:integration
+      - lint: ppnpm run lint
+      - typecheck: ppnpm run typecheck
+      - unit-tests: ppnpm run test:unit
+      - integration-tests: ppnpm run test:integration
       - security-scan: pnpm audit
-      - license-check: pnpm run license-check
+      - license-check: ppnpm run license-check
 
     post-release:
-      - smoke-tests: pnpm run test:smoke
+      - smoke-tests: ppnpm run test:smoke
       - deployment-validation: ./scripts/validate-deployment.sh
-      - performance-baseline: pnpm run benchmark
+      - performance-baseline: ppnpm run benchmark
 
   deployment:
     environments:
       - name: staging
         auto-deploy: true
-        validation: pnpm run test:e2e
+        validation: ppnpm run test:e2e
         approval: false
 
       - name: production
@@ -753,13 +753,13 @@ jobs:
       - name: Build Release Artifacts
         run: |
           # Install dependencies
-          pnpm install --frozen-lockfile
+          ppnpm add --frozen-lockfile
 
           # Run comprehensive validation
-          pnpm run lint
-          pnpm run typecheck
-          pnpm run test:all
-          pnpm run build
+          ppnpm run lint
+          ppnpm run typecheck
+          ppnpm run test:all
+          ppnpm run build
 
           # Build platform-specific binaries
           pnpm dlx agentic-flow github release-build \
@@ -802,7 +802,7 @@ jobs:
       - name: Post-Release Validation
         run: |
           # Run smoke tests
-          pnpm run test:smoke
+          ppnpm run test:smoke
 
           # Validate deployment
           pnpm dlx agentic-flow github release-validate \
@@ -857,9 +857,9 @@ jobs:
 
       - name: Fast-Track Testing
         run: |
-          pnpm install --frozen-lockfile
-          pnpm run test:critical
-          pnpm run build
+          ppnpm add --frozen-lockfile
+          ppnpm run test:critical
+          ppnpm run build
 
       - name: Emergency Release
         run: |
@@ -947,16 +947,16 @@ pnpm dlx agentic-flow diagnostic-run \
 
 # Retry with isolated environment
 docker run --rm -v $(pwd):/app node:20 \
-  bash -c "cd /app && pnpm install --frozen-lockfile && pnpm run build"
+  bash -c "cd /app && ppnpm add --frozen-lockfile && ppnpm run build"
 ```
 
 ### Issue: Test Failures in CI
 ```bash
 # Run tests with detailed output
-pnpm run test -- --verbose --coverage
+ppnpm run test -- --verbose --coverage
 
 # Check for environment-specific issues
-pnpm run test:ci
+ppnpm run test:ci
 
 # Compare local vs CI environment
 pnpm dlx agentic-flow github compat-test \
