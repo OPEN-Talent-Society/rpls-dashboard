@@ -603,6 +603,97 @@
         "automated"
       ],
       "related_docs": []
+    },
+    {
+      "id": "learning-cortex-cleanup-001",
+      "timestamp": "2025-12-02T00:30:00Z",
+      "topic": "Bloated Markdown Files - Embedded Footnotes Pattern",
+      "category": "infrastructure",
+      "agent": "claude-code",
+      "content": "Bloated markdown files can exceed Claude Code's 25000 token limit due to embedded footnotes containing entire documents. The [^1]: syntax can embed full content inline, causing files like cortex-siyuan-ops.md to bloat to 200KB (61838 tokens). SOLUTION: Keep modular clean files, delete bloated duplicates, use ((block-id)) refs instead of embedding. DETECTED: 5 duplicate bloated files in claude-zai were removed.",
+      "tags": [
+        "bloated-files",
+        "footnotes",
+        "token-limits",
+        "cortex"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-cleanup-002",
+      "timestamp": "2025-12-02T00:30:00Z",
+      "topic": "PARA Notebook IDs - Complete Structure 2025-12-01",
+      "category": "cortex-infrastructure",
+      "agent": "claude-code",
+      "content": "Updated PARA notebook structure (effective 2025-12-01): 01 Projects=20251103053911-8ex6uns (103 docs), 02 Areas=20251201183343-543piyt (80 docs), 03 Resources=20251201183343-ujsixib (150 docs), 04 Archives=20251201183343-xf2snc8 (33 docs), 05 Knowledge Base=20251103053840-moamndp (28 docs), 11 Agents=20251103053916-bq6qbgu (37 docs). Total: 431 docs across 6 notebooks. The '11 Agents' notebook was missing from documentation and has been added to all relevant files.",
+      "tags": [
+        "para",
+        "notebooks",
+        "cortex",
+        "structure"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-cortex-cleanup-003",
+      "timestamp": "2025-12-02T00:30:00Z",
+      "topic": "Cortex Documentation Cleanup - Files Modified",
+      "category": "documentation",
+      "agent": "claude-code",
+      "content": "Cortex documentation cleanup completed. FILES UPDATED (3): codebuild/.claude/agents/core/cortex-ops.md (added 11 Agents notebook, doc counts), codebuild/.claude/skills/cortex-api-ops.md (same), codebuild/.claude/commands/cortex-export.md (updated backup loop). FILES DELETED (5): All bloated duplicates in claude-zai/.claude/agents/, plugins/, and marketplaces/ containing cortex-siyuan-ops.md (200KB each). Clean reference at codebuild/.claude/agents/core/cortex-ops.md (487 lines, ~15k tokens).",
+      "tags": [
+        "cleanup",
+        "documentation",
+        "cortex",
+        "files"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-wikilink-audit-001",
+      "timestamp": "2025-12-02T00:45:00Z",
+      "topic": "SiYuan Wiki-Link vs Block-Ref Syntax",
+      "category": "cortex-siyuan",
+      "agent": "claude-code",
+      "content": "CRITICAL DISTINCTION: [[wiki-style]] links in SiYuan are plain text that do NOT create refs in the refs table. They render as non-clickable text. Use ((block-id)) syntax to create proper block references that: 1) Create entry in refs table, 2) Render as clickable links, 3) Show in backlinks panel. Audit found 30 blocks with [[]] syntax, 12 were convertible (target doc exists), 18 are template placeholders or need governance docs created.",
+      "tags": [
+        "cortex",
+        "siyuan",
+        "wiki-links",
+        "block-refs",
+        "link-syntax"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-wikilink-audit-002",
+      "timestamp": "2025-12-02T00:45:00Z",
+      "topic": "Wiki-Link Conversion Process",
+      "category": "cortex-api",
+      "agent": "claude-code",
+      "content": "Wiki-link to block-ref conversion process: 1) Query blocks with [[]] pattern using SQL: SELECT id, content FROM blocks WHERE type='p' AND content LIKE '%[[%'. 2) Search for target documents by name to get block IDs. 3) Use /api/block/updateBlock to replace [[DocName]] with ((block-id)). 4) Verify refs table has new entries. Successfully converted 12 wiki-links: 2x [[GEM_Feri]]→((20251201183622-purp5sq)), 1x [[cortex-ops]]→((20251201232226-5fga9ca)), 9x [[AI-Enablement-Academy-ICP-List]]→((20251201183459-6l73yyk)).",
+      "tags": [
+        "cortex",
+        "conversion",
+        "api",
+        "wiki-links"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-wikilink-audit-003",
+      "timestamp": "2025-12-02T00:45:00Z",
+      "topic": "Wiki-Link Categories in Cortex",
+      "category": "knowledge-management",
+      "agent": "claude-code",
+      "content": "Wiki-links in Cortex fall into 3 categories: (1) CONVERTIBLE - Target document exists, can be replaced with ((block-id)). (2) TEMPLATE PLACEHOLDERS - Intentional placeholders like [[Task-ID]], [[Related-Doc-1]] in templates, should remain as text. (3) GOVERNANCE DOCS NEEDED - References to non-existent governance documents like [[Tag Taxonomy]], [[Cortex Ontology Map]], [[Cortex Dashboard Directory]] - these need documents created before conversion.",
+      "tags": [
+        "cortex",
+        "wiki-links",
+        "categories",
+        "governance"
+      ],
+      "related_docs": []
     }
   ]
 }

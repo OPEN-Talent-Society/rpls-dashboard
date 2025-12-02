@@ -107,13 +107,14 @@ WHERE type='d' AND content LIKE '%keyword%'
 
 ## Notebook IDs (Updated 2025-12-01)
 
-| Notebook | ID |
-|----------|-----|
-| Resources | `20251201183343-ujsixib` |
-| Knowledge Base | `20251103053840-moamndp` |
-| Projects | `20251103053911-8ex6uns` |
-| Archives | `20251201183343-xf2snc8` |
-| Areas | `20251201183343-543piyt` |
+| Notebook | ID | Docs |
+|----------|-----|------|
+| 01 Projects | `20251103053911-8ex6uns` | 103 |
+| 02 Areas | `20251201183343-543piyt` | 80 |
+| 03 Resources | `20251201183343-ujsixib` | 150 |
+| 04 Archives | `20251201183343-xf2snc8` | 33 |
+| 05 Knowledge Base | `20251103053840-moamndp` | 28 |
+| 11 Agents | `20251103053916-bq6qbgu` | 37 |
 
 ## Key Learnings
 
