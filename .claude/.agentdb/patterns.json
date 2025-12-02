@@ -890,6 +890,105 @@
       ],
       "timestamp": "2025-12-01T21:14:54Z",
       "agent": "claude-code"
+    },
+    {
+      "id": "pattern-cortex-cleanup-001",
+      "hash": "a1b2c3d4e5f6",
+      "name": "Cortex Documentation Deduplication Pattern",
+      "category": "knowledge-management",
+      "description": "Pattern for identifying and removing bloated duplicate documentation files across Claude Code variants. Bloated files contain embedded footnotes with full document content causing 200KB+ files.",
+      "template": {
+        "detection": {
+          "method": "find . -name 'target.md' -exec wc -c {} \\;",
+          "threshold_kb": 50,
+          "symptoms": ["footnotes", "embedded-content", "token-limit-errors"]
+        },
+        "resolution": {
+          "keep": "Single clean reference file (codebuild/.claude/)",
+          "delete": "All duplicates in variant directories",
+          "verify": "grep for old patterns to confirm removal"
+        },
+        "locations_to_check": [
+          ".claude/agents/",
+          ".claude/plugins/*/agents/",
+          ".claude/marketplaces/*/agents/"
+        ]
+      },
+      "use_cases": [
+        "documentation-cleanup",
+        "deduplication",
+        "token-optimization",
+        "file-hygiene"
+      ],
+      "timestamp": "2025-12-02T00:30:00Z",
+      "agent": "claude-code"
+    },
+    {
+      "id": "pattern-cortex-notebook-sync-001",
+      "hash": "b2c3d4e5f6g7",
+      "name": "PARA Notebook ID Synchronization Pattern",
+      "category": "cortex-infrastructure",
+      "description": "Pattern for keeping Cortex/SiYuan notebook IDs synchronized across all documentation, agents, skills, commands, and hooks.",
+      "template": {
+        "notebooks": {
+          "01_Projects": "20251103053911-8ex6uns",
+          "02_Areas": "20251201183343-543piyt",
+          "03_Resources": "20251201183343-ujsixib",
+          "04_Archives": "20251201183343-xf2snc8",
+          "05_KnowledgeBase": "20251103053840-moamndp",
+          "11_Agents": "20251103053916-bq6qbgu"
+        },
+        "files_to_update": [
+          ".claude/agents/core/cortex-ops.md",
+          ".claude/skills/cortex-api-ops.md",
+          ".claude/commands/cortex-export.md",
+          ".claude/commands/cortex-search.md",
+          ".claude/hooks/cortex-*.sh"
+        ],
+        "verification": "grep -r '2023.*-' .claude/ to find old IDs"
+      },
+      "use_cases": [
+        "notebook-migration",
+        "id-synchronization",
+        "cortex-maintenance",
+        "para-methodology"
+      ],
+      "timestamp": "2025-12-02T00:30:00Z",
+      "agent": "claude-code"
+    },
+    {
+      "id": "pattern-wikilink-conversion-001",
+      "hash": "c3d4e5f6g7h8",
+      "name": "Wiki-Link to Block-Ref Conversion Pattern",
+      "category": "cortex-api",
+      "description": "Pattern for converting non-functional [[wiki-style]] links to proper ((block-ref)) syntax in SiYuan/Cortex knowledge base.",
+      "template": {
+        "detection": {
+          "query": "SELECT id, content FROM blocks WHERE type='p' AND content LIKE '%[[%'",
+          "api": "/api/query/sql"
+        },
+        "search_target": {
+          "query": "SELECT id FROM blocks WHERE type='d' AND content LIKE '%{doc_name}%'",
+          "api": "/api/query/sql"
+        },
+        "conversion": {
+          "api": "/api/block/updateBlock",
+          "payload": {"dataType": "markdown", "data": "content with ((block-id))", "id": "source_block_id"}
+        },
+        "categories": {
+          "convertible": "Target doc exists - replace [[name]] with ((id))",
+          "template_placeholder": "Intentional placeholders - leave as text",
+          "needs_creation": "Reference to non-existent doc - create doc first"
+        }
+      },
+      "use_cases": [
+        "link-audit",
+        "ref-creation",
+        "backlink-generation",
+        "cortex-cleanup"
+      ],
+      "timestamp": "2025-12-02T00:45:00Z",
+      "agent": "claude-code"
     }
   ]
 }

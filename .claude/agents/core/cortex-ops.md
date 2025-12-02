@@ -47,13 +47,14 @@ auth_headers:
 
 ### PARA Notebooks (Updated 2025-12-01)
 
-| Notebook | ID | Purpose |
-|----------|-----|---------|
-| Projects | `20251103053911-8ex6uns` | Active project documentation, sprint work |
-| Areas | `20251201183343-543piyt` | Ongoing responsibilities, domains |
-| Resources | `20251201183343-ujsixib` | Reference materials, learnings, patterns |
-| Archives | `20251201183343-xf2snc8` | Completed work (>30 days), historical |
-| Knowledge Base | `20251103053840-moamndp` | Core KB, glossary, foundational docs |
+| Notebook | ID | Docs | Purpose |
+|----------|-----|------|---------|
+| 01 Projects | `20251103053911-8ex6uns` | 103 | Active project documentation, sprint work |
+| 02 Areas | `20251201183343-543piyt` | 80 | Ongoing responsibilities, domains |
+| 03 Resources | `20251201183343-ujsixib` | 150 | Reference materials, learnings, patterns |
+| 04 Archives | `20251201183343-xf2snc8` | 33 | Completed work (>30 days), historical |
+| 05 Knowledge Base | `20251103053840-moamndp` | 28 | Core KB, glossary, foundational docs |
+| 11 Agents | `20251103053916-bq6qbgu` | 37 | Agent definitions, personas, prompts |
 
 ## SiYuan API Operations
 

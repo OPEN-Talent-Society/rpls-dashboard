@@ -99,13 +99,14 @@ curl -s -X POST "${URL}/api/export/exportSY" \
 
 ## PARA Notebook IDs (2025-12-01)
 
-| Notebook | ID | Purpose |
-|----------|-----|---------|
-| Projects | `20251103053911-8ex6uns` | Active project documentation |
-| Areas | `20251201183343-543piyt` | Ongoing responsibilities |
-| Resources | `20251201183343-ujsixib` | Reference materials, learnings |
-| Archives | `20251201183343-xf2snc8` | Completed work (>30 days) |
-| Knowledge Base | `20251103053840-moamndp` | Core KB, glossary |
+| Notebook | ID | Docs | Purpose |
+|----------|-----|------|---------|
+| 01 Projects | `20251103053911-8ex6uns` | 103 | Active project documentation |
+| 02 Areas | `20251201183343-543piyt` | 80 | Ongoing responsibilities |
+| 03 Resources | `20251201183343-ujsixib` | 150 | Reference materials, learnings |
+| 04 Archives | `20251201183343-xf2snc8` | 33 | Completed work (>30 days) |
+| 05 Knowledge Base | `20251103053840-moamndp` | 28 | Core KB, glossary |
+| 11 Agents | `20251103053916-bq6qbgu` | 37 | Agent definitions, personas |
 
 ## Examples
 
@@ -183,8 +184,8 @@ mcp__cortex__siyuan_request({
 ### 1. Backup Knowledge Base
 Export all documents for backup or migration:
 ```bash
-# Export each PARA notebook
-for notebook in "20251103053911-8ex6uns" "20251201183343-543piyt" "20251201183343-ujsixib" "20251201183343-xf2snc8" "20251103053840-moamndp"; do
+# Export each PARA notebook (01-05, 11)
+for notebook in "20251103053911-8ex6uns" "20251201183343-543piyt" "20251201183343-ujsixib" "20251201183343-xf2snc8" "20251103053840-moamndp" "20251103053916-bq6qbgu"; do
   /cortex-export --notebook $notebook
 done
 ```
