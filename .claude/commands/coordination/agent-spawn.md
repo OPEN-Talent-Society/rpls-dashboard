@@ -4,7 +4,7 @@ Spawn a new agent in the current swarm.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow agent spawn [options]
+/opt/homebrew/bin/claude-flow agent spawn [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow agent spawn [options]
 ## Examples
 ```bash
 # Spawn coder agent
-pnpm dlx claude-flow agent spawn --type coder
+/opt/homebrew/bin/claude-flow agent spawn --type coder
 
 # With custom name
-pnpm dlx claude-flow agent spawn --type researcher --name "API Expert"
+/opt/homebrew/bin/claude-flow agent spawn --type researcher --name "API Expert"
 
 # With specific skills
-pnpm dlx claude-flow agent spawn --type coder --skills "python,fastapi,testing"
+/opt/homebrew/bin/claude-flow agent spawn --type coder --skills "python,fastapi,testing"
 ```

@@ -481,25 +481,25 @@ mcp__claude-flow__swarm_monitor {
 
 ```bash
 # Execute specific mode
-pnpm dlx agentic-flow sparc run <mode> "task description"
+/opt/homebrew/bin/agentic-flow sparc run <mode> "task description"
 
 # List all available modes
-pnpm dlx agentic-flow sparc modes
+/opt/homebrew/bin/agentic-flow sparc modes
 
 # Get help for specific mode
-pnpm dlx agentic-flow sparc help <mode>
+/opt/homebrew/bin/agentic-flow sparc help <mode>
 
 # Run with options
-pnpm dlx agentic-flow sparc run <mode> "task" --parallel --monitor
+/opt/homebrew/bin/agentic-flow sparc run <mode> "task" --parallel --monitor
 
 # Execute TDD workflow
-pnpm dlx agentic-flow sparc tdd "feature description"
+/opt/homebrew/bin/agentic-flow sparc tdd "feature description"
 
 # Batch execution
-pnpm dlx agentic-flow sparc batch <mode1,mode2,mode3> "task"
+/opt/homebrew/bin/agentic-flow sparc batch <mode1,mode2,mode3> "task"
 
 # Pipeline execution
-pnpm dlx agentic-flow sparc pipeline "task description"
+/opt/homebrew/bin/agentic-flow sparc pipeline "task description"
 ```
 
 ### Method 3: Local Installation
@@ -726,13 +726,13 @@ Message 3: TodoWrite { todos: [...] }
 
 ```bash
 # Before work
-pnpm dlx agentic-flow hooks pre-task --description "implement auth"
+/opt/homebrew/bin/agentic-flow hooks pre-task --description "implement auth"
 
 # During work
-pnpm dlx agentic-flow hooks post-edit --file "auth.js"
+/opt/homebrew/bin/agentic-flow hooks post-edit --file "auth.js"
 
 # After work
-pnpm dlx agentic-flow hooks post-task --task-id "task-123"
+/opt/homebrew/bin/agentic-flow hooks post-task --task-id "task-123"
 ```
 
 ### 4. Test Coverage
@@ -917,58 +917,58 @@ mcp__claude-flow__sparc_mode {
 
 ```bash
 # Step 1: Research and planning
-pnpm dlx agentic-flow sparc run researcher "authentication patterns"
+/opt/homebrew/bin/agentic-flow sparc run researcher "authentication patterns"
 
 # Step 2: Architecture design
-pnpm dlx agentic-flow sparc run architect "design auth system"
+/opt/homebrew/bin/agentic-flow sparc run architect "design auth system"
 
 # Step 3: TDD implementation
-pnpm dlx agentic-flow sparc tdd "user authentication feature"
+/opt/homebrew/bin/agentic-flow sparc tdd "user authentication feature"
 
 # Step 4: Code review
-pnpm dlx agentic-flow sparc run reviewer "review auth implementation"
+/opt/homebrew/bin/agentic-flow sparc run reviewer "review auth implementation"
 
 # Step 5: Documentation
-pnpm dlx agentic-flow sparc run documenter "document auth API"
+/opt/homebrew/bin/agentic-flow sparc run documenter "document auth API"
 ```
 
 ### Workflow 2: Bug Investigation
 
 ```bash
 # Step 1: Analyze issue
-pnpm dlx agentic-flow sparc run analyzer "investigate bug #456"
+/opt/homebrew/bin/agentic-flow sparc run analyzer "investigate bug #456"
 
 # Step 2: Debug systematically
-pnpm dlx agentic-flow sparc run debugger "fix memory leak in service X"
+/opt/homebrew/bin/agentic-flow sparc run debugger "fix memory leak in service X"
 
 # Step 3: Create tests
-pnpm dlx agentic-flow sparc run tester "regression tests for bug #456"
+/opt/homebrew/bin/agentic-flow sparc run tester "regression tests for bug #456"
 
 # Step 4: Review fix
-pnpm dlx agentic-flow sparc run reviewer "validate bug fix"
+/opt/homebrew/bin/agentic-flow sparc run reviewer "validate bug fix"
 ```
 
 ### Workflow 3: Performance Optimization
 
 ```bash
 # Step 1: Profile performance
-pnpm dlx agentic-flow sparc run analyzer "profile API response times"
+/opt/homebrew/bin/agentic-flow sparc run analyzer "profile API response times"
 
 # Step 2: Identify bottlenecks
-pnpm dlx agentic-flow sparc run optimizer "optimize database queries"
+/opt/homebrew/bin/agentic-flow sparc run optimizer "optimize database queries"
 
 # Step 3: Implement improvements
-pnpm dlx agentic-flow sparc run coder "implement caching layer"
+/opt/homebrew/bin/agentic-flow sparc run coder "implement caching layer"
 
 # Step 4: Benchmark results
-pnpm dlx agentic-flow sparc run tester "performance benchmarks"
+/opt/homebrew/bin/agentic-flow sparc run tester "performance benchmarks"
 ```
 
 ### Workflow 4: Complete Pipeline
 
 ```bash
 # Execute full development pipeline
-pnpm dlx agentic-flow sparc pipeline "e-commerce checkout feature"
+/opt/homebrew/bin/agentic-flow sparc pipeline "e-commerce checkout feature"
 
 # This automatically runs:
 # 1. researcher - Gather requirements
@@ -1076,19 +1076,19 @@ mcp__claude-flow__token_usage {
 
 ```bash
 # List modes
-pnpm dlx agentic-flow sparc modes
+/opt/homebrew/bin/agentic-flow sparc modes
 
 # Run specific mode
-pnpm dlx agentic-flow sparc run <mode> "task"
+/opt/homebrew/bin/agentic-flow sparc run <mode> "task"
 
 # TDD workflow
-pnpm dlx agentic-flow sparc tdd "feature"
+/opt/homebrew/bin/agentic-flow sparc tdd "feature"
 
 # Full pipeline
-pnpm dlx agentic-flow sparc pipeline "task"
+/opt/homebrew/bin/agentic-flow sparc pipeline "task"
 
 # Batch execution
-pnpm dlx agentic-flow sparc batch <modes> "task"
+/opt/homebrew/bin/agentic-flow sparc batch <modes> "task"
 ```
 
 ### Most Common MCP Calls

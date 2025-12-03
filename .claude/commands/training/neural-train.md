@@ -4,7 +4,7 @@ Train neural patterns from operations.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow training neural-train [options]
+/opt/homebrew/bin/claude-flow training neural-train [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow training neural-train [options]
 ## Examples
 ```bash
 # Train from recent ops
-pnpm dlx claude-flow training neural-train --data recent
+/opt/homebrew/bin/claude-flow training neural-train --data recent
 
 # Specific model
-pnpm dlx claude-flow training neural-train --model task-predictor
+/opt/homebrew/bin/claude-flow training neural-train --model task-predictor
 
 # Custom epochs
-pnpm dlx claude-flow training neural-train --epochs 100
+/opt/homebrew/bin/claude-flow training neural-train --epochs 100
 ```

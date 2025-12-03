@@ -7,19 +7,19 @@ Coordination patterns for multi-agent collaboration.
 ### Hierarchical
 Queen-led with worker specialization
 ```bash
-pnpm dlx claude-flow swarm init --topology hierarchical
+/opt/homebrew/bin/claude-flow swarm init --topology hierarchical
 ```
 
 ### Mesh
 Peer-to-peer collaboration
 ```bash
-pnpm dlx claude-flow swarm init --topology mesh
+/opt/homebrew/bin/claude-flow swarm init --topology mesh
 ```
 
 ### Adaptive
 Dynamic topology based on workload
 ```bash
-pnpm dlx claude-flow swarm init --topology adaptive
+/opt/homebrew/bin/claude-flow swarm init --topology adaptive
 ```
 
 ## Best Practices

@@ -22,5 +22,5 @@ Complete guide to all 54 available agent types in Claude Flow.
 
 For full list and details:
 ```bash
-pnpm dlx claude-flow agents list
+/opt/homebrew/bin/claude-flow agents list
 ```

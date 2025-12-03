@@ -4,7 +4,7 @@ Hook executed at session end.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow hook session-end [options]
+/opt/homebrew/bin/claude-flow hook session-end [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow hook session-end [options]
 ## Examples
 ```bash
 # End session
-pnpm dlx claude-flow hook session-end
+/opt/homebrew/bin/claude-flow hook session-end
 
 # Export metrics
-pnpm dlx claude-flow hook session-end --export-metrics
+/opt/homebrew/bin/claude-flow hook session-end --export-metrics
 
 # Full closure
-pnpm dlx claude-flow hook session-end --export-metrics --generate-summary --persist-state
+/opt/homebrew/bin/claude-flow hook session-end --export-metrics --generate-summary --persist-state
 ```

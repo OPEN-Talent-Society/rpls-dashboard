@@ -9,7 +9,7 @@ SEARCH_TYPE="${2:-general}"
 QUERY_HASH=$(echo "${SEARCH_TYPE}:${SEARCH_QUERY}" | md5 | cut -c1-12)
 
 # Check if we've searched this before
-CACHED_RESULT=$(pnpm dlx claude-flow memory search \
+CACHED_RESULT=$(/opt/homebrew/bin/claude-flow memory search \
   --pattern "searches/${SEARCH_TYPE}/${QUERY_HASH}*" \
   --limit 1 2>/dev/null)
 

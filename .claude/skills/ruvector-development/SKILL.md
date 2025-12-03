@@ -253,10 +253,10 @@ pnpm dlx ruvector memory list \
 
 ```bash
 # Integration with agentic-flow swarms
-pnpm dlx agentic-flow swarm init --topology mesh --memory-backend ruvector
+/opt/homebrew/bin/agentic-flow swarm init --topology mesh --memory-backend ruvector
 
 # Agent spawning with vector memory
-pnpm dlx agentic-flow agent spawn --type researcher \
+/opt/homebrew/bin/agentic-flow agent spawn --type researcher \
   --memory-namespace "swarm/research" \
   --memory-backend ruvector
 
@@ -326,7 +326,7 @@ pnpm dlx ruvector query \
 # Pre-load context for agent tasks
 pnpm dlx ruvector search "payment processing implementation" \
   --limit 10 \
-  --json | pnpm dlx agentic-flow memory store \
+  --json | /opt/homebrew/bin/agentic-flow memory store \
   --namespace "agent/context" \
   --key "task-payment" \
   --stdin

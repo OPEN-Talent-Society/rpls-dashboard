@@ -14,8 +14,8 @@ Matrix of agent capabilities and their specializations.
 ## Querying Capabilities
 ```bash
 # List all capabilities
-pnpm dlx claude-flow agents capabilities
+/opt/homebrew/bin/claude-flow agents capabilities
 
 # For specific agent
-pnpm dlx claude-flow agents capabilities --type coder
+/opt/homebrew/bin/claude-flow agents capabilities --type coder
 ```

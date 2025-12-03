@@ -4,7 +4,7 @@ Optimize swarm topology for current workload.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow optimization topology-optimize [options]
+/opt/homebrew/bin/claude-flow optimization topology-optimize [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow optimization topology-optimize [options]
 ## Examples
 ```bash
 # Analyze and suggest
-pnpm dlx claude-flow optimization topology-optimize --analyze-first
+/opt/homebrew/bin/claude-flow optimization topology-optimize --analyze-first
 
 # Optimize for speed
-pnpm dlx claude-flow optimization topology-optimize --target speed
+/opt/homebrew/bin/claude-flow optimization topology-optimize --target speed
 
 # Apply changes
-pnpm dlx claude-flow optimization topology-optimize --target efficiency --apply
+/opt/homebrew/bin/claude-flow optimization topology-optimize --target efficiency --apply
 ```

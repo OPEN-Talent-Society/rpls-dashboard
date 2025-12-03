@@ -4,7 +4,7 @@ Hook executed before task execution.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow hook pre-task [options]
+/opt/homebrew/bin/claude-flow hook pre-task [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow hook pre-task [options]
 ## Examples
 ```bash
 # Basic pre-task hook
-pnpm dlx claude-flow hook pre-task --description "Building API endpoints"
+/opt/homebrew/bin/claude-flow hook pre-task --description "Building API endpoints"
 
 # With auto-spawn
-pnpm dlx claude-flow hook pre-task --description "Complex refactoring" --auto-spawn-agents
+/opt/homebrew/bin/claude-flow hook pre-task --description "Complex refactoring" --auto-spawn-agents
 
 # Load context
-pnpm dlx claude-flow hook pre-task --description "Continue feature" --load-context
+/opt/homebrew/bin/claude-flow hook pre-task --description "Continue feature" --load-context
 ```

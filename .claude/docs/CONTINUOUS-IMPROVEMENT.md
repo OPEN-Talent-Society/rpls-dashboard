@@ -56,7 +56,7 @@ required_fields:
 **Hook**: `post-error.sh`
 ```bash
 # After any error resolution:
-pnpm dlx claude-flow memory store \
+/opt/homebrew/bin/claude-flow memory store \
   --key "errors/${CATEGORY}/${ERROR_ID}" \
   --value '{"error":"...","resolution":"...","prevention":"..."}'
 ```
@@ -65,11 +65,11 @@ pnpm dlx claude-flow memory store \
 Before any search/investigation:
 ```bash
 # Check if we've searched this before
-pnpm dlx claude-flow memory search --pattern "searches/${TOPIC}*"
+/opt/homebrew/bin/claude-flow memory search --pattern "searches/${TOPIC}*"
 
 # If found, use cached result
 # If not, perform search and cache
-pnpm dlx claude-flow memory store \
+/opt/homebrew/bin/claude-flow memory store \
   --key "searches/${TOPIC}/${QUERY_HASH}" \
   --value '{"query":"...","results":"...","timestamp":"..."}'
 ```
@@ -168,7 +168,7 @@ required_fields:
 TASK_HASH=$(echo "$TASK_DESCRIPTION" | md5)
 
 # Search for similar problems solved before
-EXISTING=$(pnpm dlx claude-flow memory search \
+EXISTING=$(/opt/homebrew/bin/claude-flow memory search \
   --pattern "patterns/*" \
   --query "$TASK_DESCRIPTION" \
   --limit 5)
@@ -179,7 +179,7 @@ if [ -n "$EXISTING" ]; then
 fi
 
 # Search for relevant errors and their resolutions
-RELEVANT_ERRORS=$(pnpm dlx claude-flow memory search \
+RELEVANT_ERRORS=$(/opt/homebrew/bin/claude-flow memory search \
   --pattern "errors/*" \
   --query "$TASK_DESCRIPTION" \
   --limit 3)
@@ -202,7 +202,7 @@ PREVENTION="$4"
 
 KEY="errors/${ERROR_CATEGORY}/$(date +%Y%m%d-%H%M%S)"
 
-pnpm dlx claude-flow memory store \
+/opt/homebrew/bin/claude-flow memory store \
   --key "$KEY" \
   --namespace "errors" \
   --value "{
@@ -234,7 +234,7 @@ LEARNING_CONTENT="$1"
 LEARNING_HASH=$(echo "$LEARNING_CONTENT" | md5)
 
 # Check if this exact learning exists
-EXISTING=$(pnpm dlx claude-flow memory search \
+EXISTING=$(/opt/homebrew/bin/claude-flow memory search \
   --pattern "learnings/*" \
   --query "$LEARNING_CONTENT" \
   --threshold 0.9)
@@ -247,7 +247,7 @@ if [ -n "$EXISTING" ]; then
 fi
 
 # Store new learning
-pnpm dlx claude-flow memory store \
+/opt/homebrew/bin/claude-flow memory store \
   --key "learnings/$(date +%Y%m%d)/${LEARNING_HASH}" \
   --value "$LEARNING_CONTENT"
 ```
@@ -259,7 +259,7 @@ pnpm dlx claude-flow memory store \
 ### Real-time Metrics Collection
 ```bash
 # Collect after each operation
-pnpm dlx claude-flow metrics collect \
+/opt/homebrew/bin/claude-flow metrics collect \
   --operation "$OPERATION_TYPE" \
   --duration "$DURATION_MS" \
   --tokens "$TOKENS_USED" \
@@ -269,11 +269,11 @@ pnpm dlx claude-flow metrics collect \
 ### Performance Trend Analysis
 ```bash
 # Weekly analysis
-pnpm dlx claude-flow trend_analysis \
+/opt/homebrew/bin/claude-flow trend_analysis \
   --metric "token_usage" \
   --period "7d"
 
-pnpm dlx claude-flow trend_analysis \
+/opt/homebrew/bin/claude-flow trend_analysis \
   --metric "error_rate" \
   --period "7d"
 ```
@@ -281,7 +281,7 @@ pnpm dlx claude-flow trend_analysis \
 ### Bottleneck Detection
 ```bash
 # Identify slow operations
-pnpm dlx claude-flow bottleneck_analyze \
+/opt/homebrew/bin/claude-flow bottleneck_analyze \
   --component "all" \
   --metrics '["latency", "token_usage", "error_rate"]'
 ```

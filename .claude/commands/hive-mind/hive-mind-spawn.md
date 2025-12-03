@@ -4,7 +4,7 @@ Spawn a Hive Mind swarm with queen-led coordination.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow hive-mind spawn <objective> [options]
+/opt/homebrew/bin/claude-flow hive-mind spawn <objective> [options]
 ```
 
 ## Options
@@ -15,7 +15,7 @@ pnpm dlx claude-flow hive-mind spawn <objective> [options]
 
 ## Examples
 ```bash
-pnpm dlx claude-flow hive-mind spawn "Build API"
-pnpm dlx claude-flow hive-mind spawn "Research patterns" --queen-type adaptive
-pnpm dlx claude-flow hive-mind spawn "Build service" --claude
+/opt/homebrew/bin/claude-flow hive-mind spawn "Build API"
+/opt/homebrew/bin/claude-flow hive-mind spawn "Research patterns" --queen-type adaptive
+/opt/homebrew/bin/claude-flow hive-mind spawn "Build service" --claude
 ```

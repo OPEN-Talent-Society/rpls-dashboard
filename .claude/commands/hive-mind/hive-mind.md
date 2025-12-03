@@ -4,7 +4,7 @@ Hive Mind collective intelligence system for advanced swarm coordination.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow hive-mind [subcommand] [options]
+/opt/homebrew/bin/claude-flow hive-mind [subcommand] [options]
 ```
 
 ## Subcommands
@@ -17,11 +17,11 @@ pnpm dlx claude-flow hive-mind [subcommand] [options]
 ## Examples
 ```bash
 # Initialize hive mind
-pnpm dlx claude-flow hive-mind init
+/opt/homebrew/bin/claude-flow hive-mind init
 
 # Spawn swarm
-pnpm dlx claude-flow hive-mind spawn "Build microservices"
+/opt/homebrew/bin/claude-flow hive-mind spawn "Build microservices"
 
 # Check status
-pnpm dlx claude-flow hive-mind status
+/opt/homebrew/bin/claude-flow hive-mind status
 ```

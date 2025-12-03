@@ -21,7 +21,7 @@ This skill provides a comprehensive verification and quality assurance system th
 
 ## Prerequisites
 
-- Claude Flow installed (`pnpm dlx agentic-flow`)
+- Claude Flow installed (`/opt/homebrew/bin/agentic-flow`)
 - Git repository (for rollback features)
 - Node.js 18+ (for dashboard features)
 
@@ -29,16 +29,16 @@ This skill provides a comprehensive verification and quality assurance system th
 
 ```bash
 # View current truth scores
-pnpm dlx agentic-flow truth
+/opt/homebrew/bin/agentic-flow truth
 
 # Run verification check
-pnpm dlx agentic-flow verify check
+/opt/homebrew/bin/agentic-flow verify check
 
 # Verify specific file with custom threshold
-pnpm dlx agentic-flow verify check --file src/app.js --threshold 0.98
+/opt/homebrew/bin/agentic-flow verify check --file src/app.js --threshold 0.98
 
 # Rollback last failed verification
-pnpm dlx agentic-flow verify rollback --last-good
+/opt/homebrew/bin/agentic-flow verify rollback --last-good
 ```
 
 ---
@@ -54,40 +54,40 @@ Display comprehensive quality and reliability metrics for your codebase and agen
 **Basic Usage:**
 ```bash
 # View current truth scores (default: table format)
-pnpm dlx agentic-flow truth
+/opt/homebrew/bin/agentic-flow truth
 
 # View scores for specific time period
-pnpm dlx agentic-flow truth --period 7d
+/opt/homebrew/bin/agentic-flow truth --period 7d
 
 # View scores for specific agent
-pnpm dlx agentic-flow truth --agent coder --period 24h
+/opt/homebrew/bin/agentic-flow truth --agent coder --period 24h
 
 # Find files/tasks below threshold
-pnpm dlx agentic-flow truth --threshold 0.8
+/opt/homebrew/bin/agentic-flow truth --threshold 0.8
 ```
 
 **Output Formats:**
 ```bash
 # Table format (default)
-pnpm dlx agentic-flow truth --format table
+/opt/homebrew/bin/agentic-flow truth --format table
 
 # JSON for programmatic access
-pnpm dlx agentic-flow truth --format json
+/opt/homebrew/bin/agentic-flow truth --format json
 
 # CSV for spreadsheet analysis
-pnpm dlx agentic-flow truth --format csv
+/opt/homebrew/bin/agentic-flow truth --format csv
 
 # HTML report with visualizations
-pnpm dlx agentic-flow truth --format html --export report.html
+/opt/homebrew/bin/agentic-flow truth --format html --export report.html
 ```
 
 **Real-time Monitoring:**
 ```bash
 # Watch mode with live updates
-pnpm dlx agentic-flow truth --watch
+/opt/homebrew/bin/agentic-flow truth --watch
 
 # Export metrics automatically
-pnpm dlx agentic-flow truth --export .claude-flow/metrics/truth-$(date +%Y%m%d).json
+/opt/homebrew/bin/agentic-flow truth --export .claude-flow/metrics/truth-$(date +%Y%m%d).json
 ```
 
 #### Truth Score Dashboard
@@ -143,40 +143,40 @@ Execute comprehensive verification checks on code, tasks, or agent outputs.
 **File Verification:**
 ```bash
 # Verify single file
-pnpm dlx agentic-flow verify check --file src/app.js
+/opt/homebrew/bin/agentic-flow verify check --file src/app.js
 
 # Verify directory recursively
-pnpm dlx agentic-flow verify check --directory src/
+/opt/homebrew/bin/agentic-flow verify check --directory src/
 
 # Verify with auto-fix enabled
-pnpm dlx agentic-flow verify check --file src/utils.js --auto-fix
+/opt/homebrew/bin/agentic-flow verify check --file src/utils.js --auto-fix
 
 # Verify current working directory
-pnpm dlx agentic-flow verify check
+/opt/homebrew/bin/agentic-flow verify check
 ```
 
 **Task Verification:**
 ```bash
 # Verify specific task output
-pnpm dlx agentic-flow verify check --task task-123
+/opt/homebrew/bin/agentic-flow verify check --task task-123
 
 # Verify with custom threshold
-pnpm dlx agentic-flow verify check --task task-456 --threshold 0.99
+/opt/homebrew/bin/agentic-flow verify check --task task-456 --threshold 0.99
 
 # Verbose output for debugging
-pnpm dlx agentic-flow verify check --task task-789 --verbose
+/opt/homebrew/bin/agentic-flow verify check --task task-789 --verbose
 ```
 
 **Batch Verification:**
 ```bash
 # Verify multiple files in parallel
-pnpm dlx agentic-flow verify batch --files "*.js" --parallel
+/opt/homebrew/bin/agentic-flow verify batch --files "*.js" --parallel
 
 # Verify with pattern matching
-pnpm dlx agentic-flow verify batch --pattern "src/**/*.ts"
+/opt/homebrew/bin/agentic-flow verify batch --pattern "src/**/*.ts"
 
 # Integration test suite
-pnpm dlx agentic-flow verify integration --test-suite full
+/opt/homebrew/bin/agentic-flow verify integration --test-suite full
 ```
 
 #### Verification Criteria
@@ -217,7 +217,7 @@ The verification system evaluates:
 
 ```bash
 # Get structured JSON output
-pnpm dlx agentic-flow verify check --json > verification.json
+/opt/homebrew/bin/agentic-flow verify check --json > verification.json
 
 # Example JSON structure:
 {
@@ -249,25 +249,25 @@ Automatically revert changes that fail verification checks.
 **Basic Rollback:**
 ```bash
 # Rollback to last known good state
-pnpm dlx agentic-flow verify rollback --last-good
+/opt/homebrew/bin/agentic-flow verify rollback --last-good
 
 # Rollback to specific commit
-pnpm dlx agentic-flow verify rollback --to-commit abc123
+/opt/homebrew/bin/agentic-flow verify rollback --to-commit abc123
 
 # Interactive rollback with preview
-pnpm dlx agentic-flow verify rollback --interactive
+/opt/homebrew/bin/agentic-flow verify rollback --interactive
 ```
 
 **Smart Rollback:**
 ```bash
 # Rollback only failed files (preserve good changes)
-pnpm dlx agentic-flow verify rollback --selective
+/opt/homebrew/bin/agentic-flow verify rollback --selective
 
 # Rollback with automatic backup
-pnpm dlx agentic-flow verify rollback --backup-first
+/opt/homebrew/bin/agentic-flow verify rollback --backup-first
 
 # Dry-run mode (preview without executing)
-pnpm dlx agentic-flow verify rollback --dry-run
+/opt/homebrew/bin/agentic-flow verify rollback --dry-run
 ```
 
 **Rollback Performance:**
@@ -284,31 +284,31 @@ Create detailed verification reports with metrics and visualizations.
 **Report Formats:**
 ```bash
 # JSON report
-pnpm dlx agentic-flow verify report --format json
+/opt/homebrew/bin/agentic-flow verify report --format json
 
 # HTML report with charts
-pnpm dlx agentic-flow verify report --export metrics.html --format html
+/opt/homebrew/bin/agentic-flow verify report --export metrics.html --format html
 
 # CSV for data analysis
-pnpm dlx agentic-flow verify report --format csv --export metrics.csv
+/opt/homebrew/bin/agentic-flow verify report --format csv --export metrics.csv
 
 # Markdown summary
-pnpm dlx agentic-flow verify report --format markdown
+/opt/homebrew/bin/agentic-flow verify report --format markdown
 ```
 
 **Time-based Reports:**
 ```bash
 # Last 24 hours
-pnpm dlx agentic-flow verify report --period 24h
+/opt/homebrew/bin/agentic-flow verify report --period 24h
 
 # Last 7 days
-pnpm dlx agentic-flow verify report --period 7d
+/opt/homebrew/bin/agentic-flow verify report --period 7d
 
 # Last 30 days with trends
-pnpm dlx agentic-flow verify report --period 30d --include-trends
+/opt/homebrew/bin/agentic-flow verify report --period 30d --include-trends
 
 # Custom date range
-pnpm dlx agentic-flow verify report --from 2025-01-01 --to 2025-01-31
+/opt/homebrew/bin/agentic-flow verify report --from 2025-01-01 --to 2025-01-31
 ```
 
 **Report Content:**
@@ -328,16 +328,16 @@ Run interactive web-based verification dashboard with real-time updates.
 
 ```bash
 # Launch dashboard on default port (3000)
-pnpm dlx agentic-flow verify dashboard
+/opt/homebrew/bin/agentic-flow verify dashboard
 
 # Custom port
-pnpm dlx agentic-flow verify dashboard --port 8080
+/opt/homebrew/bin/agentic-flow verify dashboard --port 8080
 
 # Export dashboard data
-pnpm dlx agentic-flow verify dashboard --export
+/opt/homebrew/bin/agentic-flow verify dashboard --export
 
 # Dashboard with auto-refresh
-pnpm dlx agentic-flow verify dashboard --refresh 5s
+/opt/homebrew/bin/agentic-flow verify dashboard --refresh 5s
 ```
 
 **Dashboard Features:**
@@ -392,13 +392,13 @@ Set verification preferences in `.claude-flow/config.json`:
 **Adjust verification strictness:**
 ```bash
 # Strict mode (99% accuracy required)
-pnpm dlx agentic-flow verify check --threshold 0.99
+/opt/homebrew/bin/agentic-flow verify check --threshold 0.99
 
 # Lenient mode (90% acceptable)
-pnpm dlx agentic-flow verify check --threshold 0.90
+/opt/homebrew/bin/agentic-flow verify check --threshold 0.90
 
 # Set default threshold
-pnpm dlx agentic-flow config set verification.threshold 0.98
+/opt/homebrew/bin/agentic-flow config set verification.threshold 0.98
 ```
 
 **Per-environment thresholds:**
@@ -435,7 +435,7 @@ jobs:
 
       - name: Run Verification
         run: |
-          pnpm dlx agentic-flow verify check --json > verification.json
+          /opt/homebrew/bin/agentic-flow verify check --json > verification.json
 
       - name: Check Truth Score
         run: |
@@ -457,7 +457,7 @@ jobs:
 verify:
   stage: test
   script:
-    - pnpm dlx agentic-flow verify check --threshold 0.95 --json > verification.json
+    - /opt/homebrew/bin/agentic-flow verify check --threshold 0.95 --json > verification.json
     - |
       score=$(jq '.overallScore' verification.json)
       if [ $(echo "$score < 0.95" | bc) -eq 1 ]; then
@@ -477,13 +477,13 @@ Run verification automatically during swarm operations:
 
 ```bash
 # Swarm with verification enabled
-pnpm dlx agentic-flow swarm --verify --threshold 0.98
+/opt/homebrew/bin/agentic-flow swarm --verify --threshold 0.98
 
 # Hive Mind with auto-rollback
-pnpm dlx agentic-flow hive-mind --verify --rollback-on-fail
+/opt/homebrew/bin/agentic-flow hive-mind --verify --rollback-on-fail
 
 # Training pipeline with verification
-pnpm dlx agentic-flow train --verify --threshold 0.99
+/opt/homebrew/bin/agentic-flow train --verify --threshold 0.99
 ```
 
 #### Pair Programming Integration
@@ -492,10 +492,10 @@ Enable real-time verification during collaborative development:
 
 ```bash
 # Pair with verification
-pnpm dlx agentic-flow pair --verify --real-time
+/opt/homebrew/bin/agentic-flow pair --verify --real-time
 
 # Pair with custom threshold
-pnpm dlx agentic-flow pair --verify --threshold 0.97 --auto-fix
+/opt/homebrew/bin/agentic-flow pair --verify --threshold 0.97 --auto-fix
 ```
 
 ### Advanced Workflows
@@ -506,13 +506,13 @@ Monitor codebase continuously during development:
 
 ```bash
 # Watch directory for changes
-pnpm dlx agentic-flow verify watch --directory src/
+/opt/homebrew/bin/agentic-flow verify watch --directory src/
 
 # Watch with auto-fix
-pnpm dlx agentic-flow verify watch --directory src/ --auto-fix
+/opt/homebrew/bin/agentic-flow verify watch --directory src/ --auto-fix
 
 # Watch with notifications
-pnpm dlx agentic-flow verify watch --notify --threshold 0.95
+/opt/homebrew/bin/agentic-flow verify watch --notify --threshold 0.95
 ```
 
 #### Monitoring Integration
@@ -521,18 +521,18 @@ Send metrics to external monitoring systems:
 
 ```bash
 # Export to Prometheus
-pnpm dlx agentic-flow truth --format json | \
+/opt/homebrew/bin/agentic-flow truth --format json | \
   curl -X POST https://pushgateway.example.com/metrics/job/claude-flow \
   -d @-
 
 # Send to DataDog
-pnpm dlx agentic-flow verify report --format json | \
+/opt/homebrew/bin/agentic-flow verify report --format json | \
   curl -X POST "https://api.datadoghq.com/api/v1/series?api_key=${DD_API_KEY}" \
   -H "Content-Type: application/json" \
   -d @-
 
 # Custom webhook
-pnpm dlx agentic-flow truth --format json | \
+/opt/homebrew/bin/agentic-flow truth --format json | \
   curl -X POST https://metrics.example.com/api/truth \
   -H "Content-Type: application/json" \
   -d @-
@@ -544,16 +544,16 @@ Automatically verify before commits:
 
 ```bash
 # Install pre-commit hook
-pnpm dlx agentic-flow verify install-hook --pre-commit
+/opt/homebrew/bin/agentic-flow verify install-hook --pre-commit
 
 # .git/hooks/pre-commit example:
 #!/bin/bash
-pnpm dlx agentic-flow verify check --threshold 0.95 --json > /tmp/verify.json
+/opt/homebrew/bin/agentic-flow verify check --threshold 0.95 --json > /tmp/verify.json
 
 score=$(jq '.overallScore' /tmp/verify.json)
 if (( $(echo "$score < 0.95" | bc -l) )); then
   echo "❌ Verification failed with score: $score"
-  echo "Run 'pnpm dlx agentic-flow verify check --verbose' for details"
+  echo "Run '/opt/homebrew/bin/agentic-flow verify check --verbose' for details"
   exit 1
 fi
 
@@ -585,13 +585,13 @@ echo "✅ Verification passed with score: $score"
 **Low Truth Scores:**
 ```bash
 # Get detailed breakdown
-pnpm dlx agentic-flow truth --verbose --threshold 0.0
+/opt/homebrew/bin/agentic-flow truth --verbose --threshold 0.0
 
 # Check specific criteria
-pnpm dlx agentic-flow verify check --verbose
+/opt/homebrew/bin/agentic-flow verify check --verbose
 
 # View agent-specific issues
-pnpm dlx agentic-flow truth --agent <agent-name> --format json
+/opt/homebrew/bin/agentic-flow truth --agent <agent-name> --format json
 ```
 
 **Rollback Failures:**
@@ -600,7 +600,7 @@ pnpm dlx agentic-flow truth --agent <agent-name> --format json
 git status
 
 # View rollback history
-pnpm dlx agentic-flow verify rollback --history
+/opt/homebrew/bin/agentic-flow verify rollback --history
 
 # Manual rollback
 git reset --hard HEAD~1
@@ -609,10 +609,10 @@ git reset --hard HEAD~1
 **Verification Timeouts:**
 ```bash
 # Increase timeout
-pnpm dlx agentic-flow verify check --timeout 60s
+/opt/homebrew/bin/agentic-flow verify check --timeout 60s
 
 # Verify in batches
-pnpm dlx agentic-flow verify batch --batch-size 10
+/opt/homebrew/bin/agentic-flow verify batch --batch-size 10
 ```
 
 ### Exit Codes
@@ -625,10 +625,10 @@ Verification commands return standard exit codes:
 
 ### Related Commands
 
-- `pnpm dlx agentic-flow pair` - Collaborative development with verification
-- `pnpm dlx agentic-flow train` - Training with verification feedback
-- `pnpm dlx agentic-flow swarm` - Multi-agent coordination with quality checks
-- `pnpm dlx agentic-flow report` - Generate comprehensive project reports
+- `/opt/homebrew/bin/agentic-flow pair` - Collaborative development with verification
+- `/opt/homebrew/bin/agentic-flow train` - Training with verification feedback
+- `/opt/homebrew/bin/agentic-flow swarm` - Multi-agent coordination with quality checks
+- `/opt/homebrew/bin/agentic-flow report` - Generate comprehensive project reports
 
 ### Best Practices
 

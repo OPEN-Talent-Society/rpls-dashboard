@@ -4,5 +4,5 @@ Command documentation for hive-mind-consensus in category hive-mind.
 
 Usage:
 ```bash
-pnpm dlx claude-flow hive-mind hive-mind-consensus [options]
+/opt/homebrew/bin/claude-flow hive-mind hive-mind-consensus [options]
 ```

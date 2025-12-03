@@ -4,7 +4,7 @@ Real-time swarm monitoring.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow swarm monitor [options]
+/opt/homebrew/bin/claude-flow swarm monitor [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow swarm monitor [options]
 ## Examples
 ```bash
 # Start monitoring
-pnpm dlx claude-flow swarm monitor
+/opt/homebrew/bin/claude-flow swarm monitor
 
 # Custom interval
-pnpm dlx claude-flow swarm monitor --interval 5000
+/opt/homebrew/bin/claude-flow swarm monitor --interval 5000
 
 # With metrics
-pnpm dlx claude-flow swarm monitor --metrics
+/opt/homebrew/bin/claude-flow swarm monitor --metrics
 ```

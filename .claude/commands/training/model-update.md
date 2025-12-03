@@ -4,7 +4,7 @@ Update neural models with new data.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow training model-update [options]
+/opt/homebrew/bin/claude-flow training model-update [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow training model-update [options]
 ## Examples
 ```bash
 # Update all models
-pnpm dlx claude-flow training model-update
+/opt/homebrew/bin/claude-flow training model-update
 
 # Specific model
-pnpm dlx claude-flow training model-update --model agent-selector
+/opt/homebrew/bin/claude-flow training model-update --model agent-selector
 
 # Incremental with validation
-pnpm dlx claude-flow training model-update --incremental --validate
+/opt/homebrew/bin/claude-flow training model-update --incremental --validate
 ```

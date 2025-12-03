@@ -558,10 +558,10 @@ Flow Nexus swarms integrate seamlessly with Claude Flow hooks:
 
 ```bash
 # Pre-task coordination setup
-pnpm dlx agentic-flow hooks pre-task --description "Initialize swarm"
+/opt/homebrew/bin/agentic-flow hooks pre-task --description "Initialize swarm"
 
 # Post-task metrics export
-pnpm dlx agentic-flow hooks post-task --task-id "swarm-execution"
+/opt/homebrew/bin/agentic-flow hooks post-task --task-id "swarm-execution"
 ```
 
 ## Common Use Cases

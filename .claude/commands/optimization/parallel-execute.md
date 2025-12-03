@@ -4,7 +4,7 @@ Execute tasks in parallel for maximum efficiency.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow optimization parallel-execute [options]
+/opt/homebrew/bin/claude-flow optimization parallel-execute [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow optimization parallel-execute [options]
 ## Examples
 ```bash
 # Execute task list
-pnpm dlx claude-flow optimization parallel-execute --tasks tasks.json
+/opt/homebrew/bin/claude-flow optimization parallel-execute --tasks tasks.json
 
 # Limit parallelism
-pnpm dlx claude-flow optimization parallel-execute --tasks tasks.json --max-parallel 5
+/opt/homebrew/bin/claude-flow optimization parallel-execute --tasks tasks.json --max-parallel 5
 
 # Custom strategy
-pnpm dlx claude-flow optimization parallel-execute --strategy adaptive
+/opt/homebrew/bin/claude-flow optimization parallel-execute --strategy adaptive
 ```

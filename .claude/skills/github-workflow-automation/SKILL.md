@@ -73,7 +73,7 @@ gh run view <run-id> --json jobs,conclusion | \
 
 ```bash
 # Usage example
-pnpm dlx agentic-flow github gh-coordinator \
+/opt/homebrew/bin/agentic-flow github gh-coordinator \
   "Coordinate multi-repo release across 5 repositories"
 ```
 
@@ -99,7 +99,7 @@ gh pr create --title "Feature: New capability" \
 
 ```bash
 # Create coordinated issue workflow
-pnpm dlx agentic-flow github issue-tracker \
+/opt/homebrew/bin/agentic-flow github issue-tracker \
   "Manage sprint issues with automated tracking"
 ```
 
@@ -111,7 +111,7 @@ pnpm dlx agentic-flow github issue-tracker \
 
 ```bash
 # Automated release management
-pnpm dlx agentic-flow github release-manager \
+/opt/homebrew/bin/agentic-flow github release-manager \
   "Create v2.0.0 release with changelog and deployment"
 ```
 
@@ -123,7 +123,7 @@ pnpm dlx agentic-flow github release-manager \
 
 ```bash
 # Optimize repository structure
-pnpm dlx agentic-flow github repo-architect \
+/opt/homebrew/bin/agentic-flow github repo-architect \
   "Restructure monorepo with optimal organization"
 ```
 
@@ -149,7 +149,7 @@ gh pr view 123 --json files | \
 
 ```bash
 # Orchestrate CI/CD pipeline
-pnpm dlx agentic-flow github ci-orchestrator \
+/opt/homebrew/bin/agentic-flow github ci-orchestrator \
   "Setup parallel test execution with smart caching"
 ```
 
@@ -559,17 +559,17 @@ mcp__claude-flow__task_orchestrate {
 #### GitHub Hooks Integration
 ```bash
 # Pre-task: Setup GitHub context
-pnpm dlx agentic-flow hooks pre-task \
+/opt/homebrew/bin/agentic-flow hooks pre-task \
   --description "PR review workflow" \
   --context "pr-123"
 
 # During task: Track progress
-pnpm dlx agentic-flow hooks notify \
+/opt/homebrew/bin/agentic-flow hooks notify \
   --message "Completed security scan" \
   --type "github-action"
 
 # Post-task: Export results
-pnpm dlx agentic-flow hooks post-task \
+/opt/homebrew/bin/agentic-flow hooks post-task \
   --task-id "pr-review-123" \
   --export-github-summary
 ```
@@ -917,7 +917,7 @@ jobs:
 #### Example 3: Multi-Repo Synchronization
 ```bash
 # Synchronize multiple repositories
-pnpm dlx agentic-flow github sync-coordinator \
+/opt/homebrew/bin/agentic-flow github sync-coordinator \
   "Synchronize version updates across:
    - github.com/org/repo-a
    - github.com/org/repo-b
