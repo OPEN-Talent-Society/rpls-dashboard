@@ -4,7 +4,7 @@ Export workflows for sharing.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow workflow export [options]
+/opt/homebrew/bin/claude-flow workflow export [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow workflow export [options]
 ## Examples
 ```bash
 # Export workflow
-pnpm dlx claude-flow workflow export --name "deploy-api"
+/opt/homebrew/bin/claude-flow workflow export --name "deploy-api"
 
 # As YAML
-pnpm dlx claude-flow workflow export --name "test-suite" --format yaml
+/opt/homebrew/bin/claude-flow workflow export --name "test-suite" --format yaml
 
 # With history
-pnpm dlx claude-flow workflow export --name "deploy-api" --include-history
+/opt/homebrew/bin/claude-flow workflow export --name "deploy-api" --include-history
 ```

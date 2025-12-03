@@ -4,7 +4,7 @@ Learn patterns from successful operations.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow training pattern-learn [options]
+/opt/homebrew/bin/claude-flow training pattern-learn [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow training pattern-learn [options]
 ## Examples
 ```bash
 # Learn from all ops
-pnpm dlx claude-flow training pattern-learn
+/opt/homebrew/bin/claude-flow training pattern-learn
 
 # High success only
-pnpm dlx claude-flow training pattern-learn --threshold 0.9
+/opt/homebrew/bin/claude-flow training pattern-learn --threshold 0.9
 
 # Save patterns
-pnpm dlx claude-flow training pattern-learn --save optimal-patterns
+/opt/homebrew/bin/claude-flow training pattern-learn --save optimal-patterns
 ```

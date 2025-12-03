@@ -4,7 +4,7 @@ View agent performance metrics.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow agent metrics [options]
+/opt/homebrew/bin/claude-flow agent metrics [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow agent metrics [options]
 ## Examples
 ```bash
 # All agents metrics
-pnpm dlx claude-flow agent metrics
+/opt/homebrew/bin/claude-flow agent metrics
 
 # Specific agent
-pnpm dlx claude-flow agent metrics --agent-id agent-001
+/opt/homebrew/bin/claude-flow agent metrics --agent-id agent-001
 
 # Last hour
-pnpm dlx claude-flow agent metrics --period 1h
+/opt/homebrew/bin/claude-flow agent metrics --period 1h
 ```

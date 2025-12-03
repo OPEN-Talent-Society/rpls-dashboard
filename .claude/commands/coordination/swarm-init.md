@@ -4,7 +4,7 @@ Initialize a new agent swarm with specified topology.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow swarm init [options]
+/opt/homebrew/bin/claude-flow swarm init [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow swarm init [options]
 ## Examples
 ```bash
 # Initialize hierarchical swarm
-pnpm dlx claude-flow swarm init --topology hierarchical
+/opt/homebrew/bin/claude-flow swarm init --topology hierarchical
 
 # With agent limit
-pnpm dlx claude-flow swarm init --topology mesh --max-agents 8
+/opt/homebrew/bin/claude-flow swarm init --topology mesh --max-agents 8
 
 # Parallel execution
-pnpm dlx claude-flow swarm init --strategy parallel
+/opt/homebrew/bin/claude-flow swarm init --strategy parallel
 ```

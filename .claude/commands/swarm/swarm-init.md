@@ -4,7 +4,7 @@ Initialize a new swarm with specified topology.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow swarm init [options]
+/opt/homebrew/bin/claude-flow swarm init [options]
 ```
 
 ## Options
@@ -14,6 +14,6 @@ pnpm dlx claude-flow swarm init [options]
 
 ## Examples
 ```bash
-pnpm dlx claude-flow swarm init --topology mesh
-pnpm dlx claude-flow swarm init --topology hierarchical --max-agents 8
+/opt/homebrew/bin/claude-flow swarm init --topology mesh
+/opt/homebrew/bin/claude-flow swarm init --topology hierarchical --max-agents 8
 ```

@@ -4,7 +4,7 @@ Manage persistent memory storage.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow memory usage [options]
+/opt/homebrew/bin/claude-flow memory usage [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow memory usage [options]
 ## Examples
 ```bash
 # Store memory
-pnpm dlx claude-flow memory usage --action store --key "project-config" --value '{"api": "v2"}'
+/opt/homebrew/bin/claude-flow memory usage --action store --key "project-config" --value '{"api": "v2"}'
 
 # Retrieve memory
-pnpm dlx claude-flow memory usage --action retrieve --key "project-config"
+/opt/homebrew/bin/claude-flow memory usage --action retrieve --key "project-config"
 
 # List all keys
-pnpm dlx claude-flow memory usage --action list
+/opt/homebrew/bin/claude-flow memory usage --action list
 ```

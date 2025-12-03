@@ -4,7 +4,7 @@ Persist memory across sessions.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow memory persist [options]
+/opt/homebrew/bin/claude-flow memory persist [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow memory persist [options]
 ## Examples
 ```bash
 # Export memory
-pnpm dlx claude-flow memory persist --export memory-backup.json
+/opt/homebrew/bin/claude-flow memory persist --export memory-backup.json
 
 # Import memory
-pnpm dlx claude-flow memory persist --import memory-backup.json
+/opt/homebrew/bin/claude-flow memory persist --import memory-backup.json
 
 # Compressed export
-pnpm dlx claude-flow memory persist --export memory.gz --compress
+/opt/homebrew/bin/claude-flow memory persist --export memory.gz --compress
 ```

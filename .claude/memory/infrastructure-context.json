@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-02T03:50:00Z",
+  "lastUpdated": "2025-12-03T02:15:00Z",
   "infrastructure": {
     "oci": {
       "description": "Oracle Cloud Infrastructure - Production workloads",
@@ -67,7 +67,18 @@
           "purpose": "Media server"
         }
       ],
-      "sshKey": "~/.ssh/id_ed25519_homelab"
+      "sshKey": "~/.ssh/id_ed25519_homelab",
+      "services": [
+        {
+          "name": "Qdrant",
+          "host": "qdrant.harbor.fyi",
+          "ip": "192.168.50.149",
+          "port": 6333,
+          "purpose": "Vector database for semantic memory layer",
+          "version": "1.13.4",
+          "collections": ["agent_memory", "learnings", "patterns", "codebase"]
+        }
+      ]
     }
   },
   "cloudflare": {
@@ -136,7 +147,38 @@
         "status": { "target": "Uptime Kuma", "status": "active" },
         "monitor": { "target": "Dozzle", "status": "active" },
         "n8n": { "target": "n8n", "status": "active" },
-        "dash": { "target": "Dashboard", "status": "active" }
+        "dash": { "target": "Dashboard", "status": "active" },
+        "sign": {
+          "target": "OpenSign on OCI",
+          "container": "opensign-app:3000",
+          "status": "active",
+          "dnsRecordId": "db0840a058bac58f418ccd515aabc9d6",
+          "version": "v2.32.0",
+          "config": {
+            "dockerCompose": "/srv/opensign/docker-compose.yml",
+            "envFile": "/srv/opensign/.env.prod",
+            "smtp": "Brevo configured",
+            "database": "OpenSignDB (MongoDB)",
+            "apiPath": "/api/app",
+            "adminEmail": "adam@aienablement.academy"
+          },
+          "setupNotes": {
+            "critical": "Self-hosted OpenSign uses /addadmin for initial setup, NOT /signup",
+            "loginRoute": "/login only works AFTER admin setup is complete via /addadmin",
+            "browserIssues": "If login fails with 'Invalid username/password or region', try incognito mode or clear cookies",
+            "deployedAt": "2025-12-03"
+          }
+        }
+      }
+    },
+    "harbor.fyi": {
+      "dns": "Porkbun",
+      "subdomains": {
+        "qdrant": {
+          "target": "Qdrant Vector DB on Docker",
+          "port": 6333,
+          "status": "active"
+        }
       }
     }
   },

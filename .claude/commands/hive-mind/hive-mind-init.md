@@ -4,7 +4,7 @@ Initialize the Hive Mind collective intelligence system.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow hive-mind init [options]
+/opt/homebrew/bin/claude-flow hive-mind init [options]
 ```
 
 ## Options
@@ -13,6 +13,6 @@ pnpm dlx claude-flow hive-mind init [options]
 
 ## Examples
 ```bash
-pnpm dlx claude-flow hive-mind init
-pnpm dlx claude-flow hive-mind init --force
+/opt/homebrew/bin/claude-flow hive-mind init
+/opt/homebrew/bin/claude-flow hive-mind init --force
 ```

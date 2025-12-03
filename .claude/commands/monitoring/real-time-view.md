@@ -4,7 +4,7 @@ Real-time view of swarm activity.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow monitoring real-time-view [options]
+/opt/homebrew/bin/claude-flow monitoring real-time-view [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow monitoring real-time-view [options]
 ## Examples
 ```bash
 # Start real-time view
-pnpm dlx claude-flow monitoring real-time-view
+/opt/homebrew/bin/claude-flow monitoring real-time-view
 
 # Filter errors
-pnpm dlx claude-flow monitoring real-time-view --filter errors
+/opt/homebrew/bin/claude-flow monitoring real-time-view --filter errors
 
 # Highlight pattern
-pnpm dlx claude-flow monitoring real-time-view --highlight "API"
+/opt/homebrew/bin/claude-flow monitoring real-time-view --highlight "API"
 ```

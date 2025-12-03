@@ -13,7 +13,7 @@ TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 PATTERN_ID=$(echo "${PATTERN_CATEGORY}:${PATTERN_NAME}" | md5 | cut -c1-12)
 
 # Check for duplicate patterns
-EXISTING=$(pnpm dlx claude-flow memory search \
+EXISTING=$(/opt/homebrew/bin/claude-flow memory search \
   --namespace "patterns" \
   --pattern "patterns/${PATTERN_CATEGORY}/${PATTERN_ID}*" \
   --limit 1 2>/dev/null)
@@ -24,7 +24,7 @@ if [ -n "$EXISTING" ] && [ "$EXISTING" != "[]" ]; then
 fi
 
 # Store the pattern
-pnpm dlx claude-flow memory store \
+/opt/homebrew/bin/claude-flow memory store \
   --namespace "patterns" \
   --key "patterns/${PATTERN_CATEGORY}/${PATTERN_ID}" \
   --value "{

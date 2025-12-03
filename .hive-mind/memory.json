@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "type": "fallback",
+    "initialized": "2025-12-03T21:05:54.111Z",
+    "version": "2.0.0",
+    "warning": "Using JSON fallback - SQLite bindings not available"
+  },
+  "swarms": [],
+  "agents": [],
+  "tasks": [],
+  "collective_memory": [],
+  "consensus_votes": [],
+  "messages": []
+}

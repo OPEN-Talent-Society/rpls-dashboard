@@ -22,7 +22,7 @@ fi
 
 echo ""
 echo "📦 GitHub swarm commands available:"
-echo "  - pnpm dlx claude-flow github swarm"
-echo "  - pnpm dlx claude-flow repo analyze"
-echo "  - pnpm dlx claude-flow pr enhance"
-echo "  - pnpm dlx claude-flow issue triage"
+echo "  - /opt/homebrew/bin/claude-flow github swarm"
+echo "  - /opt/homebrew/bin/claude-flow repo analyze"
+echo "  - /opt/homebrew/bin/claude-flow pr enhance"
+echo "  - /opt/homebrew/bin/claude-flow issue triage"

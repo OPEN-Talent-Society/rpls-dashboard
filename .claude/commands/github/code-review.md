@@ -4,7 +4,7 @@ Automated code review with swarm intelligence.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow github code-review [options]
+/opt/homebrew/bin/claude-flow github code-review [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow github code-review [options]
 ## Examples
 ```bash
 # Review PR
-pnpm dlx claude-flow github code-review --pr-number 456
+/opt/homebrew/bin/claude-flow github code-review --pr-number 456
 
 # Security focus
-pnpm dlx claude-flow github code-review --pr-number 456 --focus security
+/opt/homebrew/bin/claude-flow github code-review --pr-number 456 --focus security
 
 # With fix suggestions
-pnpm dlx claude-flow github code-review --pr-number 456 --suggest-fixes
+/opt/homebrew/bin/claude-flow github code-review --pr-number 456 --suggest-fixes
 ```

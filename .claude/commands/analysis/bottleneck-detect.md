@@ -4,7 +4,7 @@ Automatically detect performance bottlenecks in your swarm operations.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow analysis bottleneck-detect [options]
+/opt/homebrew/bin/claude-flow analysis bottleneck-detect [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow analysis bottleneck-detect [options]
 ## Examples
 ```bash
 # Detect bottlenecks in current swarm
-pnpm dlx claude-flow analysis bottleneck-detect
+/opt/homebrew/bin/claude-flow analysis bottleneck-detect
 
 # Set custom threshold
-pnpm dlx claude-flow analysis bottleneck-detect --threshold 500
+/opt/homebrew/bin/claude-flow analysis bottleneck-detect --threshold 500
 
 # Export results
-pnpm dlx claude-flow analysis bottleneck-detect --export bottlenecks.json
+/opt/homebrew/bin/claude-flow analysis bottleneck-detect --export bottlenecks.json
 ```

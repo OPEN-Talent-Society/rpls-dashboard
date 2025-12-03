@@ -12,7 +12,7 @@ TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 ERROR_ID=$(echo "${ERROR_CATEGORY}:${ERROR_MESSAGE}" | md5 | cut -c1-12)
 
 # Store in AgentDB for cross-session memory
-pnpm dlx claude-flow memory store \
+/opt/homebrew/bin/claude-flow memory store \
   --namespace "errors" \
   --key "errors/${ERROR_CATEGORY}/${ERROR_ID}" \
   --value "{

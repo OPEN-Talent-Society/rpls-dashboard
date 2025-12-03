@@ -4,7 +4,7 @@ Create reusable workflow templates.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow workflow create [options]
+/opt/homebrew/bin/claude-flow workflow create [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow workflow create [options]
 ## Examples
 ```bash
 # Create workflow
-pnpm dlx claude-flow workflow create --name "deploy-api"
+/opt/homebrew/bin/claude-flow workflow create --name "deploy-api"
 
 # From history
-pnpm dlx claude-flow workflow create --name "test-suite" --from-history
+/opt/homebrew/bin/claude-flow workflow create --name "test-suite" --from-history
 
 # Interactive mode
-pnpm dlx claude-flow workflow create --interactive
+/opt/homebrew/bin/claude-flow workflow create --interactive
 ```

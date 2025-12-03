@@ -4,7 +4,7 @@ Main swarm orchestration command for Claude Flow.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow swarm <objective> [options]
+/opt/homebrew/bin/claude-flow swarm <objective> [options]
 ```
 
 ## Options
@@ -17,11 +17,11 @@ pnpm dlx claude-flow swarm <objective> [options]
 ## Examples
 ```bash
 # Basic swarm
-pnpm dlx claude-flow swarm "Build REST API"
+/opt/homebrew/bin/claude-flow swarm "Build REST API"
 
 # With strategy
-pnpm dlx claude-flow swarm "Research AI patterns" --strategy research
+/opt/homebrew/bin/claude-flow swarm "Research AI patterns" --strategy research
 
 # Open in Claude Code
-pnpm dlx claude-flow swarm "Build API" --claude
+/opt/homebrew/bin/claude-flow swarm "Build API" --claude
 ```

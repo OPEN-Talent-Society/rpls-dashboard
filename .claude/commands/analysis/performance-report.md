@@ -4,7 +4,7 @@ Generate comprehensive performance reports for swarm operations.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow analysis performance-report [options]
+/opt/homebrew/bin/claude-flow analysis performance-report [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow analysis performance-report [options]
 ## Examples
 ```bash
 # Generate HTML report
-pnpm dlx claude-flow analysis performance-report --format html
+/opt/homebrew/bin/claude-flow analysis performance-report --format html
 
 # Compare swarms
-pnpm dlx claude-flow analysis performance-report --compare swarm-123
+/opt/homebrew/bin/claude-flow analysis performance-report --compare swarm-123
 
 # Full metrics report
-pnpm dlx claude-flow analysis performance-report --include-metrics --format markdown
+/opt/homebrew/bin/claude-flow analysis performance-report --include-metrics --format markdown
 ```

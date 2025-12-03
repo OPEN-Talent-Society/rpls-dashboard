@@ -4,7 +4,7 @@ Hook executed before file edits.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow hook pre-edit [options]
+/opt/homebrew/bin/claude-flow hook pre-edit [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow hook pre-edit [options]
 ## Examples
 ```bash
 # Pre-edit hook
-pnpm dlx claude-flow hook pre-edit --file src/api.js
+/opt/homebrew/bin/claude-flow hook pre-edit --file src/api.js
 
 # With validation
-pnpm dlx claude-flow hook pre-edit --file src/api.js --validate-syntax
+/opt/homebrew/bin/claude-flow hook pre-edit --file src/api.js --validate-syntax
 
 # Create backup
-pnpm dlx claude-flow hook pre-edit --file src/api.js --backup
+/opt/homebrew/bin/claude-flow hook pre-edit --file src/api.js --backup
 ```

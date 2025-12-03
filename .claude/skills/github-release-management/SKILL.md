@@ -36,7 +36,7 @@ gh release create v2.0.0 \
   --title "Release v2.0.0"
 
 # Orchestrate with swarm
-pnpm dlx agentic-flow github release-create \
+/opt/homebrew/bin/agentic-flow github release-create \
   --version "2.0.0" \
   --build-artifacts \
   --deploy-targets "npm,docker,github"
@@ -45,10 +45,10 @@ pnpm dlx agentic-flow github release-create \
 ### Full Automated Release
 ```bash
 # Initialize release swarm
-pnpm dlx agentic-flow swarm init --topology hierarchical
+/opt/homebrew/bin/agentic-flow swarm init --topology hierarchical
 
 # Execute complete release pipeline
-pnpm dlx agentic-flow sparc pipeline "Release v2.0.0 with full validation"
+/opt/homebrew/bin/agentic-flow sparc pipeline "Release v2.0.0 with full validation"
 ```
 
 ---
@@ -229,7 +229,7 @@ COMMITS=$(gh api repos/:owner/:repo/compare/v1.0.0...HEAD \
   --jq '.commits[].commit.message')
 
 # Generate categorized changelog
-pnpm dlx agentic-flow github changelog \
+/opt/homebrew/bin/agentic-flow github changelog \
   --prs "$PRS" \
   --commits "$COMMITS" \
   --from v1.0.0 \
@@ -248,7 +248,7 @@ pnpm dlx agentic-flow github changelog \
 #### Version Agent
 ```bash
 # Intelligent version suggestion
-pnpm dlx agentic-flow github version-suggest \
+/opt/homebrew/bin/agentic-flow github version-suggest \
   --current v1.2.3 \
   --analyze-commits \
   --check-compatibility \
@@ -265,7 +265,7 @@ pnpm dlx agentic-flow github version-suggest \
 #### Build Agent
 ```bash
 # Multi-platform build coordination
-pnpm dlx agentic-flow github release-build \
+/opt/homebrew/bin/agentic-flow github release-build \
   --platforms "linux,macos,windows" \
   --architectures "x64,arm64" \
   --parallel \
@@ -282,7 +282,7 @@ pnpm dlx agentic-flow github release-build \
 #### Test Agent
 ```bash
 # Comprehensive pre-release testing
-pnpm dlx agentic-flow github release-test \
+/opt/homebrew/bin/agentic-flow github release-test \
   --suites "unit,integration,e2e,performance" \
   --environments "node:16,node:18,node:20" \
   --fail-fast false \
@@ -292,7 +292,7 @@ pnpm dlx agentic-flow github release-test \
 #### Deploy Agent
 ```bash
 # Multi-target deployment orchestration
-pnpm dlx agentic-flow github release-deploy \
+/opt/homebrew/bin/agentic-flow github release-deploy \
   --targets "npm,docker,github,s3" \
   --staged-rollout \
   --monitor-metrics \
@@ -369,7 +369,7 @@ deployment:
 #### Execute Staged Deployment
 ```bash
 # Deploy with progressive rollout
-pnpm dlx agentic-flow github release-deploy \
+/opt/homebrew/bin/agentic-flow github release-deploy \
   --version v2.0.0 \
   --strategy progressive \
   --config .github/release-deployment.yml \
@@ -382,7 +382,7 @@ pnpm dlx agentic-flow github release-deploy \
 #### Coordinated Multi-Repo Release
 ```bash
 # Synchronize releases across repositories
-pnpm dlx agentic-flow github multi-release \
+/opt/homebrew/bin/agentic-flow github multi-release \
   --repos "frontend:v2.0.0,backend:v2.1.0,cli:v1.5.0" \
   --ensure-compatibility \
   --atomic-release \
@@ -416,7 +416,7 @@ pnpm dlx agentic-flow github multi-release \
 #### Emergency Hotfix Workflow
 ```bash
 # Fast-track critical bug fix
-pnpm dlx agentic-flow github emergency-release \
+/opt/homebrew/bin/agentic-flow github emergency-release \
   --issue 789 \
   --severity critical \
   --target-version v1.2.4 \
@@ -578,7 +578,7 @@ release:
 #### Comprehensive Validation Suite
 ```bash
 # Pre-release validation with all checks
-pnpm dlx agentic-flow github release-validate \
+/opt/homebrew/bin/agentic-flow github release-validate \
   --checks "
     version-conflicts,
     dependency-compatibility,
@@ -597,7 +597,7 @@ pnpm dlx agentic-flow github release-validate \
 #### Backward Compatibility Testing
 ```bash
 # Test against previous versions
-pnpm dlx agentic-flow github compat-test \
+/opt/homebrew/bin/agentic-flow github compat-test \
   --previous-versions "v1.0,v1.1,v1.2" \
   --api-contracts \
   --data-migrations \
@@ -608,7 +608,7 @@ pnpm dlx agentic-flow github compat-test \
 #### Performance Regression Detection
 ```bash
 # Benchmark against baseline
-pnpm dlx agentic-flow github performance-test \
+/opt/homebrew/bin/agentic-flow github performance-test \
   --baseline v1.9.0 \
   --candidate v2.0.0 \
   --metrics "throughput,latency,memory,cpu" \
@@ -621,7 +621,7 @@ pnpm dlx agentic-flow github performance-test \
 #### Real-Time Release Monitoring
 ```bash
 # Monitor release health post-deployment
-pnpm dlx agentic-flow github release-monitor \
+/opt/homebrew/bin/agentic-flow github release-monitor \
   --version v2.0.0 \
   --metrics "error-rate,latency,throughput,adoption" \
   --alert-thresholds \
@@ -632,7 +632,7 @@ pnpm dlx agentic-flow github release-monitor \
 #### Release Analytics & Insights
 ```bash
 # Analyze release performance and adoption
-pnpm dlx agentic-flow github release-analytics \
+/opt/homebrew/bin/agentic-flow github release-analytics \
   --version v2.0.0 \
   --compare-with v1.9.0 \
   --metrics "adoption,performance,stability,feedback" \
@@ -643,7 +643,7 @@ pnpm dlx agentic-flow github release-analytics \
 #### Automated Rollback Configuration
 ```bash
 # Configure intelligent auto-rollback
-pnpm dlx agentic-flow github rollback-config \
+/opt/homebrew/bin/agentic-flow github rollback-config \
   --triggers '{
     "error-rate": ">5%",
     "latency-p99": ">1000ms",
@@ -660,7 +660,7 @@ pnpm dlx agentic-flow github rollback-config \
 #### Security Scanning
 ```bash
 # Comprehensive security validation
-pnpm dlx agentic-flow github release-security \
+/opt/homebrew/bin/agentic-flow github release-security \
   --scan-dependencies \
   --check-secrets \
   --audit-permissions \
@@ -672,7 +672,7 @@ pnpm dlx agentic-flow github release-security \
 #### Compliance Validation
 ```bash
 # Ensure regulatory compliance
-pnpm dlx agentic-flow github release-compliance \
+/opt/homebrew/bin/agentic-flow github release-compliance \
   --standards "SOC2,GDPR,HIPAA" \
   --license-audit \
   --data-governance \
@@ -730,7 +730,7 @@ jobs:
             --jq '.commits[].commit.message')
 
           # Initialize swarm coordination
-          pnpm dlx agentic-flow swarm init --topology hierarchical
+          /opt/homebrew/bin/agentic-flow swarm init --topology hierarchical
 
           # Store release context
           echo "$PRS" > /tmp/release-prs.json
@@ -739,7 +739,7 @@ jobs:
       - name: Generate Release Changelog
         run: |
           # Generate intelligent changelog
-          CHANGELOG=$(pnpm dlx agentic-flow github changelog \
+          CHANGELOG=$(/opt/homebrew/bin/agentic-flow github changelog \
             --prs "$(cat /tmp/release-prs.json)" \
             --commits "$(cat /tmp/release-commits.txt)" \
             --from $PREV_TAG \
@@ -762,7 +762,7 @@ jobs:
           ppnpm run build
 
           # Build platform-specific binaries
-          pnpm dlx agentic-flow github release-build \
+          /opt/homebrew/bin/agentic-flow github release-build \
             --platforms "linux,macos,windows" \
             --architectures "x64,arm64" \
             --parallel
@@ -772,7 +772,7 @@ jobs:
           # Run security validation
           pnpm audit --audit-level=moderate
 
-          pnpm dlx agentic-flow github release-security \
+          /opt/homebrew/bin/agentic-flow github release-security \
             --scan-dependencies \
             --check-secrets \
             --sign-artifacts
@@ -805,7 +805,7 @@ jobs:
           ppnpm run test:smoke
 
           # Validate deployment
-          pnpm dlx agentic-flow github release-validate \
+          /opt/homebrew/bin/agentic-flow github release-validate \
             --version ${{ github.ref_name }} \
             --smoke-tests \
             --health-checks
@@ -828,7 +828,7 @@ jobs:
       - name: Monitor Release
         run: |
           # Start release monitoring
-          pnpm dlx agentic-flow github release-monitor \
+          /opt/homebrew/bin/agentic-flow github release-monitor \
             --version ${{ github.ref_name }} \
             --duration 1h \
             --alert-on-errors &
@@ -863,7 +863,7 @@ jobs:
 
       - name: Emergency Release
         run: |
-          pnpm dlx agentic-flow github emergency-release \
+          /opt/homebrew/bin/agentic-flow github emergency-release \
             --issue ${{ github.event.issue.number }} \
             --severity critical \
             --fast-track \
@@ -941,7 +941,7 @@ jobs:
 ### Issue: Failed Release Build
 ```bash
 # Debug build failures
-pnpm dlx agentic-flow diagnostic-run \
+/opt/homebrew/bin/agentic-flow diagnostic-run \
   --component build \
   --verbose
 
@@ -959,7 +959,7 @@ ppnpm run test -- --verbose --coverage
 ppnpm run test:ci
 
 # Compare local vs CI environment
-pnpm dlx agentic-flow github compat-test \
+/opt/homebrew/bin/agentic-flow github compat-test \
   --environments "local,ci" \
   --compare
 ```
@@ -967,14 +967,14 @@ pnpm dlx agentic-flow github compat-test \
 ### Issue: Deployment Rollback Needed
 ```bash
 # Immediate rollback to previous version
-pnpm dlx agentic-flow github rollback \
+/opt/homebrew/bin/agentic-flow github rollback \
   --to-version v1.9.9 \
   --reason "Critical bug in v2.0.0" \
   --preserve-data \
   --notify-users
 
 # Investigate rollback cause
-pnpm dlx agentic-flow github release-analytics \
+/opt/homebrew/bin/agentic-flow github release-analytics \
   --version v2.0.0 \
   --identify-issues
 ```
@@ -982,12 +982,12 @@ pnpm dlx agentic-flow github release-analytics \
 ### Issue: Version Conflicts
 ```bash
 # Check and resolve version conflicts
-pnpm dlx agentic-flow github release-validate \
+/opt/homebrew/bin/agentic-flow github release-validate \
   --checks version-conflicts \
   --auto-resolve
 
 # Align multi-package versions
-pnpm dlx agentic-flow github version-sync \
+/opt/homebrew/bin/agentic-flow github version-sync \
   --packages "package-a,package-b" \
   --strategy semantic
 ```

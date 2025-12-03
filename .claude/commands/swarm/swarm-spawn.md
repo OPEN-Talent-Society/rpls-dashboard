@@ -4,7 +4,7 @@ Spawn agents in the swarm.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow swarm spawn [options]
+/opt/homebrew/bin/claude-flow swarm spawn [options]
 ```
 
 ## Options
@@ -14,6 +14,6 @@ pnpm dlx claude-flow swarm spawn [options]
 
 ## Examples
 ```bash
-pnpm dlx claude-flow swarm spawn --type coder --count 3
-pnpm dlx claude-flow swarm spawn --type researcher --capabilities "web-search,analysis"
+/opt/homebrew/bin/claude-flow swarm spawn --type coder --count 3
+/opt/homebrew/bin/claude-flow swarm spawn --type researcher --capabilities "web-search,analysis"
 ```

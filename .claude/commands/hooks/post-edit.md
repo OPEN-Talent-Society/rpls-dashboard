@@ -4,7 +4,7 @@ Hook executed after file edits.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow hook post-edit [options]
+/opt/homebrew/bin/claude-flow hook post-edit [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow hook post-edit [options]
 ## Examples
 ```bash
 # Post-edit hook
-pnpm dlx claude-flow hook post-edit --file src/api.js
+/opt/homebrew/bin/claude-flow hook post-edit --file src/api.js
 
 # Store in memory
-pnpm dlx claude-flow hook post-edit --file src/api.js --memory-key "api-changes"
+/opt/homebrew/bin/claude-flow hook post-edit --file src/api.js --memory-key "api-changes"
 
 # With formatting
-pnpm dlx claude-flow hook post-edit --file src/api.js --format
+/opt/homebrew/bin/claude-flow hook post-edit --file src/api.js --format
 ```

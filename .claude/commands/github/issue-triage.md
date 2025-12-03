@@ -4,7 +4,7 @@ Intelligent issue classification and triage.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow github issue-triage [options]
+/opt/homebrew/bin/claude-flow github issue-triage [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow github issue-triage [options]
 ## Examples
 ```bash
 # Triage issues
-pnpm dlx claude-flow github issue-triage --repository myorg/myrepo
+/opt/homebrew/bin/claude-flow github issue-triage --repository myorg/myrepo
 
 # With auto-labeling
-pnpm dlx claude-flow github issue-triage --repository myorg/myrepo --auto-label
+/opt/homebrew/bin/claude-flow github issue-triage --repository myorg/myrepo --auto-label
 
 # Full automation
-pnpm dlx claude-flow github issue-triage --repository myorg/myrepo --auto-label --assign
+/opt/homebrew/bin/claude-flow github issue-triage --repository myorg/myrepo --auto-label --assign
 ```

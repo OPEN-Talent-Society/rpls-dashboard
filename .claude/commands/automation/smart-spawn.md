@@ -4,7 +4,7 @@ Intelligently spawn agents based on workload analysis.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow automation smart-spawn [options]
+/opt/homebrew/bin/claude-flow automation smart-spawn [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow automation smart-spawn [options]
 ## Examples
 ```bash
 # Smart spawn with analysis
-pnpm dlx claude-flow automation smart-spawn --analyze
+/opt/homebrew/bin/claude-flow automation smart-spawn --analyze
 
 # Set spawn threshold
-pnpm dlx claude-flow automation smart-spawn --threshold 5
+/opt/homebrew/bin/claude-flow automation smart-spawn --threshold 5
 
 # Force topology
-pnpm dlx claude-flow automation smart-spawn --topology hierarchical
+/opt/homebrew/bin/claude-flow automation smart-spawn --topology hierarchical
 ```

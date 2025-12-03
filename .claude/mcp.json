@@ -2,8 +2,8 @@
   "mcpServers": {
     "claude-flow": {
       "type": "stdio",
-      "command": "pnpm",
-      "args": ["dlx", "agentic-flow", "mcp", "start"]
+      "command": "/opt/homebrew/bin/claude-flow",
+      "args": ["mcp", "start"]
     },
     "supabase": {
       "type": "stdio",
@@ -41,6 +41,16 @@
     "cortex": {
       "type": "stdio",
       "command": "/Users/adamkovacs/Documents/codebuild/codex-sandbox/scripts/mcp/cortex-mcp.sh"
+    },
+    "qdrant": {
+      "type": "stdio",
+      "command": "uvx",
+      "args": ["mcp-server-qdrant"],
+      "env": {
+        "QDRANT_URL": "http://qdrant.harbor.fyi",
+        "COLLECTION_NAME": "agent_memory",
+        "EMBEDDING_MODEL": "sentence-transformers/all-MiniLM-L6-v2"
+      }
     }
   }
 }

@@ -4,5 +4,5 @@ Command documentation for hive-mind-status in category hive-mind.
 
 Usage:
 ```bash
-pnpm dlx claude-flow hive-mind hive-mind-status [options]
+/opt/homebrew/bin/claude-flow hive-mind hive-mind-status [options]
 ```

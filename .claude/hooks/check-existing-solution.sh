@@ -8,7 +8,7 @@ PROBLEM_CATEGORY="${2:-general}"
 echo "Checking for existing solutions..."
 
 # Search patterns namespace for similar problems
-PATTERNS=$(pnpm dlx claude-flow memory search \
+PATTERNS=$(/opt/homebrew/bin/claude-flow memory search \
   --namespace "patterns" \
   --pattern "patterns/${PROBLEM_CATEGORY}/*" \
   --limit 5 2>/dev/null)
@@ -21,7 +21,7 @@ if [ -n "$PATTERNS" ] && [ "$PATTERNS" != "[]" ]; then
 fi
 
 # Search for relevant error resolutions
-ERRORS=$(pnpm dlx claude-flow memory search \
+ERRORS=$(/opt/homebrew/bin/claude-flow memory search \
   --namespace "errors" \
   --pattern "errors/*" \
   --limit 3 2>/dev/null)
@@ -34,7 +34,7 @@ if [ -n "$ERRORS" ] && [ "$ERRORS" != "[]" ]; then
 fi
 
 # Search for related learnings
-LEARNINGS=$(pnpm dlx claude-flow memory search \
+LEARNINGS=$(/opt/homebrew/bin/claude-flow memory search \
   --namespace "learnings" \
   --pattern "learnings/*" \
   --limit 3 2>/dev/null)

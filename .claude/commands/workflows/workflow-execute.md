@@ -4,7 +4,7 @@ Execute saved workflows.
 
 ## Usage
 ```bash
-pnpm dlx claude-flow workflow execute [options]
+/opt/homebrew/bin/claude-flow workflow execute [options]
 ```
 
 ## Options
@@ -15,11 +15,11 @@ pnpm dlx claude-flow workflow execute [options]
 ## Examples
 ```bash
 # Execute workflow
-pnpm dlx claude-flow workflow execute --name "deploy-api"
+/opt/homebrew/bin/claude-flow workflow execute --name "deploy-api"
 
 # With parameters
-pnpm dlx claude-flow workflow execute --name "test-suite" --params '{"env": "staging"}'
+/opt/homebrew/bin/claude-flow workflow execute --name "test-suite" --params '{"env": "staging"}'
 
 # Dry run
-pnpm dlx claude-flow workflow execute --name "deploy-api" --dry-run
+/opt/homebrew/bin/claude-flow workflow execute --name "deploy-api" --dry-run
 ```
