@@ -10,11 +10,11 @@ source "$PROJECT_DIR/.env" 2>/dev/null || true
 
 # Cortex config
 SIYUAN_BASE_URL="${CORTEX_URL:-https://cortex.aienablement.academy}"
-SIYUAN_API_TOKEN="${CORTEX_TOKEN:-0fkvtzw0jrat2oht}"
+SIYUAN_API_TOKEN="${CORTEX_TOKEN}"
 
 # Cloudflare Zero Trust (required for Cortex access)
-CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID:-6c0fe301311410aea8ca6e236a176938.access}"
-CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET:-714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 
 # PARA Notebooks (Cortex)
 NOTEBOOK_PROJECTS="20251103053911-8ex6uns"     # 01 Projects
@@ -35,6 +35,28 @@ if [ ! -f "$AGENTDB" ]; then
 fi
 
 TOTAL_SYNCED=0
+TOTAL_SKIPPED=0
+
+# Function to check if document already exists in Cortex
+# Returns 0 if exists (skip), 1 if not exists (create)
+doc_exists_in_cortex() {
+    local SEARCH_TITLE="$1"
+    local SEARCH_SOURCE="$2"
+
+    # Search for existing document with same title and source attribute
+    local SEARCH_RESULT=$(curl -s -X POST "${SIYUAN_BASE_URL}/api/search/fullTextSearchBlock" \
+        -H "Authorization: Token ${SIYUAN_API_TOKEN}" \
+        -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
+        -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
+        -H "Content-Type: application/json" \
+        -d "$(jq -n --arg q "$SEARCH_TITLE" '{query: $q}')" 2>/dev/null)
+
+    # Check if we found a match with custom-source=agentdb attribute
+    if echo "$SEARCH_RESULT" | jq -e '.data.blocks[] | select(.ial."custom-source" == "'"$SEARCH_SOURCE"'")' >/dev/null 2>&1; then
+        return 0  # Exists, skip
+    fi
+    return 1  # Doesn't exist, create
+}
 
 # 1. Sync successful episodes as learnings to Resources
 echo ""
@@ -50,6 +72,13 @@ if [ -n "$EPISODES" ]; then
         # Create safe document path
         SAFE_TASK=$(echo "$TASK" | sed 's/[^a-zA-Z0-9 ]//g' | head -c 50 | tr ' ' '-')
         DOC_PATH="/AgentDB-Learnings/${SAFE_TASK}-$(date +%Y%m%d)"
+
+        # CHECK FOR DUPLICATES: Skip if already synced
+        if doc_exists_in_cortex "${SAFE_TASK}" "agentdb"; then
+            echo "  ⏭️  Skipped (exists): ${TASK:0:40}..."
+            TOTAL_SKIPPED=$((TOTAL_SKIPPED + 1))
+            continue
+        fi
 
         # Build markdown with proper SiYuan features
         MARKDOWN="# Learning: ${TASK:0:80}
@@ -124,6 +153,13 @@ if [ -n "$PATTERNS" ]; then
 
         SAFE_TASK=$(echo "$TASK" | sed 's/[^a-zA-Z0-9 ]//g' | head -c 50 | tr ' ' '-')
         DOC_PATH="/AgentDB-Patterns/${SAFE_TASK}"
+
+        # CHECK FOR DUPLICATES: Skip if pattern already synced
+        if doc_exists_in_cortex "Pattern: ${SAFE_TASK}" "agentdb"; then
+            echo "  ⏭️  Skipped pattern (exists): ${TASK:0:40}..."
+            TOTAL_SKIPPED=$((TOTAL_SKIPPED + 1))
+            continue
+        fi
 
         MARKDOWN="# Pattern: ${TASK:0:80}
 
@@ -242,4 +278,6 @@ curl -s -X POST "${SIYUAN_BASE_URL}/api/filetree/createDocWithMd" \
         '{notebook: $nb, path: $path, markdown: $md}')" 2>/dev/null
 
 echo ""
-echo "✅ AgentDB → Cortex sync complete: $TOTAL_SYNCED items synced"
+echo "✅ AgentDB → Cortex sync complete"
+echo "   📝 New items synced: $TOTAL_SYNCED"
+echo "   ⏭️  Duplicates skipped: $TOTAL_SKIPPED"

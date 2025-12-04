@@ -37,24 +37,27 @@
       "Bash(yarn:*)"
     ]
   },
-  "enableAllProjectMcpServers": true,
+  "enableAllProjectMcpServers": false,
   "enabledMcpjsonServers": [
     "claude-flow",
-    "claude-flow-alpha",
-    "ruv-swarm",
-    "flow-nexus",
-    "supabase",
-    "context7",
-    "digitalocean-mcp",
-    "playwright",
-    "zai-mcp-server",
-    "zai-search",
+    "context7"
+  ],
+  "disabledMcpjsonServers": [
     "nocodb-base-ops",
     "cortex",
-    "codex-subagents",
+    "playwright",
+    "brevo-mcp",
+    "zai-mcp-server",
+    "zai-search",
+    "supabase",
+    "digitalocean-mcp",
     "svelte",
     "vercel",
-    "qdrant"
+    "codex-subagents",
+    "ruv-swarm",
+    "flow-nexus",
+    "qdrant",
+    "claude-flow-alpha"
   ],
   "hooks": {
     "PreToolUse": [

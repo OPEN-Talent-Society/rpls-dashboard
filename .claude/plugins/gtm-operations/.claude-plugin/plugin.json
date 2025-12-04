@@ -1,0 +1,10 @@
+{
+  "name": "gtm-operations",
+  "version": "1.0.0",
+  "description": "Go-to-market automation toolkit for marketing, sales, and revenue operations",
+  "author": {
+    "name": "AI Enablement Ops",
+    "email": "ops@aienablement.academy"
+  },
+  "license": "MIT"
+}

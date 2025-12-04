@@ -10,15 +10,15 @@ source "$PROJECT_DIR/.env" 2>/dev/null || true
 
 # Supabase config
 SUPABASE_URL="${PUBLIC_SUPABASE_URL:-https://zxcrbcmdxpqprpxhsntc.supabase.co}"
-SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY:-sb_secret_g87UniWlZT7GYIQsrWEYYw_VJs7i0Ei}"
+SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY}"
 
 # Cortex config
 SIYUAN_BASE_URL="${CORTEX_URL:-https://cortex.aienablement.academy}"
-SIYUAN_API_TOKEN="${CORTEX_TOKEN:-0fkvtzw0jrat2oht}"
+SIYUAN_API_TOKEN="${CORTEX_TOKEN}"
 
 # Cloudflare Zero Trust (required for Cortex access)
-CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID:-6c0fe301311410aea8ca6e236a176938.access}"
-CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET:-714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 NOTEBOOK_RESOURCES="20251201183343-ujsixib"  # 03 Resources
 
 # Swarm Memory path
@@ -41,9 +41,10 @@ echo "📊 Syncing successful trajectories..."
 HAS_TRAJECTORIES=$(sqlite3 "$SWARM_DB" "SELECT name FROM sqlite_master WHERE type='table' AND name='task_trajectories';" 2>/dev/null)
 
 if [ -n "$HAS_TRAJECTORIES" ]; then
-    TRAJECTORIES=$(sqlite3 "$SWARM_DB" "SELECT agent_id, query, judge_label, created_at FROM task_trajectories WHERE judge_label = 'correct' OR judge_label = 'success' ORDER BY created_at DESC LIMIT 20;" 2>/dev/null)
+    TRAJ_COUNT=$(sqlite3 "$SWARM_DB" "SELECT COUNT(*) FROM task_trajectories WHERE judge_label = 'correct' OR judge_label = 'success';" 2>/dev/null || echo "0")
 
-    if [ -n "$TRAJECTORIES" ]; then
+    if [ "$TRAJ_COUNT" -gt 0 ]; then
+        TRAJECTORIES=$(sqlite3 "$SWARM_DB" "SELECT agent_id, query, judge_label, created_at FROM task_trajectories WHERE judge_label = 'correct' OR judge_label = 'success' ORDER BY created_at DESC LIMIT 20;" 2>/dev/null)
         echo "$TRAJECTORIES" | while IFS='|' read -r AGENT_ID QUERY LABEL CREATED_AT; do
             [ -z "$QUERY" ] && continue
 
@@ -72,47 +73,97 @@ if [ -n "$HAS_TRAJECTORIES" ]; then
                 echo "  ✅ Trajectory: ${QUERY:0:40}..."
             fi
         done
+    else
+        echo "  ℹ️  No successful trajectories found"
     fi
+else
+    echo "  ℹ️  task_trajectories table not found"
 fi
 
-# 2. Sync coordination patterns
+# 2. Sync ReasoningBank patterns to AgentDB (fast bulk insert)
 echo ""
-echo "🔗 Syncing coordination patterns..."
+echo "🔗 Syncing ReasoningBank patterns to AgentDB..."
 
 HAS_PATTERNS=$(sqlite3 "$SWARM_DB" "SELECT name FROM sqlite_master WHERE type='table' AND name='patterns';" 2>/dev/null)
+AGENTDB="$PROJECT_DIR/agentdb.db"
 
 if [ -n "$HAS_PATTERNS" ]; then
-    PATTERNS=$(sqlite3 "$SWARM_DB" "SELECT pattern_name, pattern_data, success_rate FROM patterns WHERE success_rate >= 0.7 ORDER BY success_rate DESC LIMIT 10;" 2>/dev/null)
+    PATTERN_COUNT=$(sqlite3 "$SWARM_DB" "SELECT COUNT(*) FROM patterns;" 2>/dev/null || echo "0")
+    echo "  📊 Found $PATTERN_COUNT patterns in ReasoningBank"
 
-    if [ -n "$PATTERNS" ]; then
-        echo "$PATTERNS" | while IFS='|' read -r NAME DATA SUCCESS_RATE; do
-            [ -z "$NAME" ] && continue
+    if [ "$PATTERN_COUNT" -gt 0 ] && [ -f "$AGENTDB" ]; then
+        # FAST APPROACH: Use SQLite's ATTACH to copy patterns directly
+        # This avoids slow shell loops and API calls
 
-            LEARNING=$(jq -n \
-                --arg topic "Swarm Pattern: $NAME" \
-                --arg content "$DATA" \
-                --arg category "swarm-coordination" \
-                --arg rate "$SUCCESS_RATE" \
-                '{
-                    learning_id: ("swarm-pattern-" + ($topic | gsub(" "; "-") | ascii_downcase)),
-                    topic: $topic,
-                    content: $content,
-                    category: $category,
-                    context: ("Success rate: " + $rate),
-                    agent_id: "swarm-sync",
-                    tags: ["swarm", "pattern", "coordination"]
-                }')
+        # Count before
+        BEFORE=$(sqlite3 "$AGENTDB" "SELECT COUNT(*) FROM episodes WHERE session_id='reasoningbank-sync';" 2>/dev/null || echo "0")
 
-            curl -s -X POST "${SUPABASE_URL}/rest/v1/learnings" \
-                -H "apikey: ${SUPABASE_KEY}" \
-                -H "Authorization: Bearer ${SUPABASE_KEY}" \
-                -H "Content-Type: application/json" \
-                -H "Prefer: resolution=merge-duplicates" \
-                -d "$LEARNING" 2>/dev/null
+        # Use ATTACH to efficiently copy data between databases
+        sqlite3 "$AGENTDB" "
+            ATTACH '${SWARM_DB}' AS swarm;
 
-            TOTAL_SYNCED=$((TOTAL_SYNCED + 1))
-        done
+            -- Insert patterns from ReasoningBank into AgentDB episodes
+            INSERT OR REPLACE INTO episodes (task, reward, success, critique, session_id)
+            SELECT
+                COALESCE(json_extract(pattern_data, '$.title'), 'Pattern-' || id) as task,
+                confidence as reward,
+                1 as success,
+                substr(COALESCE(json_extract(pattern_data, '$.content'), pattern_data), 1, 2000) as critique,
+                'reasoningbank-sync' as session_id
+            FROM swarm.patterns;
+
+            DETACH swarm;
+        " 2>/dev/null
+
+        # Count after
+        AFTER=$(sqlite3 "$AGENTDB" "SELECT COUNT(*) FROM episodes WHERE session_id='reasoningbank-sync';" 2>/dev/null || echo "0")
+        SYNCED=$((AFTER - BEFORE))
+
+        if [ "$SYNCED" -ge 0 ]; then
+            echo "  ✅ Synced $AFTER patterns to AgentDB (${SYNCED} new)"
+            TOTAL_SYNCED=$((TOTAL_SYNCED + AFTER))
+        else
+            echo "  ⚠️  Sync may have replaced some entries"
+        fi
+
+        # Optional: Also sync to Supabase (slower, one by one - only first 50 for API limits)
+        if [ -n "$SUPABASE_KEY" ]; then
+            echo "  📤 Syncing top 50 patterns to Supabase..."
+            SYNCED_TO_SUPABASE=0
+
+            sqlite3 "$SWARM_DB" "SELECT id, json_extract(pattern_data, '$.title'), confidence FROM patterns ORDER BY confidence DESC LIMIT 50;" 2>/dev/null | while IFS='|' read -r ID TITLE CONF; do
+                [ -z "$ID" ] && continue
+                [ -z "$TITLE" ] && TITLE="Pattern-$ID"
+
+                LEARNING=$(jq -n \
+                    --arg topic "$TITLE" \
+                    --arg category "reasoningbank-pattern" \
+                    --arg patternId "$ID" \
+                    '{
+                        learning_id: ("rb-" + $patternId),
+                        topic: $topic,
+                        content: "See ReasoningBank for full content",
+                        category: $category,
+                        agent_id: "reasoningbank-sync",
+                        tags: ["reasoningbank", "pattern"]
+                    }')
+
+                curl -s -X POST "${SUPABASE_URL}/rest/v1/learnings" \
+                    -H "apikey: ${SUPABASE_KEY}" \
+                    -H "Authorization: Bearer ${SUPABASE_KEY}" \
+                    -H "Content-Type: application/json" \
+                    -H "Prefer: resolution=merge-duplicates" \
+                    -d "$LEARNING" >/dev/null 2>&1
+
+                SYNCED_TO_SUPABASE=$((SYNCED_TO_SUPABASE + 1))
+            done
+            echo "  ✅ Synced to Supabase: 50 patterns (top by confidence)"
+        fi
+    else
+        echo "  ℹ️  No patterns found or AgentDB not available"
     fi
+else
+    echo "  ℹ️  patterns table not found in Swarm Memory"
 fi
 
 # 3. Sync swarm metrics to Cortex

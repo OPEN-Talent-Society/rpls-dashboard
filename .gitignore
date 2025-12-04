@@ -16,3 +16,6 @@ dist
 build
 .env*.local
 node_modules
+
+# Qdrant secrets
+.claude/infrastructure/qdrant/.env

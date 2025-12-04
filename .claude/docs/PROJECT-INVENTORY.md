@@ -207,7 +207,7 @@ Each variant has its OWN `.claude/` directory with 72 skills (copies, not symlin
 
 ### Cortex (Knowledge Management)
 - **URL**: https://cortex.aienablement.academy
-- **Token**: `0fkvtzw0jrat2oht`
+- **Token**: `${CORTEX_TOKEN}`
 - **Notebooks** (PARA methodology) - Updated 2025-12-01:
   - Projects: `20251103053911-8ex6uns`
   - Areas: `20251201183343-543piyt`

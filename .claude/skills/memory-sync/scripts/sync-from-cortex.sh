@@ -7,31 +7,37 @@ set -e
 PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
 source "$PROJECT_DIR/.env" 2>/dev/null || true
 
-# Cortex/SiYuan config
-SIYUAN_BASE_URL="${SIYUAN_BASE_URL:-https://cortex.aienablement.academy}"
-SIYUAN_API_TOKEN="${SIYUAN_API_TOKEN:-0fkvtzw0jrat2oht}"
+# Cortex/SiYuan config - requires Cloudflare Zero Trust headers
+CORTEX_URL="${CORTEX_URL:-https://cortex.aienablement.academy}"
+CORTEX_API_TOKEN="${CORTEX_TOKEN}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 
-# Supabase config (target)
+# Supabase config (target) - use anon key, falls back to service role
 SUPABASE_URL="${PUBLIC_SUPABASE_URL:-https://zxcrbcmdxpqprpxhsntc.supabase.co}"
-SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY}"
+SUPABASE_KEY="${PUBLIC_SUPABASE_ANON_KEY:-${SUPABASE_SERVICE_ROLE_KEY}}"
 
 echo "🔄 Syncing from Cortex (SiYuan) → Supabase"
-echo "   Source: $SIYUAN_BASE_URL"
+echo "   Source: $CORTEX_URL"
 
-# Search for documents with specific tags
+# Search for documents with specific tags (with Cloudflare headers)
 search_cortex() {
     local QUERY="$1"
-    curl -s -X POST "${SIYUAN_BASE_URL}/api/search/fullTextSearchBlock" \
-        -H "Authorization: Token ${SIYUAN_API_TOKEN}" \
+    curl -s -X POST "${CORTEX_URL}/api/search/fullTextSearchBlock" \
+        -H "Authorization: Token ${CORTEX_API_TOKEN}" \
+        -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
+        -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
         -H "Content-Type: application/json" \
         -d "{\"query\": \"$QUERY\"}" 2>/dev/null
 }
 
-# Get document content
+# Get document content (with Cloudflare headers)
 get_doc_content() {
     local DOC_ID="$1"
-    curl -s -X POST "${SIYUAN_BASE_URL}/api/export/exportMdContent" \
-        -H "Authorization: Token ${SIYUAN_API_TOKEN}" \
+    curl -s -X POST "${CORTEX_URL}/api/export/exportMdContent" \
+        -H "Authorization: Token ${CORTEX_API_TOKEN}" \
+        -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
+        -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
         -H "Content-Type: application/json" \
         -d "{\"id\": \"$DOC_ID\"}" 2>/dev/null
 }

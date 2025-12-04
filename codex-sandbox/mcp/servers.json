@@ -1,0 +1,327 @@
+{
+  "projectPath": "/Users/adamkovacs/Documents/codebuild",
+  "servers": [
+    {
+      "id": "codex-subagents",
+      "type": "stdio",
+      "command": "/opt/homebrew/bin/node",
+      "args": [
+        "/Users/adamkovacs/Documents/codebuild/mcp-servers/codex-subagents-mcp/dist/codex-subagents.mcp.js",
+        "--agents-dir",
+        "/Users/adamkovacs/Documents/codebuild/mcp-servers/codex-subagents-mcp/agents"
+      ],
+      "env": {},
+      "clients": {
+        "codex": {
+          "name": "codex-subagents",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "codex-subagents",
+          "enabled": false
+        },
+        "claude-zai": {
+          "name": "codex-subagents",
+          "enabled": false
+        }
+      }
+    },
+    {
+      "id": "context7",
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "env": {},
+      "clients": {
+        "codex": {
+          "name": "context7",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "context7",
+          "enabled": true
+        },
+        "claude-zai": {
+          "name": "context7",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "digitalocean",
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@digitalocean/mcp@latest",
+        "--services",
+        "droplets,apps"
+      ],
+      "env": {
+        "DIGITALOCEAN_API_TOKEN": "${DIGITALOCEAN_API_TOKEN}"
+      },
+      "clients": {
+        "codex": {
+          "name": "digitalocean",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "digitalocean-mcp",
+          "enabled": true
+        },
+        "claude-zai": {
+          "name": "digitalocean-mcp",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "oracle-oci-api",
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "oracle.oci-api-mcp-server@latest"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "clients": {
+        "codex": {
+          "name": "oracle-oci-api",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "oracle-oci-api",
+          "enabled": true
+        },
+        "claude-zai": {
+          "name": "oracle-oci-api",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "oracle-oci-compute",
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "oracle.oci-compute-mcp-server@latest"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "clients": {
+        "codex": {
+          "name": "oracle-oci-compute",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "oracle-oci-compute",
+          "enabled": true
+        },
+        "claude-zai": {
+          "name": "oracle-oci-compute",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "oracle-oci-networking",
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "oracle.oci-networking-mcp-server@latest"
+      ],
+      "env": {
+        "FASTMCP_LOG_LEVEL": "ERROR"
+      },
+      "clients": {
+        "codex": {
+          "name": "oracle-oci-networking",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "oracle-oci-networking",
+          "enabled": true
+        },
+        "claude-zai": {
+          "name": "oracle-oci-networking",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "playwright",
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@latest"
+      ],
+      "env": {},
+      "clients": {
+        "codex": {
+          "name": "playwright",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "playwright",
+          "enabled": true
+        },
+        "claude-zai": {
+          "name": "playwright",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "zai-vision",
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@z_ai/mcp-server"
+      ],
+      "env": {
+        "Z_AI_API_KEY": "${Z_AI_API_KEY}",
+        "Z_AI_MODE": "ZAI"
+      },
+      "clients": {
+        "codex": {
+          "name": "zai-vision",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "zai-vision",
+          "enabled": true
+        },
+        "claude-zai": {
+          "name": "zai-vision",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "zai-search",
+      "type": "http",
+      "url": "https://api.z.ai/api/mcp/web_search_prime/mcp",
+      "headers": {
+        "Authorization": "${Z_AI_SEARCH_AUTH_HEADER}"
+      },
+      "clients": {
+        "codex": {
+          "name": "zai-search",
+          "enabled": false
+        },
+        "claude-code": {
+          "name": "zai-search",
+          "enabled": true
+        },
+        "claude-zai": {
+          "name": "zai-search",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "zai-search-codex",
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote@latest",
+        "https://api.z.ai/api/mcp/web_search_prime/mcp",
+        "--header",
+        "Authorization: Bearer 199b2217336d4b52b80d0ad7d1a1711d.42KfVkINizWqZdPu"
+      ],
+      "env": {},
+      "clients": {
+        "codex": {
+          "name": "zai-search",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "zai-search-codex",
+          "enabled": false
+        },
+        "claude-zai": {
+          "name": "zai-search-codex",
+          "enabled": false
+        }
+      }
+    },
+    {
+      "id": "agent-memory",
+      "type": "stdio",
+      "command": "node",
+      "args": [
+        "/Users/adamkovacs/Documents/codebuild/codex-sandbox/mcp/agent-memory-mcp/index.js"
+      ],
+      "env": {
+        "AGENT_MEMORY_DB_PATH": "${AGENT_MEMORY_DB_PATH}"
+      },
+      "clients": {
+        "codex": {
+          "name": "agent-memory",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "agent-memory",
+          "enabled": false
+        },
+        "claude-zai": {
+          "name": "agent-memory",
+          "enabled": false
+        }
+      }
+    },
+    {
+      "id": "nocodb-base-ops",
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "mcp-remote",
+        "https://ops.aienablement.academy/mcp/ncmvk15tvewrerlg",
+        "--header",
+        "xc-mcp-token: 2QdaN_CNWKVWSIJr2XbqZUVBnKnprS3T"
+      ],
+      "env": {},
+      "clients": {
+        "codex": {
+          "name": "nocodb-base-ops",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "nocodb-base-ops",
+          "enabled": true
+        },
+        "claude-zai": {
+          "name": "nocodb-base-ops",
+          "enabled": true
+        }
+      }
+    },
+    {
+      "id": "cortex",
+      "type": "stdio",
+      "command": "/Users/adamkovacs/Documents/codebuild/codex-sandbox/scripts/mcp/cortex-mcp.sh",
+      "env": {},
+      "clients": {
+        "codex": {
+          "name": "cortex",
+          "enabled": true
+        },
+        "claude-code": {
+          "name": "cortex",
+          "enabled": true
+        },
+        "claude-zai": {
+          "name": "cortex",
+          "enabled": true
+        }
+      }
+    }
+  ]
+}

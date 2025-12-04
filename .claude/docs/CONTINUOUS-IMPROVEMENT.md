@@ -216,7 +216,7 @@ KEY="errors/${ERROR_CATEGORY}/$(date +%Y%m%d-%H%M%S)"
 
 # Also log to Cortex for human visibility (Updated 2025-12-01)
 curl -X POST "https://cortex.aienablement.academy/api/block/appendBlock" \
-  -H "Authorization: Token 0fkvtzw0jrat2oht" \
+  -H "Authorization: Token ${CORTEX_TOKEN}" \
   -H "Content-Type: application/json" \
   -d "{
     \"id\": \"20251201183343-ujsixib\",

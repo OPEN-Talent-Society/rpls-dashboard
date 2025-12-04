@@ -1,0 +1,441 @@
+================================================================================
+QDRANT SECURED INFRASTRUCTURE - COMPLETE FILE MANIFEST
+Created: 2025-12-03
+================================================================================
+
+INFRASTRUCTURE DIRECTORY
+Location: /Users/adamkovacs/Documents/codebuild/.claude/infrastructure/qdrant
+
+================================================================================
+CORE CONFIGURATION FILES (3)
+================================================================================
+
+1. docker-compose.yml
+   Purpose: Docker Compose configuration for Qdrant container
+   Size: 1.2 KB
+   Executable: No
+   Contains:
+   - Qdrant service definition (v1.13.4)
+   - API key authentication setup
+   - Volume definitions (qdrant_storage, qdrant_snapshots)
+   - Health checks
+   - Network configuration
+   - Environment variables
+
+2. nginx.conf
+   Purpose: Nginx reverse proxy configuration
+   Size: 6.5 KB
+   Executable: No
+   Install Location: /etc/nginx/sites-available/qdrant.harbor.fyi
+   Contains:
+   - SSL/TLS configuration (Cloudflare Origin Certificate)
+   - Rate limiting zones
+   - Security headers
+   - CORS configuration
+   - API key validation
+   - Multiple location blocks for different endpoints
+   - Comprehensive logging
+
+3. deploy.sh
+   Purpose: Automated deployment script
+   Size: 10 KB
+   Executable: Yes (755 permissions)
+   Features:
+   - Pre-deployment verification (Docker, networks, volumes)
+   - Automatic Qdrant deployment
+   - Health checking
+   - API key authentication testing
+   - Read-only key verification
+   - Comprehensive logging with colors
+   - Rollback capability
+   Usage: ./deploy.sh [--verify] [--rollback]
+
+================================================================================
+SUPPORTING SCRIPTS (2)
+================================================================================
+
+4. generate-keys.sh
+   Purpose: Generate secure API keys
+   Size: 2.1 KB
+   Executable: Yes
+   Features:
+   - Generates 64-character alphanumeric keys
+   - Creates .env file
+   - Validates key format
+   Usage: ./generate-keys.sh
+
+5. test-security.sh
+   Purpose: Verify security configuration
+   Size: 6.6 KB
+   Executable: Yes
+   Tests:
+   - API key authentication
+   - Read-only key restrictions
+   - SSL/TLS certificates
+   - Rate limiting
+   - CORS headers
+   - Health endpoints
+   Usage: ./test-security.sh
+
+================================================================================
+CONFIGURATION & TEMPLATE FILES (2)
+================================================================================
+
+6. .env.example
+   Purpose: Environment variables template
+   Size: 895 B
+   Contains:
+   - QDRANT_API_KEY
+   - QDRANT_READ_ONLY_API_KEY
+   - QDRANT_URL
+   - Cloudflare Access credentials (optional)
+   - Tailscale URL (optional)
+   Note: Copy to .env and fill in actual values (NOT committed to git)
+
+7. qdrant-security-patches.diff
+   Purpose: Reference patterns for updating integration scripts
+   Size: 4.0 KB
+   Shows:
+   - URL changes (http://192.168.50.149:6333 → https://qdrant.harbor.fyi)
+   - Header additions (api-key, Content-Type)
+   - Auth token injection patterns
+
+================================================================================
+DOCUMENTATION FILES (4)
+================================================================================
+
+8. DEPLOYMENT.md
+   Purpose: Comprehensive deployment guide
+   Size: 10 KB
+   Contains:
+   - Quick start (5 steps)
+   - Detailed step-by-step instructions
+   - Cloudflare Origin Certificate setup
+   - Cloudflare Access configuration
+   - Tailscale VPN setup
+   - Verification tests
+   - Rollback procedures
+   - Security checklist
+   - Troubleshooting guide
+
+9. README.md
+   Purpose: Quick start and reference
+   Size: 4.4 KB
+   Contains:
+   - Quick start guide
+   - File reference table
+   - Documentation links
+   - Security layers overview
+   - Environment variables
+   - Usage examples (bash, JavaScript, Python)
+   - Deployment checklist
+   - Maintenance procedures
+
+10. INFRASTRUCTURE-SUMMARY.md
+    Purpose: Complete infrastructure overview (THIS FILE)
+    Size: Variable
+    Contains:
+    - Architecture diagram
+    - Detailed file descriptions
+    - Deployment steps
+    - Verification tests
+    - Security features
+    - Maintenance procedures
+    - Troubleshooting guide
+    - File paths summary
+    - Integration points
+    - Network topology
+    - Deployment checklist
+
+11. FILES-MANIFEST.txt
+    Purpose: This file listing
+    Contains:
+    - Complete file manifest
+    - File descriptions and purposes
+    - Installation instructions
+    - Quick reference guide
+
+================================================================================
+QUICK START COMMANDS
+================================================================================
+
+GENERATE API KEYS:
+  cd /Users/adamkovacs/Documents/codebuild/.claude/infrastructure/qdrant
+  ./generate-keys.sh
+
+DEPLOY QDRANT:
+  ./deploy.sh --verify
+
+RUN SECURITY TESTS:
+  ./test-security.sh
+
+CONFIGURE NGINX (on proxy host):
+  sudo cp nginx.conf /etc/nginx/sites-available/qdrant.harbor.fyi
+  sudo ln -s /etc/nginx/sites-available/qdrant.harbor.fyi \
+             /etc/nginx/sites-enabled/
+  sudo nginx -t
+  sudo systemctl reload nginx
+
+================================================================================
+DEPLOYMENT CHECKLIST
+================================================================================
+
+SETUP PHASE:
+  [ ] Review DEPLOYMENT.md for detailed steps
+  [ ] Verify .env file created with API keys
+  [ ] Run: ./deploy.sh --verify
+
+DOCKER PHASE:
+  [ ] Qdrant container running
+  [ ] Docker network 'proxy' exists
+  [ ] Docker volumes created (qdrant_storage, qdrant_snapshots)
+
+NGINX PHASE (on 192.168.50.45):
+  [ ] Copy nginx.conf to /etc/nginx/sites-available/
+  [ ] Enable site with symlink
+  [ ] Cloudflare Origin Certificate obtained and installed
+  [ ] Nginx configuration tested (nginx -t)
+  [ ] Nginx reloaded
+
+DNS PHASE (Cloudflare):
+  [ ] A record: qdrant.harbor.fyi → 192.168.50.45
+  [ ] Proxied status: ON (orange cloud)
+  [ ] SSL/TLS mode: Full (strict)
+
+VERIFICATION PHASE:
+  [ ] Test API without key: curl https://qdrant.harbor.fyi/collections (401)
+  [ ] Test API with key: curl -H "api-key: ..." https://qdrant.harbor.fyi/collections (200)
+  [ ] Test read-only key restrictions
+  [ ] Test SSL/TLS certificate
+  [ ] Test rate limiting
+
+INTEGRATION PHASE:
+  [ ] Update all scripts using Qdrant
+  [ ] Test all endpoints
+  [ ] Document keys in password manager
+  [ ] Schedule key rotation (90-day reminder)
+
+================================================================================
+ENVIRONMENT VARIABLES
+================================================================================
+
+REQUIRED (in .env):
+  QDRANT_API_KEY=<64-char-key>
+  QDRANT_READ_ONLY_API_KEY=<64-char-key>
+  QDRANT_URL=https://qdrant.harbor.fyi
+
+OPTIONAL:
+  CF_ACCESS_CLIENT_ID=<cloudflare-token>
+  CF_ACCESS_CLIENT_SECRET=<cloudflare-secret>
+  QDRANT_TAILSCALE_URL=http://100.x.x.x:6333
+
+================================================================================
+URLS & ENDPOINTS
+================================================================================
+
+EXTERNAL ACCESS (HTTPS):
+  https://qdrant.harbor.fyi
+
+INTERNAL ACCESS (Docker host):
+  http://localhost:6333
+  http://localhost:6334 (gRPC)
+
+TAILSCALE ACCESS (Optional):
+  http://100.x.x.x:6333
+
+COMMON ENDPOINTS:
+  /collections              - List collections
+  /collections/{name}       - Get collection info
+  /collections/{name}/points/search - Search vectors
+  /snapshots                - Create/list snapshots
+  /metrics                  - Performance metrics
+  /healthz                  - Health check
+  /dashboard                - Web dashboard
+
+================================================================================
+SECURITY LAYERS
+================================================================================
+
+LAYER 1: API KEY AUTHENTICATION
+  - Admin key (QDRANT_API_KEY): Full read/write access
+  - Read-only key (QDRANT_READ_ONLY_API_KEY): Search queries only
+  - Enforced at Qdrant container level
+  - Passed via 'api-key' header
+
+LAYER 2: NGINX REVERSE PROXY + SSL
+  - SSL/TLS with Cloudflare Origin Certificate
+  - Rate limiting (100/min API, 500/min search)
+  - Security headers (HSTS, X-Frame-Options, etc.)
+  - CORS headers for dashboard
+  - Request validation
+
+LAYER 3: NETWORK ISOLATION
+  - Qdrant listens on localhost only (127.0.0.1)
+  - No direct internet exposure
+  - Nginx provides public endpoint
+
+LAYER 4 (OPTIONAL): CLOUDFLARE ACCESS
+  - Additional authentication via CF service tokens
+  - Client ID/Secret validation
+
+LAYER 5 (OPTIONAL): TAILSCALE VPN
+  - Private network access
+  - Backup connectivity method
+
+================================================================================
+MONITORING & MAINTENANCE
+================================================================================
+
+LOGS:
+  Qdrant:     docker logs -f qdrant
+  Nginx:      sudo tail -f /var/log/nginx/qdrant.harbor.fyi.access.log
+  Nginx err:  sudo tail -f /var/log/nginx/qdrant.harbor.fyi.error.log
+  Auth fails: sudo grep "401\|403" /var/log/nginx/qdrant.harbor.fyi.access.log
+
+BACKUP:
+  curl -X POST -H "api-key: ${QDRANT_API_KEY}" https://qdrant.harbor.fyi/snapshots
+
+RESTORE:
+  docker run --rm \
+    -v qdrant_storage:/target \
+    -v $(pwd)/backup:/backup \
+    alpine tar xzf /backup/qdrant-backup.tar.gz -C /target
+
+KEY ROTATION (Every 90 days):
+  ./generate-keys.sh
+  nano .env
+  docker-compose restart qdrant
+  Update all integration scripts
+
+================================================================================
+INTEGRATION GUIDE
+================================================================================
+
+CURL REQUESTS:
+  curl -H "api-key: ${QDRANT_API_KEY}" \
+       https://qdrant.harbor.fyi/collections
+
+JAVASCRIPT/NODE:
+  const response = await fetch('https://qdrant.harbor.fyi/collections', {
+    headers: { 'api-key': process.env.QDRANT_API_KEY }
+  });
+
+PYTHON:
+  import requests
+  headers = {'api-key': os.environ['QDRANT_API_KEY']}
+  response = requests.get('https://qdrant.harbor.fyi/collections', headers=headers)
+
+BASH SCRIPTS:
+  source .env
+  curl -H "api-key: ${QDRANT_API_KEY}" https://qdrant.harbor.fyi/collections
+
+================================================================================
+TROUBLESHOOTING
+================================================================================
+
+CONTAINER WON'T START:
+  docker logs qdrant
+  Check: port conflicts, invalid API keys, volume permissions
+
+NGINX 502 BAD GATEWAY:
+  docker ps | grep qdrant
+  curl http://localhost:6333/healthz
+  docker network inspect proxy
+
+SSL CERTIFICATE ISSUES:
+  openssl x509 -in /etc/nginx/ssl/qdrant.harbor.fyi.pem -text -noout
+  Check: Cloudflare SSL mode (Full strict), certificate domain
+
+RATE LIMITING TOO STRICT:
+  Edit: /etc/nginx/sites-available/qdrant.harbor.fyi
+  Increase: limit_req_zone ... rate=XXr/m
+  Reload: sudo systemctl reload nginx
+
+API KEY NOT WORKING:
+  source .env
+  echo $QDRANT_API_KEY
+  curl -v -H "api-key: ${QDRANT_API_KEY}" https://qdrant.harbor.fyi/collections
+
+================================================================================
+SUPPORT RESOURCES
+================================================================================
+
+LOCAL DOCUMENTATION:
+  - /Users/adamkovacs/Documents/codebuild/.claude/docs/QDRANT-SECURITY.md
+  - DEPLOYMENT.md (this directory)
+  - README.md (this directory)
+  - INFRASTRUCTURE-SUMMARY.md (this directory)
+
+EXTERNAL RESOURCES:
+  - Qdrant Docs: https://qdrant.tech/documentation/
+  - Docker Docs: https://docs.docker.com/
+  - Nginx Docs: https://nginx.org/en/docs/
+  - Cloudflare SSL: https://developers.cloudflare.com/ssl/
+  - Tailscale: https://tailscale.com/kb/
+
+================================================================================
+FILE TREE
+================================================================================
+
+/Users/adamkovacs/Documents/codebuild/.claude/infrastructure/qdrant/
+├── docker-compose.yml              (Docker Compose config)
+├── nginx.conf                       (Nginx reverse proxy config)
+├── deploy.sh                        (Main deployment script) [EXECUTABLE]
+├── generate-keys.sh                 (API key generator) [EXECUTABLE]
+├── test-security.sh                 (Security tests) [EXECUTABLE]
+├── .env.example                     (Environment template)
+├── .env                             (Generated by generate-keys.sh) [NOT IN GIT]
+├── qdrant-security-patches.diff     (Update reference patterns)
+├── DEPLOYMENT.md                    (Detailed deployment guide)
+├── README.md                        (Quick start & reference)
+├── INFRASTRUCTURE-SUMMARY.md        (Complete overview)
+└── FILES-MANIFEST.txt               (This file)
+
+================================================================================
+DEPLOYMENT NETWORK DIAGRAM
+================================================================================
+
+EXTERNAL:
+  https://qdrant.harbor.fyi (Cloudflare CDN)
+        ↓ (DNS: 192.168.50.45)
+  
+NGINX PROXY LAYER (192.168.50.45):
+  Port 443 (HTTPS) / Port 80 (HTTP redirect)
+  SSL/TLS termination
+  Rate limiting
+  Security headers
+        ↓ (internal proxy)
+  
+DOCKER HOST (192.168.50.149):
+  Port 127.0.0.1:6333 (REST API)
+  Port 127.0.0.1:6334 (gRPC)
+        ↓
+  
+QDRANT CONTAINER:
+  API key authentication
+  Collections storage
+  Snapshots backup
+        ↓
+  
+DOCKER VOLUMES:
+  qdrant_storage (persistent data)
+  qdrant_snapshots (backup snapshots)
+
+OPTIONAL TAILSCALE VPN:
+  Private network: 100.x.x.x:6333
+
+================================================================================
+VERSION INFORMATION
+================================================================================
+
+Qdrant Image:     qdrant/qdrant:v1.13.4
+Docker API:       Version 1.45+
+Nginx:            1.18+ (Ubuntu) or latest
+Cloudflare:       Origin Certificate (RSA 2048)
+SSL/TLS:          TLSv1.2+ (Cloudflare enforced)
+Deployment Date:  2025-12-03
+Status:           READY FOR DEPLOYMENT
+
+================================================================================
+END OF MANIFEST
+================================================================================

@@ -1,9 +1,22 @@
 ---
 name: "Brevo Email Operations"
-description: "Send transactional emails, manage contacts, and handle email campaigns using Brevo API. Use when sending emails, managing contact lists, configuring SMTP, or integrating email functionality into applications."
+description: "Send transactional emails, manage contacts, and handle email campaigns using Brevo API. Uses curl for simple ops, enables MCP for complex workflows. Saves ~8.5k tokens when MCP is disabled."
 ---
 
 # Brevo Email Operations
+
+## Overview
+
+This skill provides email operations with a **two-tier approach**:
+1. **Simple ops (Tier 1)**: Use curl API calls directly (no MCP needed)
+2. **Complex ops (Tier 2)**: Enable Brevo MCP for multi-step workflows
+
+## Token Savings
+
+- **MCP disabled**: Saves ~8,559 tokens at startup
+- **MCP enabled**: Full 13 tools available when needed
+
+---
 
 ## What This Skill Does
 
@@ -221,6 +234,70 @@ echo "Test email sent to $EMAIL_TO"
 **Symptoms**: Connection timeout to smtp-relay.brevo.com
 **Cause**: Firewall blocking port 587
 **Solution**: Ensure outbound port 587 is open, try port 465 (SSL)
+
+---
+
+## Tier 2: Enable MCP for Complex Workflows
+
+For multi-step email workflows requiring:
+- Bulk contact operations
+- Campaign management
+- Complex list management
+- Detailed statistics queries
+
+### Enable MCP Temporarily
+
+**Option 1: Via Claude Code CLI**
+```bash
+# Add brevo MCP to current session
+claude mcp add brevo-mcp -- node /Users/adamkovacs/Documents/codebuild/mcp-servers/brevo-mcp/dist/index.js
+
+# After task, remove to restore token savings
+claude mcp remove brevo-mcp
+```
+
+**Option 2: Add to mcp.json temporarily**
+```json
+{
+  "brevo-mcp": {
+    "type": "stdio",
+    "command": "node",
+    "args": ["/Users/adamkovacs/Documents/codebuild/mcp-servers/brevo-mcp/dist/index.js"],
+    "env": {
+      "BREVO_API_KEY": "${BREVO_API_KEY}"
+    }
+  }
+}
+```
+
+### MCP Tools Available (When Enabled)
+
+| Tool | Purpose |
+|------|---------|
+| `send_transactional_email` | Send HTML emails |
+| `send_template_email` | Send using Brevo templates |
+| `create_contact` | Add new contact |
+| `update_contact` | Update contact attributes |
+| `get_contact` | Get contact info |
+| `delete_contact` | Remove contact |
+| `get_lists` | List all contact lists |
+| `create_list` | Create new list |
+| `get_email_campaigns` | List campaigns |
+| `get_campaign_stats` | Campaign statistics |
+| `get_transactional_emails` | Email logs |
+| `get_account_info` | Account details |
+| `get_senders` | Verified senders |
+
+### When to Use MCP vs Curl
+
+| Use Case | Recommendation |
+|----------|----------------|
+| Send single email | Tier 1 (curl) |
+| Bulk contact import | Tier 2 (MCP) |
+| Get contact info | Tier 1 (curl) |
+| Campaign analytics | Tier 2 (MCP) |
+| SMTP configuration | Tier 1 (curl) |
+| Complex list management | Tier 2 (MCP) |
 
 ---
 

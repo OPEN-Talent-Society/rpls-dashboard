@@ -81,9 +81,72 @@ if [ "$SHOULD_SYNC" = true ]; then
 
     # Run sync in background (non-blocking)
     (
-        # Sync AgentDB to Supabase (incremental - only new records)
+        # Load API keys from .env file (set -a exports all vars)
+        if [ -f "$PROJECT_DIR/.env" ]; then
+            set -a
+            source "$PROJECT_DIR/.env"
+            set +a
+        fi
+
+        # === COMPLETE MEMORY SYNC PIPELINE ===
+        #
+        # Data Flow (Bidirectional):
+        #
+        #   HOT → COLD:
+        #   ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+        #   │  AgentDB    │────▶│  Supabase   │────▶│   Qdrant    │
+        #   │  (episodes) │     │ (relational)│     │  (vectors)  │
+        #   └─────────────┘     └─────────────┘     └─────────────┘
+        #          │                                       ▲
+        #          │                                       │
+        #          ▼                                       │
+        #   ┌─────────────┐                               │
+        #   │   Cortex    │───────────────────────────────┘
+        #   │ (knowledge) │  (indexed for semantic search)
+        #   └─────────────┘
+        #          ▲
+        #          │
+        #   ┌─────────────┐     ┌─────────────┐
+        #   │   Swarm     │────▶│   Qdrant    │
+        #   │  (memory)   │     │  (vectors)  │
+        #   └─────────────┘     └─────────────┘
+        #
+        # Write paths:
+        #   1. AgentDB → Supabase (episodes as patterns)
+        #   2. Supabase → Qdrant (learnings + patterns)
+        #   3. Swarm → Qdrant (trajectories + high-value entries)
+        #   4. Cortex → Qdrant (knowledge documents)
+        #   5. AgentDB → Cortex (successful episodes → documentation)
+        #
+        # This ensures ALL memory is:
+        #   - Stored relationally (Supabase)
+        #   - Indexed semantically (Qdrant)
+        #   - Documented for humans (Cortex)
+
+        # 1. Sync AgentDB to Supabase (relational cold storage)
         if [ -f "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-agentdb-to-supabase.sh" ]; then
             "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-agentdb-to-supabase.sh" --incremental >> "$SYNC_LOG" 2>&1
+        fi
+
+        # 2. Sync Supabase to Qdrant (get episodes + learnings into vector DB)
+        if [ -f "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-supabase-to-qdrant.sh" ]; then
+            "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-supabase-to-qdrant.sh" --incremental >> "$SYNC_LOG" 2>&1
+        fi
+
+        # 3. Sync Swarm Memory to Qdrant (trajectories + high-value entries)
+        if [ -f "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-swarm-to-qdrant.sh" ]; then
+            "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-swarm-to-qdrant.sh" --incremental >> "$SYNC_LOG" 2>&1
+        fi
+
+        # 4. Sync Cortex to Qdrant (knowledge base documents)
+        if [ -f "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-cortex-to-qdrant.sh" ]; then
+            "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-cortex-to-qdrant.sh" --incremental >> "$SYNC_LOG" 2>&1
+        fi
+
+        # 5. Sync AgentDB to Cortex (episodes → knowledge documents)
+        # This creates DOCUMENTATION in Cortex from successful episodes
+        if [ -f "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-agentdb-to-cortex.sh" ]; then
+            "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-agentdb-to-cortex.sh" >> "$SYNC_LOG" 2>&1
         fi
 
         echo "[$(date -u +%Y-%m-%dT%H:%M:%SZ)] Incremental sync complete" >> "$SYNC_LOG"

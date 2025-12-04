@@ -1,0 +1,10 @@
+{
+  "name": "infrastructure-expansion",
+  "version": "1.0.0",
+  "description": "Expanded infrastructure operations toolkit covering Proxmox, NAS, Docmost, NocoDB, monitoring, and network access",
+  "author": {
+    "name": "AI Enablement Ops",
+    "email": "ops@aienablement.academy"
+  },
+  "license": "MIT"
+}

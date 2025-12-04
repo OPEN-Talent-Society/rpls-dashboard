@@ -1,0 +1,10 @@
+{
+  "name": "ml-platform",
+  "version": "1.0.0",
+  "description": "Machine learning platform toolkit for local models, Qdrant, Whisper, and RLHF operations",
+  "author": {
+    "name": "AI Enablement Ops",
+    "email": "ops@aienablement.academy"
+  },
+  "license": "MIT"
+}

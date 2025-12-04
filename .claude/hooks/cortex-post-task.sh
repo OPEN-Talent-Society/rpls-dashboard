@@ -1,13 +1,20 @@
 #!/bin/bash
+
+# Load .env with exports
+PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+if [ -f "$PROJECT_DIR/.env" ]; then
+    set -a; source "$PROJECT_DIR/.env"; set +a
+fi
+
 # Cortex Post-Task Hook - Log completed work to Cortex
 # Auto-captures task completion and learnings to SiYuan knowledge base
 # Usage: Called automatically after task completion via Claude Code hooks
 
 set -e
 
-TOKEN="0fkvtzw0jrat2oht"
-CF_CLIENT_ID="6c0fe301311410aea8ca6e236a176938.access"
-CF_CLIENT_SECRET="714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3"
+TOKEN="${CORTEX_TOKEN}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 URL="https://cortex.aienablement.academy"
 
 # Arguments

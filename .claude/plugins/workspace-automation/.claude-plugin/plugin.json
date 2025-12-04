@@ -1,0 +1,10 @@
+{
+  "name": "workspace-automation",
+  "version": "1.0.0",
+  "description": "Workspace productivity toolkit for email, documents, drive, and meeting automation",
+  "author": {
+    "name": "AI Enablement Ops",
+    "email": "ops@aienablement.academy"
+  },
+  "license": "MIT"
+}

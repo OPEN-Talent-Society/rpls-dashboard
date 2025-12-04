@@ -1,7 +1,7 @@
 {
   "version": "1.0.0",
   "created": "2025-12-01T01:50:00Z",
-  "updated": "2025-12-02T03:30:00Z",
+  "updated": "2025-12-03T22:17:40Z",
   "entries": [
     {
       "id": "learning-codebuild-audit-001",
@@ -261,7 +261,7 @@
       "topic": "Cortex Architecture & Integrations",
       "category": "cortex-crawl",
       "agent": "claude-code",
-      "content": "Cortex architecture: 5 core skills (cortex-task-log, cortex-notebook-curation, doc-sync, backup-rotation, embedding-refresh). Key integrations: NocoDB (task management), Hook automation, Claude sync. Templates: Technical-Documentation, Integration-Testing, Sprint-Planning, Learning-Capture, Task-Planning. Infrastructure docs: Credential-Management-System, NocoDB-Task-Assignment-Protocol, Claude Environments. API: Token 0fkvtzw0jrat2oht with Cloudflare Access protection.",
+      "content": "Cortex architecture: 5 core skills (cortex-task-log, cortex-notebook-curation, doc-sync, backup-rotation, embedding-refresh). Key integrations: NocoDB (task management), Hook automation, Claude sync. Templates: Technical-Documentation, Integration-Testing, Sprint-Planning, Learning-Capture, Task-Planning. Infrastructure docs: Credential-Management-System, NocoDB-Task-Assignment-Protocol, Claude Environments. API: Token ${CORTEX_TOKEN} with Cloudflare Access protection.",
       "tags": [
         "cortex-crawl",
         "architecture",
@@ -551,7 +551,7 @@
       "topic": "Cortex Authentication - Dual Auth Required",
       "category": "cortex-infrastructure",
       "agent": "claude-code",
-      "content": "Cortex API requires dual authentication: (1) SiYuan token via Authorization: Token header. (2) Cloudflare Zero Trust via CF-Access-Client-Id and CF-Access-Client-Secret headers. Both must be present for all API calls. Current credentials: Token=0fkvtzw0jrat2oht, CF-Client-Id=6c0fe301311410aea8ca6e236a176938.access, CF-Client-Secret=714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3.",
+      "content": "Cortex API requires dual authentication: (1) SiYuan token via Authorization: Token header. (2) Cloudflare Zero Trust via CF-Access-Client-Id and CF-Access-Client-Secret headers. Both must be present for all API calls. Current credentials: Token=${CORTEX_TOKEN}, CF-Client-Id=6c0fe301311410aea8ca6e236a176938.access, CF-Client-Secret=714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3.",
       "tags": [
         "cortex",
         "authentication",
@@ -752,7 +752,13 @@
       "category": "authentication",
       "agent": "claude-code",
       "content": "Simplified authentication from 5 methods (email+password, email+code, Google, GitHub, LinkedIn, Microsoft) to 2 (Google OAuth + Magic Link). Removed CredentialsProvider and GitHubProvider from auth.ts. Magic link via Brevo API with template ID 3. Google OAuth covers 95% of use cases. Clean login page UI with just 2 options.",
-      "tags": ["project-campfire", "authentication", "simplification", "magic-link", "oauth"],
+      "tags": [
+        "project-campfire",
+        "authentication",
+        "simplification",
+        "magic-link",
+        "oauth"
+      ],
       "related_docs": []
     },
     {
@@ -762,7 +768,12 @@
       "category": "user-experience",
       "agent": "claude-code",
       "content": "Created 2-step onboarding at /onboarding: Step 1 collects firstName/lastName, Step 2 collects intent (personal_learning, team_training, exploring, instructor) with conditional company field for B2B. API at /api/onboarding/complete updates PayloadCMS user and sets onboardingCompleted=true. Session refresh after completion redirects to dashboard.",
-      "tags": ["project-campfire", "onboarding", "user-flow", "payloadcms"],
+      "tags": [
+        "project-campfire",
+        "onboarding",
+        "user-flow",
+        "payloadcms"
+      ],
       "related_docs": []
     },
     {
@@ -772,7 +783,13 @@
       "category": "nextjs",
       "agent": "claude-code",
       "content": "CRITICAL: useSession() hook requires SessionProvider context. In Next.js 15 with route groups, SessionProvider must be added to EACH route group layout that uses useSession(). Created AuthProvider wrapper component ('use client') and added to marketing layout. The 'use client' directive alone doesn't prevent prerendering - SessionProvider context is required. export const dynamic = 'force-dynamic' doesn't work with client components.",
-      "tags": ["project-campfire", "nextjs", "nextauth", "sessionprovider", "prerendering"],
+      "tags": [
+        "project-campfire",
+        "nextjs",
+        "nextauth",
+        "sessionprovider",
+        "prerendering"
+      ],
       "related_docs": []
     },
     {
@@ -782,7 +799,13 @@
       "category": "payloadcms",
       "agent": "claude-code",
       "content": "PayloadCMS Local API patterns for server components: (1) Initialize with getPayload({ config }). (2) Use payload.find() with where, limit, sort, depth params. (3) For relationships, use depth:1 to populate related docs. (4) Handle hasMany relationships with Array.isArray() checks. (5) N+1 queries acceptable for admin pages but should batch for production scale. Wired up 4 admin pages: students, courses, cohorts, events.",
-      "tags": ["project-campfire", "payloadcms", "local-api", "admin", "data-fetching"],
+      "tags": [
+        "project-campfire",
+        "payloadcms",
+        "local-api",
+        "admin",
+        "data-fetching"
+      ],
       "related_docs": []
     },
     {
@@ -792,7 +815,13 @@
       "category": "architecture",
       "agent": "claude-code",
       "content": "PayloadCMS auth assessment: Built-in email/password and JWT auth are good. BUT OAuth (Google, GitHub) requires Enterprise license or community plugins. Magic link is NOT built-in - requires custom implementation or payload-auth package. RECOMMENDATION: Keep NextAuth for OAuth/magic link (already working), use PayloadCMS for user data storage. Hybrid approach is optimal - NextAuth handles auth, PayloadCMS handles data.",
-      "tags": ["project-campfire", "payloadcms", "nextauth", "architecture", "assessment"],
+      "tags": [
+        "project-campfire",
+        "payloadcms",
+        "nextauth",
+        "architecture",
+        "assessment"
+      ],
       "related_docs": []
     },
     {
@@ -802,7 +831,14 @@
       "category": "schema",
       "agent": "claude-code",
       "content": "Extended PayloadCMS collections: (1) Users - added headline, socials (linkedin, twitter, website, github), company, intent, onboardingCompleted, createdVia. (2) Cohorts - new collection with name, slug, course, startDate, endDate, maxParticipants, instructor, participants, status (upcoming/active/completed/cancelled), timezone, meetingLink. (3) Events - hackathon/workshop/webinar/impact_workshop types with full registration system.",
-      "tags": ["project-campfire", "payloadcms", "schema", "collections", "cohorts", "events"],
+      "tags": [
+        "project-campfire",
+        "payloadcms",
+        "schema",
+        "collections",
+        "cohorts",
+        "events"
+      ],
       "related_docs": []
     },
     {
@@ -812,7 +848,52 @@
       "category": "frontend",
       "agent": "claude-code",
       "content": "Dashboard architecture: (1) Route group (dashboard) with shared layout containing SessionProvider, sidebar, header. (2) Role-based navigation - students see My Courses/Certificates, instructors/admins see Academy Admin section. (3) Pages: /dashboard (overview), /dashboard/courses (enrolled), /dashboard/certificates, /dashboard/profile (settings). (4) Academy Admin: /academy-admin/* for courses, cohorts, events, students management.",
-      "tags": ["project-campfire", "dashboard", "role-based", "navigation", "layout"],
+      "tags": [
+        "project-campfire",
+        "dashboard",
+        "role-based",
+        "navigation",
+        "layout"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-045f12a68682ab72",
+      "timestamp": "2025-12-03T22:17:33Z",
+      "topic": "Qdrant Best Practice: Single Collection with Payload Filtering",
+      "category": "qdrant-architecture",
+      "agent": "claude-code",
+      "content": "Use ONE collection with rich payload metadata instead of multiple collections. Per Qdrant official docs: 'Creating too many collections may result in resource overhead and cause dependencies.' Use type/source payload fields with keyword indexes for fast filtering. This enables cross-type semantic search while maintaining organization. Implemented in agent_memory collection with 491 points across 6 types: learning (167), code (102), pattern (90), wiki (75), memory (40), episode (17).\n",
+      "tags": [
+        "qdrant-architecture",
+        "automated"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-74e71a1a4b5b1e0f",
+      "timestamp": "2025-12-03T22:17:37Z",
+      "topic": "Embedding Chunking Best Practices 2025",
+      "category": "embedding-pipeline",
+      "agent": "claude-code",
+      "content": "Optimal chunking for RAG: (1) 400-512 tokens per chunk with 10-15% overlap. (2) Parent-child hierarchy for docs >2000 tokens - search children, return parents for context. (3) Language-aware splitting for code (functions/classes). (4) RecursiveCharacterTextSplitter with separators [newline-newline, newline, period-space, space]. Per NVIDIA benchmarks: 85-90% recall with these settings. Created chunker.ts library with chunkText(), chunkDocument(), chunkCode() functions.\n",
+      "tags": [
+        "embedding-pipeline",
+        "automated"
+      ],
+      "related_docs": []
+    },
+    {
+      "id": "learning-9277979cc8c1fca3",
+      "timestamp": "2025-12-03T22:17:40Z",
+      "topic": "Qdrant Payload Schema for Memory Systems",
+      "category": "embedding-pipeline",
+      "agent": "claude-code",
+      "content": "Rich payload schema for vector memory: Required fields (type, source, topic, content, timestamps). Hierarchical fields (parent_id, chunk_index, total_chunks, is_parent). Code-specific (file_path, language, symbols). Quality metrics (reward, success, confidence). Relations (related_ids, source_id). Create keyword indexes on type and source fields for 10-100x faster filtered queries. Zod validation ensures data quality before insertion. Created payload-schema.ts with createPayload(), validatePayload(), sanitizeContent() helpers.\n",
+      "tags": [
+        "embedding-pipeline",
+        "automated"
+      ],
       "related_docs": []
     }
   ]

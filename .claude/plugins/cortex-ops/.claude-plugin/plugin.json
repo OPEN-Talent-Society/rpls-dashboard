@@ -1,0 +1,10 @@
+{
+  "name": "cortex-ops",
+  "version": "1.0.0",
+  "description": "Cortex (SiYuan) operations toolkit for task logging, notebook curation, and MCP integrations",
+  "author": {
+    "name": "AI Enablement Ops",
+    "email": "ops@aienablement.academy"
+  },
+  "license": "MIT"
+}

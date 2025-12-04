@@ -1,4 +1,11 @@
 #!/bin/bash
+
+# Load .env with exports
+PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+if [ -f "$PROJECT_DIR/.env" ]; then
+    set -a; source "$PROJECT_DIR/.env"; set +a
+fi
+
 # Cortex Learning Capture Hook - Store learnings in knowledge base
 # KEY LEARNINGS FROM CORTEX FIX PROJECT:
 # 1. Use /api/block/insertBlock NOT /api/attr/setBlockAttrs for creating refs
@@ -9,9 +16,9 @@
 
 set -e
 
-TOKEN="0fkvtzw0jrat2oht"
-CF_CLIENT_ID="6c0fe301311410aea8ca6e236a176938.access"
-CF_CLIENT_SECRET="714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3"
+TOKEN="${CORTEX_TOKEN}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 URL="https://cortex.aienablement.academy"
 
 # Arguments

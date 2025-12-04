@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Qdrant Unified Memory Schema",
+  "description": "Standardized schema for all memory types in agent_memory collection",
+  "version": "1.0.0",
+  "type": "object",
+  "required": ["type", "source", "content", "indexed_at"],
+  "properties": {
+    "type": {
+      "type": "string",
+      "enum": ["wiki", "learning", "episode", "decision", "pattern", "finding", "tool"],
+      "description": "Primary classification of memory type"
+    },
+    "source": {
+      "type": "string",
+      "enum": ["academy-wiki", "supabase-sync", "agentdb", "cortex-siyuan", "nocodb-sync", "manual"],
+      "description": "Origin system that created this memory"
+    },
+    "content": {
+      "type": "string",
+      "description": "Primary text content used for semantic embedding (REQUIRED for vector search)"
+    },
+    "indexed_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of when this point was indexed (e.g., 2025-12-03T22:45:00Z)"
+    },
+    "topic": {
+      "type": "string",
+      "description": "Human-readable topic or title (optional but recommended)"
+    },
+    "category": {
+      "type": "string",
+      "description": "Categorical classification for filtering (optional)"
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Type-specific fields stored as nested object",
+      "properties": {
+        "wiki": {
+          "type": "object",
+          "description": "Wiki-specific metadata",
+          "properties": {
+            "file_path": {"type": "string"},
+            "markdown_headers": {"type": "array", "items": {"type": "string"}},
+            "last_modified": {"type": "string", "format": "date-time"},
+            "word_count": {"type": "integer"}
+          }
+        },
+        "learning": {
+          "type": "object",
+          "description": "Learning/Cortex-specific metadata",
+          "properties": {
+            "notebook_id": {"type": "string"},
+            "block_id": {"type": "string"},
+            "tags": {"type": "array", "items": {"type": "string"}},
+            "related_tasks": {"type": "array", "items": {"type": "string"}},
+            "learning_type": {"type": "string", "enum": ["technical", "process", "decision", "insight"]}
+          }
+        },
+        "episode": {
+          "type": "object",
+          "description": "AgentDB episode-specific metadata",
+          "properties": {
+            "session_id": {"type": "string"},
+            "task": {"type": "string"},
+            "input": {"type": "string"},
+            "output": {"type": "string"},
+            "critique": {"type": "string"},
+            "reward": {"type": "number", "minimum": 0, "maximum": 1},
+            "success": {"type": "boolean"},
+            "agentdb_id": {"type": "string"},
+            "created_at": {"type": "string", "format": "date-time"},
+            "latency_ms": {"type": "integer"},
+            "tokens_used": {"type": "integer"}
+          }
+        }
+      }
+    },
+    "embedding_model": {
+      "type": "string",
+      "description": "Model used to generate vector embedding (e.g., text-embedding-3-small)",
+      "default": "text-embedding-3-small"
+    },
+    "updated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of last update (for versioning)"
+    },
+    "version": {
+      "type": "integer",
+      "description": "Schema version for future migrations",
+      "default": 1
+    }
+  },
+  "examples": [
+    {
+      "type": "wiki",
+      "source": "academy-wiki",
+      "content": "Full markdown text content for embedding...",
+      "indexed_at": "2025-12-03T22:45:00Z",
+      "topic": "ai-enablement/workshops/2-day-intensive",
+      "category": "academy-wiki",
+      "metadata": {
+        "wiki": {
+          "file_path": "wiki/ai-enablement/workshops/2-day-intensive.md",
+          "markdown_headers": ["Introduction", "Day 1: Foundations", "Day 2: Implementation"],
+          "last_modified": "2025-11-30T14:20:00Z",
+          "word_count": 3450
+        }
+      },
+      "embedding_model": "text-embedding-3-small",
+      "version": 1
+    },
+    {
+      "type": "learning",
+      "source": "supabase-sync",
+      "content": "PostgreSQL JSONB is 3x faster than text fields for metadata queries. Benchmark showed 12ms vs 38ms average query time...",
+      "indexed_at": "2025-12-02T18:30:00Z",
+      "topic": "PostgreSQL JSONB Performance Optimization",
+      "category": "cortex-siyuan",
+      "metadata": {
+        "learning": {
+          "notebook_id": "20231114112235-resources",
+          "block_id": "20251202-183000-abc123",
+          "tags": ["database", "performance", "postgresql"],
+          "related_tasks": ["task-226", "task-227"],
+          "learning_type": "technical"
+        }
+      },
+      "embedding_model": "text-embedding-3-small",
+      "version": 1
+    },
+    {
+      "type": "episode",
+      "source": "agentdb",
+      "content": "Task: Implement JWT authentication. Input: User model with bcrypt hashing. Output: Successful auth middleware with 15-minute token expiry. Critique: Should add refresh token rotation.",
+      "indexed_at": "2025-12-01T16:45:00Z",
+      "topic": "JWT Authentication Implementation",
+      "category": "development",
+      "metadata": {
+        "episode": {
+          "session_id": "session-20251201-164500",
+          "task": "Implement JWT authentication middleware",
+          "input": "User model with bcrypt password hashing",
+          "output": "Express middleware with JWT signing and verification",
+          "critique": "Should implement refresh token rotation for better security",
+          "reward": 0.85,
+          "success": true,
+          "agentdb_id": "142",
+          "created_at": "2025-12-01T16:45:00Z",
+          "latency_ms": 2340,
+          "tokens_used": 1520
+        }
+      },
+      "embedding_model": "text-embedding-3-small",
+      "version": 1
+    }
+  ]
+}

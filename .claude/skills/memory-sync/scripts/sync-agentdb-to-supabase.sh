@@ -12,7 +12,7 @@ source "$PROJECT_DIR/.env" 2>/dev/null || true
 
 # Supabase config
 SUPABASE_URL="${PUBLIC_SUPABASE_URL:-https://zxcrbcmdxpqprpxhsntc.supabase.co}"
-SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY:-sb_secret_g87UniWlZT7GYIQsrWEYYw_VJs7i0Ei}"
+SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY}"
 
 # AgentDB path
 AGENTDB_PATH="${PROJECT_DIR}/agentdb.db"

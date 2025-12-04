@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "claude-flow": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": ["dlx", "agentic-flow", "mcp", "start"]
+    },
+    "context7": {
+      "type": "stdio",
+      "command": "pnpm",
+      "args": ["dlx", "@upstash/context7-mcp@latest"]
+    }
+  }
+}

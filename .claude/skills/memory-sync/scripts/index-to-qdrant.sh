@@ -33,7 +33,21 @@ source "$PROJECT_DIR/.env" 2>/dev/null || true
 COLLECTION="${1:-agent_memory}"
 SUPABASE_URL="${PUBLIC_SUPABASE_URL:-https://zxcrbcmdxpqprpxhsntc.supabase.co}"
 SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY}"
-QDRANT_URL="${QDRANT_URL:-http://qdrant.harbor.fyi}"
+QDRANT_URL="${QDRANT_URL:-https://qdrant.harbor.fyi}"
+# Load from .env file (absolute path to ensure hook context works)
+if [ -f "/Users/adamkovacs/Documents/codebuild/.env" ]; then
+    set -a
+    source "/Users/adamkovacs/Documents/codebuild/.env"
+    set +a
+fi
+if [ -z "$QDRANT_API_KEY" ]; then
+    echo "❌ QDRANT_API_KEY not set. Add to .env file."
+    exit 1
+fi
+if [ -z "$GEMINI_API_KEY" ]; then
+    echo "❌ GEMINI_API_KEY not set. Add to .env file."
+    exit 1
+fi
 GEMINI_KEY="${GEMINI_API_KEY}"
 
 echo "🔍 Indexing to Qdrant collection: $COLLECTION"
@@ -80,6 +94,7 @@ upsert_to_qdrant() {
     numeric_id=$((16#$numeric_id % 2147483647))
 
     curl -s -X PUT "${QDRANT_URL}/collections/${COLLECTION}/points" \
+        -H "api-key: ${QDRANT_API_KEY}" \
         -H "Content-Type: application/json" \
         -d "{
             \"points\": [{
@@ -97,6 +112,7 @@ upsert_to_qdrant() {
 echo "📦 Ensuring collection exists..."
 echo "   Creating/verifying 768-dim collection for Gemini embeddings..."
 curl -s -X PUT "${QDRANT_URL}/collections/${COLLECTION}" \
+    -H "api-key: ${QDRANT_API_KEY}" \
     -H "Content-Type: application/json" \
     -d '{"vectors": {"size": 768, "distance": "Cosine"}}' 2>/dev/null || true
 
@@ -181,7 +197,7 @@ echo ""
 # Show stats
 echo ""
 echo "📊 Qdrant Collection Stats:"
-curl -s "${QDRANT_URL}/collections/${COLLECTION}" | jq '{
+curl -s -H "api-key: ${QDRANT_API_KEY}" "${QDRANT_URL}/collections/${COLLECTION}" | jq '{
     points_count: .result.points_count,
     vectors_count: .result.vectors_count,
     indexed_vectors_count: .result.indexed_vectors_count,

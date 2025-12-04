@@ -1,11 +1,18 @@
 #!/bin/bash
+
+# Load .env with exports
+PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+if [ -f "$PROJECT_DIR/.env" ]; then
+    set -a; source "$PROJECT_DIR/.env"; set +a
+fi
+
 # cortex-health-check.sh - Quick Cortex health assessment
 # Usage: .claude/hooks/cortex-health-check.sh
 # Updated: 2025-12-01
 
-TOKEN="0fkvtzw0jrat2oht"
-CF_ID="6c0fe301311410aea8ca6e236a176938.access"
-CF_SECRET="714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3"
+TOKEN="${CORTEX_TOKEN}"
+CF_ID="${CF_ACCESS_CLIENT_ID}"
+CF_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 URL="https://cortex.aienablement.academy"
 
 echo "🏥 Cortex Health Check"
