@@ -39,7 +39,8 @@
   },
   "cortex": {
     "api_url": "https://cortex.aienablement.academy",
-    "token": "0fkvtzw0jrat2oht",
+    "token": "${CORTEX_TOKEN}",
+    "note": "Token loaded from .env - NEVER hardcode!",
     "notebooks": {
       "projects": "20251103053911-8ex6uns",
       "areas": "20251201183343-543piyt",

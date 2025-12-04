@@ -9,9 +9,17 @@ TASK_CATEGORY="${2:-general}"
 PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
 source "$PROJECT_DIR/.env" 2>/dev/null || true
 
+# Ensure .env is loaded with exports
+if [ -f "$PROJECT_DIR/.env" ]; then
+    set -a; source "$PROJECT_DIR/.env"; set +a
+fi
+# Skip if keys not set (non-blocking for hook)
+[ -z "$QDRANT_API_KEY" ] && { echo "⚠️ QDRANT_API_KEY not set, skipping Qdrant search" >&2; }
+[ -z "$GEMINI_API_KEY" ] && { echo "⚠️ GEMINI_API_KEY not set, skipping embedding" >&2; }
+
 # Supabase config
-SUPABASE_URL="${PUBLIC_SUPABASE_URL:-https://zxcrbcmdxpqprpxhsntc.supabase.co}"
-SUPABASE_KEY="${PUBLIC_SUPABASE_ANON_KEY:-sb_publishable_BI1-ojV23xWqWShHnXAKLQ_P8-XP4oi}"
+SUPABASE_URL="${PUBLIC_SUPABASE_URL}"
+SUPABASE_KEY="${PUBLIC_SUPABASE_ANON_KEY}"
 
 # Output file for context injection
 CONTEXT_FILE="/tmp/pre-task-context.md"
@@ -85,10 +93,10 @@ fi
 
 # 5. Search Cortex (SiYuan) knowledge base
 # Cloudflare Zero Trust headers required
-CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID:-6c0fe301311410aea8ca6e236a176938.access}"
-CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET:-714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 CORTEX_URL="${CORTEX_URL:-https://cortex.aienablement.academy}"
-CORTEX_TOKEN="${CORTEX_TOKEN:-0fkvtzw0jrat2oht}"
+CORTEX_TOKEN="${CORTEX_TOKEN}"
 
 CORTEX_RESULTS=$(curl -s -X POST "${CORTEX_URL}/api/search/fullTextSearchBlock" \
     -H "Authorization: Token ${CORTEX_TOKEN}" \
@@ -111,7 +119,11 @@ fi
 # 6. Semantic search via Qdrant (persistent vector DB)
 # STANDARD: Uses Gemini text-embedding-004 (768 dims) for all searches.
 # This is our PRIMARY approach. MCP server with FastEmbed is a fallback only.
-QDRANT_URL="${QDRANT_URL:-http://qdrant.harbor.fyi}"
+QDRANT_URL="${QDRANT_URL:-https://qdrant.harbor.fyi}"
+QDRANT_API_KEY="${QDRANT_API_KEY:-}"
+if [ -z "$QDRANT_API_KEY" ]; then
+    echo "Warning: QDRANT_API_KEY not set, Qdrant requests may fail" >&2
+fi
 QDRANT_COLLECTION="${QDRANT_COLLECTION:-agent_memory}"
 GEMINI_KEY="${GEMINI_API_KEY}"
 
@@ -132,6 +144,7 @@ if [ -n "$GEMINI_KEY" ]; then
         # Search Qdrant for similar vectors using 768-dim Gemini embeddings
         # All collections are standardized to use 768 dimensions
         QDRANT_RESULTS=$(curl -s -X POST "${QDRANT_URL}/collections/${QDRANT_COLLECTION}/points/search" \
+            -H "api-key: ${QDRANT_API_KEY}" \
             -H "Content-Type: application/json" \
             -d "{
                 \"vector\": $EMBEDDING,

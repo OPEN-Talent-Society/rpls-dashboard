@@ -1,0 +1,10 @@
+{
+  "name": "data-research",
+  "version": "1.0.0",
+  "description": "Research and intelligence automation toolkit for market, competitive, and web data collection",
+  "author": {
+    "name": "AI Enablement Ops",
+    "email": "ops@aienablement.academy"
+  },
+  "license": "MIT"
+}

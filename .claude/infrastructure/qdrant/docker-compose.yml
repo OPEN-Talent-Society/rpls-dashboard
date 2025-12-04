@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  qdrant:
+    image: qdrant/qdrant:v1.13.4
+    container_name: qdrant
+    restart: unless-stopped
+    ports:
+      - "6333:6333"  # REST API
+      - "6334:6334"  # gRPC API
+    volumes:
+      - qdrant_storage:/qdrant/storage
+      - qdrant_snapshots:/qdrant/snapshots
+    environment:
+      # API Key Authentication
+      - QDRANT__SERVICE__API_KEY=${QDRANT_API_KEY}
+      - QDRANT__SERVICE__READ_ONLY_API_KEY=${QDRANT_READ_ONLY_API_KEY}
+
+      # Logging
+      - QDRANT__LOG_LEVEL=info
+
+      # Performance tuning (optional)
+      - QDRANT__STORAGE__PERFORMANCE__MAX_SEARCH_THREADS=4
+      - QDRANT__STORAGE__OPTIMIZERS__INDEXING_THRESHOLD=10000
+
+      # CORS settings (for dashboard access)
+      - QDRANT__SERVICE__ENABLE_CORS=true
+
+    networks:
+      - proxy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/healthz"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "backup.enable=true"
+      - "backup.path=/qdrant/storage"
+
+volumes:
+  qdrant_storage:
+    driver: local
+  qdrant_snapshots:
+    driver: local
+
+networks:
+  proxy:
+    external: true

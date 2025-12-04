@@ -16,14 +16,19 @@ source "$PROJECT_DIR/.env" 2>/dev/null || true
 SUPABASE_URL="${PUBLIC_SUPABASE_URL:-https://zxcrbcmdxpqprpxhsntc.supabase.co}"
 SUPABASE_KEY="${PUBLIC_SUPABASE_ANON_KEY:-sb_publishable_BI1-ojV23xWqWShHnXAKLQ_P8-XP4oi}"
 
-# Cortex config
-SIYUAN_BASE_URL="${SIYUAN_BASE_URL:-https://cortex.aienablement.academy}"
-SIYUAN_API_TOKEN="${SIYUAN_API_TOKEN:-0fkvtzw0jrat2oht}"
+# Cortex config - uses CORTEX_TOKEN + Cloudflare Zero Trust headers
+CORTEX_URL="${CORTEX_URL:-https://cortex.aienablement.academy}"
+CORTEX_API_TOKEN="${CORTEX_TOKEN}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 
 if [ -z "$QUERY" ]; then
     echo "Usage: unified-search.sh \"query\" [--backend all|supabase|agentdb|ruvector]"
     exit 1
 fi
+
+# URL-encode the query for HTTP requests
+QUERY_ENCODED=$(echo "$QUERY" | sed 's/ /%20/g' | sed 's/"/%22/g')
 
 echo "🔍 Searching: \"$QUERY\""
 echo "   Backend: $BACKEND"
@@ -34,23 +39,23 @@ echo ""
 if [ "$BACKEND" = "all" ] || [ "$BACKEND" = "supabase" ]; then
     echo "┌─ Supabase Results ─────────────────────────────────────────────"
 
-    # Search learnings
+    # Search learnings (use URL-encoded query)
     echo "│ 📚 Learnings:"
-    curl -s "${SUPABASE_URL}/rest/v1/learnings?or=(topic.ilike.*${QUERY}*,content.ilike.*${QUERY}*)&limit=${K}" \
+    curl -s "${SUPABASE_URL}/rest/v1/learnings?or=(topic.ilike.*${QUERY_ENCODED}*,content.ilike.*${QUERY_ENCODED}*)&limit=${K}" \
         -H "apikey: ${SUPABASE_KEY}" \
         -H "Authorization: Bearer ${SUPABASE_KEY}" | \
         jq -r '.[] | "│   • \(.topic): \(.content | .[0:80])..."' 2>/dev/null || echo "│   (no results)"
 
     # Search patterns
     echo "│ 🎯 Patterns:"
-    curl -s "${SUPABASE_URL}/rest/v1/patterns?or=(name.ilike.*${QUERY}*,description.ilike.*${QUERY}*)&limit=${K}" \
+    curl -s "${SUPABASE_URL}/rest/v1/patterns?or=(name.ilike.*${QUERY_ENCODED}*,description.ilike.*${QUERY_ENCODED}*)&limit=${K}" \
         -H "apikey: ${SUPABASE_KEY}" \
         -H "Authorization: Bearer ${SUPABASE_KEY}" | \
         jq -r '.[] | "│   • \(.name): \(.description | .[0:60])..."' 2>/dev/null || echo "│   (no results)"
 
     # Search agent_memory
     echo "│ 🧠 Agent Memory:"
-    curl -s "${SUPABASE_URL}/rest/v1/agent_memory?key=ilike.*${QUERY}*&limit=${K}" \
+    curl -s "${SUPABASE_URL}/rest/v1/agent_memory?key=ilike.*${QUERY_ENCODED}*&limit=${K}" \
         -H "apikey: ${SUPABASE_KEY}" \
         -H "Authorization: Bearer ${SUPABASE_KEY}" | \
         jq -r '.[] | "│   • \(.key)"' 2>/dev/null || echo "│   (no results)"
@@ -98,11 +103,13 @@ if [ "$BACKEND" = "all" ] || [ "$BACKEND" = "swarm" ]; then
     echo ""
 fi
 
-# Search Cortex (SiYuan)
+# Search Cortex (SiYuan) - requires Cloudflare Zero Trust headers
 if [ "$BACKEND" = "all" ] || [ "$BACKEND" = "cortex" ]; then
     echo "┌─ Cortex Knowledge Base ──────────────────────────────────────────"
-    CORTEX_RESULTS=$(curl -s -X POST "${SIYUAN_BASE_URL}/api/search/fullTextSearchBlock" \
-        -H "Authorization: Token ${SIYUAN_API_TOKEN}" \
+    CORTEX_RESULTS=$(curl -s -X POST "${CORTEX_URL}/api/search/fullTextSearchBlock" \
+        -H "Authorization: Token ${CORTEX_API_TOKEN}" \
+        -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
+        -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
         -H "Content-Type: application/json" \
         -d "{\"query\": \"${QUERY}\"}" 2>/dev/null)
 

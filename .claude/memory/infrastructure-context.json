@@ -1,5 +1,5 @@
 {
-  "lastUpdated": "2025-12-03T02:15:00Z",
+  "lastUpdated": "2025-12-03T22:50:00Z",
   "infrastructure": {
     "oci": {
       "description": "Oracle Cloud Infrastructure - Production workloads",
@@ -76,9 +76,30 @@
           "port": 6333,
           "purpose": "Vector database for semantic memory layer",
           "version": "1.13.4",
-          "collections": ["agent_memory", "learnings", "patterns", "codebase"]
+          "collections": ["agent_memory"],
+          "security": {
+            "apiKeyRequired": true,
+            "envFile": ".claude/infrastructure/qdrant/.env",
+            "deployedAt": "2025-12-03T22:45:00Z"
+          },
+          "access": {
+            "tailscaleProxmox": "ssh -i ~/.ssh/id_ed25519_proxmox root@100.103.83.62",
+            "vmExec": "qm guest exec 101 -- <command>"
+          }
         }
-      ]
+      ],
+      "sshAccess": {
+        "proxmox": {
+          "ip": "100.103.83.62",
+          "key": "~/.ssh/id_ed25519_proxmox",
+          "user": "root"
+        },
+        "dockerVM": {
+          "vmId": 101,
+          "internalIp": "192.168.50.149",
+          "accessVia": "qm guest exec 101"
+        }
+      }
     }
   },
   "cloudflare": {

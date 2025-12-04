@@ -27,9 +27,12 @@ Export documents and content from Cortex (SiYuan) knowledge base in various form
 ## API Configuration
 
 ```bash
-TOKEN="0fkvtzw0jrat2oht"
-CF_CLIENT_ID="6c0fe301311410aea8ca6e236a176938.access"
-CF_CLIENT_SECRET="714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3"
+# Load credentials from .env (NEVER hardcode tokens!)
+source /Users/adamkovacs/Documents/codebuild/.env
+
+TOKEN="${CORTEX_TOKEN}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 URL="https://cortex.aienablement.academy"
 ```
 
@@ -115,11 +118,12 @@ curl -s -X POST "${URL}/api/export/exportSY" \
 # Export a learning document
 /cortex-export 20251201183343-ujsixib md
 
-# Using curl directly
+# Using curl directly (credentials loaded from .env)
+source /Users/adamkovacs/Documents/codebuild/.env
 curl -s -X POST "https://cortex.aienablement.academy/api/export/exportMdContent" \
-  -H "Authorization: Token 0fkvtzw0jrat2oht" \
-  -H "CF-Access-Client-Id: 6c0fe301311410aea8ca6e236a176938.access" \
-  -H "CF-Access-Client-Secret: 714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3" \
+  -H "Authorization: Token ${CORTEX_TOKEN}" \
+  -H "CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}" \
+  -H "CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}" \
   -H "Content-Type: application/json" \
   -d '{"id": "20251201183343-ujsixib"}' | jq -r '.data.content'
 ```
@@ -129,11 +133,11 @@ curl -s -X POST "https://cortex.aienablement.academy/api/export/exportMdContent"
 # Export Resources notebook as markdown archive
 /cortex-export --notebook 20251201183343-ujsixib
 
-# Using curl
+# Using curl (credentials loaded from .env)
 curl -s -X POST "https://cortex.aienablement.academy/api/export/exportNotebookMd" \
-  -H "Authorization: Token 0fkvtzw0jrat2oht" \
-  -H "CF-Access-Client-Id: 6c0fe301311410aea8ca6e236a176938.access" \
-  -H "CF-Access-Client-Secret: 714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3" \
+  -H "Authorization: Token ${CORTEX_TOKEN}" \
+  -H "CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}" \
+  -H "CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}" \
   -H "Content-Type: application/json" \
   -d '{"notebook": "20251201183343-ujsixib"}'
 ```

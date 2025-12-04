@@ -1,0 +1,10 @@
+{
+  "name": "product-frameworks",
+  "version": "1.0.0",
+  "description": "Product strategy toolkit bundling PRD, BMAD, and SPARC agents, skills, and commands for consistent discovery, validation, and storytelling",
+  "author": {
+    "name": "AI Enablement Ops",
+    "email": "ops@aienablement.academy"
+  },
+  "license": "MIT"
+}

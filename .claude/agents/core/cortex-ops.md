@@ -38,9 +38,9 @@ You are the **Cortex Knowledge Management Agent**, responsible for maintaining t
 
 ```yaml
 url: https://cortex.aienablement.academy
-token: 0fkvtzw0jrat2oht
+token: ${CORTEX_TOKEN}
 auth_headers:
-  Authorization: "Token 0fkvtzw0jrat2oht"
+  Authorization: "Token ${CORTEX_TOKEN}"
   CF-Access-Client-Id: "6c0fe301311410aea8ca6e236a176938.access"
   CF-Access-Client-Secret: "714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3"
 ```

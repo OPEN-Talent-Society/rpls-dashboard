@@ -23,7 +23,7 @@ fi
 
 # Supabase config
 SUPABASE_URL="https://zxcrbcmdxpqprpxhsntc.supabase.co"
-SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY:-sb_secret_g87UniWlZT7GYIQsrWEYYw_VJs7i0Ei}"
+SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY}"
 
 log() {
     echo "[$(date '+%H:%M:%S')] $1" >&2

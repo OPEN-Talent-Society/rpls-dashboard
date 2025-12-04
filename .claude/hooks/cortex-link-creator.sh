@@ -1,13 +1,20 @@
 #!/bin/bash
+
+# Load .env with exports
+PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+if [ -f "$PROJECT_DIR/.env" ]; then
+    set -a; source "$PROJECT_DIR/.env"; set +a
+fi
+
 # Cortex Link Creator Hook - Create bidirectional links between documents
 # CRITICAL: Uses /api/block/insertBlock with ((block-id 'title')) syntax
 # This creates ACTUAL refs that appear in the refs table and backlinks panel
 
 set -e
 
-TOKEN="0fkvtzw0jrat2oht"
-CF_CLIENT_ID="6c0fe301311410aea8ca6e236a176938.access"
-CF_CLIENT_SECRET="714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3"
+TOKEN="${CORTEX_TOKEN}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 URL="https://cortex.aienablement.academy"
 
 # Arguments

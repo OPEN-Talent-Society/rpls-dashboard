@@ -1,0 +1,10 @@
+{
+  "name": "creative-pipeline",
+  "version": "1.0.0",
+  "description": "Creative operations toolkit for AI-generated media, approvals, and asset management",
+  "author": {
+    "name": "AI Enablement Ops",
+    "email": "ops@aienablement.academy"
+  },
+  "license": "MIT"
+}

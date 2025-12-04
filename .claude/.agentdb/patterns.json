@@ -256,7 +256,7 @@
           "knowledge_base": "20251103053840-moamndp"
         },
         "api": {
-          "token": "0fkvtzw0jrat2oht",
+          "token": "${CORTEX_TOKEN}",
           "url": "https://cortex.aienablement.academy"
         },
         "archive_rule": ">30_days_completed"

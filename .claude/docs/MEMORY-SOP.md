@@ -66,10 +66,13 @@ This document defines the complete memory lifecycle for Claude Code sessions in 
 |---------|----------|---------|
 | Qdrant | http://qdrant.harbor.fyi | Vector embeddings for semantic search |
 
-**Collections:**
-- `patterns` - Embedded successful approaches
-- `learnings` - Embedded knowledge and insights
-- `trajectories` - Embedded decision paths
+**Single Collection Architecture:**
+- `agent_memory` - Unified collection for all memory types
+  - **Vector dimension**: 768 (Google Gemini embeddings)
+  - **Distance metric**: Cosine similarity
+  - **Filtering**: Type-based payload filtering (learning, pattern, trajectory, task, decision)
+  - **Indexes**: Payload indexes on `type` and `source` fields for fast filtering
+  - **Parent-child support**: Long documents chunked with parent_id linking
 
 ## Cold Layer (Cloud)
 
@@ -256,32 +259,87 @@ cat /tmp/claude-memory-sync-state
 
 ## Qdrant Collection Details
 
-### Collection Structure
+### Single Collection Structure
 
-Each Qdrant collection stores vector embeddings with metadata:
+The `agent_memory` collection uses a unified schema with type-based filtering:
 
-**patterns collection:**
-- Vector dimension: 1536 (OpenAI ada-002)
-- Payload: task, approach, reward, timestamp, session_id
-- Distance metric: Cosine similarity
+**agent_memory collection:**
+- **Vector dimension**: 768 (Google Gemini embeddings)
+- **Distance metric**: Cosine similarity
+- **Payload schema**:
+  ```json
+  {
+    "type": "learning|pattern|trajectory|task|decision",
+    "source": "agentdb|supabase|cortex|hivemind|swarm",
+    "content": "Full text content",
+    "metadata": {
+      "timestamp": "ISO-8601",
+      "session_id": "string",
+      "tags": ["array"],
+      "priority": "high|medium|low"
+    },
+    "parent_id": "optional - for chunked documents",
+    "chunk_index": "optional - chunk position in parent"
+  }
+  ```
+- **Payload indexes**: `type` and `source` fields indexed for fast filtering
 
-**learnings collection:**
-- Vector dimension: 1536
-- Payload: category, insight, source, tags, timestamp
-- Distance metric: Cosine similarity
+### Chunking Strategy
 
-**trajectories collection:**
-- Vector dimension: 1536
-- Payload: decision_path, outcome, context, session_id
-- Distance metric: Cosine similarity
+For long documents (>2000 tokens):
+
+1. **Chunk size**: 400 tokens per chunk
+2. **Overlap**: 10-15% overlap between chunks (40-60 tokens)
+3. **Parent-child linking**: All chunks reference parent via `parent_id`
+4. **Metadata preservation**: Each chunk inherits parent metadata
+5. **Reconstruction**: Query returns chunks + parent context
+
+**Benefits:**
+- Preserves semantic coherence across chunk boundaries
+- Enables retrieval of full context when needed
+- Optimizes vector search for large documents
 
 ### Indexing Process
 
-1. **Extraction**: Sync scripts pull text from source (AgentDB/Supabase)
-2. **Embedding**: Text converted to vectors using OpenAI embeddings
-3. **Upload**: Vectors + metadata stored in Qdrant collections
-4. **Verification**: Collection stats checked for successful indexing
+1. **Extraction**: Sync scripts pull text from source (AgentDB/Supabase/Cortex)
+2. **Chunking**: Long documents split into 400-token chunks with overlap
+3. **Embedding**: Text converted to 768-dim vectors using Google Gemini
+4. **Payload tagging**: Type, source, and metadata attached to each vector
+5. **Upload**: Vectors + metadata stored in `agent_memory` collection
+6. **Index creation**: Payload indexes built on `type` and `source` fields
+7. **Verification**: Collection stats checked for successful indexing
+
+### Querying with Filters
+
+```bash
+# Search only learning-type memories
+curl -X POST http://qdrant.harbor.fyi/collections/agent_memory/points/search \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vector": [embedding of query],
+    "limit": 10,
+    "filter": {
+      "must": [
+        {"key": "type", "match": {"value": "learning"}}
+      ]
+    }
+  }'
+
+# Search patterns from AgentDB source
+curl -X POST http://qdrant.harbor.fyi/collections/agent_memory/points/search \
+  -H "Content-Type: application/json" \
+  -d '{
+    "vector": [embedding of query],
+    "limit": 10,
+    "filter": {
+      "must": [
+        {"key": "type", "match": {"value": "pattern"}},
+        {"key": "source", "match": {"value": "agentdb"}}
+      ]
+    }
+  }'
+```
 
 ---
 
-*Last updated: 2025-12-03*
+*Last updated: 2025-12-03 - Migrated to single-collection Qdrant architecture with Gemini embeddings*

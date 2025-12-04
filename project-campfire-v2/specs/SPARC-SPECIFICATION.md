@@ -1,9 +1,9 @@
 # AI Enablement Academy v2 - SPARC Technical Specification
 
-**Version:** 2.1.0
+**Version:** 2.2.0
 **Created:** 2025-12-02
 **Last Updated:** 2025-12-03
-**Based on:** PRD v2.1.0
+**Based on:** PRD v2.2.0
 **Methodology:** SPARC (Specification, Pseudocode, Architecture, Refinement, Completion)
 
 ---
@@ -32,20 +32,21 @@ This specification is split into modular files for better maintainability, paral
 | Section | File | Description |
 |---------|------|-------------|
 | Overview | [00-overview.md](sections/00-overview.md) | Executive summary, tech stack, key decisions |
-| Schema | [01-schema.md](sections/01-schema.md) | Database schema (18 tables), Convex patterns |
-| SDKs | [02-sdk-integrations.md](sections/02-sdk-integrations.md) | 8 SDK integration patterns with TypeScript |
+| Schema | [01-schema.md](sections/01-schema.md) | Database schema (64 tables), Convex patterns |
+| SDKs | [02-sdk-integrations.md](sections/02-sdk-integrations.md) | 11 SDK integration patterns with TypeScript |
 | Learner Flows | [03a-pseudocode-learner.md](sections/03a-pseudocode-learner.md) | 6 learner user flows with FOMO/capacity |
 | Admin Flows | [03b-pseudocode-admin.md](sections/03b-pseudocode-admin.md) | 4 admin flows including B2B, waitlist |
 | System Flows | [03c-pseudocode-system.md](sections/03c-pseudocode-system.md) | Webhooks, crons, real-time, outbound webhooks |
 | Skills/Resources Flows | [03d-pseudocode-skills-resources.md](sections/03d-pseudocode-skills-resources.md) | Skills tracking, competency evidence, resource library |
 | Paths/Community Flows | [03e-pseudocode-paths-community.md](sections/03e-pseudocode-paths-community.md) | Learning paths, discussions, peer networking |
 | Assessments/Manager Flows | [03f-pseudocode-assessments-manager.md](sections/03f-pseudocode-assessments-manager.md) | Pre/post assessments, manager dashboard, B2B analytics |
-| Architecture | [04-architecture.md](sections/04-architecture.md) | System diagrams, data flows, component hierarchy, mobile/accessibility |
+| Content Management Flows | [03g-pseudocode-content-management.md](sections/03g-pseudocode-content-management.md) | Blog authoring, landing pages, media library, collaboration |
+| Architecture | [04-architecture.md](sections/04-architecture.md) | System diagrams, data flows, component hierarchy, mobile/accessibility, CMS architecture |
 | Edge Cases | [05-edge-cases.md](sections/05-edge-cases.md) | Error handling, race conditions, retries |
 | TDD Strategy | [06-tdd-strategy.md](sections/06-tdd-strategy.md) | London School TDD, 10 service interfaces |
-| Epics & Phases | [07-epics-phases.md](sections/07-epics-phases.md) | 16 epics, 5 phases, 9 parallel streams |
+| Epics & Phases | [07-epics-phases.md](sections/07-epics-phases.md) | 17 epics, 5 phases, 9 parallel streams |
 | Platform API | [08-platform-api.md](sections/08-platform-api.md) | REST API spec, webhooks, rate limiting |
-| MCP Server | [09-mcp-server.md](sections/09-mcp-server.md) | 10 MCP tools, 5 resources for AI agents |
+| MCP Server | [09-mcp-server.md](sections/09-mcp-server.md) | 16 MCP tools, 10 resources for AI agents |
 
 ---
 

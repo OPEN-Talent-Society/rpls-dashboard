@@ -11,9 +11,12 @@ Search Cortex (SiYuan) knowledge base for documents by content, tags, or type.
 ## API Pattern
 
 ```bash
-TOKEN="0fkvtzw0jrat2oht"
-CF_CLIENT_ID="6c0fe301311410aea8ca6e236a176938.access"
-CF_CLIENT_SECRET="714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3"
+# Load credentials from .env (NEVER hardcode tokens!)
+source /Users/adamkovacs/Documents/codebuild/.env
+
+TOKEN="${CORTEX_TOKEN}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 URL="https://cortex.aienablement.academy"
 
 # Search by content

@@ -1,0 +1,104 @@
+#!/bin/bash
+# ====================================================
+# TEST SEARCH: Verify Codebase Indexing
+# Tests semantic search against indexed codebase
+# ====================================================
+
+set -e
+
+# Load environment
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/../../../.." && pwd)"
+
+if [ -f "$PROJECT_ROOT/.env" ]; then
+  export $(grep -v '^#' "$PROJECT_ROOT/.env" | grep -v '^$' | xargs)
+fi
+
+# Configuration
+QDRANT_URL="${QDRANT_URL:-http://qdrant.harbor.fyi}"
+QDRANT_COLLECTION="${QDRANT_COLLECTION:-agent_memory}"
+GEMINI_API_KEY="${GEMINI_API_KEY}"
+EMBEDDING_MODEL="text-embedding-004"
+
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+NC='\033[0m'
+
+echo -e "${BLUE}🔍 Testing Codebase Search${NC}"
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+
+# Test queries
+QUERIES=(
+  "How do I create documents in Cortex?"
+  "What hooks handle memory synchronization?"
+  "Show me session management scripts"
+  "How to log learnings to NocoDB?"
+)
+
+# Function to generate embedding
+generate_embedding() {
+  local text="$1"
+  local escaped_text=$(echo "$text" | jq -Rs .)
+
+  local response=$(curl -s -X POST \
+    "https://generativelanguage.googleapis.com/v1beta/models/$EMBEDDING_MODEL:embedContent?key=$GEMINI_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d "{\"content\": {\"parts\": [{\"text\": $escaped_text}]}}")
+
+  echo "$response" | jq -c '.embedding.values'
+}
+
+# Function to search
+search_codebase() {
+  local query="$1"
+
+  echo -e "\n${YELLOW}Query:${NC} \"$query\""
+
+  # Generate query embedding
+  local query_vector=$(generate_embedding "$query")
+
+  if [ -z "$query_vector" ] || [ "$query_vector" == "null" ]; then
+    echo -e "${RED}❌ Failed to generate query embedding${NC}"
+    return 1
+  fi
+
+  # Search Qdrant
+  local search_payload=$(jq -n \
+    --argjson vector "$query_vector" \
+    '{
+      vector: $vector,
+      limit: 3,
+      with_payload: true,
+      filter: {
+        must: [
+          {
+            key: "type",
+            match: { value: "code" }
+          }
+        ]
+      }
+    }')
+
+  local results=$(curl -s -X POST \
+    "$QDRANT_URL/collections/$QDRANT_COLLECTION/points/search" \
+    -H "Content-Type: application/json" \
+    -d "$search_payload")
+
+  # Display results
+  echo "$results" | jq -r '
+    .result[] |
+    "  \u001b[32m✓\u001b[0m Score: \(.score | tostring | .[0:5]) | File: \(.payload.file_path)\n    \(.payload.symbols // "N/A")"
+  '
+}
+
+# Run test queries
+for query in "${QUERIES[@]}"; do
+  search_codebase "$query"
+  sleep 1  # Rate limiting
+done
+
+echo -e "\n${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo -e "${GREEN}✅ Search test complete!${NC}"
+echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"

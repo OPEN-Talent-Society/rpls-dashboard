@@ -1,0 +1,314 @@
+{
+  "deduplication_plan": {
+    "generated": "2025-12-03T22:00:00Z",
+    "status": "READY_FOR_REVIEW",
+    "total_duplicates_to_delete": 48,
+    "total_documents_to_keep": 9,
+    "notebook": "20251201183343-ujsixib",
+    "duplicate_groups": [
+      {
+        "group_id": 1,
+        "title": "Create-unified-memory-sync-system-across-6-backend-20251203",
+        "total_count": 7,
+        "keep": {
+          "id": "20251203215319-u28hqg5",
+          "created": "20251203215319",
+          "reason": "Newest timestamp, has custom-source=agentdb, reward=1.0"
+        },
+        "delete": [
+          {"id": "20251203201028-xqx59mt", "created": "20251203201028"},
+          {"id": "20251203200344-0poq7or", "created": "20251203200344"},
+          {"id": "20251203200316-0a03d0j", "created": "20251203200316"},
+          {"id": "20251203200147-74quqy5", "created": "20251203200147"},
+          {"id": "20251203180017-7jg30jv", "created": "20251203180017"},
+          {"id": "20251203175423-aht7m9s", "created": "20251203175423"}
+        ]
+      },
+      {
+        "group_id": 2,
+        "title": "Standardize-memory-system-with-6-backends-fix-Cort-20251203",
+        "total_count": 7,
+        "keep": {
+          "id": "20251203215317-zla8xo6",
+          "created": "20251203215317",
+          "reason": "Newest timestamp, has custom-source=agentdb, reward=0.95"
+        },
+        "delete": [
+          {"id": "20251203201027-j03ymms", "created": "20251203201027"},
+          {"id": "20251203200343-s8z7y6h", "created": "20251203200343"},
+          {"id": "20251203200315-r9d6u4m", "created": "20251203200315"},
+          {"id": "20251203200146-cyqblah", "created": "20251203200146"},
+          {"id": "20251203180017-avjt9yz", "created": "20251203180017"},
+          {"id": "20251203175422-ss1qxvm", "created": "20251203175422"}
+        ]
+      },
+      {
+        "group_id": 3,
+        "title": "Configure-Brevo-SMTP-for-Calcom-email-sending-20251203",
+        "total_count": 7,
+        "keep": {
+          "id": "20251203215322-2oqca1t",
+          "created": "20251203215322",
+          "reason": "Newest timestamp"
+        },
+        "delete": [
+          {"id": "20251203201031-18yfjc9", "created": "20251203201031"},
+          {"id": "20251203200347-gxc4fb5", "created": "20251203200347"},
+          {"id": "20251203200319-o8shxd3", "created": "20251203200319"},
+          {"id": "20251203200150-me4c35e", "created": "20251203200150"},
+          {"id": "20251203180021-30m1xvy", "created": "20251203180021"},
+          {"id": "20251203175426-7kf4oa4", "created": "20251203175426"}
+        ]
+      },
+      {
+        "group_id": 4,
+        "title": "Create-infrastructure-skills-Brevo-OCI-Cloudflare--20251203",
+        "total_count": 7,
+        "keep": {
+          "id": "20251203215321-kwkvmzb",
+          "created": "20251203215321",
+          "reason": "Newest timestamp"
+        },
+        "delete": [
+          {"id": "20251203201030-rzy8hym", "created": "20251203201030"},
+          {"id": "20251203200346-gq7bku6", "created": "20251203200346"},
+          {"id": "20251203200318-c31uh2y", "created": "20251203200318"},
+          {"id": "20251203200150-rutm3cn", "created": "20251203200150"},
+          {"id": "20251203180020-ax85lra", "created": "20251203180020"},
+          {"id": "20251203175426-t6cfujw", "created": "20251203175426"}
+        ]
+      },
+      {
+        "group_id": 5,
+        "title": "Find-Cloudflare-DNS-API-credentials-for-aienableme-20251203",
+        "total_count": 6,
+        "keep": {
+          "id": "20251203201031-0v8omkt",
+          "created": "20251203201031",
+          "reason": "Newest timestamp"
+        },
+        "delete": [
+          {"id": "20251203200347-s6zuhiy", "created": "20251203200347"},
+          {"id": "20251203200319-59b9b1k", "created": "20251203200319"},
+          {"id": "20251203200151-eoypytu", "created": "20251203200151"},
+          {"id": "20251203180021-3dxrfxv", "created": "20251203180021"},
+          {"id": "20251203175427-6g1319n", "created": "20251203175427"}
+        ]
+      },
+      {
+        "group_id": 6,
+        "title": "Fix-useSession-prerendering-error-in-Nextjs-15-20251203",
+        "total_count": 6,
+        "keep": {
+          "id": "20251203201032-hp41clr",
+          "created": "20251203201032",
+          "reason": "Newest timestamp"
+        },
+        "delete": [
+          {"id": "20251203200348-nh4t2zv", "created": "20251203200348"},
+          {"id": "20251203200320-yjdwunn", "created": "20251203200320"},
+          {"id": "20251203200151-uw6qvqa", "created": "20251203200151"},
+          {"id": "20251203180022-o4ffboo", "created": "20251203180022"},
+          {"id": "20251203175427-tr7yo60", "created": "20251203175427"}
+        ]
+      },
+      {
+        "group_id": 7,
+        "title": "Troubleshoot-Calcom-selfhosted-deployment-issues-t-20251203",
+        "total_count": 7,
+        "keep": {
+          "id": "20251203215321-hvs50oi",
+          "created": "20251203215321",
+          "reason": "Newest timestamp"
+        },
+        "delete": [
+          {"id": "20251203201030-zi6u5r3", "created": "20251203201030"},
+          {"id": "20251203200346-kfjb8r0", "created": "20251203200346"},
+          {"id": "20251203200318-hhoyxo2", "created": "20251203200318"},
+          {"id": "20251203200149-6ahru85", "created": "20251203200149"},
+          {"id": "20251203180020-x8siyjx", "created": "20251203180020"},
+          {"id": "20251203175425-zg0ufze", "created": "20251203175425"}
+        ]
+      },
+      {
+        "group_id": 8,
+        "title": "Update-claudeflow-MCP-to-use-claudeflowlatest-inst-20251203",
+        "total_count": 7,
+        "keep": {
+          "id": "20251203215320-j8kzlfg",
+          "created": "20251203215320",
+          "reason": "Newest timestamp"
+        },
+        "delete": [
+          {"id": "20251203201029-ox7j2v9", "created": "20251203201029"},
+          {"id": "20251203200345-5dmu9sr", "created": "20251203200345"},
+          {"id": "20251203200317-ybikkke", "created": "20251203200317"},
+          {"id": "20251203200148-98bdim1", "created": "20251203200148"},
+          {"id": "20251203180019-t2oesic", "created": "20251203180019"},
+          {"id": "20251203175424-8u5u1mp", "created": "20251203175424"}
+        ]
+      },
+      {
+        "group_id": 9,
+        "title": "Verify-claudeflow-implementation-per-GitHub-issue--20251203",
+        "total_count": 7,
+        "keep": {
+          "id": "20251203215319-a02sook",
+          "created": "20251203215319",
+          "reason": "Newest timestamp"
+        },
+        "delete": [
+          {"id": "20251203201028-5e6il8z", "created": "20251203201028"},
+          {"id": "20251203200344-amktzke", "created": "20251203200344"},
+          {"id": "20251203200316-q5maotj", "created": "20251203200316"},
+          {"id": "20251203200148-f5bi3ul", "created": "20251203200148"},
+          {"id": "20251203180018-oojdqgo", "created": "20251203180018"},
+          {"id": "20251203175424-lep6875", "created": "20251203175424"}
+        ]
+      },
+      {
+        "group_id": 10,
+        "title": "Verify-claudeflow-installation-and-configuration-f-20251203",
+        "total_count": 7,
+        "keep": {
+          "id": "20251203215320-58bibyx",
+          "created": "20251203215320",
+          "reason": "Newest timestamp"
+        },
+        "delete": [
+          {"id": "20251203201029-y5oj7i5", "created": "20251203201029"},
+          {"id": "20251203200345-ld220xx", "created": "20251203200345"},
+          {"id": "20251203200317-z1codoa", "created": "20251203200317"},
+          {"id": "20251203200149-4dtjjry", "created": "20251203200149"},
+          {"id": "20251203180019-a04gbzu", "created": "20251203180019"},
+          {"id": "20251203175425-dwnrpuc", "created": "20251203175425"}
+        ]
+      }
+    ]
+  },
+  "execution_scripts": {
+    "test_single_deletion": {
+      "description": "Test deletion of one document before bulk operation",
+      "document_id": "20251203175423-aht7m9s",
+      "siyuan_api_call": {
+        "endpoint": "/api/filetree/removeDoc",
+        "payload": {
+          "notebook": "20251201183343-ujsixib",
+          "path": "/data/20251201183343-ujsixib/20251203175423-aht7m9s.sy"
+        }
+      }
+    },
+    "bulk_deletion_batches": {
+      "description": "Delete all duplicates in batches of 10",
+      "total_batches": 5,
+      "batches": [
+        {
+          "batch_id": 1,
+          "document_ids": [
+            "20251203201028-xqx59mt",
+            "20251203200344-0poq7or",
+            "20251203200316-0a03d0j",
+            "20251203200147-74quqy5",
+            "20251203180017-7jg30jv",
+            "20251203175423-aht7m9s",
+            "20251203201027-j03ymms",
+            "20251203200343-s8z7y6h",
+            "20251203200315-r9d6u4m",
+            "20251203200146-cyqblah"
+          ]
+        },
+        {
+          "batch_id": 2,
+          "document_ids": [
+            "20251203180017-avjt9yz",
+            "20251203175422-ss1qxvm",
+            "20251203201031-18yfjc9",
+            "20251203200347-gxc4fb5",
+            "20251203200319-o8shxd3",
+            "20251203200150-me4c35e",
+            "20251203180021-30m1xvy",
+            "20251203175426-7kf4oa4",
+            "20251203201030-rzy8hym",
+            "20251203200346-gq7bku6"
+          ]
+        },
+        {
+          "batch_id": 3,
+          "document_ids": [
+            "20251203200318-c31uh2y",
+            "20251203200150-rutm3cn",
+            "20251203180020-ax85lra",
+            "20251203175426-t6cfujw",
+            "20251203200347-s6zuhiy",
+            "20251203200319-59b9b1k",
+            "20251203200151-eoypytu",
+            "20251203180021-3dxrfxv",
+            "20251203175427-6g1319n",
+            "20251203200348-nh4t2zv"
+          ]
+        },
+        {
+          "batch_id": 4,
+          "document_ids": [
+            "20251203200320-yjdwunn",
+            "20251203200151-uw6qvqa",
+            "20251203180022-o4ffboo",
+            "20251203175427-tr7yo60",
+            "20251203201030-zi6u5r3",
+            "20251203200346-kfjb8r0",
+            "20251203200318-hhoyxo2",
+            "20251203200149-6ahru85",
+            "20251203180020-x8siyjx",
+            "20251203175425-zg0ufze"
+          ]
+        },
+        {
+          "batch_id": 5,
+          "document_ids": [
+            "20251203201029-ox7j2v9",
+            "20251203200345-5dmu9sr",
+            "20251203200317-ybikkke",
+            "20251203200148-98bdim1",
+            "20251203180019-t2oesic",
+            "20251203175424-8u5u1mp",
+            "20251203201028-5e6il8z",
+            "20251203200344-amktzke"
+          ]
+        },
+        {
+          "batch_id": 6,
+          "document_ids": [
+            "20251203200316-q5maotj",
+            "20251203200148-f5bi3ul",
+            "20251203180018-oojdqgo",
+            "20251203175424-lep6875",
+            "20251203201029-y5oj7i5",
+            "20251203200345-ld220xx",
+            "20251203200317-z1codoa",
+            "20251203200149-4dtjjry",
+            "20251203180019-a04gbzu",
+            "20251203175425-dwnrpuc"
+          ]
+        }
+      ]
+    }
+  },
+  "verification_queries": {
+    "before_deletion": "SELECT COUNT(*) as total_docs FROM blocks WHERE type='d' AND box='20251201183343-ujsixib'",
+    "after_deletion": "SELECT COUNT(*) as total_docs FROM blocks WHERE type='d' AND box='20251201183343-ujsixib'",
+    "verify_kept_documents": "SELECT id, content FROM blocks WHERE type='d' AND id IN ('20251203215319-u28hqg5', '20251203215317-zla8xo6', '20251203215322-2oqca1t', '20251203215321-kwkvmzb', '20251203201031-0v8omkt', '20251203201032-hp41clr', '20251203215321-hvs50oi', '20251203215320-j8kzlfg', '20251203215319-a02sook', '20251203215320-58bibyx')"
+  },
+  "prevention_recommendations": {
+    "immediate": [
+      "Add deduplication check to AgentDB → Cortex sync",
+      "Check if document exists by title before creating",
+      "Update existing document instead of creating new one"
+    ],
+    "long_term": [
+      "Implement unique constraint on document titles + date",
+      "Add sync transaction logging",
+      "Create cleanup cron job for duplicate detection",
+      "Add metrics for duplicate rate monitoring"
+    ]
+  }
+}

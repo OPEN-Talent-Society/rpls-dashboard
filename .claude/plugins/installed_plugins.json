@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "plugins": {
+    "infrastructure-operations@local": {
+      "version": "1.0.0",
+      "installedAt": "2025-10-27T01:32:09.609Z",
+      "lastUpdated": "2025-10-27T01:32:09.609Z",
+      "installPath": "/Users/adamkovacs/Documents/codebuild/claude-code/.claude/marketplaces/local/infrastructure-operations",
+      "gitCommitSha": "0c3adce31ce77cb9a80a2297f47e3f613e521d74",
+      "isLocal": true
+    },
+    "commit-commands@local": {
+      "version": "1.0.0",
+      "installedAt": "2025-10-27T02:46:14.680Z",
+      "lastUpdated": "2025-10-27T02:46:14.680Z",
+      "installPath": "/Users/adamkovacs/Documents/codebuild/claude-code/.claude/marketplaces/local/commit-commands",
+      "gitCommitSha": "0c3adce31ce77cb9a80a2297f47e3f613e521d74",
+      "isLocal": true
+    },
+    "feature-dev@local": {
+      "version": "1.0.0",
+      "installedAt": "2025-10-27T02:46:14.680Z",
+      "lastUpdated": "2025-10-27T02:46:14.680Z",
+      "installPath": "/Users/adamkovacs/Documents/codebuild/claude-code/.claude/marketplaces/local/feature-dev",
+      "gitCommitSha": "0c3adce31ce77cb9a80a2297f47e3f613e521d74",
+      "isLocal": true
+    },
+    "code-review@local": {
+      "version": "1.0.0",
+      "installedAt": "2025-10-27T02:46:14.680Z",
+      "lastUpdated": "2025-10-27T02:46:14.680Z",
+      "installPath": "/Users/adamkovacs/Documents/codebuild/claude-code/.claude/marketplaces/local/code-review",
+      "gitCommitSha": "0c3adce31ce77cb9a80a2297f47e3f613e521d74",
+      "isLocal": true
+    },
+    "pr-review-toolkit@local": {
+      "version": "1.0.0",
+      "installedAt": "2025-10-27T02:46:14.680Z",
+      "lastUpdated": "2025-10-27T02:46:14.680Z",
+      "installPath": "/Users/adamkovacs/Documents/codebuild/claude-code/.claude/marketplaces/local/pr-review-toolkit",
+      "gitCommitSha": "0c3adce31ce77cb9a80a2297f47e3f613e521d74",
+      "isLocal": true
+    },
+    "security-guidance@local": {
+      "version": "1.0.0",
+      "installedAt": "2025-10-27T02:46:14.680Z",
+      "lastUpdated": "2025-10-27T02:46:14.680Z",
+      "installPath": "/Users/adamkovacs/Documents/codebuild/claude-code/.claude/marketplaces/local/security-guidance",
+      "gitCommitSha": "0c3adce31ce77cb9a80a2297f47e3f613e521d74",
+      "isLocal": true
+    },
+    "product-frameworks@local": {
+      "version": "1.0.0",
+      "installedAt": "2025-10-27T03:47:24.059Z",
+      "lastUpdated": "2025-10-27T03:47:24.059Z",
+      "installPath": "/Users/adamkovacs/Documents/codebuild/claude-code/.claude/marketplaces/local/product-frameworks",
+      "gitCommitSha": "0c3adce31ce77cb9a80a2297f47e3f613e521d74",
+      "isLocal": true
+    }
+  }
+}

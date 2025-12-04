@@ -8,13 +8,14 @@
     "status": "ACTIVE_HEALTHY"
   },
   "credentials": {
-    "note": "Actual secrets stored in .env file",
+    "note": "ALL credentials stored in .env file - NEVER hardcode tokens!",
     "env_vars": {
       "SUPABASE_URL": "https://zxcrbcmdxpqprpxhsntc.supabase.co",
-      "SUPABASE_ACCESS_TOKEN": "sbp_d43129bca38ecdf4008ad3622f6f84ec866a84d0",
-      "SUPABASE_ANON_KEY": "sb_publishable_BI1-ojV23xWqWShHnXAKLQ_P8-XP4oi",
-      "SUPABASE_SERVICE_ROLE_KEY": "sb_secret_g87UniWlZT7GYIQsrWEYYw_VJs7i0Ei"
-    }
+      "SUPABASE_ACCESS_TOKEN": "${SUPABASE_ACCESS_TOKEN}",
+      "SUPABASE_ANON_KEY": "${SUPABASE_ANON_KEY}",
+      "SUPABASE_SERVICE_ROLE_KEY": "${SUPABASE_SERVICE_ROLE_KEY}"
+    },
+    "load_pattern": "source /Users/adamkovacs/Documents/codebuild/.env"
   },
   "tables": {
     "agent_memory": {
@@ -84,5 +85,5 @@
     "policies": ["Service role has full access to all tables"]
   },
   "created": "2025-12-01T02:02:00Z",
-  "updated": "2025-12-01T02:02:00Z"
+  "updated": "2025-12-04T12:30:00Z"
 }

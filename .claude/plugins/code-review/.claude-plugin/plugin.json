@@ -1,0 +1,11 @@
+{
+  "name": "code-review",
+  "version": "1.0.0",
+  "description": "Automated multi-agent code review workflow for pull requests",
+  "author": {
+    "name": "Anthropic"
+  },
+  "commands": [
+    "./commands/code-review.md"
+  ]
+}

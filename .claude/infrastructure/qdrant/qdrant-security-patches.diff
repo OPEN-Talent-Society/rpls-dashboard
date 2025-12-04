@@ -1,0 +1,148 @@
+--- Patch file for adding Qdrant API key authentication to sync scripts ---
+--- Apply with: patch < qdrant-security-patches.diff ---
+
+This patch adds API key headers to all Qdrant API calls.
+Manual updates required for each script that uses Qdrant:
+
+PATTERN 1: Basic curl requests
+================================
+OLD:
+  curl http://192.168.50.149:6333/collections
+
+NEW:
+  curl -H "api-key: ${QDRANT_API_KEY}" https://qdrant.harbor.fyi/collections
+
+
+PATTERN 2: curl with JSON data
+================================
+OLD:
+  curl -X POST http://192.168.50.149:6333/collections/my-collection/points \
+       -H "Content-Type: application/json" \
+       -d '{"points": [...]}'
+
+NEW:
+  curl -X POST https://qdrant.harbor.fyi/collections/my-collection/points \
+       -H "Content-Type: application/json" \
+       -H "api-key: ${QDRANT_API_KEY}" \
+       -d '{"points": [...]}'
+
+
+PATTERN 3: curl with Cloudflare Access (optional)
+===================================================
+OLD:
+  curl -H "api-key: ${QDRANT_API_KEY}" https://qdrant.harbor.fyi/collections
+
+NEW:
+  curl -H "api-key: ${QDRANT_API_KEY}" \
+       -H "CF-Access-Client-Id: ${CF_ACCESS_CLIENT_ID}" \
+       -H "CF-Access-Client-Secret: ${CF_ACCESS_CLIENT_SECRET}" \
+       https://qdrant.harbor.fyi/collections
+
+
+PATTERN 4: JavaScript/TypeScript fetch
+========================================
+OLD:
+  fetch('http://192.168.50.149:6333/collections')
+
+NEW:
+  fetch('https://qdrant.harbor.fyi/collections', {
+    headers: {
+      'api-key': process.env.QDRANT_API_KEY
+    }
+  })
+
+
+PATTERN 5: JavaScript/TypeScript fetch with POST
+==================================================
+OLD:
+  fetch('http://192.168.50.149:6333/collections/test/points', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ points: [...] })
+  })
+
+NEW:
+  fetch('https://qdrant.harbor.fyi/collections/test/points', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'api-key': process.env.QDRANT_API_KEY
+    },
+    body: JSON.stringify({ points: [...] })
+  })
+
+
+PATTERN 6: Python requests
+============================
+OLD:
+  import requests
+  requests.get('http://192.168.50.149:6333/collections')
+
+NEW:
+  import requests
+  import os
+
+  headers = {'api-key': os.environ['QDRANT_API_KEY']}
+  requests.get('https://qdrant.harbor.fyi/collections', headers=headers)
+
+
+PATTERN 7: Qdrant Python client
+=================================
+OLD:
+  from qdrant_client import QdrantClient
+  client = QdrantClient(host="192.168.50.149", port=6333)
+
+NEW:
+  from qdrant_client import QdrantClient
+  import os
+
+  client = QdrantClient(
+      url="https://qdrant.harbor.fyi",
+      api_key=os.environ['QDRANT_API_KEY']
+  )
+
+
+PATTERN 8: Qdrant JavaScript client
+=====================================
+OLD:
+  const { QdrantClient } = require('@qdrant/js-client-rest');
+  const client = new QdrantClient({ host: '192.168.50.149', port: 6333 });
+
+NEW:
+  const { QdrantClient } = require('@qdrant/js-client-rest');
+  const client = new QdrantClient({
+    url: 'https://qdrant.harbor.fyi',
+    apiKey: process.env.QDRANT_API_KEY
+  });
+
+
+ENVIRONMENT VARIABLES NEEDED:
+===============================
+Add to your shell profile (~/.bashrc, ~/.zshrc, etc.):
+
+  export QDRANT_API_KEY="your-admin-api-key"
+  export QDRANT_READ_ONLY_API_KEY="your-readonly-api-key"
+  export QDRANT_URL="https://qdrant.harbor.fyi"
+
+  # Optional: Cloudflare Access
+  export CF_ACCESS_CLIENT_ID="your-client-id"
+  export CF_ACCESS_CLIENT_SECRET="your-client-secret"
+
+  # Optional: Tailscale
+  export QDRANT_TAILSCALE_URL="http://100.x.x.x:6333"
+
+
+SCRIPTS TO UPDATE (examples):
+===============================
+Search for files using Qdrant:
+
+  cd /Users/adamkovacs/Documents/codebuild
+  grep -r "192.168.50.149:6333" --include="*.sh" --include="*.js" --include="*.ts"
+  grep -r "qdrant" --include="*.sh" --include="*.js" --include="*.ts" | grep -i "curl\|fetch\|client"
+
+Common locations:
+  - .claude/hooks/*.sh
+  - .claude/skills/*/sync.sh
+  - scripts/*sync*.sh
+  - src/utils/qdrant*.ts
+  - lib/qdrant*.js

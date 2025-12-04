@@ -6,7 +6,8 @@ PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
 source "$PROJECT_DIR/.env" 2>/dev/null || true
 
 SUPABASE_URL="${PUBLIC_SUPABASE_URL:-https://zxcrbcmdxpqprpxhsntc.supabase.co}"
-SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY}"
+# Use anon key which is available, fallback to service role key
+SUPABASE_KEY="${PUBLIC_SUPABASE_ANON_KEY:-${SUPABASE_SERVICE_ROLE_KEY}}"
 
 echo "╔══════════════════════════════════════════════════════════════╗"
 echo "║              UNIFIED MEMORY STATISTICS                       ║"
@@ -91,16 +92,19 @@ echo ""
 
 # Qdrant Stats
 echo "┌─ Qdrant (Semantic Layer) ─────────────────────────────────────"
-QDRANT_URL="${QDRANT_URL:-http://qdrant.harbor.fyi}"
+QDRANT_URL="${QDRANT_URL:-https://qdrant.harbor.fyi}"
+# Fix: Use HTTPS and API key for Qdrant
+QDRANT_URL_HTTPS="${QDRANT_URL/http:/https:}"
 for collection in agent_memory learnings patterns codebase; do
-    COUNT=$(curl -s "${QDRANT_URL}/collections/${collection}" | jq -r '.result.points_count // 0' 2>/dev/null)
-    if [ "$COUNT" = "0" ] || [ -z "$COUNT" ]; then
+    COUNT=$(curl -s "${QDRANT_URL_HTTPS}/collections/${collection}" \
+        -H "api-key: ${QDRANT_API_KEY}" | jq -r '.result.points_count // 0' 2>/dev/null)
+    if [ "$COUNT" = "0" ] || [ -z "$COUNT" ] || [ "$COUNT" = "null" ]; then
         echo "│  $collection: Not initialized"
     else
         echo "│  $collection: $COUNT vectors"
     fi
 done
-echo "│  URL: $QDRANT_URL"
+echo "│  URL: $QDRANT_URL_HTTPS"
 echo "└──────────────────────────────────────────────────────────────"
 echo ""
 

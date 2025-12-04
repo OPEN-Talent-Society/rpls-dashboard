@@ -42,7 +42,20 @@
     "@vercel/analytics": "^1.5.0",
     "@vercel/speed-insights": "^1.2.0",
     "chart.js": "^4.4.1",
+    "neural-trader": "^2.6.3",
     "postgres": "^3.4.7"
   },
-  "type": "module"
+  "type": "module",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "agentdb",
+      "agentic-flow",
+      "better-sqlite3",
+      "esbuild",
+      "hnswlib-node",
+      "neural-trader",
+      "protobufjs",
+      "sharp"
+    ]
+  }
 }

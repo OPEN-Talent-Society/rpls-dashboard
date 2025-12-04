@@ -3978,3 +3978,103 @@ export function CollaborativeEditor({ documentId }: { documentId: string }) {
 ```
 
 ---
+
+---
+
+## 9. BlockNote Editor
+
+### Installation
+```bash
+pnpm add @blocknote/core @blocknote/react @blocknote/mantine @convex-dev/prosemirror-sync
+```
+
+### Configuration
+```typescript
+// lib/blocknote/editor.tsx
+import { useBlockNoteSync } from "@convex-dev/prosemirror-sync/blocknote";
+import { BlockNoteView } from "@blocknote/mantine";
+import { api } from "../convex/_generated/api";
+
+export function BlockNoteEditor({ documentId }: { documentId: string }) {
+  const sync = useBlockNoteSync(api.prosemirrorSync, documentId);
+  
+  if (sync.isLoading) return <p>Loading...</p>;
+  if (!sync.editor) {
+    return <button onClick={() => sync.create({ type: "doc", content: [] })}>Create</button>;
+  }
+  return <BlockNoteView editor={sync.editor} />;
+}
+```
+
+### Key Patterns
+- Real-time sync via Convex ProseMirror component
+- Custom blocks: Callout, CodeBlock, VideoEmbed
+- Image upload to Convex storage
+- Markdown import/export
+
+### Error Handling
+- SYNC_FAILED: Reconnect with exponential backoff
+- UPLOAD_FAILED: Retry with smaller chunks
+
+---
+
+## 10. Puck Page Builder
+
+### Installation
+```bash
+pnpm add @measured/puck
+```
+
+### Configuration
+```typescript
+// lib/puck/config.tsx
+import { Config } from "@measured/puck";
+
+export const puckConfig: Config = {
+  components: {
+    Hero: {
+      fields: { title: { type: "text" }, subtitle: { type: "textarea" } },
+      render: ({ title, subtitle }) => (
+        <section className="hero"><h1>{title}</h1><p>{subtitle}</p></section>
+      ),
+    },
+    CTA: { /* ... */ },
+    Features: { /* ... */ },
+    Testimonials: { /* ... */ },
+    PricingTable: { /* ... */ },
+    FAQ: { /* ... */ },
+  },
+};
+```
+
+### Key Patterns
+- Custom component library for marketing pages
+- Convex data binding for dynamic content
+- Template system for quick starts
+- Responsive preview toolbar
+
+---
+
+## 11. Convex ProseMirror Sync
+
+### Installation
+```bash
+pnpm add @convex-dev/prosemirror-sync
+```
+
+### Configuration
+```typescript
+// convex/convex.config.ts
+import { defineApp } from "convex/server";
+import prosemirrorSync from "@convex-dev/prosemirror-sync/convex.config";
+
+const app = defineApp();
+app.use(prosemirrorSync);
+export default app;
+```
+
+### Key Patterns
+- Document creation with `sync.create()`
+- Real-time collaboration with cursor presence
+- Version snapshots on save
+- Conflict resolution via OT

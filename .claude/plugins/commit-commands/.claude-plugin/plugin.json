@@ -1,0 +1,13 @@
+{
+  "name": "commit-commands",
+  "version": "1.0.0",
+  "description": "Streamlined git commit, push, and PR workflows for Claude Code",
+  "author": {
+    "name": "Anthropic"
+  },
+  "commands": [
+    "./commands/commit.md",
+    "./commands/commit-push-pr.md",
+    "./commands/clean_gone.md"
+  ]
+}

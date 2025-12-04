@@ -7,18 +7,20 @@ set -e
 PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
 source "$PROJECT_DIR/.env" 2>/dev/null || true
 
-# Cortex/SiYuan config
-SIYUAN_BASE_URL="${SIYUAN_BASE_URL:-https://cortex.aienablement.academy}"
-SIYUAN_API_TOKEN="${SIYUAN_API_TOKEN:-0fkvtzw0jrat2oht}"
+# Cortex/SiYuan config - requires Cloudflare Zero Trust headers
+CORTEX_URL="${CORTEX_URL:-https://cortex.aienablement.academy}"
+CORTEX_API_TOKEN="${CORTEX_TOKEN}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 
-# Supabase config (source)
+# Supabase config (source) - use anon key, falls back to service role
 SUPABASE_URL="${PUBLIC_SUPABASE_URL:-https://zxcrbcmdxpqprpxhsntc.supabase.co}"
-SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY}"
+SUPABASE_KEY="${PUBLIC_SUPABASE_ANON_KEY:-${SUPABASE_SERVICE_ROLE_KEY}}"
 
 echo "🔄 Syncing to Cortex (SiYuan)"
-echo "   Target: $SIYUAN_BASE_URL"
+echo "   Target: $CORTEX_URL"
 
-# Function to create a document in Cortex
+# Function to create a document in Cortex (with Cloudflare headers)
 create_cortex_doc() {
     local NOTEBOOK="$1"
     local TITLE="$2"
@@ -34,9 +36,11 @@ $CONTENT
 *Synced from Supabase: $(date -u +%Y-%m-%dT%H:%M:%SZ)*
 *Tags: $TAGS*"
 
-    # Create document via SiYuan API
-    curl -s -X POST "${SIYUAN_BASE_URL}/api/filetree/createDocWithMd" \
-        -H "Authorization: Token ${SIYUAN_API_TOKEN}" \
+    # Create document via SiYuan API with Cloudflare Zero Trust headers
+    curl -s -X POST "${CORTEX_URL}/api/filetree/createDocWithMd" \
+        -H "Authorization: Token ${CORTEX_API_TOKEN}" \
+        -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
+        -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
         -H "Content-Type: application/json" \
         -d "{
             \"notebook\": \"$NOTEBOOK\",

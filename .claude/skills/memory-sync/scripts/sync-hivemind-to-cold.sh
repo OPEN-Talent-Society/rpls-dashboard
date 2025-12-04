@@ -10,15 +10,15 @@ source "$PROJECT_DIR/.env" 2>/dev/null || true
 
 # Supabase config
 SUPABASE_URL="${PUBLIC_SUPABASE_URL:-https://zxcrbcmdxpqprpxhsntc.supabase.co}"
-SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY:-sb_secret_g87UniWlZT7GYIQsrWEYYw_VJs7i0Ei}"
+SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY}"
 
 # Cortex config
 SIYUAN_BASE_URL="${CORTEX_URL:-https://cortex.aienablement.academy}"
-SIYUAN_API_TOKEN="${CORTEX_TOKEN:-0fkvtzw0jrat2oht}"
+SIYUAN_API_TOKEN="${CORTEX_TOKEN}"
 
 # Cloudflare Zero Trust (required for Cortex access)
-CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID:-6c0fe301311410aea8ca6e236a176938.access}"
-CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET:-714c7fc0d9cf883295d1c5eb730ecb64e9b5fe0418605009cafde13b4900afb3}"
+CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
+CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 
 echo "🐝 Syncing Hive-Mind → Cold Storage"
 
@@ -41,13 +41,18 @@ for HIVE_FILE in $HIVE_FILES; do
 
     # 1. Sync knowledge_base entries to Supabase learnings
     echo "  📚 Syncing knowledge_base..."
-    KNOWLEDGE=$(cat "$HIVE_FILE" | jq -c '.knowledge_base[]?' 2>/dev/null)
+    # Check if knowledge_base is an array of objects
+    KB_TYPE=$(cat "$HIVE_FILE" | jq -r 'if (.knowledge_base | type) == "array" then "array" else "other" end' 2>/dev/null)
 
-    if [ -n "$KNOWLEDGE" ]; then
-        echo "$KNOWLEDGE" | while read -r entry; do
-            TOPIC=$(echo "$entry" | jq -r '.topic // .key // "hive-knowledge"')
-            CONTENT=$(echo "$entry" | jq -r '.content // .value // ""')
-            CATEGORY=$(echo "$entry" | jq -r '.category // "hive-mind"')
+    if [ "$KB_TYPE" = "array" ]; then
+        KB_COUNT=$(cat "$HIVE_FILE" | jq '.knowledge_base | length' 2>/dev/null || echo "0")
+        for i in $(seq 0 $((KB_COUNT - 1))); do
+            entry=$(cat "$HIVE_FILE" | jq -c ".knowledge_base[$i]" 2>/dev/null)
+            [ -z "$entry" ] || [ "$entry" = "null" ] && continue
+
+            TOPIC=$(echo "$entry" | jq -r '.topic // .key // "hive-knowledge"' 2>/dev/null)
+            CONTENT=$(echo "$entry" | jq -r '.content // .value // ""' 2>/dev/null)
+            CATEGORY=$(echo "$entry" | jq -r '.category // "hive-mind"' 2>/dev/null)
 
             if [ -n "$CONTENT" ]; then
                 LEARNING=$(jq -n \

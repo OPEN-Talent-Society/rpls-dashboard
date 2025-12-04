@@ -4628,3 +4628,145 @@ When validating the schema:
 | **Total Schema Complexity** | 65+ | Combined tables + compound types + embedded objects |
 
 This architecture balances normalization (separate tables for entities) with denormalization (embedded objects for tightly coupled data) to optimize for both query performance and data integrity.
+
+---
+
+## CMS & Content Management Schema (v2.2)
+
+### 57. contentDocuments
+```typescript
+contentDocuments: defineTable({
+  title: v.string(),
+  slug: v.string(),
+  documentType: v.union(v.literal("blog_post"), v.literal("landing_page"), v.literal("lesson"), v.literal("resource")),
+  prosemirrorState: v.optional(v.any()),
+  status: v.union(v.literal("draft"), v.literal("review"), v.literal("scheduled"), v.literal("published"), v.literal("archived")),
+  authorId: v.id("users"),
+  publishedAt: v.optional(v.number()),
+  seoTitle: v.optional(v.string()),
+  seoDescription: v.optional(v.string()),
+  courseId: v.optional(v.id("courses")),
+  createdAt: v.number(),
+  updatedAt: v.number(),
+})
+  .index("by_slug", ["slug"])
+  .index("by_type_status", ["documentType", "status"])
+  .index("by_author", ["authorId"])
+```
+
+### 58. contentVersions
+```typescript
+contentVersions: defineTable({
+  documentId: v.id("contentDocuments"),
+  version: v.number(),
+  prosemirrorState: v.any(),
+  createdBy: v.id("users"),
+  createdAt: v.number(),
+  changeType: v.union(v.literal("auto_save"), v.literal("manual_save"), v.literal("publish")),
+})
+  .index("by_document_version", ["documentId", "version"])
+```
+
+### 59. contentBlocks
+```typescript
+contentBlocks: defineTable({
+  name: v.string(),
+  blockType: v.string(),
+  blockData: v.any(),
+  category: v.union(v.literal("hero"), v.literal("cta"), v.literal("testimonial"), v.literal("feature"), v.literal("pricing"), v.literal("faq")),
+  isGlobal: v.boolean(),
+  createdBy: v.id("users"),
+  createdAt: v.number(),
+})
+  .index("by_category", ["category"])
+  .index("by_global", ["isGlobal"])
+```
+
+### 60. landingPages
+```typescript
+landingPages: defineTable({
+  title: v.string(),
+  slug: v.string(),
+  puckData: v.any(),
+  status: v.union(v.literal("draft"), v.literal("published"), v.literal("archived")),
+  templateId: v.optional(v.id("pageTemplates")),
+  metaTitle: v.optional(v.string()),
+  metaDescription: v.optional(v.string()),
+  createdBy: v.id("users"),
+  createdAt: v.number(),
+  updatedAt: v.number(),
+})
+  .index("by_slug", ["slug"])
+  .index("by_status", ["status"])
+```
+
+### 61. pageTemplates
+```typescript
+pageTemplates: defineTable({
+  name: v.string(),
+  puckConfig: v.any(),
+  category: v.union(v.literal("marketing"), v.literal("course"), v.literal("webinar")),
+  isPublic: v.boolean(),
+  createdBy: v.id("users"),
+  createdAt: v.number(),
+})
+  .index("by_category", ["category"])
+```
+
+### 62. mediaAssets
+```typescript
+mediaAssets: defineTable({
+  filename: v.string(),
+  storageId: v.id("_storage"),
+  mimeType: v.string(),
+  fileSize: v.number(),
+  altText: v.optional(v.string()),
+  folderId: v.optional(v.id("mediaFolders")),
+  uploadedBy: v.id("users"),
+  uploadedAt: v.number(),
+})
+  .index("by_folder", ["folderId"])
+  .index("by_type", ["mimeType"])
+```
+
+### 63. mediaFolders
+```typescript
+mediaFolders: defineTable({
+  name: v.string(),
+  parentId: v.optional(v.id("mediaFolders")),
+  path: v.string(),
+  createdBy: v.id("users"),
+  createdAt: v.number(),
+})
+  .index("by_parent", ["parentId"])
+  .index("by_path", ["path"])
+```
+
+### 64. contentCollaborators
+```typescript
+contentCollaborators: defineTable({
+  documentId: v.id("contentDocuments"),
+  userId: v.id("users"),
+  role: v.union(v.literal("owner"), v.literal("editor"), v.literal("viewer")),
+  isActive: v.boolean(),
+  lastAccessedAt: v.number(),
+})
+  .index("by_document", ["documentId"])
+  .index("by_user", ["userId"])
+```
+
+---
+
+### CMS Schema Summary
+| Table # | Name | Purpose |
+|---------|------|---------|
+| 57 | contentDocuments | BlockNote blog/lesson content |
+| 58 | contentVersions | Version history |
+| 59 | contentBlocks | Reusable blocks |
+| 60 | landingPages | Puck pages |
+| 61 | pageTemplates | Puck templates |
+| 62 | mediaAssets | Media library |
+| 63 | mediaFolders | Media folders |
+| 64 | contentCollaborators | Collaboration |
+
+**Total Tables:** 64

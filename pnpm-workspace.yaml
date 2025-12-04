@@ -1,0 +1,9 @@
+onlyBuiltDependencies:
+  - agentdb
+  - agentic-flow
+  - better-sqlite3
+  - esbuild
+  - hnswlib-node
+  - neural-trader
+  - protobufjs
+  - sharp

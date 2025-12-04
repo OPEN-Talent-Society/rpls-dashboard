@@ -5205,4 +5205,128 @@ Additional error codes for v2.1 features:
 
 ---
 
+## 8.17 CMS & Content Management Tools
+
+### academy_content_list
+```typescript
+{
+  name: "academy_content_list",
+  description: "List content documents with filtering",
+  inputSchema: {
+    type: "object",
+    properties: {
+      type: { type: "string", enum: ["blog_post", "landing_page", "lesson"] },
+      status: { type: "string", enum: ["draft", "published", "archived"] },
+      limit: { type: "number", default: 20 },
+      offset: { type: "number", default: 0 }
+    }
+  }
+}
+```
+**Scope:** `content:read` | **Rate Limit:** 60/min
+
+### academy_content_get
+```typescript
+{
+  name: "academy_content_get",
+  description: "Get full document content by ID or slug",
+  inputSchema: {
+    type: "object",
+    properties: {
+      documentId: { type: "string" },
+      slug: { type: "string" }
+    }
+  }
+}
+```
+**Scope:** `content:read` | **Rate Limit:** 120/min
+
+### academy_content_create
+```typescript
+{
+  name: "academy_content_create",
+  description: "Create new content document",
+  inputSchema: {
+    type: "object",
+    properties: {
+      type: { type: "string", enum: ["blog_post", "landing_page", "lesson"] },
+      title: { type: "string" },
+      initialContent: { type: "object" }
+    },
+    required: ["type", "title"]
+  }
+}
+```
+**Scope:** `content:write` | **Rate Limit:** 30/min
+
+### academy_content_publish
+```typescript
+{
+  name: "academy_content_publish",
+  description: "Publish or schedule content",
+  inputSchema: {
+    type: "object",
+    properties: {
+      documentId: { type: "string" },
+      action: { type: "string", enum: ["publish", "unpublish", "schedule"] },
+      scheduledFor: { type: "number" }
+    },
+    required: ["documentId", "action"]
+  }
+}
+```
+**Scope:** `content:publish` | **Rate Limit:** 20/min
+
+### academy_media_upload
+```typescript
+{
+  name: "academy_media_upload",
+  description: "Upload media asset",
+  inputSchema: {
+    type: "object",
+    properties: {
+      filename: { type: "string" },
+      base64Content: { type: "string" },
+      mimeType: { type: "string" },
+      folderId: { type: "string" },
+      altText: { type: "string" }
+    },
+    required: ["filename", "base64Content", "mimeType"]
+  }
+}
+```
+**Scope:** `media:write` | **Rate Limit:** 10/min | **Max Size:** 50MB
+
+### academy_media_list
+```typescript
+{
+  name: "academy_media_list",
+  description: "List media assets",
+  inputSchema: {
+    type: "object",
+    properties: {
+      folderId: { type: "string" },
+      mimeType: { type: "string" },
+      search: { type: "string" },
+      limit: { type: "number", default: 50 }
+    }
+  }
+}
+```
+**Scope:** `media:read` | **Rate Limit:** 60/min
+
+---
+
+### CMS Resource URIs
+
+| URI | Description |
+|-----|-------------|
+| academy://content/{documentId} | Document content |
+| academy://content/blog | Blog posts collection |
+| academy://content/pages | Landing pages collection |
+| academy://media/{assetId} | Media asset |
+| academy://media/library | Full media library |
+
+---
+
 This completes the MCP Server specification for the AI Enablement Academy v2 platform, including the comprehensive v2.1 Skills, Resources, and Learning Paths systems.

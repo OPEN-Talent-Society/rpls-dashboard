@@ -1,0 +1,10 @@
+{
+  "name": "finance-compliance",
+  "version": "1.0.0",
+  "description": "Finance and compliance automation toolkit covering Stripe, expenses, contracts, and audits",
+  "author": {
+    "name": "AI Enablement Ops",
+    "email": "ops@aienablement.academy"
+  },
+  "license": "MIT"
+}
