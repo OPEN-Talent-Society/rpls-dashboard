@@ -66,7 +66,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat | jq -r '.tool_input.command // \"\"' | xargs -I {} /opt/homebrew/bin/claude-flow hooks pre-command --command \"{}\" --validate-safety true --prepare-resources true"
+            "command": "cat | jq -r '.tool_input.command // \"\"' | xargs -I {} /opt/homebrew/bin/claude-flow hooks pre-command --command \"{}\" --validate-safety true --prepare-resources true > /dev/null 2>&1; echo '{\"continue\":true}'"
           }
         ]
       },
@@ -75,7 +75,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat | jq -r '.tool_input.file_path // .tool_input.path // \"\"' | xargs -I {} /opt/homebrew/bin/claude-flow hooks pre-edit --file \"{}\" --auto-assign-agents true --load-context true"
+            "command": "cat | jq -r '.tool_input.file_path // .tool_input.path // \"\"' | xargs -I {} /opt/homebrew/bin/claude-flow hooks pre-edit --file \"{}\" --auto-assign-agents true --load-context true > /dev/null 2>&1; echo '{\"continue\":true}'"
           },
           {
             "type": "command",
@@ -99,7 +99,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat | jq -r '.tool_input.command // \"\"' | xargs -I {} /opt/homebrew/bin/claude-flow hooks post-command --command \"{}\" --track-metrics true --store-results true"
+            "command": "cat | jq -r '.tool_input.command // \"\"' | xargs -I {} /opt/homebrew/bin/claude-flow hooks post-command --command \"{}\" --track-metrics true --store-results true > /dev/null 2>&1; echo '{\"continue\":true}'"
           }
         ]
       },
@@ -108,7 +108,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "cat | jq -r '.tool_input.file_path // .tool_input.path // \"\"' | xargs -I {} /opt/homebrew/bin/claude-flow hooks post-edit --file \"{}\" --format true --update-memory true --train-neural true"
+            "command": "cat | jq -r '.tool_input.file_path // .tool_input.path // \"\"' | xargs -I {} /opt/homebrew/bin/claude-flow hooks post-edit --file \"{}\" --format true --update-memory true --train-neural true > /dev/null 2>&1; echo '{\"continue\":true}'"
           },
           {
             "type": "command",
