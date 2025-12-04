@@ -47,7 +47,8 @@
       "command": "uvx",
       "args": ["mcp-server-qdrant"],
       "env": {
-        "QDRANT_URL": "http://qdrant.harbor.fyi",
+        "QDRANT_URL": "${QDRANT_URL}",
+        "QDRANT_API_KEY": "${QDRANT_API_KEY}",
         "COLLECTION_NAME": "agent_memory",
         "EMBEDDING_MODEL": "sentence-transformers/all-MiniLM-L6-v2"
       }
