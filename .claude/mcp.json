@@ -2,7 +2,7 @@
   "mcpServers": {
     "claude-flow": {
       "type": "stdio",
-      "command": "/opt/homebrew/bin/claude-flow",
+      "command": "/Users/adamkovacs/Library/pnpm/agentic-flow",
       "args": ["mcp", "start"]
     },
     "supabase": {
