@@ -1,12 +1,10 @@
 [
   {
-    "id": "cmd-memory-1764885180485",
-    "type": "memory",
+    "id": "cmd-hooks-1764886016080",
+    "type": "hooks",
     "success": true,
-    "duration": 494.749583,
-    "timestamp": 1764885180980,
+    "duration": 12.50429200000002,
+    "timestamp": 1764886016092,
     "metadata": {}
-  }
-]{}
   }
 ]
