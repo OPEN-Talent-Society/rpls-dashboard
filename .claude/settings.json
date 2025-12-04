@@ -34,7 +34,8 @@
     "deny": [
       "Bash(rm -rf /)",
       "Bash(npm:*)",
-      "Bash(yarn:*)"
+      "Bash(yarn:*)",
+      "mcp__claude-flow__agentic_flow_agent"
     ]
   },
   "enableAllProjectMcpServers": false,
