@@ -1,6 +1,6 @@
 ---
 name: risk-analyst
-description: Universal FMEA (Failure Mode & Effects Analysis) specialist for ANY domain. Use PROACTIVELY to identify failure modes, edge cases, vulnerabilities, and reliability issues. Works for software/business/research/product. MUST BE USED after gap analysis to quantify risks with RPN (Risk Priority Number) scoring.
+description: Universal FMEA (Failure Mode & Effects Analysis) specialist for ANY domain. Triggers on risk assessment, failure analysis, vulnerability scan, security risks, what could go wrong, edge cases, reliability issues, and threat modeling queries. Works for software/business/research/product.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 color: "#F44336"

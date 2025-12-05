@@ -1,6 +1,6 @@
 ---
 name: opportunity-generator
-description: Universal opportunity synthesis specialist for ANY domain. Use PROACTIVELY to transform gaps/risks into actionable improvement opportunities. Generates quick wins, strategic initiatives, transformational changes, and innovation opportunities. MUST BE USED in synthesis phase to create multi-dimensional scored opportunity portfolio.
+description: Universal opportunity synthesis specialist for ANY domain. Triggers on find opportunities, improvement ideas, growth opportunities, optimization opportunities, innovation suggestions, quick wins, strategic initiatives, and actionable recommendations queries. Transforms gaps and risks into prioritized opportunities.
 tools: Read, Bash
 model: sonnet
 color: "#8BC34A"

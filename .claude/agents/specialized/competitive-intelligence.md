@@ -2,7 +2,7 @@
 name: competitive-intelligence
 type: analyst
 color: "#FF9800"
-description: Arc B competitive landscape analysis and market structure research specialist
+description: Competitive landscape analysis and market structure research specialist. Triggers on competitor analysis, competitive research, market landscape, SWOT analysis, positioning analysis, and market structure queries.
 capabilities:
   - competitive_analysis
   - market_structure_mapping
