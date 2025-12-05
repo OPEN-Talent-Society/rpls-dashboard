@@ -109,38 +109,101 @@ WebSearch {
 
 ### Level 4: Deep Research (Market Intelligence)
 
-**4.1 Spawn Research Swarm**
+**4.1 USACF Framework (Universal Search Algorithm)**
+
+Use the USACF framework for comprehensive multi-dimensional analysis:
+- **Framework**: `.claude/agents/specialized/USACF.md`
+- **20+ AI research techniques** integrated
+- **Meta-learning** and adversarial validation
+- **Memory-coordinated** multi-agent system
+
+**4.2 Research Swarm Agents**
+
+Available research specialists in `.claude/agents/specialized/`:
+
+**Strategic Analysis:**
+- `strategic-researcher` - Comprehensive web research and data collection
+- `research-intelligence` - Intelligence gathering and synthesis
+- `positioning-strategist` - Market positioning and strategy
+
+**Competitive Intelligence:**
+- `competitive-intelligence` - Competitive landscape analysis
+- `competitive-analyst` (`.claude/agents/business/`) - Competitor monitoring
+
+**Gap & Risk Analysis:**
+- `gap-hunter` - Multi-dimensional gap analysis
+- `risk-analyst` - FMEA specialist for failure mode analysis
+- `opportunity-generator` - Transform gaps into opportunities
+
+**Pattern Analysis:**
+- `pattern-analyst` - Pattern identification and thematic analysis
+- `flow-analyst` - Flow and pathway analysis
+- `structural-mapper` - Architecture analysis
+
+**Knowledge Management:**
+- `knowledge-gap-identifier` - Critical knowledge gap analysis
+- `problem-validator` - Problem validation specialist
+
+**Meta-Learning & Validation:**
+- `meta-learning-orchestrator` - Self-improving search patterns
+- `adversarial-reviewer` - Critical evaluation and red team analysis
+- `confidence-quantifier` - Uncertainty quantification
+
+**4.3 Business Intelligence Swarm**
+
+Available in `.claude/agents/business/`:
+
+**Market Analysis:**
+- `market-scanner` - Dataset scanning for opportunities/risks
+- `seo-auditor` - SEO and content analysis
+
+**Financial & Compliance:**
+- `stripe-auditor` - Stripe revenue analysis
+- `audit-scribe` - Audit documentation
+- `finance-compliance` - Finance controls
+
+**Operations:**
+- `marketing-orchestrator` - Multi-channel campaign coordination
+- `campaign-automation` - Campaign management
+- `crm-sync` - CRM integration
+- `contract-guardian` - Contract lifecycle management
+- `meeting-scribe` - Meeting capture and tracking
+- `sales-outreach` - Sales automation
+
+**4.4 Spawn Research Swarm Example**
+
 ```javascript
-// Use Task tool for parallel research (PREFERRED)
+// USACF-powered comprehensive analysis
 Task {
   subagent_type: "strategic-researcher",
-  description: "Research market landscape",
-  prompt: `Research X with focus on current ${currentYear} data.
-  Analyze trends, key players, market size, growth projections.`
+  description: "Market landscape research",
+  prompt: "Follow USACF framework to research X market in 2025. Apply step-back prompting, multi-agent decomposition, and RAG integration for comprehensive analysis."
 }
 
 Task {
   subagent_type: "competitive-intelligence",
-  description: "Analyze competitors",
-  prompt: `Analyze competitive landscape for X.
-  Identify top 5 competitors, their strengths/weaknesses, market positioning.`
+  description: "Competitive analysis",
+  prompt: "Analyze competitors using gap-hunter and risk-analyst patterns. Identify strengths, weaknesses, market positioning for top 5 players."
 }
 
 Task {
-  subagent_type: "pattern-analyst",
-  description: "Identify patterns and insights",
-  prompt: `Analyze data from market and competitive research.
-  Extract key patterns, opportunities, threats.`
+  subagent_type: "gap-hunter",
+  description: "Multi-dimensional gap analysis",
+  prompt: "Identify quality, performance, capability, and strategic gaps in X market. Use USACF dimensional analysis."
+}
+
+Task {
+  subagent_type: "opportunity-generator",
+  description: "Opportunity synthesis",
+  prompt: "Transform identified gaps into actionable opportunities with priority ranking and implementation roadmap."
+}
+
+Task {
+  subagent_type: "adversarial-reviewer",
+  description: "Critical validation",
+  prompt: "Red team critique of research findings. Identify assumptions, biases, missing data, and alternative interpretations."
 }
 ```
-
-**4.2 Specialized Research Agents**
-Available in `.claude/agents/specialized/`:
-- `strategic-researcher` - Market landscape analysis
-- `competitive-intelligence` - Competitor analysis
-- `pattern-analyst` - Pattern recognition and insights
-- `risk-analyst` - Risk assessment and mitigation
-- `gap-hunter` - Gap analysis and opportunities
 
 ## Decision Tree
 
