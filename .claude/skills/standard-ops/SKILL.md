@@ -169,7 +169,7 @@ Each Claude variant has a unique identity:
 
 ## Templates
 
-Use templates from `.claude/templates/` for consistency:
+Use templates from `/Users/adamkovacs/Documents/codebuild/.claude/templates/` for consistency:
 - `task-nocodb.json` - NocoDB task creation
 - `doc-cortex-task.md` - Cortex task documentation
 - `doc-cortex-learning.md` - Cortex learning capture
@@ -177,7 +177,7 @@ Use templates from `.claude/templates/` for consistency:
 
 ## Hooks
 
-Use hooks from `.claude/hooks/` for automation:
+Use hooks from `/Users/adamkovacs/Documents/codebuild/.claude/hooks/` for automation:
 - `session-start.sh` - Initialize session
 - `pre-task.sh` - Prepare for task
 - `log-action.sh` - Log individual actions
@@ -188,19 +188,19 @@ Use hooks from `.claude/hooks/` for automation:
 
 ```bash
 # Start session
-source .claude/hooks/session-start.sh
+source /Users/adamkovacs/Documents/codebuild/.claude/hooks/session-start.sh
 
 # Create task
-.claude/hooks/nocodb-create-task.sh "Task Name" "Description" "P2" "tag1,tag2"
+/Users/adamkovacs/Documents/codebuild/.claude/hooks/nocodb-create-task.sh "Task Name" "Description" "P2" "tag1,tag2"
 
 # Log learning
-.claude/hooks/cortex-log-learning.sh "Topic" "Context" "Discovery" "Insights" "category"
+/Users/adamkovacs/Documents/codebuild/.claude/hooks/cortex-log-learning.sh "Topic" "Context" "Discovery" "Insights" "category"
 
 # Store memory
-.claude/hooks/memory-store.sh "namespace" "key" "value"
+/Users/adamkovacs/Documents/codebuild/.claude/hooks/memory-store.sh "namespace" "key" "value"
 
 # End session
-source .claude/hooks/session-end.sh
+source /Users/adamkovacs/Documents/codebuild/.claude/hooks/session-end.sh
 ```
 
 ## Enforcement

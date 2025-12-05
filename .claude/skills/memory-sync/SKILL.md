@@ -23,21 +23,21 @@ Synchronizes memory across 6 storage backends:
 ### Sync All Systems
 ```bash
 # Full sync: Local → Supabase → RuVector
-.claude/skills/memory-sync/scripts/sync-all.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-all.sh
 
 # Sync specific backend
-.claude/skills/memory-sync/scripts/sync-agentdb-to-supabase.sh
-.claude/skills/memory-sync/scripts/sync-supabase-to-agentdb.sh
-.claude/skills/memory-sync/scripts/index-to-ruvector.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-agentdb-to-supabase.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-supabase-to-agentdb.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/index-to-ruvector.sh
 ```
 
 ### Query Unified Memory
 ```bash
 # Search across all backends
-.claude/skills/memory-sync/scripts/unified-search.sh "query text"
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/unified-search.sh "query text"
 
 # Get memory stats
-.claude/skills/memory-sync/scripts/memory-stats.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/memory-stats.sh
 ```
 
 ## Architecture
@@ -84,7 +84,7 @@ Automatic sync prevents data loss from context compaction:
 ### Emergency Flush
 ```bash
 # Run before context compaction or major operations
-.claude/hooks/emergency-memory-flush.sh
+/Users/adamkovacs/Documents/codebuild/.claude/hooks/emergency-memory-flush.sh
 ```
 
 ## Environment Variables
@@ -170,8 +170,8 @@ pnpm dlx ruvector export --target supabase --table agent_memory
 ### Missing Data
 ```bash
 # Verify all backends
-.claude/skills/memory-sync/scripts/verify-sync.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/verify-sync.sh
 
 # Force full resync
-.claude/skills/memory-sync/scripts/sync-all.sh --force
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-all.sh --force
 ```

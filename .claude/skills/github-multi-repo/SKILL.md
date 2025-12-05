@@ -28,7 +28,7 @@ capabilities:
 **CORRECT approach - Use Task tool:**
 ```javascript
 Task {
-  subagent_type: "worker-specialist",  // or any agent from .claude/agents/
+  subagent_type: "worker-specialist",  // or any agent from /Users/adamkovacs/Documents/codebuild/.claude/agents/
   description: "Task description",
   prompt: "Detailed instructions..."
 }
@@ -314,11 +314,11 @@ mcp__claude-flow__swarm_init({
     repo: "claude-project-template",
     files: [
       {
-        path: ".claude/commands/github/github-modes.md",
+        path: "/Users/adamkovacs/Documents/codebuild/.claude/commands/github/github-modes.md",
         content: "[GitHub modes template]"
       },
       {
-        path: ".claude/config.json",
+        path: "/Users/adamkovacs/Documents/codebuild/.claude/config.json",
         content: JSON.stringify({
           version: "1.0",
           mcp_servers: {
@@ -643,7 +643,7 @@ ruv-FANN/
 ├── packages/
 │   ├── claude-code-flow/
 │   │   ├── src/
-│   │   ├── .claude/
+│   │   ├── /Users/adamkovacs/Documents/codebuild/.claude/
 │   │   └── package.json
 │   ├── ruv-swarm/
 │   │   ├── src/
@@ -669,7 +669,7 @@ ruv-FANN/
 
 ### Command Structure
 ```
-.claude/
+/Users/adamkovacs/Documents/codebuild/.claude/
 ├── commands/
 │   ├── github/
 │   │   ├── github-modes.md
@@ -885,7 +885,7 @@ ruv-FANN/
 
 - Documentation: https://github.com/ruvnet/claude-flow
 - Issues: https://github.com/ruvnet/claude-flow/issues
-- Examples: `.claude/examples/github-multi-repo/`
+- Examples: `/Users/adamkovacs/Documents/codebuild/.claude/examples/github-multi-repo/`
 
 ---
 

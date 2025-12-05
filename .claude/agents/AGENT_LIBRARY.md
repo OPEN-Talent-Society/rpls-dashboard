@@ -16,7 +16,7 @@ Complete collection of all agent definitions from the agentic-flow repository.
 ## Consensus Agents
 
 ### 1. Byzantine Coordinator
-**File**: `.claude/agents/consensus/byzantine-coordinator.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/consensus/byzantine-coordinator.md`
 **Type**: Coordinator | **Priority**: High | **Color**: Purple
 
 Coordinates Byzantine fault-tolerant consensus protocols ensuring system integrity in the presence of malicious actors.
@@ -38,7 +38,7 @@ Coordinates Byzantine fault-tolerant consensus protocols ensuring system integri
 ---
 
 ### 2. CRDT Synchronizer
-**File**: `.claude/agents/consensus/crdt-synchronizer.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/consensus/crdt-synchronizer.md`
 **Type**: Synchronizer | **Priority**: High | **Color**: Green
 
 Implements Conflict-free Replicated Data Types for eventually consistent distributed state synchronization.
@@ -60,7 +60,7 @@ Implements Conflict-free Replicated Data Types for eventually consistent distrib
 ---
 
 ### 3. Gossip Coordinator
-**File**: `.claude/agents/consensus/gossip-coordinator.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/consensus/gossip-coordinator.md`
 **Type**: Coordinator | **Priority**: Medium | **Color**: Orange
 
 Coordinates gossip-based consensus protocols for scalable eventually consistent systems.
@@ -82,7 +82,7 @@ Coordinates gossip-based consensus protocols for scalable eventually consistent 
 ---
 
 ### 4. Performance Benchmarker
-**File**: `.claude/agents/consensus/performance-benchmarker.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/consensus/performance-benchmarker.md`
 **Type**: Analyst | **Priority**: Medium | **Color**: Gray
 
 Comprehensive performance benchmarking and optimization for distributed consensus protocols.
@@ -104,7 +104,7 @@ Comprehensive performance benchmarking and optimization for distributed consensu
 ---
 
 ### 5. Quorum Manager
-**File**: `.claude/agents/consensus/quorum-manager.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/consensus/quorum-manager.md`
 **Type**: Coordinator | **Priority**: High | **Color**: Purple
 
 Implements dynamic quorum adjustment and intelligent membership management.
@@ -125,7 +125,7 @@ Implements dynamic quorum adjustment and intelligent membership management.
 ---
 
 ### 6. Raft Manager
-**File**: `.claude/agents/consensus/raft-manager.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/consensus/raft-manager.md`
 **Type**: Coordinator | **Priority**: High | **Color**: Blue
 
 Manages Raft consensus algorithm with leader election and log replication.
@@ -146,7 +146,7 @@ Manages Raft consensus algorithm with leader election and log replication.
 ---
 
 ### 7. Security Manager
-**File**: `.claude/agents/consensus/security-manager.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/consensus/security-manager.md`
 **Type**: Security | **Priority**: Critical | **Color**: Red
 
 Comprehensive security mechanisms for distributed consensus protocols.
@@ -170,7 +170,7 @@ Comprehensive security mechanisms for distributed consensus protocols.
 ## Flow Nexus Agents
 
 ### 1. App Store Manager
-**File**: `.claude/agents/flow-nexus/app-store.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/flow-nexus/app-store.md`
 **Color**: Indigo
 
 Application marketplace and template management specialist.
@@ -191,7 +191,7 @@ Application marketplace and template management specialist.
 ---
 
 ### 2. Authentication Manager
-**File**: `.claude/agents/flow-nexus/authentication.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/flow-nexus/authentication.md`
 **Color**: Blue
 
 Flow Nexus authentication and user management specialist.
@@ -207,7 +207,7 @@ Flow Nexus authentication and user management specialist.
 ---
 
 ### 3. Challenges Manager
-**File**: `.claude/agents/flow-nexus/challenges.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/flow-nexus/challenges.md`
 **Color**: Yellow
 
 Coding challenges and gamification specialist.
@@ -228,7 +228,7 @@ Coding challenges and gamification specialist.
 ---
 
 ### 4. Neural Network Manager
-**File**: `.claude/agents/flow-nexus/neural-network.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/flow-nexus/neural-network.md`
 **Color**: Red
 
 Neural network training and deployment specialist.
@@ -248,7 +248,7 @@ Neural network training and deployment specialist.
 ---
 
 ### 5. Payments Manager
-**File**: `.claude/agents/flow-nexus/payments.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/flow-nexus/payments.md`
 **Color**: Pink
 
 Credit management and billing specialist.
@@ -264,7 +264,7 @@ Credit management and billing specialist.
 ---
 
 ### 6. Sandbox Manager
-**File**: `.claude/agents/flow-nexus/sandbox.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/flow-nexus/sandbox.md`
 **Color**: Green
 
 E2B sandbox deployment and management specialist.
@@ -283,7 +283,7 @@ E2B sandbox deployment and management specialist.
 ---
 
 ### 7. Swarm Orchestrator
-**File**: `.claude/agents/flow-nexus/swarm.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/flow-nexus/swarm.md`
 **Color**: Purple
 
 AI swarm orchestration and management specialist.
@@ -302,7 +302,7 @@ AI swarm orchestration and management specialist.
 ---
 
 ### 8. User Tools Manager
-**File**: `.claude/agents/flow-nexus/user-tools.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/flow-nexus/user-tools.md`
 **Color**: Gray
 
 User management and system utilities specialist.
@@ -318,7 +318,7 @@ User management and system utilities specialist.
 ---
 
 ### 9. Workflow Automation
-**File**: `.claude/agents/flow-nexus/workflow.md`
+**File**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/flow-nexus/workflow.md`
 **Color**: Teal
 
 Event-driven workflow automation specialist.
@@ -359,7 +359,7 @@ Event-driven workflow automation specialist.
 
 To use these agents in your agentic-flow installation:
 
-1. Copy the agent markdown files to your `.claude/agents/` directory
+1. Copy the agent markdown files to your `/Users/adamkovacs/Documents/codebuild/.claude/agents/` directory
 2. Maintain the folder structure (consensus/, flow-nexus/, github/, etc.)
 3. Use the agentic-flow CLI to list and spawn agents:
    ```bash

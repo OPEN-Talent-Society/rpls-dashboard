@@ -33,7 +33,7 @@ Use this skill when you need to:
 
 ## Enabling the MCP Server
 
-To enable shadcn MCP, add this to `.claude/mcp.json`:
+To enable shadcn MCP, add this to `/Users/adamkovacs/Documents/codebuild/.claude/mcp.json`:
 
 ```json
 {
@@ -156,7 +156,7 @@ Use these without enabling the MCP:
 
 ## Helper Scripts
 
-Located in `.claude/skills/shadcn-components/scripts/`:
+Located in `/Users/adamkovacs/Documents/codebuild/.claude/skills/shadcn-components/scripts/`:
 
 - `check-project.sh [dir]` - Check project setup status
 - `list-installed.sh [dir]` - List installed components
@@ -164,13 +164,13 @@ Located in `.claude/skills/shadcn-components/scripts/`:
 
 ```bash
 # Check project setup
-.claude/skills/shadcn-components/scripts/check-project.sh .
+/Users/adamkovacs/Documents/codebuild/.claude/skills/shadcn-components/scripts/check-project.sh .
 
 # List what's installed
-.claude/skills/shadcn-components/scripts/list-installed.sh .
+/Users/adamkovacs/Documents/codebuild/.claude/skills/shadcn-components/scripts/list-installed.sh .
 
 # Add components
-.claude/skills/shadcn-components/scripts/add-components.sh button card input
+/Users/adamkovacs/Documents/codebuild/.claude/skills/shadcn-components/scripts/add-components.sh button card input
 ```
 
 ---

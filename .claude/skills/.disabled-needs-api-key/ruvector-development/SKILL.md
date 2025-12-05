@@ -442,7 +442,7 @@ echo ".ruvector/" >> .gitignore
 
 #### Claude Code Hook Integration
 
-Add to `.claude/settings.json`:
+Add to `/Users/adamkovacs/Documents/codebuild/.claude/settings.json`:
 
 ```json
 {

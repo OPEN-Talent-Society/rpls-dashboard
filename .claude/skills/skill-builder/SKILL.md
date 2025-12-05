@@ -174,7 +174,7 @@ Claude Code does NOT support nested subdirectories or namespaces!
 <project-root>/.claude/skills/
 └── [team-skills]/
 ```
-- **Path**: `.claude/skills/` in project root
+- **Path**: `/Users/adamkovacs/Documents/codebuild/.claude/skills/` in project root
 - **Scope**: Available only in this project
 - **Version Control**: SHOULD be committed to git
 - **Use Case**: Team workflows, project-specific tools, shared knowledge
@@ -528,7 +528,7 @@ Before publishing a skill, verify:
 
 **File Structure**:
 - [ ] SKILL.md exists in skill directory
-- [ ] Directory is DIRECTLY in `~/.claude/skills/[skill-name]/` or `.claude/skills/[skill-name]/`
+- [ ] Directory is DIRECTLY in `~/.claude/skills/[skill-name]/` or `/Users/adamkovacs/Documents/codebuild/.claude/skills/[skill-name]/`
 - [ ] Uses clear, descriptive directory name
 - [ ] **NO nested subdirectories** (Claude Code requires top-level structure)
 

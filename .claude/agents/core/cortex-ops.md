@@ -492,11 +492,11 @@ on_failure: log to AgentDB, alert
 
 ## Related Resources
 
-- **Skill**: `.claude/skills/cortex-api-ops.md`
-- **Hooks**: `.claude/hooks/cortex-*.sh`
-- **Commands**: `.claude/commands/cortex-*.md`
-- **Config**: `.claude/config/agents.json` (cortex section)
-- **Docs**: `.claude/docs/TOOL-REFERENCE.md#cortex-siyuan`
+- **Skill**: `/Users/adamkovacs/Documents/codebuild/.claude/skills/cortex-api-ops.md`
+- **Hooks**: `/Users/adamkovacs/Documents/codebuild/.claude/hooks/cortex-*.sh`
+- **Commands**: `/Users/adamkovacs/Documents/codebuild/.claude/commands/cortex-*.md`
+- **Config**: `/Users/adamkovacs/Documents/codebuild/.claude/config/agents.json` (cortex section)
+- **Docs**: `/Users/adamkovacs/Documents/codebuild/.claude/docs/TOOL-REFERENCE.md#cortex-siyuan`
 
 ---
 

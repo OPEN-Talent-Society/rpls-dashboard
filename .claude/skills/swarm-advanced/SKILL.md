@@ -27,7 +27,7 @@ Master advanced swarm patterns for distributed research, development, and testin
 ```javascript
 // Spawn workers using Task tool
 Task({
-  subagent_type: "general-purpose",  // or "Explore", "Plan", or any agent from .claude/agents/
+  subagent_type: "general-purpose",  // or "Explore", "Plan", or any agent from /Users/adamkovacs/Documents/codebuild/.claude/agents/
   description: "Brief task description",
   prompt: "Detailed instructions..."
 })
@@ -42,8 +42,8 @@ Task({ subagent_type: "general-purpose", description: "Worker 3", prompt: "..." 
 
 **For updated patterns, see:**
 - `/Users/adamkovacs/CLAUDE.md` - Section I (Mandatory Rules)
-- `.claude/docs/ref/SWARM-PATTERNS.md` - Multi-agent orchestration with Task tool
-- `.claude/docs/ref/MCP-TOOLS.md` - ALLOWED vs DENIED tools
+- `/Users/adamkovacs/Documents/codebuild/.claude/docs/ref/SWARM-PATTERNS.md` - Multi-agent orchestration with Task tool
+- `/Users/adamkovacs/Documents/codebuild/.claude/docs/ref/MCP-TOOLS.md` - ALLOWED vs DENIED tools
 
 ---
 

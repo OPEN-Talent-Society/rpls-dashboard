@@ -174,7 +174,7 @@ mcp__claude-flow__agentdb_pattern_store({
 
 **Cortex for permanent storage:**
 ```bash
-bash .claude/hooks/cortex-post-task.sh "Research findings for X"
+bash /Users/adamkovacs/Documents/codebuild/.claude/hooks/cortex-post-task.sh "Research findings for X"
 ```
 
 ## Quality Standards
@@ -296,7 +296,7 @@ mcp__claude-flow__agentdb_pattern_store({
 
 **Manual memory sync:**
 ```bash
-bash .claude/skills/memory-sync/scripts/sync-all.sh
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-all.sh
 ```
 
 ## Collaboration

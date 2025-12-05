@@ -502,7 +502,7 @@ await sessionManager.saveCheckpoint(
 
 ### Custom Worker Types
 
-Define specialized workers in `.claude/agents/`:
+Define specialized workers in `/Users/adamkovacs/Documents/codebuild/.claude/agents/`:
 
 ```yaml
 name: security-auditor

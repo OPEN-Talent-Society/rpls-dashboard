@@ -32,7 +32,7 @@ Use this skill when you need to:
 
 ## Enabling the MCP Server
 
-To enable DigitalOcean MCP, add this to `.claude/mcp.json`:
+To enable DigitalOcean MCP, add this to `/Users/adamkovacs/Documents/codebuild/.claude/mcp.json`:
 
 ```json
 {

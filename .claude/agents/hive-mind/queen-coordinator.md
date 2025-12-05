@@ -68,7 +68,7 @@ Orchestrates strategic decisions and maintains hive coherence.
 ```javascript
 // CORRECT - uses Claude Max subscription
 Task {
-  subagent_type: "worker-specialist",  // or any agent from .claude/agents/
+  subagent_type: "worker-specialist",  // or any agent from /Users/adamkovacs/Documents/codebuild/.claude/agents/
   description: "Audit security",
   prompt: "Your worker instructions here..."
 }
@@ -83,7 +83,7 @@ Available subagent_types for Task tool:
 - `code-analyzer` - Analyze code quality
 - `Explore` - Fast codebase exploration
 - `general-purpose` - Research and multi-step tasks
-- Any agent name from `.claude/agents/` directory
+- Any agent name from `/Users/adamkovacs/Documents/codebuild/.claude/agents/` directory
 
 ## Quality Standards
 

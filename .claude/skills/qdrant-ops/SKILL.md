@@ -429,7 +429,7 @@ curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/count" \
 
 ### 1. Pre-Task Memory Lookup
 
-**Hook**: `.claude/hooks/pre-task-memory-lookup.sh`
+**Hook**: `/Users/adamkovacs/Documents/codebuild/.claude/hooks/pre-task-memory-lookup.sh`
 
 **Purpose**: Load relevant context before starting a task
 
@@ -462,7 +462,7 @@ done
 
 ### 2. Post-Task Indexing
 
-**Hook**: `.claude/hooks/post-task-index.sh`
+**Hook**: `/Users/adamkovacs/Documents/codebuild/.claude/hooks/post-task-index.sh`
 
 **Purpose**: Index completed work for future retrieval
 
@@ -522,7 +522,7 @@ fi
 /memory-search "yesterday's work" --since 2025-12-02
 ```
 
-**Implementation**: `.claude/commands/memory/memory-search.md`
+**Implementation**: `/Users/adamkovacs/Documents/codebuild/.claude/commands/memory/memory-search.md`
 
 ## Common Operations
 
@@ -735,6 +735,6 @@ curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/search" \
 - Qdrant Documentation: https://qdrant.tech/documentation/
 - Gemini Embeddings API: https://ai.google.dev/gemini-api/docs/embeddings
 - Gemini Free Tier: 1500 requests/minute (sufficient for our workload)
-- Cortex Integration: `.claude/docs/CORTEX-API-OPS.md`
-- Memory SOP: `.claude/docs/MEMORY-SOP.md`
-- Indexing Script: `.claude/skills/memory-sync/scripts/index-to-qdrant.sh`
+- Cortex Integration: `/Users/adamkovacs/Documents/codebuild/.claude/docs/CORTEX-API-OPS.md`
+- Memory SOP: `/Users/adamkovacs/Documents/codebuild/.claude/docs/MEMORY-SOP.md`
+- Indexing Script: `/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/index-to-qdrant.sh`

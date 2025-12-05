@@ -122,8 +122,8 @@ TEST_MODE=true ./index-codebase-to-qdrant.sh
 ### Future Enhancements
 
 1. **Expand Indexing Scope**:
-   - Index `.claude/commands/*.md` (slash commands)
-   - Index `.claude/skills/**/*.md` (skill definitions)
+   - Index `/Users/adamkovacs/Documents/codebuild/.claude/commands/*.md` (slash commands)
+   - Index `/Users/adamkovacs/Documents/codebuild/.claude/skills/**/*.md` (skill definitions)
    - Index key config files (CLAUDE.md, mcp.json)
    - Index project-level TypeScript/JavaScript files
 
