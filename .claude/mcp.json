@@ -3,7 +3,10 @@
     "claude-flow": {
       "type": "stdio",
       "command": "/Users/adamkovacs/Library/pnpm/agentic-flow",
-      "args": ["mcp", "start"]
+      "args": ["mcp", "start"],
+      "env": {
+        "AGENTDB_PATH": "/Users/adamkovacs/Documents/codebuild/agentdb.db"
+      }
     },
     "supabase": {
       "type": "stdio",
