@@ -1,4 +1,10 @@
 #!/bin/bash
+# Load .env with exports
+PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+if [ -f "$PROJECT_DIR/.env" ]; then
+    set -a; source "$PROJECT_DIR/.env"; set +a
+fi
+
 # AgentDB to Supabase Sync Hook
 # Automatically syncs local AgentDB JSON files to Supabase cloud
 # Supports learnings, patterns, and agent_memory tables
@@ -11,7 +17,7 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CODEBUILD_ROOT="${CODEBUILD_ROOT:-/Users/adamkovacs/Documents/codebuild}"
-AGENTDB_DIR="$SCRIPT_DIR/../.agentdb"
+AGENTDB_DIR="$PROJECT_DIR/.agentdb"
 
 TABLE="${1:-all}"
 MODE="${2:-incremental}"

@@ -1,4 +1,10 @@
 #!/bin/bash
+# Load .env with exports
+PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+if [ -f "$PROJECT_DIR/.env" ]; then
+    set -a; source "$PROJECT_DIR/.env"; set +a
+fi
+
 # Memory Orchestrator Hook: Unified 3-Layer Memory Chain
 # Ensures all memory operations flow through Layer 1 → Layer 2 → Layer 3
 # Created: 2025-12-01
@@ -78,10 +84,10 @@ layer2_store() {
 
     # Determine if this is a learning or pattern
     if echo "$NAMESPACE" | grep -iEq "learning|discovery|insight|finding"; then
-        AGENTDB_FILE="$SCRIPT_DIR/../.agentdb/learnings.json"
+        AGENTDB_FILE="$PROJECT_DIR/.agentdb/learnings.json"
         ENTRY_TYPE="learning"
     else
-        AGENTDB_FILE="$SCRIPT_DIR/../.agentdb/patterns.json"
+        AGENTDB_FILE="$PROJECT_DIR/.agentdb/patterns.json"
         ENTRY_TYPE="pattern"
     fi
 

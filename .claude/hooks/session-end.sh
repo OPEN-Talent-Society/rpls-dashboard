@@ -1,4 +1,10 @@
 #!/bin/bash
+# Load .env with exports
+PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+if [ -f "$PROJECT_DIR/.env" ]; then
+    set -a; source "$PROJECT_DIR/.env"; set +a
+fi
+
 # Session end hook: Persist session state, sync to all memory systems
 # Called at the end of each Claude session
 
@@ -52,7 +58,7 @@ fi
 
 # Sync to AgentDB (Local JSON)
 echo "  [AgentDB] Persisting session data..." >&2
-AGENTDB_DIR="$SCRIPT_DIR/../.agentdb"
+AGENTDB_DIR="$PROJECT_DIR/.agentdb"
 if [ -d "$AGENTDB_DIR" ]; then
     echo "    ✅ Local JSON files synced" >&2
 fi
