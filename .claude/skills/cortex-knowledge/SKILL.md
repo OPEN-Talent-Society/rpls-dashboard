@@ -266,7 +266,7 @@ SELECT id, content FROM blocks WHERE type='d' AND box='NOTEBOOK_ID'
 
 ## Related Resources
 
-- **Agent**: `.claude/agents/core/cortex-ops.md`
+- **Agent**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/core/cortex-ops.md`
 - **Hooks**: `cortex-post-task.sh`, `cortex-learning-capture.sh`
-- **Docs**: `.claude/docs/CORTEX-API-OPS.md`
+- **Docs**: `/Users/adamkovacs/Documents/codebuild/.claude/docs/CORTEX-API-OPS.md`
 - **Commands**: `/cortex-search`, `/cortex-export`

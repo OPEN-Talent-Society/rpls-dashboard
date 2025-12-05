@@ -83,7 +83,7 @@ claude mcp remove playwright
 ```
 
 **Option 2: Via settings.json**
-Add to `.claude/settings.json` → `enabledMcpjsonServers`:
+Add to `/Users/adamkovacs/Documents/codebuild/.claude/settings.json` → `enabledMcpjsonServers`:
 ```json
 {
   "enabledMcpjsonServers": [
@@ -93,7 +93,7 @@ Add to `.claude/settings.json` → `enabledMcpjsonServers`:
 ```
 
 **Option 3: Temporary mcp.json entry**
-The MCP config already exists in `.claude/mcp.json`:
+The MCP config already exists in `/Users/adamkovacs/Documents/codebuild/.claude/mcp.json`:
 ```json
 {
   "playwright": {

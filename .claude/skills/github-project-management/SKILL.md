@@ -44,7 +44,7 @@ estimated_time: 30-45 minutes
 **CORRECT approach - Use Task tool:**
 ```javascript
 Task {
-  subagent_type: "worker-specialist",  // or any agent from .claude/agents/
+  subagent_type: "worker-specialist",  // or any agent from /Users/adamkovacs/Documents/codebuild/.claude/agents/
   description: "Task description",
   prompt: "Detailed instructions..."
 }

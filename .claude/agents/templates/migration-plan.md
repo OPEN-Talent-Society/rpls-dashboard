@@ -21,7 +21,7 @@ priority: medium
 **CORRECT approach - Use Task tool:**
 ```javascript
 Task {
-  subagent_type: "worker-specialist",  // or any agent from .claude/agents/
+  subagent_type: "worker-specialist",  // or any agent from /Users/adamkovacs/Documents/codebuild/.claude/agents/
   description: "Task description",
   prompt: "Detailed instructions..."
 }
@@ -31,7 +31,7 @@ Task {
 
 # Claude Flow Commands to Agent System Migration Plan
 
-Comprehensive guide for mapping existing `.claude/commands` to a new agent-based architecture.
+Comprehensive guide for mapping existing `/Users/adamkovacs/Documents/codebuild/.claude/commands` to a new agent-based architecture.
 
 ## Migration Overview
 

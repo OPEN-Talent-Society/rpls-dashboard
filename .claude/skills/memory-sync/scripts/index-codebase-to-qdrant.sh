@@ -280,8 +280,8 @@ index_file() {
   fi
 }
 
-# Index .claude/hooks/*.sh files
-echo -e "${BLUE}📂 Indexing .claude/hooks/*.sh files...${NC}"
+# Index /Users/adamkovacs/Documents/codebuild/.claude/hooks/*.sh files
+echo -e "${BLUE}📂 Indexing /Users/adamkovacs/Documents/codebuild/.claude/hooks/*.sh files...${NC}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 
 HOOKS_DIR="$PROJECT_ROOT/.claude/hooks"

@@ -10,5 +10,5 @@ allowed-tools:
 Show statistics for all memory backends.
 
 ```bash
-.claude/skills/memory-sync/scripts/memory-stats.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/memory-stats.sh
 ```

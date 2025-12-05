@@ -52,28 +52,28 @@ You are a specialized Memory Operations Agent responsible for managing the unifi
 ### Pattern 1: Search Memory
 ```bash
 # Use unified search across all backends
-bash .claude/skills/memory-sync/scripts/unified-search.sh "query" all 10
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/unified-search.sh "query" all 10
 
 # Or search specific backend
-bash .claude/skills/memory-sync/scripts/unified-search.sh "query" supabase 5
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/unified-search.sh "query" supabase 5
 ```
 
 ### Pattern 2: Sync Memory
 ```bash
 # Full sync (all backends)
-bash .claude/skills/memory-sync/scripts/sync-all.sh
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-all.sh
 
 # Incremental sync (only changes)
-bash .claude/skills/memory-sync/scripts/sync-all.sh --cold-only
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-all.sh --cold-only
 
 # Force sync (bypass incremental checks)
-bash .claude/skills/memory-sync/scripts/sync-all.sh --force
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-all.sh --force
 ```
 
 ### Pattern 3: Verify Memory Health
 ```bash
 # Show stats across all backends
-bash .claude/skills/memory-sync/scripts/memory-stats.sh
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/memory-stats.sh
 
 # Check specific backend connectivity
 curl -s https://zxcrbcmdxpqprpxhsntc.supabase.co/rest/v1/learnings?limit=1 \
@@ -92,7 +92,7 @@ mcp__claude-flow__agentdb_pattern_store {
 }
 
 # Then sync to cold storage
-bash .claude/hooks/agentdb-supabase-sync.sh all incremental
+bash /Users/adamkovacs/Documents/codebuild/.claude/hooks/agentdb-supabase-sync.sh all incremental
 ```
 
 ## Error Handling

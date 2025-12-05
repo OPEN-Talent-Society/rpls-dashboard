@@ -15,7 +15,7 @@ skill: "memory-ops"
 Search across all memory backends with a single command.
 
 ```bash
-bash .claude/skills/memory-ops/scripts/search.sh "query"
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-ops/scripts/search.sh "query"
 ```
 
 ### 2. Sync Memory
@@ -23,27 +23,27 @@ Sync hot layer to cold storage and semantic layer.
 
 ```bash
 # Full sync
-bash .claude/skills/memory-ops/scripts/sync.sh
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-ops/scripts/sync.sh
 
 # Incremental sync
-bash .claude/skills/memory-ops/scripts/sync.sh --incremental
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-ops/scripts/sync.sh --incremental
 
 # Force sync
-bash .claude/skills/memory-ops/scripts/sync.sh --force
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-ops/scripts/sync.sh --force
 ```
 
 ### 3. Check Health
 Verify all memory backends are accessible and functioning.
 
 ```bash
-bash .claude/skills/memory-ops/scripts/health.sh
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-ops/scripts/health.sh
 ```
 
 ### 4. Store Learning
 Store a new learning across all backends.
 
 ```bash
-bash .claude/skills/memory-ops/scripts/store-learning.sh "topic" "content"
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-ops/scripts/store-learning.sh "topic" "content"
 ```
 
 ## Environment Variables Required
@@ -66,7 +66,7 @@ QDRANT_API_KEY=<key>
 
 ## Scripts
 
-All scripts are located in `.claude/skills/memory-ops/scripts/`:
+All scripts are located in `/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-ops/scripts/`:
 
 | Script | Purpose | Usage |
 |--------|---------|-------|
@@ -79,22 +79,22 @@ All scripts are located in `.claude/skills/memory-ops/scripts/`:
 
 ### Search for past work
 ```bash
-bash .claude/skills/memory-ops/scripts/search.sh "MCP token optimization"
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-ops/scripts/search.sh "MCP token optimization"
 ```
 
 ### Sync all memory
 ```bash
-bash .claude/skills/memory-ops/scripts/sync.sh
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-ops/scripts/sync.sh
 ```
 
 ### Check system health
 ```bash
-bash .claude/skills/memory-ops/scripts/health.sh
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-ops/scripts/health.sh
 ```
 
 ### Store a new learning
 ```bash
-bash .claude/skills/memory-ops/scripts/store-learning.sh \
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/memory-ops/scripts/store-learning.sh \
   "Qdrant HTTPS Requirement" \
   "Qdrant API requires HTTPS and api-key header for authentication"
 ```

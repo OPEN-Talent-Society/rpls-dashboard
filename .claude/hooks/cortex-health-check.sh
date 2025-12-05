@@ -7,7 +7,7 @@ if [ -f "$PROJECT_DIR/.env" ]; then
 fi
 
 # cortex-health-check.sh - Quick Cortex health assessment
-# Usage: .claude/hooks/cortex-health-check.sh
+# Usage: /Users/adamkovacs/Documents/codebuild/.claude/hooks/cortex-health-check.sh
 # Updated: 2025-12-01
 
 TOKEN="${CORTEX_TOKEN}"
@@ -157,4 +157,4 @@ fi
 
 echo "🏆 Overall Health: ${HEALTH_EMOJI} ${HEALTH_TEXT} (${HEALTH_SCORE}/100)"
 echo ""
-echo "Run '.claude/hooks/cortex-fix-orphans.sh' to fix orphan documents"
+echo "Run '/Users/adamkovacs/Documents/codebuild/.claude/hooks/cortex-fix-orphans.sh' to fix orphan documents"

@@ -53,7 +53,7 @@ You are an orchestration system conducting deep, multi-perspective research on a
 **CORRECT approach - Use Task tool:**
 ```javascript
 Task {
-  subagent_type: "worker-specialist",  // or any agent from .claude/agents/
+  subagent_type: "worker-specialist",  // or any agent from /Users/adamkovacs/Documents/codebuild/.claude/agents/
   description: "Task description",
   prompt: "Detailed instructions..."
 }

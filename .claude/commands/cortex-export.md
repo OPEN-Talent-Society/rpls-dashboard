@@ -226,9 +226,9 @@ Export completed project docs before archiving:
 
 ## Related Resources
 
-- **Agent**: `.claude/agents/core/cortex-ops.md`
-- **Skill**: `.claude/skills/cortex-api-ops.md`
-- **Docs**: `.claude/docs/TOOL-REFERENCE.md#cortex-siyuan`
+- **Agent**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/core/cortex-ops.md`
+- **Skill**: `/Users/adamkovacs/Documents/codebuild/.claude/skills/cortex-api-ops.md`
+- **Docs**: `/Users/adamkovacs/Documents/codebuild/.claude/docs/TOOL-REFERENCE.md#cortex-siyuan`
 
 ---
 

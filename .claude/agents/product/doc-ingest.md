@@ -270,8 +270,8 @@ domains:
 
       1. ​`cd mcp/cortex && npm install && npm run build`
       2. Launch with `node dist/index.js` (stdio transport).
-      3. Register the MCP endpoint in `~/.codex/config.toml`​, `.claude/.claude.json`, etc., so agents can call the tools.
-      4. For Claude Z.AI or Claude Code, point `.claude/mcp.json`​ at `scripts/mcp/cortex-mcp.sh`​ (it loads `~/.config/cortex-mcp.env`​ for `SIYUAN_API_TOKEN`​, `CF_ACCESS_CLIENT_ID`​, `CF_ACCESS_CLIENT_SECRET`).
+      3. Register the MCP endpoint in `~/.codex/config.toml`​, `/Users/adamkovacs/Documents/codebuild/.claude/.claude.json`, etc., so agents can call the tools.
+      4. For Claude Z.AI or Claude Code, point `/Users/adamkovacs/Documents/codebuild/.claude/mcp.json`​ at `scripts/mcp/cortex-mcp.sh`​ (it loads `~/.config/cortex-mcp.env`​ for `SIYUAN_API_TOKEN`​, `CF_ACCESS_CLIENT_ID`​, `CF_ACCESS_CLIENT_SECRET`).
     - **Next steps**:
 
       - Add path-based lookup/search helpers and write/update support.

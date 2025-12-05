@@ -25,7 +25,7 @@ This skill provides a comprehensive hook system that automatically manages devel
 **Required:**
 - Claude Flow CLI installed (`pnpm add -g claude-flow@alpha`)
 - Claude Code with hooks enabled
-- `.claude/settings.json` with hook configurations
+- `/Users/adamkovacs/Documents/codebuild/.claude/settings.json` with hook configurations
 
 **Optional:**
 - MCP servers configured (claude-flow, ruv-swarm, flow-nexus)
@@ -42,8 +42,8 @@ This skill provides a comprehensive hook system that automatically manages devel
 ```
 
 This creates:
-- `.claude/settings.json` with pre-configured hooks
-- Hook command documentation in `.claude/commands/hooks/`
+- `/Users/adamkovacs/Documents/codebuild/.claude/settings.json` with pre-configured hooks
+- Hook command documentation in `/Users/adamkovacs/Documents/codebuild/.claude/commands/hooks/`
 - Default hook handlers for common operations
 
 ### Basic Hook Usage
@@ -404,7 +404,7 @@ Examples:
 
 #### Basic Configuration
 
-Edit `.claude/settings.json` to configure hooks:
+Edit `/Users/adamkovacs/Documents/codebuild/.claude/settings.json` to configure hooks:
 
 ```json
 {
@@ -912,7 +912,7 @@ Create custom hooks for specific workflows:
 #### Custom Hook Template
 
 ```javascript
-// .claude/hooks/custom-quality-check.js
+// /Users/adamkovacs/Documents/codebuild/.claude/hooks/custom-quality-check.js
 
 module.exports = {
   name: 'custom-quality-check',
@@ -964,7 +964,7 @@ module.exports = {
         "hooks": [
           {
             "type": "script",
-            "script": ".claude/hooks/custom-quality-check.js"
+            "script": "/Users/adamkovacs/Documents/codebuild/.claude/hooks/custom-quality-check.js"
           }
         ]
       }
@@ -1157,7 +1157,7 @@ cat .claude-flow/logs/hooks-$(date +%Y-%m-%d).log
 ### Troubleshooting
 
 #### Hooks Not Executing
-- Verify `.claude/settings.json` syntax
+- Verify `/Users/adamkovacs/Documents/codebuild/.claude/settings.json` syntax
 - Check hook matcher patterns
 - Enable debug mode
 - Review permission settings

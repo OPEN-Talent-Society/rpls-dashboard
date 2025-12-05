@@ -40,7 +40,7 @@ For epics and complex development work:
 
 ### 1. Create ONE NocoDB Task for the Epic
 ```bash
-bash .claude/skills/nocodb-tasks/scripts/create-task.sh "Epic: User Authentication System" "In Progress" "P1"
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/nocodb-tasks/scripts/create-task.sh "Epic: User Authentication System" "In Progress" "P1"
 ```
 
 ### 2. Track Subtasks in Task Description (Checkbox Format)
@@ -63,10 +63,10 @@ Update the task description with checkbox-formatted subtasks:
 ### 3. Update NocoDB Status as Work Progresses
 ```bash
 # When starting
-bash .claude/skills/nocodb-tasks/scripts/update-status.sh 123 "In Progress"
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/nocodb-tasks/scripts/update-status.sh 123 "In Progress"
 
 # When done
-bash .claude/skills/nocodb-tasks/scripts/update-status.sh 123 "Done"
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/nocodb-tasks/scripts/update-status.sh 123 "Done"
 ```
 
 ---
@@ -112,21 +112,21 @@ v3 endpoint pattern: `/api/v3/data/{baseId}/{tableId}/records`
 
 ### Create Task
 ```bash
-bash .claude/skills/nocodb-tasks/scripts/create-task.sh "Task title" "To Do" "P2"
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/nocodb-tasks/scripts/create-task.sh "Task title" "To Do" "P2"
 ```
 
 ### Update Task Status
 ```bash
-bash .claude/skills/nocodb-tasks/scripts/update-status.sh 123 "Done"
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/nocodb-tasks/scripts/update-status.sh 123 "Done"
 ```
 
 ### List Tasks
 ```bash
 # All tasks
-bash .claude/skills/nocodb-tasks/scripts/list-tasks.sh
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/nocodb-tasks/scripts/list-tasks.sh
 
 # By status
-bash .claude/skills/nocodb-tasks/scripts/list-tasks.sh "In Progress"
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/nocodb-tasks/scripts/list-tasks.sh "In Progress"
 ```
 
 ### Raw curl Examples (API v3)
@@ -197,20 +197,20 @@ This provides human-in-the-loop visibility into agent activities without creatin
 
 ```bash
 # Agent starting work
-bash .claude/skills/nocodb-tasks/scripts/update-status.sh 123 "In Progress"
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/nocodb-tasks/scripts/update-status.sh 123 "In Progress"
 
 # Agent logging progress (update description)
 # Use curl to update Description field with progress notes
 
 # Agent completing work
-bash .claude/skills/nocodb-tasks/scripts/update-status.sh 123 "Done"
+bash /Users/adamkovacs/Documents/codebuild/.claude/skills/nocodb-tasks/scripts/update-status.sh 123 "Done"
 ```
 
 ---
 
 ## Helper Scripts
 
-Located in `.claude/skills/nocodb-tasks/scripts/`:
+Located in `/Users/adamkovacs/Documents/codebuild/.claude/skills/nocodb-tasks/scripts/`:
 
 | Script | Usage |
 |--------|-------|

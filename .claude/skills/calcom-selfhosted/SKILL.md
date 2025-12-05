@@ -212,6 +212,6 @@ GOOGLE_API_CREDENTIALS: '{"web":{"client_id":"35519749364-dml42gbm9thto1b36lf322
 
 ## Related Documentation
 
-- OCI Server Skill: `.claude/skills/oci-server/SKILL.md`
-- Cloudflare DNS Skill: `.claude/skills/cloudflare-dns/SKILL.md`
-- Brevo Email Skill: `.claude/skills/brevo-email/SKILL.md`
+- OCI Server Skill: `/Users/adamkovacs/Documents/codebuild/.claude/skills/oci-server/SKILL.md`
+- Cloudflare DNS Skill: `/Users/adamkovacs/Documents/codebuild/.claude/skills/cloudflare-dns/SKILL.md`
+- Brevo Email Skill: `/Users/adamkovacs/Documents/codebuild/.claude/skills/brevo-email/SKILL.md`

@@ -16,35 +16,35 @@ Synchronize memory across all 6 storage backends.
 Run the unified memory sync:
 
 ```bash
-.claude/skills/memory-sync/scripts/sync-all.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-all.sh
 ```
 
 ## Quick Actions
 
 **View Stats:**
 ```bash
-.claude/skills/memory-sync/scripts/memory-stats.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/memory-stats.sh
 ```
 
 **Sync specific direction:**
 ```bash
 # AgentDB → Supabase
-.claude/skills/memory-sync/scripts/sync-agentdb-to-supabase.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-agentdb-to-supabase.sh
 
 # Supabase → AgentDB
-.claude/skills/memory-sync/scripts/sync-supabase-to-agentdb.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-supabase-to-agentdb.sh
 
 # To/From Cortex
-.claude/skills/memory-sync/scripts/sync-to-cortex.sh
-.claude/skills/memory-sync/scripts/sync-from-cortex.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-to-cortex.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/sync-from-cortex.sh
 
 # Index to RuVector
-.claude/skills/memory-sync/scripts/index-to-ruvector.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/index-to-ruvector.sh
 ```
 
 **Search unified memory:**
 ```bash
-.claude/skills/memory-sync/scripts/unified-search.sh "your query"
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/unified-search.sh "your query"
 ```
 
 ## Backends

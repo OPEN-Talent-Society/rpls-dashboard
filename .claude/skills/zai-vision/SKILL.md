@@ -60,12 +60,12 @@ For local files, upload to a temporary URL service or use analyze-image.sh (less
 
 ### Analyze Local Image
 ```bash
-.claude/skills/zai-vision/scripts/analyze-image.sh /path/to/image.png "Describe this image"
+/Users/adamkovacs/Documents/codebuild/.claude/skills/zai-vision/scripts/analyze-image.sh /path/to/image.png "Describe this image"
 ```
 
 ### Analyze URL Image
 ```bash
-.claude/skills/zai-vision/scripts/analyze-url.sh "https://example.com/image.jpg" "What's in this image?"
+/Users/adamkovacs/Documents/codebuild/.claude/skills/zai-vision/scripts/analyze-url.sh "https://example.com/image.jpg" "What's in this image?"
 ```
 
 ## Environment Variables

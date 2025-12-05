@@ -13,26 +13,26 @@ Search across all 6 memory backends: Supabase (patterns, learnings, agent_memory
 ## Quick Search
 
 ```bash
-.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS"
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS"
 ```
 
 ## Backend-Specific Search
 
 ```bash
 # Search only Supabase
-.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS" supabase
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS" supabase
 
 # Search only AgentDB
-.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS" agentdb
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS" agentdb
 
 # Search only Swarm Memory
-.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS" swarm
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS" swarm
 
 # Search only Cortex
-.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS" cortex
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS" cortex
 
 # Search only Qdrant (semantic)
-.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS" qdrant
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/unified-search.sh "$ARGUMENTS" qdrant
 ```
 
 ## Semantic Search with Qdrant
@@ -85,7 +85,7 @@ The pre-task hook automatically searches Qdrant for relevant context:
 
 ```bash
 # Automatic semantic search before tasks
-.claude/hooks/pre-task-memory-lookup.sh "implement user authentication"
+/Users/adamkovacs/Documents/codebuild/.claude/hooks/pre-task-memory-lookup.sh "implement user authentication"
 
 # Returns: Relevant patterns, learnings, and previous implementations
 ```
@@ -93,5 +93,5 @@ The pre-task hook automatically searches Qdrant for relevant context:
 ## Memory Statistics
 
 ```bash
-.claude/skills/memory-sync/scripts/memory-stats.sh
+/Users/adamkovacs/Documents/codebuild/.claude/skills/memory-sync/scripts/memory-stats.sh
 ```
