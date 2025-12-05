@@ -7,8 +7,7 @@
 
 ## TL;DR - What You Have Access To
 
-**73 Custom Agents** in `.claude/agents/` - Domain specialists for infrastructure, business, DevOps, research
-**72 Agentic-Flow Agents** via MCP - Swarm coordination, GitHub, consensus, optimization
+**143 Custom Agents** in `.claude/agents/` - Domain specialists for infrastructure, business, DevOps, research, hive-mind, consensus
 **107 Skills** - Data processing, AI agents, cloud infra, dev tools, marketing, product
 **85 Commands** - Memory, Cortex, Hive-Mind, GitHub, analysis, monitoring
 **37 Hooks** - Session lifecycle, memory sync, task tracking, integrations
@@ -23,9 +22,8 @@
 
 | Category | Count | Location | How to Use |
 |----------|-------|----------|------------|
-| **Custom Agents** | 73 | `.claude/agents/` | Specialized domain agents |
-| **Agentic-Flow Agents** | 72 | MCP | `mcp__claude-flow__agentic_flow_list_agents` |
-| **Skills** | 107 | `.claude/skills/` | `skill: "name"` |
+| **Custom Agents** | 143 | `.claude/agents/` | Task tool with subagent_type parameter |
+| **Skills** | 107 | `.claude/skills/` | `Skill({ skill: "name" })` |
 | **Commands** | 85 | `.claude/commands/` | `/command-name` |
 | **Hooks** | 37 | `.claude/hooks/` | Auto-run or `bash .claude/hooks/name.sh` |
 | **Plugins** | 16 | `.claude/plugins/` | Domain-specific bundles |

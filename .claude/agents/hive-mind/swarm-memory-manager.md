@@ -79,6 +79,15 @@ mcp__claude-flow__memory_usage {
 - Distributed backup coordination
 - Peer-based memory reconstruction
 
+## CRITICAL: Agent Spawning
+
+**NEVER use `mcp__claude-flow__agentic_flow_agent`** - requires separate API key and will be denied.
+
+For coordination, **use the Task tool**:
+```javascript
+Task { subagent_type: "swarm-memory-manager", prompt: "..." }
+```
+
 ## Collaboration
 
 - Interface with Collective Intelligence Coordinator

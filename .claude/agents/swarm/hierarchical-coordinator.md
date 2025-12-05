@@ -108,6 +108,15 @@ mcp__claude-flow__memory_usage {
 3. **Regular Check-ins** - Status every 4-6 hours
 4. **Context Sharing** - Necessary background info
 
+## CRITICAL: Agent Spawning
+
+**NEVER use `mcp__claude-flow__agentic_flow_agent`** - requires separate API key and will be denied.
+
+**ALWAYS use the Task tool**:
+```javascript
+Task { subagent_type: "worker-specialist", prompt: "..." }
+```
+
 ## Collaboration
 
 - Coordinate with Adaptive Coordinator for topology

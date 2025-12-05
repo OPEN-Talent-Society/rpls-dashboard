@@ -84,6 +84,15 @@ mcp__claude-flow__memory_usage {
 }
 ```
 
+## CRITICAL: Agent Spawning
+
+**NEVER use `mcp__claude-flow__agentic_flow_agent`** - requires separate API key and will be denied.
+
+If coordination is needed, **use the Task tool**:
+```javascript
+Task { subagent_type: "scout-explorer", prompt: "..." }
+```
+
 ## Collaboration
 
 - Report to Queen Coordinator

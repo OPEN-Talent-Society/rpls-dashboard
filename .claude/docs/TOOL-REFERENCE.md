@@ -510,31 +510,24 @@ Claude Flow is the **swarm intelligence orchestration platform**. It enables mul
 
 ### How We Use It
 
-**Key Operations**:
+**Key Operations (Task tool - swarm tools are DENIED)**:
 ```javascript
-// Initialize swarm
-mcp__claude-flow__swarm_init({
-  topology: "hierarchical",  // mesh, ring, star
-  maxAgents: 8,
-  strategy: "balanced"
+// ❌ WRONG - These are DENIED:
+// mcp__claude-flow__swarm_init({ ... })
+// mcp__claude-flow__agent_spawn({ ... })
+// mcp__claude-flow__task_orchestrate({ ... })
+
+// ✅ CORRECT - Use Task tool:
+Task({
+  subagent_type: "general-purpose",  // or "Explore", "Plan", or any agent from .claude/agents/
+  description: "Brief task description",
+  prompt: "Detailed instructions for the worker..."
 })
 
-// Spawn agents
-mcp__claude-flow__agent_spawn({
-  type: "researcher|coder|analyst|tester",
-  name: "Agent Name",
-  capabilities: ["capability1", "capability2"]
-})
-
-// Orchestrate task
-mcp__claude-flow__task_orchestrate({
-  task: "Task description",
-  strategy: "parallel|sequential|adaptive",
-  priority: "high"
-})
-
-// Monitor swarm
-mcp__claude-flow__swarm_status({ swarmId: "current" })
+// Spawn multiple workers in parallel (ONE message)
+Task({ subagent_type: "general-purpose", description: "Researcher", prompt: "Research topic X" })
+Task({ subagent_type: "general-purpose", description: "Implementer", prompt: "Implement Y" })
+Task({ subagent_type: "general-purpose", description: "Tester", prompt: "Write tests for Z" })
 ```
 
 ### Topology Selection Guide

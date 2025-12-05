@@ -11,6 +11,42 @@ author: Claude Flow Team
 
 Master advanced swarm patterns for distributed research, development, and testing workflows. This skill covers comprehensive orchestration strategies using both MCP tools and CLI commands.
 
+---
+
+## ⚠️ CRITICAL: MCP Tool Changes
+
+**IMPORTANT:** The MCP swarm tools referenced in this document are **DENIED** and will not work.
+
+**❌ DENIED Tools:**
+- `mcp__claude-flow__swarm_init`
+- `mcp__claude-flow__agent_spawn`
+- `mcp__claude-flow__task_orchestrate`
+- `mcp__claude-flow__agentic_flow_agent`
+
+**✅ USE INSTEAD: Task Tool**
+```javascript
+// Spawn workers using Task tool
+Task({
+  subagent_type: "general-purpose",  // or "Explore", "Plan", or any agent from .claude/agents/
+  description: "Brief task description",
+  prompt: "Detailed instructions..."
+})
+
+// Spawn multiple workers in parallel (ONE message)
+Task({ subagent_type: "general-purpose", description: "Worker 1", prompt: "..." })
+Task({ subagent_type: "general-purpose", description: "Worker 2", prompt: "..." })
+Task({ subagent_type: "general-purpose", description: "Worker 3", prompt: "..." })
+```
+
+**Why DENIED:** These tools require separate API keys and infrastructure. The Task tool uses your Claude Max subscription.
+
+**For updated patterns, see:**
+- `/Users/adamkovacs/CLAUDE.md` - Section I (Mandatory Rules)
+- `.claude/docs/ref/SWARM-PATTERNS.md` - Multi-agent orchestration with Task tool
+- `.claude/docs/ref/MCP-TOOLS.md` - ALLOWED vs DENIED tools
+
+---
+
 ## Quick Start
 
 ### Prerequisites

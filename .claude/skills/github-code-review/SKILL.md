@@ -18,6 +18,26 @@ capabilities:
   - Quality gate enforcement
 ---
 
+---
+
+## ⚠️ CRITICAL: MCP Tool Changes
+
+**DENIED (will fail):** These MCP tools are NO LONGER AVAILABLE:
+- ❌ `mcp__claude-flow__agentic_flow_agent` - Requires separate API key
+- ❌ `mcp__claude-flow__swarm_init` - Use Task tool instead
+- ❌ `mcp__claude-flow__agent_spawn` - Use Task tool instead
+
+**CORRECT approach - Use Task tool:**
+```javascript
+Task {
+  subagent_type: "worker-specialist",  // or any agent from .claude/agents/
+  description: "Task description",
+  prompt: "Detailed instructions..."
+}
+```
+
+---
+
 # GitHub Code Review Skill
 
 > **AI-Powered Code Review**: Deploy specialized review agents to perform comprehensive, intelligent code reviews that go beyond traditional static analysis.

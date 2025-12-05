@@ -86,6 +86,15 @@ mcp__claude-flow__memory_usage {
 - Resource-efficient execution
 - Clear completion criteria
 
+## CRITICAL: Sub-Agent Spawning
+
+**NEVER use `mcp__claude-flow__agentic_flow_agent`** - requires separate API key and will be denied.
+
+If you need to spawn sub-agents, **use the Task tool**:
+```javascript
+Task { subagent_type: "worker-specialist", prompt: "..." }
+```
+
 ## Collaboration
 
 - Report to Queen Coordinator

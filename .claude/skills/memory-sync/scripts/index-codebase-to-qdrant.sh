@@ -160,14 +160,19 @@ chunk_text() {
   done
 }
 
-# Function to generate UUID (compatible with macOS and Linux)
-generate_uuid() {
-  if command -v uuidgen &> /dev/null; then
-    uuidgen | tr '[:upper:]' '[:lower:]'
-  else
-    # Fallback: generate pseudo-UUID
-    cat /dev/urandom | LC_ALL=C tr -dc 'a-f0-9' | fold -w 32 | head -n 1 | sed 's/\(.\{8\}\)\(.\{4\}\)\(.\{4\}\)\(.\{4\}\)\(.\{12\}\)/\1-\2-\3-\4-\5/'
-  fi
+# Function to generate deterministic ID from file path and chunk index
+# This ensures idempotency - same file/chunk always gets same ID
+# Using MD5 hash of filepath+chunk to create reproducible numeric ID
+generate_deterministic_id() {
+  local file_path="$1"
+  local chunk_index="$2"
+  local key="${file_path}:chunk${chunk_index}"
+
+  # Generate MD5 hash and take first 8 hex chars (32 bits = always positive in unsigned)
+  local hash=$(echo -n "$key" | md5 2>/dev/null || echo -n "$key" | md5sum | cut -d' ' -f1)
+  local hex8="${hash:0:8}"
+  # Convert to decimal - 8 hex chars = max 4294967295, always positive
+  printf "%lu" "0x$hex8"
 }
 
 # Function to index a single chunk
@@ -187,12 +192,13 @@ index_chunk() {
     return 1
   fi
 
-  # Generate UUID for point ID
-  local point_id=$(generate_uuid)
+  # Generate deterministic point ID based on file path and chunk index
+  # This ensures idempotency - running sync multiple times won't create duplicates
+  local point_id=$(generate_deterministic_id "$file_path" "$chunk_index")
 
-  # Create payload
+  # Create payload (using --argjson for numeric ID to ensure Qdrant upsert works)
   local payload=$(jq -n \
-    --arg id "$point_id" \
+    --argjson id "$point_id" \
     --arg type "code" \
     --arg source "github" \
     --arg file_path "$file_path" \

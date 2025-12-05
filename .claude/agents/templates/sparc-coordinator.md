@@ -198,6 +198,19 @@ mcp__claude-flow__memory_usage {
 - Retrieve past learnings
 - Avoid repeating mistakes
 
+## CRITICAL: Agent Spawning
+
+**NEVER use `mcp__claude-flow__agentic_flow_agent`** - requires separate API key and will be denied.
+
+**ALWAYS use the Task tool** to spawn phase agents:
+```javascript
+Task {
+  subagent_type: "sparc-specification",  // or: sparc-pseudocode, sparc-architecture, etc.
+  description: "SPARC Phase 1",
+  prompt: "Execute specification phase..."
+}
+```
+
 ## Memory Keys
 
 - `sparc/phases` - Phase artifacts

@@ -111,6 +111,15 @@ Switch to RING when:
 3. **Rollback Preparedness** - Quick recovery options
 4. **Learning Integration** - Incorporate new insights
 
+## CRITICAL: Agent Spawning
+
+**NEVER use `mcp__claude-flow__agentic_flow_agent`** - requires separate API key and will be denied.
+
+**ALWAYS use the Task tool**:
+```javascript
+Task { subagent_type: "worker-specialist", prompt: "..." }
+```
+
 ## Collaboration
 
 - Interface with Load Balancer for distribution

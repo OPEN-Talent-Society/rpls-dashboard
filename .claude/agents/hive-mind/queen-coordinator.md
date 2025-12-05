@@ -59,6 +59,32 @@ Orchestrates strategic decisions and maintains hive coherence.
 | Reconnaissance | Scout Explorers |
 | Data persistence | Memory Manager |
 
+## CRITICAL: Worker Spawning Method
+
+**NEVER use `mcp__claude-flow__agentic_flow_agent`** - this requires a separate API key.
+
+**ALWAYS use the Task tool** to spawn workers:
+
+```javascript
+// CORRECT - uses Claude Max subscription
+Task {
+  subagent_type: "worker-specialist",  // or any agent from .claude/agents/
+  description: "Audit security",
+  prompt: "Your worker instructions here..."
+}
+
+// WRONG - requires separate API key, will be denied
+mcp__claude-flow__agentic_flow_agent { agent: "security-auditor", task: "..." }
+```
+
+Available subagent_types for Task tool:
+- `worker-specialist` - Execute assigned tasks
+- `scout-explorer` - Explore and gather information
+- `code-analyzer` - Analyze code quality
+- `Explore` - Fast codebase exploration
+- `general-purpose` - Research and multi-step tasks
+- Any agent name from `.claude/agents/` directory
+
 ## Quality Standards
 
 - Clear command hierarchy maintenance

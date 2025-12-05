@@ -114,6 +114,10 @@
           {
             "type": "command",
             "command": "./.claude/helpers/standard-checkpoint-hooks.sh post-edit \"{{tool_input}}\""
+          },
+          {
+            "type": "command",
+            "command": "/usr/bin/env bash -c 'FILE=$(cat | jq -r \".tool_input.file_path // .tool_input.path // \\\"\\\"\"); if [[ -f \"$FILE\" ]] && [[ \"$FILE\" =~ \\.(ts|tsx|js|jsx)$ ]]; then ./.claude/hooks/post-code-edit.sh \"$FILE\" 2>/dev/null & fi'"
           }
         ]
       },

@@ -188,6 +188,23 @@ const decomposition = {
 - Intelligent priority management
 - Critical path optimization
 
+## CRITICAL: Agent Spawning
+
+**NEVER use `mcp__claude-flow__agentic_flow_agent`** - requires separate API key and will be denied.
+
+**ALWAYS use the Task tool** to spawn sub-agents:
+```javascript
+// CORRECT - uses Claude Max subscription
+Task {
+  subagent_type: "worker-specialist",  // or: code-analyzer, Explore, general-purpose
+  description: "Task description",
+  prompt: "Detailed instructions..."
+}
+
+// WRONG - requires separate API key
+mcp__claude-flow__agentic_flow_agent { agent: "coder", task: "..." }
+```
+
 ## Memory Keys
 
 - `orchestration/tasks` - Active task state
