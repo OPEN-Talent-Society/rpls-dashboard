@@ -128,22 +128,28 @@ if [ "$SHOULD_SYNC" = true ]; then
             "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-agentdb-to-supabase.sh" --incremental >> "$SYNC_LOG" 2>&1
         fi
 
-        # 2. Sync Supabase to Qdrant (get episodes + learnings into vector DB)
+        # 2. CRITICAL: Sync AgentDB DIRECTLY to Qdrant (don't rely on Supabase intermediary)
+        # This ensures all episodes reach the semantic layer for memory recall
+        if [ -f "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-episodes-to-qdrant.sh" ]; then
+            "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-episodes-to-qdrant.sh" >> "$SYNC_LOG" 2>&1
+        fi
+
+        # 3. Sync Supabase to Qdrant (get learnings + patterns into vector DB)
         if [ -f "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-supabase-to-qdrant.sh" ]; then
             "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-supabase-to-qdrant.sh" --incremental >> "$SYNC_LOG" 2>&1
         fi
 
-        # 3. Sync Swarm Memory to Qdrant (trajectories + high-value entries)
+        # 4. Sync Swarm Memory to Qdrant (trajectories + high-value entries)
         if [ -f "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-swarm-to-qdrant.sh" ]; then
             "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-swarm-to-qdrant.sh" --incremental >> "$SYNC_LOG" 2>&1
         fi
 
-        # 4. Sync Cortex to Qdrant (knowledge base documents)
+        # 5. Sync Cortex to Qdrant (knowledge base documents)
         if [ -f "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-cortex-to-qdrant.sh" ]; then
             "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-cortex-to-qdrant.sh" --incremental >> "$SYNC_LOG" 2>&1
         fi
 
-        # 5. Sync AgentDB to Cortex (episodes → knowledge documents)
+        # 6. Sync AgentDB to Cortex (episodes → knowledge documents)
         # This creates DOCUMENTATION in Cortex from successful episodes
         if [ -f "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-agentdb-to-cortex.sh" ]; then
             "$PROJECT_DIR/.claude/skills/memory-sync/scripts/sync-agentdb-to-cortex.sh" >> "$SYNC_LOG" 2>&1
