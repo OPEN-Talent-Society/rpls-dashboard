@@ -1,4 +1,10 @@
 #!/bin/bash
+# Load .env with exports
+PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+if [ -f "$PROJECT_DIR/.env" ]; then
+    set -a; source "$PROJECT_DIR/.env"; set +a
+fi
+
 # Log Learning Hook: Capture learnings with deduplication
 # Implements "Log learnings, fix problems, prevent recurrence" principle
 
@@ -64,7 +70,7 @@ fi
 echo "Learning logged: learnings/${LEARNING_CATEGORY}/${LEARNING_HASH}"
 
 # PERSISTENT STORAGE: Write to file-based AgentDB
-AGENTDB_FILE="${SCRIPT_DIR}/../.agentdb/learnings.json"
+AGENTDB_FILE="$PROJECT_DIR/.agentdb/learnings.json"
 if [ -f "$AGENTDB_FILE" ]; then
   # Create new entry
   NEW_ENTRY=$(cat <<ENTRY

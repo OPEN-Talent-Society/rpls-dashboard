@@ -1,4 +1,10 @@
 #!/bin/bash
+# Load .env with exports
+PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+if [ -f "$PROJECT_DIR/.env" ]; then
+    set -a; source "$PROJECT_DIR/.env"; set +a
+fi
+
 # Save Pattern Hook: Store successful solutions as reusable patterns
 # Implements "Build higher-level capabilities over time" principle
 
@@ -46,7 +52,7 @@ echo "This solution is now available for future similar problems."
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # LOCAL FILE STORAGE: Write to file-based AgentDB (ALWAYS - works offline)
-AGENTDB_FILE="${SCRIPT_DIR}/../.agentdb/patterns.json"
+AGENTDB_FILE="$PROJECT_DIR/.agentdb/patterns.json"
 if [ -f "$AGENTDB_FILE" ]; then
   echo "Writing to local file storage (offline backup)..."
   NEW_ENTRY=$(cat <<ENTRY
