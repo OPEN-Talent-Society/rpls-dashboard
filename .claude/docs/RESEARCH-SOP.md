@@ -109,10 +109,10 @@ WebSearch {
 
 ### Level 4: Deep Research (Market Intelligence)
 
-**4.1 USACF Framework (Universal Search Algorithm)**
+**4.1 Universal Research Framework (formerly USACF)**
 
-Use the USACF framework for comprehensive multi-dimensional analysis:
-- **Framework**: `.claude/agents/specialized/USACF.md`
+Use the Universal Research Framework for comprehensive multi-dimensional analysis:
+- **Framework**: `.claude/agents/specialized/universal-research-framework.md`
 - **20+ AI research techniques** integrated
 - **Meta-learning** and adversarial validation
 - **Memory-coordinated** multi-agent system
@@ -173,11 +173,11 @@ Available in `.claude/agents/business/`:
 **4.4 Spawn Research Swarm Example**
 
 ```javascript
-// USACF-powered comprehensive analysis
+// Universal Research Framework comprehensive analysis
 Task {
   subagent_type: "strategic-researcher",
   description: "Market landscape research",
-  prompt: "Follow USACF framework to research X market in 2025. Apply step-back prompting, multi-agent decomposition, and RAG integration for comprehensive analysis."
+  prompt: "Follow Universal Research Framework to research X market in 2025. Apply step-back prompting, multi-agent decomposition, and RAG integration for comprehensive analysis."
 }
 
 Task {
@@ -189,7 +189,7 @@ Task {
 Task {
   subagent_type: "gap-hunter",
   description: "Multi-dimensional gap analysis",
-  prompt: "Identify quality, performance, capability, and strategic gaps in X market. Use USACF dimensional analysis."
+  prompt: "Identify quality, performance, capability, and strategic gaps in X market. Use Universal Research Framework dimensional analysis."
 }
 
 Task {
