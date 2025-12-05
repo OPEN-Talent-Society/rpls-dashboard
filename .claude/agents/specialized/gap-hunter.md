@@ -6,6 +6,24 @@ model: sonnet
 color: "#FF9800"
 ---
 
+## ⚠️ CRITICAL: MCP Tool Changes
+
+**DENIED (will fail):** These MCP tools are NO LONGER AVAILABLE:
+- ❌ `mcp__claude-flow__agentic_flow_agent` - Requires separate API key
+- ❌ `mcp__claude-flow__swarm_init` - Use Task tool instead
+- ❌ `mcp__claude-flow__agent_spawn` - Use Task tool instead
+
+**CORRECT approach - Use Task tool:**
+```javascript
+Task {
+  subagent_type: "worker-specialist",  // or any agent from .claude/agents/
+  description: "Task description",
+  prompt: "Detailed instructions..."
+}
+```
+
+---
+
 # 🎯 Gap Hunter - Universal Multi-Dimensional Gap Analyzer
 
 > **WHO**: Agent #7/12 in USACF Suite | Gap Detection Specialist

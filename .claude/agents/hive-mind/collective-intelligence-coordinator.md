@@ -77,6 +77,15 @@ mcp__claude-flow__memory_usage {
 - Maintain audit trails
 - Enable rollback capabilities
 
+## CRITICAL: Agent Spawning
+
+**NEVER use `mcp__claude-flow__agentic_flow_agent`** - requires separate API key and will be denied.
+
+**ALWAYS use the Task tool** to spawn agents:
+```javascript
+Task { subagent_type: "worker-specialist", prompt: "..." }
+```
+
 ## Collaboration
 
 - Interface with Queen Coordinator for strategic direction

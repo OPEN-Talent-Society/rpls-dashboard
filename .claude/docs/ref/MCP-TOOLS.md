@@ -7,13 +7,14 @@
 
 ## TL;DR - MCP Tool Categories
 
-**Coordination**: `swarm_init`, `agent_spawn`, `task_orchestrate` - Set up multi-agent workflows
-**Memory**: `memory_usage`, `agentdb_pattern_store/search` - Persistent state across sessions
-**Agentic Flow**: `agentic_flow_agent`, `agentic_flow_list_agents` - 72 specialized agents
-**Agent Booster**: `agent_booster_edit_file` - 352x faster code editing
-**GitHub**: `github_swarm`, `repo_analyze`, `pr_enhance` - Repository management
+**✅ ALLOWED - Memory**: `agentdb_pattern_store/search`, `agentdb_stats` - Persistent reasoning patterns
+**✅ ALLOWED - Agent Booster**: `agent_booster_edit_file`, `agent_booster_batch_edit` - 352x faster code editing
+**✅ ALLOWED - Context7**: `resolve-library-id`, `get-library-docs` - Documentation lookup
 
-**Key Rule**: MCP tools DO NOT write code. They coordinate Claude Code's actions.
+**❌ DENIED - Coordination**: `swarm_init`, `agent_spawn`, `task_orchestrate` - Use Task tool instead
+**❌ DENIED - Agentic Flow**: `agentic_flow_agent` - Requires separate API keys, use Task tool instead
+
+**Key Rule**: For agent spawning, ALWAYS use the Task tool with subagent_type parameter.
 
 **Setup**: `claude mcp add agentic-flow /opt/homebrew/bin/agentic-flow mcp start`
 
@@ -50,94 +51,99 @@ claude mcp add claude-flow /opt/homebrew/bin/claude-flow mcp start
 
 ---
 
-## Coordination Tools
+## ❌ DENIED - Coordination Tools (Use Task Tool Instead)
 
-### Swarm Management
-- `mcp__claude-flow__swarm_init` - Set up coordination topology
-  - Topologies: mesh, hierarchical, ring, star
-  - Parameters: `{ topology, maxAgents, strategy }`
-- `mcp__claude-flow__swarm_status` - Monitor coordination effectiveness
-- `mcp__claude-flow__swarm_monitor` - Real-time coordination tracking
+**These tools are DENIED and will not work. Use the Task tool for agent spawning:**
 
-### Agent Management
-- `mcp__claude-flow__agent_spawn` - Create cognitive patterns
-  - Parameters: `{ type, name }`
-  - Types: architect, coder, analyst, tester, researcher, coordinator
-- `mcp__claude-flow__agent_list` - View active cognitive patterns
-- `mcp__claude-flow__agent_metrics` - Track coordination performance
+```javascript
+// ✅ CORRECT - Use Task tool
+Task({
+  subagent_type: "general-purpose",  // or any agent from .claude/agents/
+  description: "Worker task description",
+  prompt: "Detailed instructions..."
+})
 
-### Task Orchestration
-- `mcp__claude-flow__task_orchestrate` - Break down and coordinate tasks
-  - Parameters: `{ task, strategy }`
-  - Strategies: parallel, adaptive, sequential
-- `mcp__claude-flow__task_status` - Check workflow progress
-- `mcp__claude-flow__task_results` - Review coordination outcomes
+// ❌ WRONG - These are DENIED
+mcp__claude-flow__swarm_init({ topology: "mesh" })
+mcp__claude-flow__agent_spawn({ type: "coder" })
+mcp__claude-flow__task_orchestrate({ task: "..." })
+```
+
+**Why DENIED:** These tools require separate API keys and infrastructure. The Task tool uses your Claude Max subscription and is always available.
 
 ---
 
-## Memory & Neural Tools
+## ✅ ALLOWED - Memory & Pattern Tools
 
-### Memory Management
-- `mcp__claude-flow__memory_usage` - Persistent memory operations
-  - Actions: store, retrieve, list
-  - Parameters: `{ action, key, value, pattern }`
-
-### Neural Features
-- `mcp__claude-flow__neural_status` - Neural pattern effectiveness
-- `mcp__claude-flow__neural_train` - Improve coordination patterns
-- `mcp__claude-flow__neural_patterns` - Analyze thinking approaches
-
----
-
-## GitHub Integration Tools
-
-- `mcp__claude-flow__github_swarm` - Create GitHub management swarms
-  - Parameters: `{ repository, agents, focus }`
-- `mcp__claude-flow__repo_analyze` - Deep repository analysis
-  - Parameters: `{ deep, include }`
-- `mcp__claude-flow__pr_enhance` - AI-powered PR improvements
-  - Parameters: `{ pr_number, add_tests, improve_docs }`
-- `mcp__claude-flow__issue_triage` - Intelligent issue classification
-- `mcp__claude-flow__code_review` - Automated code review with swarms
-
----
-
-## AgentDB Tools
-
-### Pattern Storage
-- `mcp__claude-flow__agentdb_pattern_store` - Store reasoning patterns
-  - Parameters: `{ sessionId, task, reward, success, critique }`
-- `mcp__claude-flow__agentdb_pattern_search` - Search similar patterns
-  - Parameters: `{ task, k, minReward, onlySuccesses }`
-- `mcp__claude-flow__agentdb_pattern_stats` - Get pattern statistics
-  - Parameters: `{ task, k }`
-
-### Database Operations
+### AgentDB (Reasoning Bank)
+- `mcp__claude-flow__agentdb_pattern_store` - Store successful reasoning patterns
+  ```javascript
+  agentdb_pattern_store({
+    sessionId: "id",
+    task: "what was accomplished",
+    reward: 0.9,  // 0-1 success metric
+    success: true,
+    critique: "self-reflection"
+  })
+  ```
+- `mcp__claude-flow__agentdb_pattern_search` - Search for similar patterns
+  ```javascript
+  agentdb_pattern_search({ task: "description", k: 5 })
+  ```
 - `mcp__claude-flow__agentdb_stats` - Database statistics
 - `mcp__claude-flow__agentdb_clear_cache` - Clear query cache
 
 ---
 
-## Agentic Flow Tools
+## ❌ DENIED - GitHub Integration Tools
 
-### Agent Management
-- `mcp__claude-flow__agentic_flow_agent` - Execute agent with task
-  - Parameters: `{ agent, task, provider, model, temperature }`
-- `mcp__claude-flow__agentic_flow_list_agents` - List all 66+ agents
-- `mcp__claude-flow__agentic_flow_agent_info` - Get agent details
-- `mcp__claude-flow__agentic_flow_create_agent` - Create custom agent
-- `mcp__claude-flow__agentic_flow_list_all_agents` - List all agents with source
-- `mcp__claude-flow__agentic_flow_check_conflicts` - Check agent conflicts
+**These tools are DENIED.** For GitHub operations, use the `gh` CLI tool via Bash or the GitHub Skills:
+- `.claude/skills/github-code-review/`
+- `.claude/skills/github-multi-repo/`
+- `.claude/skills/github-project-management/`
+- `.claude/skills/github-release-management/`
+- `.claude/skills/github-workflow-automation/`
 
-### Model Optimization
-- `mcp__claude-flow__agentic_flow_optimize_model` - Auto-select optimal model
-  - Priorities: quality, balanced, cost, speed, privacy
+---
 
-### Agent Booster (Ultra-Fast Editing)
-- `mcp__claude-flow__agent_booster_edit_file` - 352x faster code editing
-  - Parameters: `{ target_filepath, instructions, code_edit }`
-- `mcp__claude-flow__agent_booster_batch_edit` - Multi-file editing
-- `mcp__claude-flow__agent_booster_parse_markdown` - Parse markdown code blocks
+## ✅ ALLOWED - Agent Booster (Ultra-Fast Editing)
+
+**These tools work and are 352x faster than cloud APIs:**
+
+- `mcp__claude-flow__agent_booster_edit_file` - Lightning-fast code editing
+  ```javascript
+  agent_booster_edit_file({
+    target_filepath: "/path/to/file.ts",
+    instructions: "Add error handling",
+    code_edit: "// ... existing code ...\ntry {\n  // new code\n}"
+  })
+  ```
+- `mcp__claude-flow__agent_booster_batch_edit` - Multi-file editing in one operation
+- `mcp__claude-flow__agent_booster_parse_markdown` - Parse markdown with filepath metadata
+
+---
+
+## ❌ DENIED - Agentic Flow Agent Tools
+
+**These tools are DENIED because they require separate API keys.**
+
+**Instead of:**
+```javascript
+mcp__claude-flow__agentic_flow_agent({ agent: "coder", task: "..." })
+```
+
+**Use Task tool:**
+```javascript
+Task({
+  subagent_type: "general-purpose",
+  description: "Coding task",
+  prompt: "Detailed instructions..."
+})
+```
+
+**Available for information only (no execution):**
+- `mcp__claude-flow__agentic_flow_list_agents` - List available agent types (informational)
+- `mcp__claude-flow__agentic_flow_agent_info` - Get agent details (informational)
 
 ---
 
@@ -148,73 +154,85 @@ claude mcp add claude-flow /opt/homebrew/bin/claude-flow mcp start
 
 ---
 
-## Workflow Examples
+## ✅ CORRECT Workflow Examples
 
-### Research Coordination
+### Multi-Agent Research Task
 
-**Step 1:** Set up research coordination
+**Use Task tool to spawn parallel workers:**
+
 ```javascript
-mcp__claude-flow__swarm_init {
-  topology: "mesh",
-  maxAgents: 5,
-  strategy: "balanced"
-}
+// Spawn multiple workers in ONE message (parallel execution)
+Task({
+  subagent_type: "general-purpose",
+  description: "Literature review",
+  prompt: "Search and summarize neural architecture papers from 2023-2025"
+})
+
+Task({
+  subagent_type: "general-purpose",
+  description: "Data analysis",
+  prompt: "Analyze performance metrics from benchmark datasets"
+})
+
+Task({
+  subagent_type: "general-purpose",
+  description: "Synthesis",
+  prompt: "Combine findings into cohesive research summary"
+})
 ```
 
-**Step 2:** Define research perspectives
+### Fast Code Editing with Agent Booster
+
+**Use agent_booster for 352x faster edits:**
+
 ```javascript
-mcp__claude-flow__agent_spawn { type: "researcher", name: "Literature Review" }
-mcp__claude-flow__agent_spawn { type: "analyst", name: "Data Analysis" }
+agent_booster_batch_edit({
+  edits: [
+    {
+      target_filepath: "/path/to/file1.ts",
+      instructions: "Add TypeScript types",
+      code_edit: "// updated code with types"
+    },
+    {
+      target_filepath: "/path/to/file2.ts",
+      instructions: "Fix error handling",
+      code_edit: "// updated error handling"
+    }
+  ]
+})
 ```
 
-**Step 3:** Coordinate research execution
-```javascript
-mcp__claude-flow__task_orchestrate {
-  task: "Research neural architecture search papers",
-  strategy: "adaptive"
-}
-```
+### Memory Pattern Storage
 
-### Development Coordination
+**Store successful approaches for future retrieval:**
 
-**Step 1:** Set up development coordination
 ```javascript
-mcp__claude-flow__swarm_init {
-  topology: "hierarchical",
-  maxAgents: 8,
-  strategy: "specialized"
-}
-```
-
-**Step 2:** Define development perspectives
-```javascript
-mcp__claude-flow__agent_spawn { type: "architect", name: "System Design" }
-```
-
-**Step 3:** Coordinate implementation
-```javascript
-mcp__claude-flow__task_orchestrate {
-  task: "Implement user authentication with JWT",
-  strategy: "parallel"
-}
+agentdb_pattern_store({
+  sessionId: "session-2025-12-04",
+  task: "Implemented authentication system",
+  reward: 0.95,
+  success: true,
+  critique: "Well-structured approach, tests passed, good error handling"
+})
 ```
 
 ---
 
 ## Best Practices
 
-### DO
-- Use MCP tools to coordinate Claude Code's approach
-- Let the swarm break down problems into manageable pieces
-- Use memory tools to maintain context across sessions
-- Monitor coordination effectiveness with status tools
-- Train neural patterns for better coordination over time
+### ✅ DO
+- Use Task tool for spawning workers/agents
+- Use AgentDB to store successful reasoning patterns
+- Use agent_booster for ultra-fast code edits (352x faster)
+- Use Claude Code tools (Read/Write/Edit) for all file operations
+- Store patterns after completing significant work
 
-### DON'T
-- Expect agents to write code (Claude Code does all implementation)
-- Use MCP tools for file operations (use Claude Code's native tools)
-- Try to make agents execute bash commands (Claude Code handles this)
-- Confuse coordination with execution (MCP coordinates, Claude executes)
+### ❌ DON'T
+- Use `mcp__claude-flow__swarm_init` (DENIED)
+- Use `mcp__claude-flow__agent_spawn` (DENIED)
+- Use `mcp__claude-flow__agentic_flow_agent` (DENIED - requires API keys)
+- Try to use MCP tools for file operations (use Claude Code tools)
+- Forget to store successful patterns in AgentDB
 
 ---
 

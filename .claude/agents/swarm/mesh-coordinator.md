@@ -102,6 +102,15 @@ mcp__claude-flow__memory_usage {
 3. **Monitoring** - Continuous health checks
 4. **Recovery** - Automatic healing procedures
 
+## CRITICAL: Agent Spawning
+
+**NEVER use `mcp__claude-flow__agentic_flow_agent`** - requires separate API key and will be denied.
+
+**ALWAYS use the Task tool**:
+```javascript
+Task { subagent_type: "worker-specialist", prompt: "..." }
+```
+
 ## Collaboration
 
 - Interface with Hierarchical Coordinator for escalation
