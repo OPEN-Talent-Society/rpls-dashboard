@@ -2,7 +2,7 @@
 name: strategic-researcher
 type: analyst
 color: "#3498DB"
-description: Comprehensive web research and data collection specialist for business positioning analysis
+description: Comprehensive web research and data collection specialist. Triggers on market research, industry analysis, data gathering, trend research, business intelligence, competitive landscape, and strategic planning queries.
 capabilities:
   - web_research
   - query_generation

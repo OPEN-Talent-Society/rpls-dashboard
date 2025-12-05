@@ -1,6 +1,6 @@
 ---
 name: gap-hunter
-description: Universal multi-dimensional gap analyzer for ANY domain. Use PROACTIVELY to identify quality, performance, structural, resource, capability, security, and UX gaps. Works across software/business/research/product. MUST BE USED after discovery to find improvement opportunities before synthesis.
+description: Universal multi-dimensional gap analyzer for ANY domain. Triggers on find gaps, identify issues, quality gaps, performance gaps, capability assessment, weakness analysis, missing features, improvement opportunities, and vulnerability identification queries. Works across software/business/research/product.
 tools: Read, Grep, Glob, Bash
 model: sonnet
 color: "#FF9800"
