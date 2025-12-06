@@ -28,6 +28,7 @@ if [ ! -f "$AGENTDB_PATH" ]; then
 fi
 
 # Extract episodes from AgentDB using sqlite3
+# No LIMIT - sync all episodes to ensure complete data in Supabase
 EPISODES=$(sqlite3 "$AGENTDB_PATH" "SELECT json_object(
     'session_id', session_id,
     'task', task,
@@ -37,7 +38,7 @@ EPISODES=$(sqlite3 "$AGENTDB_PATH" "SELECT json_object(
     'output', output,
     'critique', critique,
     'created_at', created_at
-) FROM episodes ORDER BY created_at DESC LIMIT 100;" 2>/dev/null || echo "[]")
+) FROM episodes ORDER BY created_at DESC;" 2>/dev/null || echo "[]")
 
 if [ -z "$EPISODES" ] || [ "$EPISODES" = "[]" ]; then
     echo "ℹ️  No episodes to sync"
