@@ -76,8 +76,12 @@ create_doc() {
     local NOTEBOOK_ID="$1"
     local DOC_PATH="$2"
     local MARKDOWN="$3"
-    local SOURCE="${4:-unknown}"
-    local METADATA_JSON="${5:-{}}"
+    local SOURCE="$4"
+    local METADATA_JSON="$5"
+
+    # Set defaults AFTER assignment to avoid brace expansion issues
+    SOURCE="${SOURCE:-unknown}"
+    METADATA_JSON="${METADATA_JSON:-\{\}}"
 
     # Create document in Cortex
     local RESPONSE=$(curl -s -m 30 -X POST "${SIYUAN_BASE_URL}/api/filetree/createDocWithMd" \
@@ -110,7 +114,7 @@ create_doc() {
             # Merge with provided metadata (compact both to ensure valid JSON)
             local COMPACT_BASE=$(echo "$BASE_ATTRS" | jq -c '.')
             # Ensure metadata is valid JSON before compacting
-            local SAFE_METADATA="${METADATA_JSON:-{}}"
+            local SAFE_METADATA="${METADATA_JSON:-\{\}}"
             if ! echo "$SAFE_METADATA" | jq empty 2>/dev/null; then
                 SAFE_METADATA="{}"
             fi
@@ -118,17 +122,15 @@ create_doc() {
             local FULL_ATTRS=$(jq -nc --argjson base "$COMPACT_BASE" --argjson meta "$COMPACT_META" '$base + $meta')
 
             # Set attributes on the document
-            local ATTRS_PAYLOAD=$(jq -n \
-                --arg id "$DOC_ID" \
-                --argjson attrs "$FULL_ATTRS" \
-                '{id: $id, attrs: $attrs}' 2>/dev/null)
-
             curl -s -m 10 -X POST "${SIYUAN_BASE_URL}/api/attr/setBlockAttrs" \
                 -H "Authorization: Token ${SIYUAN_API_TOKEN}" \
                 -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
                 -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
                 -H "Content-Type: application/json" \
-                -d "$ATTRS_PAYLOAD" >/dev/null 2>&1
+                -d "$(jq -n \
+                    --arg id "$DOC_ID" \
+                    --argjson attrs "$FULL_ATTRS" \
+                    '{id: $id, attrs: $attrs}')" >/dev/null 2>&1
 
             echo "$DOC_ID"
             return 0
@@ -145,7 +147,10 @@ create_doc() {
 update_doc() {
     local DOC_ID="$1"
     local NEW_MARKDOWN="$2"
-    local METADATA_JSON="${3:-{}}"
+    local METADATA_JSON="$3"
+
+    # Set default AFTER assignment to avoid brace expansion issues
+    METADATA_JSON="${METADATA_JSON:-\{\}}"
 
     # Update document content
     local RESPONSE=$(curl -s -m 30 -X POST "${SIYUAN_BASE_URL}/api/block/updateBlock" \
@@ -160,14 +165,23 @@ update_doc() {
 
     # Check for success
     if echo "$RESPONSE" | jq -e '.code == 0' >/dev/null 2>&1; then
-        # Update metadata attributes
+        # Get existing attributes to preserve them
+        local EXISTING_ATTRS=$(curl -s -m 10 -X POST "${SIYUAN_BASE_URL}/api/attr/getBlockAttrs" \
+            -H "Authorization: Token ${SIYUAN_API_TOKEN}" \
+            -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
+            -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
+            -H "Content-Type: application/json" \
+            -d "$(jq -n --arg id "$DOC_ID" '{id: $id}')" | jq -c '.data // {}')
+
+        # Filter to only custom-* attributes
+        local EXISTING_CUSTOM=$(echo "$EXISTING_ATTRS" | jq -c 'with_entries(select(.key | startswith("custom-")))')
+
+        # Build update attributes
         local UPDATE_ATTRS=$(jq -n \
             --arg ts "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
             '{"custom-updated": $ts}')
 
-        # Merge with provided metadata (compact both to ensure valid JSON)
-        local COMPACT_UPDATE=$(echo "$UPDATE_ATTRS" | jq -c '.')
-        # Ensure metadata is valid JSON before compacting
+        # Ensure metadata is valid JSON
         local SAFE_METADATA="${METADATA_JSON:-{}}"
         if ! echo "$SAFE_METADATA" | jq empty 2>/dev/null; then
             SAFE_METADATA="{}"
@@ -175,15 +189,16 @@ update_doc() {
         local COMPACT_META=$(echo "$SAFE_METADATA" | jq -c '.')
 
         # Increment version number
-        local CURRENT_VERSION=$(get_doc_attribute "$DOC_ID" "custom-version")
+        local CURRENT_VERSION=$(echo "$EXISTING_CUSTOM" | jq -r '.["custom-version"] // "0"')
         local NEW_VERSION=$((${CURRENT_VERSION:-0} + 1))
 
-        # Merge all attributes
+        # Merge: existing + new metadata + update timestamp + version
         local FULL_ATTRS=$(jq -nc \
-            --argjson update "$COMPACT_UPDATE" \
+            --argjson existing "$EXISTING_CUSTOM" \
             --argjson meta "$COMPACT_META" \
+            --argjson update "$(echo "$UPDATE_ATTRS" | jq -c '.')" \
             --arg ver "$NEW_VERSION" \
-            '$update + $meta + {"custom-version": $ver}')
+            '$existing + $meta + $update + {"custom-version": $ver}')
 
         # Set updated attributes
         local ATTRS_PAYLOAD=$(jq -n \
@@ -236,8 +251,12 @@ upsert_doc() {
     local MARKDOWN="$2"
     local NOTEBOOK_ID="$3"
     local DOC_PATH="$4"
-    local SOURCE="${5:-unknown}"
-    local METADATA_JSON="${6:-{}}"
+    local SOURCE="$5"
+    local METADATA_JSON="$6"
+
+    # Set defaults AFTER assignment to avoid brace expansion issues
+    SOURCE="${SOURCE:-unknown}"
+    METADATA_JSON="${METADATA_JSON:-\{\}}"
 
     # Check if document already exists
     local EXISTING_DOC_ID=$(doc_exists "$TITLE" "$SOURCE")
