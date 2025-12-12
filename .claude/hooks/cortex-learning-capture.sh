@@ -8,18 +8,22 @@ fi
 
 # Cortex Learning Capture Hook - Store learnings in knowledge base
 # KEY LEARNINGS FROM CORTEX FIX PROJECT:
-# 1. Use /api/block/insertBlock NOT /api/attr/setBlockAttrs for creating refs
-# 2. Block reference syntax: ((block-id 'title')) in CONTENT creates refs
-# 3. Backlinks appear on document whose ID is in refs.def_block_id
-# 4. macOS uses bash 3.x - NO associative arrays (declare -A)
-# 5. SiYuan must rebuild index after adding refs programmatically
+# 1. Use upsert_doc() to prevent duplicates (check-update-create pattern)
+# 2. Source cortex-helpers.sh for shared upsert logic
+# 3. Block reference syntax: ((block-id 'title')) in CONTENT creates refs
+# 4. Backlinks appear on document whose ID is in refs.def_block_id
+# 5. macOS uses bash 3.x - NO associative arrays (declare -A)
+# 6. SiYuan must rebuild index after adding refs programmatically
 
 set -e
 
-TOKEN="${CORTEX_TOKEN}"
-CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
-CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
-URL="https://cortex.aienablement.academy"
+# Source helper library for upsert logic
+HELPER_LIB="${PROJECT_DIR}/.claude/lib/cortex-helpers.sh"
+if [ ! -f "$HELPER_LIB" ]; then
+    echo "❌ ERROR: Helper library not found: $HELPER_LIB"
+    exit 1
+fi
+source "$HELPER_LIB"
 
 # Arguments
 LEARNING_TITLE="${1:-New Learning}"
@@ -31,8 +35,11 @@ NOTEBOOK_ID="20251201183343-ujsixib"
 
 TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 
-# Create learning document
-DOC_CONTENT="# Learning: ${LEARNING_TITLE}
+# Build learning document title
+FULL_TITLE="Learning: ${LEARNING_TITLE}"
+
+# Create learning document content
+DOC_CONTENT="# ${FULL_TITLE}
 
 **Category:** #${CATEGORY}
 **Captured:** ${TIMESTAMP}
@@ -61,19 +68,29 @@ ${LEARNING_CONTENT}
 *Auto-captured by cortex-learning-capture hook*
 "
 
-ESCAPED_CONTENT=$(echo "$DOC_CONTENT" | sed 's/"/\\"/g' | tr '\n' ' ')
+# Build document path (used for new documents)
+DOC_PATH="learnings/${LEARNING_TITLE}.md"
 
-INSERT_RESULT=$(curl -s -X POST "${URL}/api/block/insertBlock" \
-  -H "Authorization: Token ${TOKEN}" \
-  -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
-  -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
-  -H "Content-Type: application/json" \
-  -d "{\"dataType\": \"markdown\", \"data\": \"${ESCAPED_CONTENT}\", \"previousID\": \"\", \"parentID\": \"${NOTEBOOK_ID}\"}")
+# Build metadata (construct directly to avoid nesting issues, use -c for compact)
+METADATA=$(jq -nc \
+    --arg cat "$CATEGORY" \
+    '{
+        "custom-type": "learning",
+        "custom-project": "codebuild",
+        "custom-category": $cat
+    }')
 
-CODE=$(echo "$INSERT_RESULT" | jq -r '.code')
-if [ "$CODE" = "0" ]; then
-  echo "✅ Learning captured: ${LEARNING_TITLE}"
+# UPSERT: Update if exists, create if not
+DOC_ID=$(upsert_doc "$FULL_TITLE" "$DOC_CONTENT" "$NOTEBOOK_ID" "$DOC_PATH" "learning-hook" "$METADATA")
+
+if [ -n "$DOC_ID" ]; then
+    EXISTING_VERSION=$(get_doc_attribute "$DOC_ID" "custom-version")
+    if [ "$EXISTING_VERSION" = "1" ]; then
+        echo "✅ Learning created: ${LEARNING_TITLE} (ID: ${DOC_ID})"
+    else
+        echo "✅ Learning updated: ${LEARNING_TITLE} (ID: ${DOC_ID}, v${EXISTING_VERSION})"
+    fi
 else
-  echo "❌ Failed to capture learning"
-  exit 1
+    echo "❌ Failed to capture learning: ${LEARNING_TITLE}"
+    exit 1
 fi

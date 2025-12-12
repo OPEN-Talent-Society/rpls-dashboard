@@ -1,29 +1,37 @@
 #!/bin/bash
 
-# Load .env with exports
+# Cortex Post-Task Hook - Log completed work to Cortex
+# Auto-captures task completion and learnings to SiYuan knowledge base
+# Usage: Called automatically after task completion via Claude Code hooks
+# FIXED: Now uses upsert logic to prevent duplicate task logs
+
+set -e
+
 PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+
+# Load .env with exports
 if [ -f "$PROJECT_DIR/.env" ]; then
     set -a; source "$PROJECT_DIR/.env"; set +a
 fi
 
-# Cortex Post-Task Hook - Log completed work to Cortex
-# Auto-captures task completion and learnings to SiYuan knowledge base
-# Usage: Called automatically after task completion via Claude Code hooks
-
-set -e
-
-TOKEN="${CORTEX_TOKEN}"
-CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
-CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
-URL="https://cortex.aienablement.academy"
+# Source cortex helpers library for upsert logic
+LIB_DIR="${PROJECT_DIR}/.claude/lib"
+if [ -f "${LIB_DIR}/cortex-helpers.sh" ]; then
+    source "${LIB_DIR}/cortex-helpers.sh"
+else
+    echo "❌ Error: cortex-helpers.sh not found at ${LIB_DIR}/cortex-helpers.sh"
+    exit 1
+fi
 
 # Arguments
 TASK_DESCRIPTION="${1:-Completed task}"
-NOTEBOOK_ID="${2:-20251103053911-8ex6uns}"  # Default to Projects notebook (Updated 2025-12-01)
+NOTEBOOK_NAME="${2:-projects}"  # Default to Projects notebook
 
-# Generate timestamp
+# Generate timestamp and identifiers
 TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 DATE_SLUG=$(date +%Y-%m-%d)
+TASK_TITLE="Task: ${TASK_DESCRIPTION}"
+DOC_PATH="/${DATE_SLUG}-task-${TASK_DESCRIPTION//[^a-zA-Z0-9]/-}"
 
 # Create document content
 DOC_CONTENT="# Task: ${TASK_DESCRIPTION}
@@ -47,23 +55,32 @@ ${TASK_DESCRIPTION}
 *Auto-logged by cortex-post-task hook*
 "
 
-# Escape content for JSON
-ESCAPED_CONTENT=$(echo "$DOC_CONTENT" | sed 's/"/\\"/g' | tr '\n' ' ')
+# Resolve notebook ID from name
+NOTEBOOK_ID=$(resolve_notebook_id "$NOTEBOOK_NAME")
 
-# Insert document via SiYuan API
-INSERT_RESULT=$(curl -s -X POST "${URL}/api/block/insertBlock" \
-  -H "Authorization: Token ${TOKEN}" \
-  -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
-  -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
-  -H "Content-Type: application/json" \
-  -d "{\"dataType\": \"markdown\", \"data\": \"${ESCAPED_CONTENT}\", \"previousID\": \"\", \"parentID\": \"${NOTEBOOK_ID}\"}")
+# Build metadata directly (avoid nested jq issues)
+METADATA=$(jq -n \
+    --arg task "$TASK_DESCRIPTION" \
+    --arg ts "$TIMESTAMP" \
+    '{
+        "custom-source": "cortex-post-task",
+        "custom-synced": $ts,
+        "custom-version": "1",
+        "custom-type": "task-log",
+        "custom-project": "codebuild",
+        "custom-task-description": $task,
+        "custom-completed-at": $ts,
+        "custom-status": "completed"
+    }')
 
-CODE=$(echo "$INSERT_RESULT" | jq -r '.code')
-if [ "$CODE" = "0" ]; then
-  BLOCK_ID=$(echo "$INSERT_RESULT" | jq -r '.data[0].doOperations[0].id // "unknown"')
-  echo "✅ Task logged to Cortex: ${BLOCK_ID}"
+# Upsert document (update if exists, create if not)
+DOC_ID=$(upsert_doc "$TASK_TITLE" "$DOC_CONTENT" "$NOTEBOOK_ID" "$DOC_PATH" "cortex-post-task" "$METADATA")
+
+if [ -n "$DOC_ID" ]; then
+    echo "✅ Task logged to Cortex: ${DOC_ID}"
+    echo "   Title: ${TASK_TITLE}"
+    echo "   Notebook: ${NOTEBOOK_NAME} (${NOTEBOOK_ID})"
 else
-  MSG=$(echo "$INSERT_RESULT" | jq -r '.msg // "unknown error"')
-  echo "❌ Failed to log task: ${MSG}"
-  exit 1
+    echo "❌ Failed to log task to Cortex"
+    exit 1
 fi

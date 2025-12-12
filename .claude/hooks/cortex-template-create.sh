@@ -1,4 +1,7 @@
 #!/bin/bash
+# cortex-template-create.sh - Create documents from SiYuan templates
+# Uses Templates API for consistent document creation (underutilized feature)
+# Updated: 2025-12-11 - Added upsert logic via cortex-helpers.sh to prevent duplicates
 
 # Load .env with exports
 PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
@@ -6,26 +9,15 @@ if [ -f "$PROJECT_DIR/.env" ]; then
     set -a; source "$PROJECT_DIR/.env"; set +a
 fi
 
-# cortex-template-create.sh - Create documents from SiYuan templates
-# Uses Templates API for consistent document creation (underutilized feature)
-# Updated: 2025-12-01
+# Load cortex-helpers.sh for upsert functionality
+CORTEX_HELPERS="$PROJECT_DIR/.claude/lib/cortex-helpers.sh"
+if [ ! -f "$CORTEX_HELPERS" ]; then
+    echo "❌ ERROR: cortex-helpers.sh not found at $CORTEX_HELPERS"
+    exit 1
+fi
+source "$CORTEX_HELPERS"
 
 set -e
-
-# ============================================================================
-# CONFIGURATION
-# ============================================================================
-TOKEN="${CORTEX_TOKEN}"
-CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
-CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
-URL="https://cortex.aienablement.academy"
-
-# PARA Notebook IDs (2025-12-01)
-NOTEBOOK_PROJECTS="20251103053911-8ex6uns"
-NOTEBOOK_AREAS="20251201183343-543piyt"
-NOTEBOOK_RESOURCES="20251201183343-ujsixib"
-NOTEBOOK_ARCHIVES="20251201183343-xf2snc8"
-NOTEBOOK_KB="20251103053840-moamndp"
 
 # ============================================================================
 # USAGE
@@ -523,39 +515,30 @@ get_notebook_id() {
 # API FUNCTIONS
 # ============================================================================
 
-create_document() {
-    local notebook_id="$1"
-    local path="$2"
-    local markdown="$3"
+# Upsert document using cortex-helpers.sh
+# Args: $1=title, $2=markdown, $3=notebook_id, $4=path, $5=template_type
+upsert_template_document() {
+    local title="$1"
+    local markdown="$2"
+    local notebook_id="$3"
+    local path="$4"
+    local template_type="$5"
 
-    local response
-    response=$(curl -s -X POST "${URL}/api/filetree/createDocWithMd" \
-        -H "Authorization: Token ${TOKEN}" \
-        -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
-        -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
-        -H "Content-Type: application/json" \
-        -d "{
-            \"notebook\": \"${notebook_id}\",
-            \"path\": \"${path}\",
-            \"markdown\": $(echo "$markdown" | jq -Rs .)
-        }")
+    # Build metadata JSON
+    local metadata=$(jq -n \
+        --arg tpl "$template_type" \
+        --arg agent "${AGENT:-claude-code}" \
+        --arg date "$(date +%Y-%m-%d)" \
+        '{
+            "custom-template": $tpl,
+            "custom-type": $tpl,
+            "custom-created-by": $agent,
+            "custom-created-date": $date
+        }')
 
-    echo "$response"
-}
-
-set_block_attrs() {
-    local block_id="$1"
-    local attrs="$2"
-
-    curl -s -X POST "${URL}/api/attr/setBlockAttrs" \
-        -H "Authorization: Token ${TOKEN}" \
-        -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
-        -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
-        -H "Content-Type: application/json" \
-        -d "{
-            \"id\": \"${block_id}\",
-            \"attrs\": ${attrs}
-        }"
+    # Use upsert_doc from cortex-helpers.sh
+    # Args: title, markdown, notebook_id, path, source, metadata_json
+    upsert_doc "$title" "$markdown" "$notebook_id" "$path" "template" "$metadata"
 }
 
 # ============================================================================
@@ -629,31 +612,29 @@ CLEAN_TITLE=$(echo "$TITLE" | tr ' ' '-' | tr -cd '[:alnum:]-_')
 # Create document path
 DOC_PATH="/${PATH_PREFIX}/${CLEAN_TITLE}"
 
-echo "Creating document from template..."
+echo "Creating/updating document from template..."
 echo "  Template: $TEMPLATE_TYPE"
 echo "  Title: $TITLE"
 echo "  Notebook: $NOTEBOOK ($NOTEBOOK_ID)"
 echo "  Path: $DOC_PATH"
 
-# Create the document
-RESPONSE=$(create_document "$NOTEBOOK_ID" "$DOC_PATH" "$CONTENT")
-
-# Extract document ID from response
-DOC_ID=$(echo "$RESPONSE" | jq -r '.data // empty' 2>/dev/null)
+# Upsert the document (update if exists, create if not)
+DOC_ID=$(upsert_template_document "$TITLE" "$CONTENT" "$NOTEBOOK_ID" "$DOC_PATH" "$TEMPLATE_TYPE")
 
 if [ -n "$DOC_ID" ] && [ "$DOC_ID" != "null" ]; then
-    echo "✅ Document created successfully!"
+    # Check version to determine if created or updated
+    EXISTING_VERSION=$(get_doc_attribute "$DOC_ID" "custom-version")
+    if [ "$EXISTING_VERSION" = "1" ]; then
+        echo "✅ Document created successfully!"
+    else
+        echo "✅ Document updated successfully! (version $EXISTING_VERSION)"
+    fi
+
     echo "  Document ID: $DOC_ID"
-
-    # Set additional attributes
-    ATTRS="{\"custom-template\":\"${TEMPLATE_TYPE}\",\"custom-created-by\":\"${AGENT}\",\"custom-created-date\":\"${DATE}\"}"
-    set_block_attrs "$DOC_ID" "$ATTRS" > /dev/null
-
     echo "  Attributes set: template=$TEMPLATE_TYPE, agent=$AGENT"
     echo ""
-    echo "Document URL: ${URL}/#${DOC_ID}"
+    echo "Document URL: ${SIYUAN_BASE_URL}/#${DOC_ID}"
 else
-    echo "❌ Failed to create document"
-    echo "Response: $RESPONSE"
+    echo "❌ Failed to create/update document"
     exit 1
 fi
