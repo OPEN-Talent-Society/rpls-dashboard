@@ -8,6 +8,14 @@ tags:
   - product
   - communication
   - storytelling
+triggers:
+  - "SPARC narrative"
+  - "product launch brief"
+  - "post-launch recap"
+  - "retrospective"
+  - "executive update"
+  - "product story"
+  - "communicate results"
 dependencies:
   - sparc-navigator
 outputs:

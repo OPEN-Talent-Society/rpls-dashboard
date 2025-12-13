@@ -5,6 +5,14 @@ description: Comprehensive performance analysis, bottleneck detection, and optim
 category: monitoring
 tags: [performance, bottleneck, optimization, profiling, metrics, analysis]
 author: Claude Flow Team
+triggers:
+  - "detect bottlenecks"
+  - "performance analysis"
+  - "optimize swarm performance"
+  - "generate performance report"
+  - "profiling agent operations"
+  - "identify slow tasks"
+  - "performance recommendations"
 ---
 
 # Performance Analysis Skill

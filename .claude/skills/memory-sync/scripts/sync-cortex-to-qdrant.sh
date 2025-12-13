@@ -6,6 +6,7 @@
 set -e
 
 PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+SMART_CHUNKER="$PROJECT_DIR/.claude/skills/memory-sync/scripts/smart-chunker.py"
 source "$PROJECT_DIR/.env" 2>/dev/null || true
 
 # Ensure .env is loaded with exports
@@ -15,7 +16,8 @@ fi
 [ -z "$QDRANT_API_KEY" ] && { echo "❌ QDRANT_API_KEY not set"; exit 1; }
 [ -z "$GEMINI_API_KEY" ] && { echo "❌ GEMINI_API_KEY not set"; exit 1; }
 
-# Cortex (SiYuan) config - credentials from .env
+# Cortex (SiYuan) config - CF Service Token auth (most reliable)
+# Uses Cloudflare Access Service Token for zero-trust authentication
 CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
 CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
 [ -z "$CF_CLIENT_ID" ] && { echo "❌ CF_ACCESS_CLIENT_ID not set"; exit 1; }
@@ -26,7 +28,7 @@ CORTEX_TOKEN="${CORTEX_TOKEN}"
 
 # Qdrant config
 QDRANT_URL="${QDRANT_URL:-https://qdrant.harbor.fyi}"
-COLLECTION="agent_memory"
+COLLECTION="cortex"  # Changed from agent_memory - Cortex content goes to cortex collection
 
 # Sync state
 SYNC_STATE_FILE="/tmp/cortex-qdrant-sync-state.json"
@@ -59,11 +61,12 @@ get_embedding() {
     # Truncate to 5000 chars and escape for JSON
     local escaped_text=$(echo "$text" | head -c 5000 | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))")
 
-    local response=$(curl -s "https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${GEMINI_API_KEY}" \
+    local response=$(curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${GEMINI_API_KEY}" \
         -H "Content-Type: application/json" \
         -d "{
-            \"model\": \"models/text-embedding-004\",
-            \"content\": {\"parts\": [{\"text\": $escaped_text}]}
+            \"model\": \"models/gemini-embedding-001\",
+            \"content\": {\"parts\": [{\"text\": $escaped_text}]},
+            \"outputDimensionality\": 768
         }")
 
     echo "$response" | python3 -c "import sys,json; d=json.load(sys.stdin); print(json.dumps(d.get('embedding',{}).get('values',[])))" 2>/dev/null
@@ -108,44 +111,54 @@ doc_exists_in_qdrant() {
     return 1  # Doesn't exist
 }
 
-# Notebooks to sync (PARA methodology)
+# Notebooks to sync (PARA methodology) - with category tags
+# Format: notebook_id:notebook_name:category_tag
 NOTEBOOKS=(
-    "20251103053911-8ex6uns:01 Projects"
-    "20251201183343-543piyt:02 Areas"
-    "20251201183343-ujsixib:03 Resources"
-    "20251201183343-xf2snc8:04 Archives"
-    "20251103053840-moamndp:05 Knowledge Base"
-    "20251103053916-bq6qbgu:06 Agents"
+    "20251103053911-8ex6uns:Projects:project"
+    "20251201183343-543piyt:Areas:area"
+    "20251201183343-ujsixib:Resources:resource"
+    "20251201183343-xf2snc8:Archives:archive"
+    "20251103053840-moamndp:Knowledge Base:kb"
+    "20251103053916-bq6qbgu:Agents:agent"
 )
 
 INDEXED=0
 SKIPPED=0
 
 for NB_ENTRY in "${NOTEBOOKS[@]}"; do
-    NB_ID="${NB_ENTRY%%:*}"
-    NB_NAME="${NB_ENTRY#*:}"
+    IFS=':' read -r NB_ID NB_NAME NB_CATEGORY <<< "$NB_ENTRY"
 
     echo ""
-    echo "📚 Processing: $NB_NAME"
+    echo "📚 Processing: $NB_NAME (category: $NB_CATEGORY)"
 
-    # Get documents from notebook
-    DOCS=$(curl -s -X POST "${CORTEX_URL}/api/filetree/listDocsByPath" \
+    # Get documents with metadata using SQL query (includes custom-category in ial)
+    # This is more reliable than listDocsByPath and includes IAL attributes
+    DOCS=$(curl -s -X POST "${CORTEX_URL}/api/query/sql" \
         -H "Authorization: Token ${CORTEX_TOKEN}" \
         -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
         -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
         -H "Content-Type: application/json" \
-        -d "{\"notebook\": \"${NB_ID}\", \"path\": \"/\"}" 2>/dev/null)
+        -d "{\"stmt\": \"SELECT id, content, ial FROM blocks WHERE type='d' AND box='${NB_ID}' AND ial LIKE '%custom-category%'\"}" 2>/dev/null)
 
-    # Extract document IDs
+    # Extract document IDs with their IAL metadata
     DOC_IDS=$(echo "$DOCS" | python3 -c "
-import sys, json
+import sys, json, re
 data = json.load(sys.stdin)
-for f in data.get('data', {}).get('files', []):
-    if f.get('id'):
-        print(f['id'])
+for doc in data.get('data', []):
+    doc_id = doc.get('id', '')
+    ial = doc.get('ial', '')
+    # Extract custom-category from ial
+    category_match = re.search(r'custom-category=\"([^\"]+)\"', ial)
+    category = category_match.group(1) if category_match else '$NB_CATEGORY'
+    # Extract custom-semantic-links if present
+    links_match = re.search(r'custom-semantic-links=\"([^\"]+)\"', ial)
+    links = links_match.group(1) if links_match else ''
+    if doc_id:
+        print(f'{doc_id}|{category}|{links}')
 " 2>/dev/null)
 
-    for DOC_ID in $DOC_IDS; do
+    for DOC_LINE in $DOC_IDS; do
+        IFS='|' read -r DOC_ID DOC_CATEGORY DOC_LINKS <<< "$DOC_LINE"
         [ -z "$DOC_ID" ] && continue
 
         # Check limit
@@ -171,8 +184,8 @@ for f in data.get('data', {}).get('files', []):
             -H "Content-Type: application/json" \
             -d "{\"id\": \"${DOC_ID}\"}" 2>/dev/null)
 
-        # Extract markdown content and title
-        CONTENT=$(echo "$DOC_CONTENT" | python3 -c "
+        # Extract markdown content and metadata
+        DOC_METADATA=$(echo "$DOC_CONTENT" | python3 -c "
 import sys, json
 data = json.load(sys.stdin)
 content = data.get('data', {}).get('content', '')
@@ -180,51 +193,114 @@ content = data.get('data', {}).get('content', '')
 lines = content.strip().split('\n')
 title = lines[0].lstrip('# ').strip() if lines else 'Untitled'
 body = '\n'.join(lines[1:]).strip() if len(lines) > 1 else ''
-print(json.dumps({'title': title, 'body': body[:4000]}))
+full_content = content.strip()
+print(json.dumps({'title': title, 'body': body, 'full_content': full_content}))
 " 2>/dev/null)
 
-        TITLE=$(echo "$CONTENT" | python3 -c "import sys,json; print(json.load(sys.stdin)['title'])" 2>/dev/null)
-        BODY=$(echo "$CONTENT" | python3 -c "import sys,json; print(json.load(sys.stdin)['body'])" 2>/dev/null)
+        TITLE=$(echo "$DOC_METADATA" | python3 -c "import sys,json; print(json.load(sys.stdin)['title'])" 2>/dev/null)
+        FULL_CONTENT=$(echo "$DOC_METADATA" | python3 -c "import sys,json; print(json.load(sys.stdin)['full_content'])" 2>/dev/null)
 
-        [ -z "$BODY" ] && [ -z "$TITLE" ] && continue
+        [ -z "$FULL_CONTENT" ] && [ -z "$TITLE" ] && continue
 
-        # Create text for embedding
-        EMBED_TEXT="$TITLE. $BODY"
+        # Use smart-chunker.py for intelligent chunking
+        CHUNKED_RESULT=$(echo "$DOC_METADATA" | python3 -c "
+import sys, json
+doc_meta = json.load(sys.stdin)
+# Prepare input for smart-chunker
+chunker_input = {
+    'content': doc_meta['full_content'],
+    'content_type': 'markdown',
+    'metadata': {
+        'notebook_id': '$NB_ID',
+        'doc_id': '$DOC_ID',
+        'notebook_name': '''$NB_NAME''',
+        'title': doc_meta['title'],
+        'project': 'codebuild'
+    }
+}
+print(json.dumps(chunker_input))
+" | python3 "$SMART_CHUNKER" 2>/dev/null)
 
-        # Get embedding
-        EMBEDDING=$(get_embedding "$EMBED_TEXT")
+        # Check if chunking was successful
+        CHUNK_SUCCESS=$(echo "$CHUNKED_RESULT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('success', False))" 2>/dev/null)
 
-        if [ -n "$EMBEDDING" ] && [ "$EMBEDDING" != "[]" ] && [ "$EMBEDDING" != "null" ]; then
-            # Build payload
-            PAYLOAD=$(python3 -c "
+        if [ "$CHUNK_SUCCESS" != "True" ]; then
+            echo -n "x"  # Failed to chunk
+            continue
+        fi
+
+        # Get chunk count
+        CHUNK_COUNT=$(echo "$CHUNKED_RESULT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('chunk_count', 0))" 2>/dev/null)
+
+        # Process each chunk
+        for CHUNK_IDX in $(seq 0 $((CHUNK_COUNT - 1))); do
+            # Extract chunk data
+            CHUNK_DATA=$(echo "$CHUNKED_RESULT" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+chunk = data.get('chunks', [])[$CHUNK_IDX]
+print(json.dumps(chunk))
+" 2>/dev/null)
+
+            CHUNK_TEXT=$(echo "$CHUNK_DATA" | python3 -c "import sys,json; print(json.load(sys.stdin)['text'])" 2>/dev/null)
+            CHUNK_HASH=$(echo "$CHUNK_DATA" | python3 -c "import sys,json; print(json.load(sys.stdin)['hash'])" 2>/dev/null)
+            CHUNK_TOTAL=$(echo "$CHUNK_DATA" | python3 -c "import sys,json; print(json.load(sys.stdin)['total'])" 2>/dev/null)
+
+            [ -z "$CHUNK_TEXT" ] && continue
+
+            # Create text for embedding (title + chunk for better context)
+            EMBED_TEXT="$TITLE. $CHUNK_TEXT"
+
+            # Get embedding
+            EMBEDDING=$(get_embedding "$EMBED_TEXT")
+
+            if [ -n "$EMBEDDING" ] && [ "$EMBEDDING" != "[]" ] && [ "$EMBEDDING" != "null" ]; then
+                # Build payload with chunk metadata and custom-category tag
+                PAYLOAD=$(python3 -c "
 import json
 payload = {
     'type': 'knowledge',
     'source': 'cortex',
-    'content': '''$EMBED_TEXT'''[:3000],
+    'content': '''$CHUNK_TEXT''',
     'indexed_at': '$(date -u +%Y-%m-%dT%H:%M:%SZ)',
     'topic': '''$TITLE''',
-    'category': '''$NB_NAME''',
+    'category': '''$DOC_CATEGORY''',  # From custom-category attribute
+    'notebook': '''$NB_NAME''',
+    'cortex_url': 'https://cortex.aienablement.academy/?id=$DOC_ID',
+    'cortex_doc_id': '$DOC_ID',
     'version': 1,
     'metadata': {
         'knowledge': {
             'notebook_id': '$NB_ID',
             'doc_id': '$DOC_ID',
-            'notebook_name': '''$NB_NAME'''
-        }
+            'notebook_name': '''$NB_NAME''',
+            'custom_category': '''$DOC_CATEGORY''',  # Explicit category from metadata
+            'semantic_links': '''$DOC_LINKS'''.split(',') if '''$DOC_LINKS''' else []
+        },
+        'chunk': {
+            'index': $CHUNK_IDX,
+            'total': $CHUNK_TOTAL,
+            'hash': '''$CHUNK_HASH'''
+        },
+        'project': 'codebuild'
     }
 }
 print(json.dumps(payload))
 " 2>/dev/null)
 
-            if [ -n "$PAYLOAD" ]; then
-                upsert_to_qdrant "cortex-$DOC_ID" "$EMBEDDING" "$PAYLOAD"
-                INDEXED=$((INDEXED + 1))
-                echo -n "."
+                if [ -n "$PAYLOAD" ]; then
+                    # Use unique ID for each chunk
+                    upsert_to_qdrant "cortex-$DOC_ID-chunk-$CHUNK_IDX" "$EMBEDDING" "$PAYLOAD"
+                    INDEXED=$((INDEXED + 1))
+                    echo -n "."
+                fi
             fi
-        fi
 
-        # Rate limiting
+            # Rate limiting between chunks
+            sleep 0.1
+        done
+
+        # Rate limiting between documents
         sleep 0.2
     done
 done
@@ -241,5 +317,5 @@ with open('$SYNC_STATE_FILE', 'w') as f:
 echo ""
 echo ""
 echo "✅ Cortex → Qdrant sync complete"
-echo "   Indexed: $INDEXED documents"
-echo "   Skipped: $SKIPPED (already exists)"
+echo "   Indexed: $INDEXED chunks (from documents with smart chunking)"
+echo "   Skipped: $SKIPPED documents (already exists)"

@@ -5,6 +5,14 @@
 name: uptime-kuma-operations
 description: When managing and interacting and working with or doing work realted to Uptime Kuma on my infra
 model: opus
+auto-triggers:
+  - uptime kuma
+  - uptime monitoring
+  - status page
+  - service monitoring
+  - health check
+  - downtime alert
+  - availability monitoring
 color: orange
 id: uptime-kuma-operations
 summary: Playbook for configuring, monitoring, and maintaining the Uptime Kuma observability stack.

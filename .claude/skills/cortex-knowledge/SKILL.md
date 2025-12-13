@@ -1,6 +1,15 @@
 ---
 name: cortex-knowledge
 description: "Cortex (SiYuan) knowledge management using REST API calls. Uses Tier 1 curl for simple operations, enables MCP for complex workflows. Saves tokens when MCP is disabled."
+triggers:
+  - cortex
+  - siyuan
+  - knowledge base
+  - documentation
+  - notes
+  - PARA
+  - create document
+  - knowledge management
 ---
 
 # Cortex Knowledge Management Skill
@@ -264,9 +273,135 @@ SELECT id, content FROM blocks WHERE type='d' AND box='NOTEBOOK_ID'
 
 ---
 
+## Tier 3: Direct SQL via SSH (Bulk Operations)
+
+**Use this for bulk operations (1000+ documents)**. The REST API has high latency due to Cloudflare Zero Trust. Direct SQL is 1000x faster.
+
+### Server Access
+```bash
+# SSH to OCI server (where Cortex runs)
+ssh -i ~/Downloads/ssh-key-2025-10-17.key ubuntu@163.192.41.116
+
+# Cortex container: cortex-siyuan
+# Database: /siyuan/workspace/temp/siyuan.db
+```
+
+### Install sqlite3 in Container (one-time)
+```bash
+docker exec cortex-siyuan apk add --no-cache sqlite
+```
+
+### Bulk Tag Documents
+```bash
+# Tag all untagged docs in a notebook
+docker exec cortex-siyuan sqlite3 /siyuan/workspace/temp/siyuan.db "
+INSERT INTO attributes (id, name, value, type, block_id, root_id, box, path)
+SELECT
+    strftime('%Y%m%d%H%M%S', 'now') || '-' || lower(hex(randomblob(4))) as id,
+    'custom-category' as name,
+    'area' as value,
+    'b' as type,
+    b.id as block_id,
+    b.id as root_id,
+    b.box as box,
+    b.path as path
+FROM blocks b
+WHERE b.type = 'd'
+AND b.box = '20251201183343-543piyt'  -- Areas notebook
+AND b.id NOT IN (SELECT block_id FROM attributes WHERE name = 'custom-category');
+"
+```
+
+### Verify Tag Counts
+```bash
+docker exec cortex-siyuan sqlite3 /siyuan/workspace/temp/siyuan.db "
+SELECT box, COUNT(*) as tagged
+FROM attributes
+WHERE name='custom-category'
+GROUP BY box;
+"
+```
+
+### After Bulk Updates
+Restart container to sync attributes → ial (blocks table):
+```bash
+docker restart cortex-siyuan
+```
+
+### Attributes Table Schema
+| Column | Description |
+|--------|-------------|
+| id | Unique ID (YYYYMMDDHHmmss-xxxxxxx format) |
+| name | Attribute name (e.g., `custom-category`) |
+| value | Attribute value |
+| type | `b` for block |
+| block_id | Document/block ID |
+| root_id | Root document ID (same as block_id for docs) |
+| box | Notebook ID |
+| path | Path to .sy file |
+
+---
+
+## Qdrant Indexing (Cortex → Qdrant)
+
+The `sync-cortex-to-qdrant.sh` script indexes Cortex documents to Qdrant with full metadata:
+
+### Usage
+```bash
+# Full sync (all notebooks)
+bash .claude/skills/memory-sync/scripts/sync-cortex-to-qdrant.sh
+
+# Incremental sync (only new docs)
+bash .claude/skills/memory-sync/scripts/sync-cortex-to-qdrant.sh --incremental
+
+# Limited sync (for testing)
+bash .claude/skills/memory-sync/scripts/sync-cortex-to-qdrant.sh --limit 50
+```
+
+### Metadata Included in Qdrant
+- `source`: "cortex"
+- `category`: From `custom-category` attribute (project, area, resource, archive, kb, agent)
+- `notebook`: Notebook name (Projects, Areas, Resources, Archives, Knowledge Base, Agents)
+- `doc_id`: SiYuan document ID
+- `custom_category`: Explicit category tag from document metadata
+- `semantic_links`: Array of related doc IDs from `custom-semantic-links` attribute
+- `chunk.index/total/hash`: Smart chunking metadata for long documents
+
+### Prerequisites
+Only documents with `custom-category` tag are indexed (cleaned/standardized docs).
+
+---
+
+## Semantic Cross-Linking (Qdrant → Cortex Feedback Loop)
+
+The `semantic-crosslink-cortex.sh` script creates contextual backlinks by:
+1. Getting document content from Cortex
+2. Generating embeddings via Gemini
+3. Querying Qdrant for semantically similar documents
+4. Setting `custom-semantic-links` attribute in Cortex
+
+### Usage
+```bash
+# Process 50 documents (default)
+bash .claude/skills/memory-sync/scripts/semantic-crosslink-cortex.sh
+
+# Process 100 documents
+bash .claude/skills/memory-sync/scripts/semantic-crosslink-cortex.sh 100
+
+# Adjust similarity threshold (default: 0.75)
+SIMILARITY_THRESHOLD=0.8 bash .claude/skills/memory-sync/scripts/semantic-crosslink-cortex.sh
+```
+
+### Attributes Set
+- `custom-semantic-links`: Comma-separated list of related doc IDs
+- `custom-semantic-linked-at`: ISO timestamp of when links were created
+
+---
+
 ## Related Resources
 
 - **Agent**: `/Users/adamkovacs/Documents/codebuild/.claude/agents/core/cortex-ops.md`
 - **Hooks**: `cortex-post-task.sh`, `cortex-learning-capture.sh`
 - **Docs**: `/Users/adamkovacs/Documents/codebuild/.claude/docs/CORTEX-API-OPS.md`
 - **Commands**: `/cortex-search`, `/cortex-export`
+- **Semantic Cross-Link Script**: `.claude/skills/memory-sync/scripts/semantic-crosslink-cortex.sh`

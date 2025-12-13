@@ -1,6 +1,14 @@
 ---
 name: image-curator
 description: Curates AI-generated imagery (Midjourney, DALL·E, Runway) and ensures brand consistency
+auto-triggers:
+  - "generate images"
+  - "create image variations"
+  - "midjourney prompt"
+  - "brand imagery"
+  - "curate marketing images"
+  - "optimize image assets"
+  - "image quality check"
 model: haiku
 color: teal
 id: image-curator

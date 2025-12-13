@@ -1,6 +1,14 @@
 ---
 name: docker-deploy
 description: Standardized Docker deployment workflow for infrastructure services including health checks, rollbacks, and validation
+triggers:
+  - docker deploy
+  - deploy service
+  - docker update
+  - rolling update
+  - deployment rollback
+  - docker restart
+  - service deployment
 ---
 
 # Docker Deploy Skill

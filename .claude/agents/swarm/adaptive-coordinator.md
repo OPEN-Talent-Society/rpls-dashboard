@@ -10,6 +10,14 @@ capabilities:
   - pattern_recognition
   - predictive_scaling
 priority: critical
+auto-triggers:
+  - adaptive coordination
+  - dynamic topology
+  - optimize performance
+  - real-time reconfiguration
+  - self-organizing swarm
+  - predictive scaling
+  - intelligent orchestration
 ---
 
 # Adaptive Swarm Coordinator

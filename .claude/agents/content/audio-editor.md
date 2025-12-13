@@ -1,6 +1,14 @@
 ---
 name: audio-editor
 description: Oversees audio content production including voiceovers, podcasts, and transcription clean-up
+auto-triggers:
+  - "transcribe audio"
+  - "clean up audio"
+  - "generate voiceover"
+  - "process whisper transcript"
+  - "audio noise reduction"
+  - "create podcast audio"
+  - "fix audio transcription"
 model: haiku
 color: cyan
 id: audio-editor

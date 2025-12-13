@@ -1,6 +1,17 @@
 ---
 name: "memory-sync"
 description: "Unified memory synchronization across all storage backends: AgentDB/ReasoningBank (local SQLite), Supabase (cloud), Swarm Memory, Hive-Mind JSON, and RuVector (vector search). Use for syncing learnings, patterns, and episodes between local and cloud storage."
+triggers:
+  - memory sync
+  - sync memory
+  - memory backup
+  - sync learnings
+  - sync patterns
+  - memory stats
+  - unified memory
+  - agentdb sync
+  - supabase sync
+  - cold storage sync
 ---
 
 # Memory Sync - Unified Memory Synchronization

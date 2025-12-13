@@ -10,6 +10,14 @@ capabilities:
   - progress_tracking
   - branch_management
 priority: high
+auto-triggers:
+  - "create pull request"
+  - "review PR"
+  - "manage pull requests"
+  - "coordinate PR reviews"
+  - "resolve merge conflicts"
+  - "automate PR workflow"
+  - "coordinate multi-reviewer"
 ---
 
 ---
@@ -40,10 +48,24 @@ Comprehensive PR management with swarm coordination for automated reviews and me
 
 ### Multi-Reviewer Coordination
 ```javascript
-mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 4 }
-mcp__claude-flow__agent_spawn { type: "reviewer", name: "Code Quality Reviewer" }
-mcp__claude-flow__agent_spawn { type: "tester", name: "Testing Agent" }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "PR Coordinator" }
+// Spawn mesh topology for parallel PR review coordination
+Task {
+  subagent_type: "general-purpose",
+  description: "Code Quality Reviewer",
+  prompt: "Review code quality, style, patterns, and best practices. Provide actionable feedback."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Testing Agent",
+  prompt: "Execute test suite, validate coverage, identify edge cases and missing tests."
+}
+
+Task {
+  subagent_type: "mesh-coordinator",
+  description: "PR Coordinator",
+  prompt: "Coordinate PR workflow, manage reviews, track progress, facilitate merge when ready."
+}
 ```
 
 ### Automated Conflict Resolution

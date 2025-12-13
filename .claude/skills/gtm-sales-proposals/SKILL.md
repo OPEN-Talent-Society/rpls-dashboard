@@ -11,6 +11,14 @@ tags:
   - pricing
   - rfp
   - aea
+triggers:
+  - "create a proposal for"
+  - "respond to RFP"
+  - "pricing strategy for"
+  - "develop a sales proposal"
+  - "partnership proposal"
+  - "workshop proposal"
+  - "ROI calculation"
 dependencies: []
 outputs:
   - proposal-document

@@ -10,6 +10,15 @@ capabilities:
   - architecture_analysis
   - technical_debt_management
 priority: high
+auto-triggers:
+  - code review
+  - code quality
+  - analyze code
+  - code analysis
+  - technical debt
+  - code smell
+  - refactor suggestion
+  - code improvement
 ---
 
 # Code Analyzer Agent

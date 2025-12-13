@@ -1,6 +1,14 @@
 ---
 name: audit-scribe
 description: Documents audit evidence, controls, and testing results for internal/external reviews
+auto-triggers:
+  - prepare audit documentation
+  - collect audit evidence
+  - generate compliance report
+  - document control testing
+  - create audit packet
+  - gather audit logs
+  - prepare for external audit
 model: haiku
 color: gray
 id: audit-scribe

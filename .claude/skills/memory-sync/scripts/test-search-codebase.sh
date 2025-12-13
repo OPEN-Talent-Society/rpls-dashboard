@@ -15,10 +15,10 @@ if [ -f "$PROJECT_ROOT/.env" ]; then
 fi
 
 # Configuration
-QDRANT_URL="${QDRANT_URL:-http://qdrant.harbor.fyi}"
-QDRANT_COLLECTION="${QDRANT_COLLECTION:-agent_memory}"
+QDRANT_URL="${QDRANT_URL:-https://qdrant.harbor.fyi}"
+QDRANT_COLLECTION="${QDRANT_COLLECTION:-codebase}"
 GEMINI_API_KEY="${GEMINI_API_KEY}"
-EMBEDDING_MODEL="text-embedding-004"
+EMBEDDING_MODEL="gemini-embedding-001"
 
 # Colors
 GREEN='\033[0;32m'
@@ -45,7 +45,7 @@ generate_embedding() {
   local response=$(curl -s -X POST \
     "https://generativelanguage.googleapis.com/v1beta/models/$EMBEDDING_MODEL:embedContent?key=$GEMINI_API_KEY" \
     -H "Content-Type: application/json" \
-    -d "{\"content\": {\"parts\": [{\"text\": $escaped_text}]}}")
+    -d "{\"model\": \"models/$EMBEDDING_MODEL\", \"content\": {\"parts\": [{\"text\": $escaped_text}]}, \"outputDimensionality\": 768}")
 
   echo "$response" | jq -c '.embedding.values'
 }

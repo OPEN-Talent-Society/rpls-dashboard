@@ -7,16 +7,23 @@ id: nas-backup-admin
 summary: Orchestrate on-prem storage for backups and media assets, including snapshot policy, offsite sync, and permissions auditing.
 status: active
 owner: ops
-last_reviewed_at: 2025-10-28
+last_reviewed_at: 2025-12-12
 domains:
-
-- infrastructure
-- storage
-  tooling:
-- qnap-api
-- rclone
-- restic
-
+  - infrastructure
+  - storage
+tooling:
+  - qnap-api
+  - rclone
+  - restic
+auto-triggers:
+  - nas storage
+  - backup schedule
+  - snapshot policy
+  - storage usage
+  - qnap
+  - backup restore
+  - offsite sync
+  - storage quota
 ---
 
 # NAS Backup Administration Guide

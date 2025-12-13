@@ -148,21 +148,21 @@ gh release create $(pnpm pkg get version) \
 
 #### Initialize Release Swarm
 ```javascript
-// Set up coordinated release team
+// Set up coordinated release team using Task tool
 [Single Message - Swarm Initialization]:
-  mcp__claude-flow__swarm_init {
-    topology: "hierarchical",
-    maxAgents: 6,
-    strategy: "balanced"
-  }
+  Task({
+    subagent_type: "queen-coordinator",
+    description: "Initialize release coordination",
+    prompt: "Set up hierarchical topology with max 6 agents using balanced strategy for coordinated release"
+  })
 
-  // Spawn specialized agents
-  mcp__claude-flow__agent_spawn { type: "coordinator", name: "Release Director" }
-  mcp__claude-flow__agent_spawn { type: "coder", name: "Version Manager" }
-  mcp__claude-flow__agent_spawn { type: "tester", name: "QA Engineer" }
-  mcp__claude-flow__agent_spawn { type: "reviewer", name: "Release Reviewer" }
-  mcp__claude-flow__agent_spawn { type: "analyst", name: "Deployment Analyst" }
-  mcp__claude-flow__agent_spawn { type: "researcher", name: "Compatibility Checker" }
+  // Spawn specialized agents using Task tool
+  Task({ subagent_type: "worker-specialist", description: "Release Director", prompt: "Direct and coordinate overall release process" })
+  Task({ subagent_type: "worker-specialist", description: "Version Manager", prompt: "Manage versioning and compatibility" })
+  Task({ subagent_type: "worker-specialist", description: "QA Engineer", prompt: "Execute comprehensive quality assurance" })
+  Task({ subagent_type: "worker-specialist", description: "Release Reviewer", prompt: "Review release readiness and quality" })
+  Task({ subagent_type: "worker-specialist", description: "Deployment Analyst", prompt: "Analyze deployment requirements and risks" })
+  Task({ subagent_type: "worker-specialist", description: "Compatibility Checker", prompt: "Check compatibility across versions" })
 ```
 
 #### Coordinated Release Workflow
@@ -308,8 +308,12 @@ COMMITS=$(gh api repos/:owner/:repo/compare/v1.0.0...HEAD \
 #### Monorepo Release Strategy
 ```javascript
 [Single Message - Multi-Package Release]:
-  // Initialize mesh topology for cross-package coordination
-  mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 8 }
+  // Initialize mesh topology for cross-package coordination using Task tool
+  Task({
+    subagent_type: "mesh-coordinator",
+    description: "Initialize multi-package coordination",
+    prompt: "Set up mesh topology with max 8 agents for cross-package coordination"
+  })
 
   // Spawn package-specific agents
   Task("Package A Manager", "Coordinate claude-flow package release v1.0.72", "coder")
@@ -393,8 +397,12 @@ deployment:
 #### Cross-Repo Dependency Management
 ```javascript
 [Single Message - Cross-Repo Release]:
-  // Initialize star topology for centralized coordination
-  mcp__claude-flow__swarm_init { topology: "star", maxAgents: 6 }
+  // Initialize star topology for centralized coordination using Task tool
+  Task({
+    subagent_type: "queen-coordinator",
+    description: "Initialize cross-repo coordination",
+    prompt: "Set up star topology with max 6 agents for centralized cross-repository coordination"
+  })
 
   // Spawn repo-specific coordinators
   Task("Frontend Release", "Release frontend v2.0.0 with API compatibility", "coordinator")

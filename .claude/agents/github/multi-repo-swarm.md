@@ -10,6 +10,14 @@ capabilities:
   - version_synchronization
   - multi_team_collaboration
 priority: high
+auto-triggers:
+  - "coordinate across multiple repositories"
+  - "sync organization repos"
+  - "manage cross-repo dependencies"
+  - "organization-wide automation"
+  - "coordinate multi-repo release"
+  - "synchronize repository versions"
+  - "manage monorepo"
 ---
 
 ---
@@ -57,9 +65,18 @@ Cross-repository swarm orchestration for organization-wide automation.
 
 ### Initialize Multi-Repo Swarm
 ```javascript
-mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 12 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "Org Coordinator" }
-mcp__claude-flow__agent_spawn { type: "architect", name: "Cross-Repo Architect" }
+// Spawn mesh topology for cross-repository coordination
+Task {
+  subagent_type: "mesh-coordinator",
+  description: "Org Coordinator",
+  prompt: "Coordinate organization-wide operations across multiple repositories, manage dependencies and releases."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Cross-Repo Architect",
+  prompt: "Design and maintain architecture across repositories, ensure consistency and best practices."
+}
 ```
 
 ### Coordinate Across Repos

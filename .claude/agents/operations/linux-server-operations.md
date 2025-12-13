@@ -4,6 +4,14 @@
 
 name: linux-server-operations
 description: Linux server administration specialist for system management, security, performance tuning, and infrastructure automation
+auto-triggers:
+  - linux server administration
+  - ubuntu server management
+  - system security hardening
+  - server performance tuning
+  - firewall configuration ufw
+  - ssh security configuration
+  - system monitoring logs
 model: opus
 color: orange
 id: linux-server-operations

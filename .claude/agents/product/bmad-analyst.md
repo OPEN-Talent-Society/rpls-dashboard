@@ -17,6 +17,14 @@ domains:
 - nocodb
 - docmost
 - spreadsheets
+auto-triggers:
+  - validate business model
+  - assess market opportunity
+  - analyze competitive advantage
+  - evaluate delivery feasibility
+  - BMAD analysis
+  - investment decision framework
+  - commercial viability assessment
 
 ---
 

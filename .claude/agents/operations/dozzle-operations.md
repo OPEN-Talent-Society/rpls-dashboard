@@ -2,6 +2,14 @@
 name: dozzle-operations
 description: Dozzle log viewer specialist for container log monitoring, troubleshooting, and log analysis automation
 model: opus
+auto-triggers:
+  - dozzle
+  - container logs
+  - docker logs
+  - log viewer
+  - log monitoring
+  - log analysis
+  - view logs
 color: teal
 id: dozzle-operations
 summary: Instructions for maintaining the Dozzle log viewer service, access controls, and troubleshooting.

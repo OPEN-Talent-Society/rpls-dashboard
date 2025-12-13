@@ -10,6 +10,14 @@ capabilities:
   - work_delegation
   - performance_monitoring
 priority: critical
+auto-triggers:
+  - coordinate swarm
+  - hierarchical coordination
+  - delegate tasks
+  - supervise agents
+  - strategic planning
+  - command and control
+  - queen-led coordination
 ---
 
 # Hierarchical Swarm Coordinator

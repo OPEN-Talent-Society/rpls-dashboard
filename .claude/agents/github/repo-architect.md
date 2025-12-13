@@ -10,6 +10,14 @@ capabilities:
   - architecture_analysis
   - cross_repo_workflow
 priority: medium
+auto-triggers:
+  - "optimize repository structure"
+  - "design repository architecture"
+  - "organize repo layout"
+  - "create repository template"
+  - "refactor repository organization"
+  - "analyze repository structure"
+  - "standardize repo configuration"
 ---
 
 ---
@@ -40,10 +48,24 @@ Repository structure optimization and multi-repo management with swarm coordinat
 
 ### Repository Structure Analysis
 ```javascript
-mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 4 }
-mcp__claude-flow__agent_spawn { type: "analyst", name: "Structure Analyzer" }
-mcp__claude-flow__agent_spawn { type: "architect", name: "Repository Architect" }
-mcp__claude-flow__agent_spawn { type: "optimizer", name: "Structure Optimizer" }
+// Spawn mesh topology coordination for repository analysis
+Task {
+  subagent_type: "general-purpose",
+  description: "Structure Analyzer",
+  prompt: "Analyze repository structure, identify optimization opportunities, and document current organization patterns."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Repository Architect",
+  prompt: "Design optimal repository architecture based on analysis, create structure recommendations."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Structure Optimizer",
+  prompt: "Implement repository structure optimizations, refactor organization, ensure consistency."
+}
 ```
 
 ### Multi-Repository Template Creation

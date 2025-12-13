@@ -5,7 +5,7 @@
 #
 # EMBEDDING MODEL STANDARD:
 # -------------------------
-# PRIMARY: Gemini text-embedding-004 (768 dimensions)
+# PRIMARY: Gemini gemini-embedding-001 (768 dimensions)
 # REASON: Higher quality semantic understanding for production use
 # FREE TIER: 1500 requests/minute (sufficient for our needs)
 #
@@ -52,17 +52,17 @@ GEMINI_KEY="${GEMINI_API_KEY}"
 
 echo "🔍 Indexing to Qdrant collection: $COLLECTION"
 echo "   Endpoint: $QDRANT_URL"
-echo "   Embedding: Gemini text-embedding-004 (768 dims)"
+echo "   Embedding: Gemini gemini-embedding-001 (768 dims)"
 echo "   ✅ Standard: All collections use 768-dim Gemini embeddings"
 
 # Function to get embedding from Gemini (768 dimensions)
 #
 # STANDARD APPROACH (DO NOT CHANGE):
-# Uses Gemini text-embedding-004 API for high-quality 768-dim embeddings.
+# Uses Gemini gemini-embedding-001 API for high-quality 768-dim embeddings.
 # This is our PRIMARY embedding provider. FastEmbed is a fallback option only.
 #
 # CONFIGURATION:
-# - Model: text-embedding-004
+# - Model: gemini-embedding-001
 # - Dimensions: 768
 # - Free tier: 1500 requests/minute
 # - Max input: 5000 characters (truncated below)
@@ -73,11 +73,12 @@ get_embedding() {
     # Escape text for JSON (handle newlines and special chars)
     local escaped_text=$(echo "$text" | head -c 5000 | jq -Rs '.')
 
-    local response=$(curl -s "https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${GEMINI_KEY}" \
+    local response=$(curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${GEMINI_KEY}" \
         -H "Content-Type: application/json" \
         -d "{
-            \"model\": \"models/text-embedding-004\",
-            \"content\": {\"parts\": [{\"text\": $escaped_text}]}
+            \"model\": \"models/gemini-embedding-001\",
+            \"content\": {\"parts\": [{\"text\": $escaped_text}]},
+            \"outputDimensionality\": 768
         }")
 
     echo "$response" | jq -c '.embedding.values // empty'

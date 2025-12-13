@@ -11,6 +11,14 @@ dependencies:
   - nas-backup-admin
 outputs:
   - backup-report
+triggers:
+  - run backup rotation
+  - schedule backups
+  - backup infrastructure
+  - validate backups
+  - retention policy
+  - automated backup
+  - backup coordinator
 ---
 
 # Backup Rotation Skill

@@ -4,6 +4,14 @@ type: architecture
 color: "#FF5722"
 description: System architecture designer for scalable system design, architectural decisions, and patterns
 version: "1.0.0"
+auto-triggers:
+  - system design
+  - architecture design
+  - microservices
+  - scalability
+  - design pattern
+  - architect solution
+  - ADR
 capabilities:
   - system_design
   - architectural_decisions

@@ -20,6 +20,14 @@ requires:
   - node (v16+)
 priority: high
 progressive_disclosure: true
+triggers:
+  - github actions workflow
+  - ci/cd automation
+  - automate github pipeline
+  - github workflow optimization
+  - actions automation
+  - deploy with github actions
+  - github ci/cd
 ---
 
 ---
@@ -554,26 +562,26 @@ run().catch(error => core.setFailed(error.message));
 <details>
 <summary>MCP-Based GitHub Workflow Coordination</summary>
 
-#### Initialize GitHub Swarm
+#### Initialize GitHub Swarm (Using Task Tool)
 ```javascript
-// Step 1: Initialize swarm coordination
-mcp__claude-flow__swarm_init {
-  topology: "hierarchical",
-  maxAgents: 8
-}
+// Step 1: Initialize swarm coordination using Task tool
+Task({
+  subagent_type: "queen-coordinator",
+  description: "GitHub Workflow Coordinator",
+  prompt: "Coordinate PR review workflow with max 8 agents"
+})
 
-// Step 2: Spawn specialized agents
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "GitHub Coordinator" }
-mcp__claude-flow__agent_spawn { type: "reviewer", name: "Code Reviewer" }
-mcp__claude-flow__agent_spawn { type: "tester", name: "QA Agent" }
-mcp__claude-flow__agent_spawn { type: "analyst", name: "Security Analyst" }
+// Step 2: Spawn specialized agents in parallel
+Task({ subagent_type: "code-review-swarm", description: "Code Reviewer", prompt: "Review code quality and standards" })
+Task({ subagent_type: "sparc-refinement", description: "QA Agent", prompt: "Run tests and verify functionality" })
+Task({ subagent_type: "worker-specialist", description: "Security Analyst", prompt: "Analyze security implications" })
 
-// Step 3: Orchestrate GitHub workflow
-mcp__claude-flow__task_orchestrate {
-  task: "Complete PR review and merge workflow",
-  strategy: "parallel",
-  priority: "high"
-}
+// Step 3: Orchestrate GitHub workflow via orchestrator
+Task({
+  subagent_type: "orchestrator-task",
+  description: "Complete PR workflow",
+  prompt: "Complete PR review and merge workflow with parallel strategy, high priority"
+})
 ```
 
 #### GitHub Hooks Integration

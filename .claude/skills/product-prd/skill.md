@@ -8,6 +8,14 @@ tags:
   - product
   - strategy
   - documentation
+triggers:
+  - "create PRD"
+  - "product requirements document"
+  - "requirements documentation"
+  - "PRD for"
+  - "document requirements"
+  - "stakeholder sign-off"
+  - "product specification"
 dependencies:
   - prd-facilitator
 outputs:

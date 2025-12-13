@@ -17,6 +17,14 @@ domains:
 - docmost
 - nocodb
 - slides
+auto-triggers:
+  - write executive brief
+  - create postmortem
+  - SPARC framework
+  - quarterly business review
+  - status update narrative
+  - retrospective report
+  - leadership communication
 
 ---
 

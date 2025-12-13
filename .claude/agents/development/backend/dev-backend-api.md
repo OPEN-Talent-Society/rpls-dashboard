@@ -4,6 +4,14 @@ type: development
 color: "#4CAF50"
 description: Backend API developer for RESTful and GraphQL API design, implementation, and optimization
 version: "1.0.0"
+auto-triggers:
+  - api endpoint
+  - rest api
+  - graphql
+  - backend api
+  - create endpoint
+  - api route
+  - api design
 capabilities:
   - api_design
   - rest_implementation

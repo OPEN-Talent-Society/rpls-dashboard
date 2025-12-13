@@ -455,18 +455,22 @@ mcp__claude-flow__sparc_mode {
   }
 }
 
-// Initialize swarm for complex tasks
-mcp__claude-flow__swarm_init {
-  topology: "hierarchical",  // or "mesh", "ring", "star"
-  strategy: "auto",           // or "balanced", "specialized", "adaptive"
-  maxAgents: 8
-}
+// Initialize swarm for complex tasks using Task tool
+Task({
+  subagent_type: "queen-coordinator",  // or "mesh-coordinator", etc.
+  description: "Initialize swarm coordination",
+  prompt: `Initialize swarm with:
+  - Topology: hierarchical (or mesh, ring, star)
+  - Strategy: auto (or balanced, specialized, adaptive)
+  - Max agents: 8`
+})
 
-// Spawn specialized agents
-mcp__claude-flow__agent_spawn {
-  type: "<agent-type>",
-  capabilities: ["<capability1>", "<capability2>"]
-}
+// Spawn specialized agents using Task tool
+Task({
+  subagent_type: "worker-specialist",  // or any agent from .claude/agents/
+  description: "Specialized agent task",
+  prompt: "Detailed task instructions with required capabilities"
+})
 
 // Monitor execution
 mcp__claude-flow__swarm_monitor {
@@ -520,23 +524,18 @@ mcp__claude-flow__swarm_monitor {
 **Best for**: Complex projects with clear delegation hierarchy
 
 ```javascript
-// Initialize hierarchical swarm
-mcp__claude-flow__swarm_init {
-  topology: "hierarchical",
-  maxAgents: 12
-}
+// Initialize hierarchical coordination using Task tool
+Task({
+  subagent_type: "queen-coordinator",
+  description: "Initialize hierarchical swarm",
+  prompt: "Set up hierarchical topology with max 12 agents"
+})
 
-// Spawn coordinator
-mcp__claude-flow__agent_spawn {
-  type: "coordinator",
-  capabilities: ["planning", "delegation", "monitoring"]
-}
-
-// Spawn specialized workers
-mcp__claude-flow__agent_spawn { type: "architect" }
-mcp__claude-flow__agent_spawn { type: "coder" }
-mcp__claude-flow__agent_spawn { type: "tester" }
-mcp__claude-flow__agent_spawn { type: "reviewer" }
+// Spawn specialized workers in parallel
+Task({ subagent_type: "sparc-architecture", description: "Architect", prompt: "Design system architecture" })
+Task({ subagent_type: "implementer-sparc-coder", description: "Coder", prompt: "Implement the design" })
+Task({ subagent_type: "sparc-refinement", description: "Tester", prompt: "Test and refine implementation" })
+Task({ subagent_type: "code-analyzer", description: "Reviewer", prompt: "Review code quality" })
 ```
 
 ### Pattern 2: Mesh Coordination
@@ -544,11 +543,12 @@ mcp__claude-flow__agent_spawn { type: "reviewer" }
 **Best for**: Collaborative tasks requiring peer-to-peer communication
 
 ```javascript
-mcp__claude-flow__swarm_init {
-  topology: "mesh",
-  strategy: "balanced",
-  maxAgents: 6
-}
+// Using Task tool for mesh coordination
+Task({
+  subagent_type: "mesh-coordinator",
+  description: "Initialize mesh coordination",
+  prompt: "Set up mesh topology with balanced strategy and max 6 agents for peer-to-peer collaboration"
+})
 ```
 
 ### Pattern 3: Sequential Pipeline
@@ -591,11 +591,12 @@ mcp__claude-flow__task_orchestrate {
 **Best for**: Dynamic workloads with changing requirements
 
 ```javascript
-mcp__claude-flow__swarm_init {
-  topology: "hierarchical",
-  strategy: "adaptive",  // Auto-adjusts based on workload
-  maxAgents: 20
-}
+// Using Task tool for adaptive coordination
+Task({
+  subagent_type: "adaptive-coordinator",
+  description: "Initialize adaptive swarm",
+  prompt: "Set up hierarchical topology with adaptive strategy (auto-adjusts based on workload) and max 20 agents"
+})
 ```
 
 ---
@@ -605,11 +606,12 @@ mcp__claude-flow__swarm_init {
 ### Complete TDD Workflow
 
 ```javascript
-// Step 1: Initialize TDD swarm
-mcp__claude-flow__swarm_init {
-  topology: "hierarchical",
-  maxAgents: 8
-}
+// Step 1: Initialize TDD swarm using Task tool
+Task({
+  subagent_type: "queen-coordinator",
+  description: "Initialize TDD swarm",
+  prompt: "Set up hierarchical topology with max 8 agents for test-driven development workflow"
+})
 
 // Step 2: Research and planning
 mcp__claude-flow__sparc_mode {
@@ -707,16 +709,16 @@ mcp__claude-flow__memory_usage {
 **Batch all related operations in single message**:
 
 ```javascript
-// ✅ CORRECT: All operations together
+// ✅ CORRECT: All operations together (using Task tool)
 [Single Message]:
-  mcp__claude-flow__agent_spawn { type: "researcher" }
-  mcp__claude-flow__agent_spawn { type: "coder" }
-  mcp__claude-flow__agent_spawn { type: "tester" }
+  Task({ subagent_type: "worker-specialist", description: "Researcher", prompt: "Research requirements" })
+  Task({ subagent_type: "worker-specialist", description: "Coder", prompt: "Implement features" })
+  Task({ subagent_type: "worker-specialist", description: "Tester", prompt: "Create tests" })
   TodoWrite { todos: [8-10 todos] }
 
 // ❌ WRONG: Multiple messages
-Message 1: mcp__claude-flow__agent_spawn { type: "researcher" }
-Message 2: mcp__claude-flow__agent_spawn { type: "coder" }
+Message 1: Task({ subagent_type: "worker-specialist", description: "Researcher", prompt: "..." })
+Message 2: Task({ subagent_type: "worker-specialist", description: "Coder", prompt: "..." })
 Message 3: TodoWrite { todos: [...] }
 ```
 
@@ -778,11 +780,12 @@ project/
 ```javascript
 [Single Message - Parallel Agent Execution]:
 
-// Initialize swarm
-mcp__claude-flow__swarm_init {
-  topology: "hierarchical",
-  maxAgents: 10
-}
+// Initialize swarm using Task tool
+Task({
+  subagent_type: "queen-coordinator",
+  description: "Initialize full-stack development swarm",
+  prompt: "Set up hierarchical topology with max 10 agents for coordinated full-stack development"
+})
 
 // Architecture phase
 mcp__claude-flow__sparc_mode {
@@ -1091,11 +1094,11 @@ mcp__claude-flow__token_usage {
 /opt/homebrew/bin/agentic-flow sparc batch <modes> "task"
 ```
 
-### Most Common MCP Calls
+### Most Common Task Tool Calls
 
 ```javascript
-// Initialize swarm
-mcp__claude-flow__swarm_init { topology: "hierarchical" }
+// Initialize swarm using Task tool
+Task({ subagent_type: "queen-coordinator", description: "Initialize swarm", prompt: "Set up hierarchical topology" })
 
 // Execute mode
 mcp__claude-flow__sparc_mode { mode: "coder", task_description: "..." }

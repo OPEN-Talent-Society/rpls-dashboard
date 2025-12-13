@@ -10,6 +10,14 @@ capabilities:
   - template_management
   - swarm_coordination
 priority: medium
+auto-triggers:
+  - "create GitHub issue"
+  - "track issue progress"
+  - "manage GitHub issues"
+  - "automate issue labels"
+  - "coordinate issue tracking"
+  - "setup issue templates"
+  - "organize GitHub project board"
 ---
 
 ---
@@ -40,10 +48,24 @@ Automated issue management with smart templates, labeling, and swarm-coordinated
 
 ### Issue Creation with Swarm Tracking
 ```javascript
-mcp__claude-flow__swarm_init { topology: "star", maxAgents: 5 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "Issue Coordinator" }
-mcp__claude-flow__agent_spawn { type: "researcher", name: "Issue Analyst" }
-mcp__claude-flow__agent_spawn { type: "coder", name: "Implementation Lead" }
+// Spawn star topology coordination for issue management
+Task {
+  subagent_type: "queen-coordinator",
+  description: "Issue Coordinator",
+  prompt: "Coordinate issue tracking, assign tasks, monitor progress across all issue-related activities."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Issue Analyst",
+  prompt: "Research and analyze issues, gather context, identify root causes and impact."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Implementation Lead",
+  prompt: "Lead implementation efforts, coordinate code changes, ensure quality standards."
+}
 ```
 
 ### Automated Progress Updates

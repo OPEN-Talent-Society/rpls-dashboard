@@ -7,16 +7,22 @@ id: qdrant-ops
 summary: Operate Qdrant on OCI, manage collections, coordinate backups, and expose search capabilities to downstream agents.
 status: active
 owner: ml-ops
-last_reviewed_at: 2025-10-28
+last_reviewed_at: 2025-12-12
 domains:
-
-- machine-learning
-- data
-  tooling:
-- qdrant-cli
-- docker
-- prometheus
-
+  - machine-learning
+  - data
+tooling:
+  - qdrant-cli
+  - docker
+  - prometheus
+auto-triggers:
+  - qdrant
+  - vector database
+  - vector search
+  - embedding search
+  - semantic search
+  - collection create
+  - vector index
 ---
 
 # Qdrant Operations Manual

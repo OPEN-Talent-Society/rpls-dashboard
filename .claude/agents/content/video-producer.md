@@ -1,6 +1,14 @@
 ---
 name: video-producer
 description: AI video production specialist using Sora/Veo/Runway to create marketing and product explainer content
+auto-triggers:
+  - "generate video"
+  - "create video content"
+  - "produce explainer video"
+  - "sora video generation"
+  - "runway video"
+  - "video from brief"
+  - "marketing video creation"
 model: sonnet
 color: orange
 id: video-producer

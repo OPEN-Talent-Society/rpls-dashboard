@@ -1,6 +1,14 @@
 ---
 name: slides-producer
 description: Presentation automation specialist generating Slides/PowerPoint decks from briefs and data inputs
+auto-triggers:
+  - "create presentation"
+  - "generate slide deck"
+  - "build powerpoint"
+  - "create slides from data"
+  - "presentation template"
+  - "automate deck creation"
+  - "slides from outline"
 model: sonnet
 color: purple
 id: slides-producer

@@ -10,6 +10,14 @@ capabilities:
   - consensus_building
   - load_distribution
 priority: high
+auto-triggers:
+  - mesh coordination
+  - distributed decision making
+  - peer-to-peer coordination
+  - fault tolerant system
+  - Byzantine consensus
+  - load balancing
+  - decentralized coordination
 ---
 
 # Mesh Network Swarm Coordinator

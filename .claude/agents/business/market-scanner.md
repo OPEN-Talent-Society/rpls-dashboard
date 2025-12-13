@@ -1,6 +1,14 @@
 ---
 name: market-scanner
 description: Automation-focused analyst scanning datasets (Crunchbase, G2, social) to surface opportunities and risks
+auto-triggers:
+  - scan market trends
+  - pull market data
+  - monitor industry signals
+  - detect market anomalies
+  - gather competitor insights
+  - analyze market opportunities
+  - track social sentiment
 model: haiku
 color: yellow
 id: market-scanner

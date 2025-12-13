@@ -1046,11 +1046,16 @@ fi
 
 ```javascript
 [Single Message - Parallel Execution]:
-  // Initialize coordination
-  mcp__claude-flow__swarm_init { topology: "hierarchical", maxAgents: 5 }
-  mcp__claude-flow__agent_spawn { type: "reviewer", name: "Senior Reviewer" }
-  mcp__claude-flow__agent_spawn { type: "tester", name: "QA Engineer" }
-  mcp__claude-flow__agent_spawn { type: "coordinator", name: "Merge Coordinator" }
+  // Initialize coordination using Task tool
+  Task({
+    subagent_type: "queen-coordinator",
+    description: "Initialize PR review coordination",
+    prompt: "Set up hierarchical topology with max 5 agents for PR review coordination"
+  })
+
+  Task({ subagent_type: "worker-specialist", description: "Senior Reviewer", prompt: "Review code quality and best practices" })
+  Task({ subagent_type: "worker-specialist", description: "QA Engineer", prompt: "Execute quality assurance and testing" })
+  Task({ subagent_type: "worker-specialist", description: "Merge Coordinator", prompt: "Coordinate merge process and validation" })
 
   // Create and manage PR using gh CLI
   Bash("gh pr create --title 'Feature: Add authentication' --base main")

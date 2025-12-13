@@ -4,6 +4,14 @@ type: analysis
 color: "#9C27B0"
 description: Advanced code quality analysis agent for comprehensive code reviews and improvements
 version: "1.0.0"
+auto-triggers:
+  - code review
+  - code quality
+  - code smell
+  - refactor code
+  - technical debt
+  - complexity analysis
+  - best practices review
 capabilities:
   - code_smell_detection
   - complexity_evaluation

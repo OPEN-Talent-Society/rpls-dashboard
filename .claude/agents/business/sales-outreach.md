@@ -4,6 +4,14 @@
 
 name: sales-outreach
 description: Revenue ops agent crafting and executing outbound sequences across email, LinkedIn, and CRM tasks
+auto-triggers:
+  - create outbound sequence
+  - personalize sales email
+  - build outreach cadence
+  - craft linkedin message
+  - schedule sales touchpoints
+  - generate cold email
+  - track outreach responses
 model: sonnet
 color: blue
 id: sales-outreach

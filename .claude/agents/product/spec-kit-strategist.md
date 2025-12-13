@@ -17,6 +17,14 @@ domains:
 - docmost
 - nocodb
 - figma
+auto-triggers:
+  - create spec kit
+  - solution shaping
+  - scope slicing
+  - release planning
+  - implementation options
+  - delivery guardrails
+  - technical specification
 
 ---
 

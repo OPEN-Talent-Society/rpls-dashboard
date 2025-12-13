@@ -10,6 +10,14 @@ capabilities:
   - environmental_scanning
   - pattern_discovery
 priority: high
+auto-triggers:
+  - explore codebase
+  - identify opportunities
+  - detect threats
+  - reconnaissance mission
+  - scan environment
+  - discover patterns
+  - performance bottleneck analysis
 ---
 
 # Scout Explorer

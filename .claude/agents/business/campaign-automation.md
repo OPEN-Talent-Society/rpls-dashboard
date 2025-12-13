@@ -4,6 +4,14 @@
 
 name: campaign-automation
 description: Automation engineer building and maintaining multi-channel marketing workflows
+auto-triggers:
+  - build email drip campaign
+  - create marketing automation workflow
+  - set up email sequence
+  - automate lead nurture
+  - implement retargeting flow
+  - configure campaign tracking
+  - build welcome sequence
 model: haiku
 color: orange
 id: campaign-automation

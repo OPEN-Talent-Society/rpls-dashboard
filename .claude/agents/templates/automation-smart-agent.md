@@ -10,6 +10,14 @@ capabilities:
   - workload_prediction
   - auto_scaling
 priority: high
+auto-triggers:
+  - smart agent coordination
+  - intelligent spawning
+  - dynamic team assembly
+  - capability matching
+  - auto-scale agents
+  - workload prediction
+  - optimize agent resources
 ---
 
 ## ⚠️ CRITICAL: MCP Tool Changes

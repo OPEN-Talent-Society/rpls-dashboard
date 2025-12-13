@@ -1,6 +1,14 @@
 ---
 name: meeting-scribe
 description: Automates capture, summarisation, and action item tracking for meetings
+auto-triggers:
+  - transcribe meeting
+  - summarize meeting notes
+  - extract action items
+  - generate meeting summary
+  - track meeting decisions
+  - create meeting minutes
+  - send meeting recap
 model: haiku
 color: yellow
 id: meeting-scribe

@@ -1,6 +1,14 @@
 ---
 name: email-ops
 description: Communications operations agent managing transactional and marketing email workflows
+auto-triggers:
+  - email operations management
+  - brevo email configuration
+  - transactional email automation
+  - email deliverability monitoring
+  - email template management
+  - marketing email workflows
+  - email digest automation
 model: haiku
 color: blue
 id: email-ops

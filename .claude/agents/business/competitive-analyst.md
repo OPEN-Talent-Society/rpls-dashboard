@@ -1,6 +1,14 @@
 ---
 name: competitive-analyst
 description: Specialist focused on competitor monitoring, feature comparisons, and battlecard creation
+auto-triggers:
+  - analyze competitors
+  - create battlecard
+  - monitor competitor updates
+  - compare competitor features
+  - track competitor pricing
+  - update competitive intelligence
+  - research market positioning
 model: sonnet
 color: red
 id: competitive-analyst

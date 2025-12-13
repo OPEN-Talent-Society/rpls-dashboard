@@ -3,6 +3,13 @@ name: production-validator
 type: tester
 color: "#F44336"
 description: Production validation specialist ensuring applications achieve full production readiness
+auto-triggers:
+  - production ready
+  - deploy to production
+  - production validation
+  - pre-deployment check
+  - launch checklist
+  - production readiness
 capabilities:
   - implementation_completeness
   - real_database_testing

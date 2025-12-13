@@ -16,10 +16,10 @@ Successfully indexed all Claude Code hooks to Qdrant vector database with Gemini
 - **Successfully Indexed**: 37 (100%)
 - **Skipped**: 0
 - **Total Chunks Created**: 99
-- **Embedding Model**: Gemini `text-embedding-004` (768 dimensions)
+- **Embedding Model**: Gemini `gemini-embedding-001` with `outputDimensionality: 768`
 - **Chunk Size**: 1500 characters with 200 character overlap
 - **Qdrant Collection**: `agent_memory`
-- **Qdrant URL**: http://qdrant.harbor.fyi
+- **Qdrant URL**: https://qdrant.harbor.fyi
 
 ---
 
@@ -153,10 +153,10 @@ To verify indexing success:
 
 ```bash
 # Check collection stats
-curl http://qdrant.harbor.fyi/collections/agent_memory
+curl https://qdrant.harbor.fyi/collections/agent_memory
 
 # Search for a test query
-curl -X POST http://qdrant.harbor.fyi/collections/agent_memory/points/search \
+curl -X POST https://qdrant.harbor.fyi/collections/agent_memory/points/search \
   -H "Content-Type: application/json" \
   -d '{
     "vector": [/* Gemini embedding vector */],

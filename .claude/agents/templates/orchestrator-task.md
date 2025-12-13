@@ -10,6 +10,14 @@ capabilities:
   - result_synthesis
   - dependency_management
 priority: high
+auto-triggers:
+  - orchestrate tasks
+  - decompose complex objective
+  - coordinate execution
+  - manage dependencies
+  - track progress
+  - synthesize results
+  - parallel task execution
 ---
 
 # Task Orchestrator Agent

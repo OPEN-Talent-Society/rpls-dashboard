@@ -1,6 +1,14 @@
 ---
 name: crm-sync
 description: CRM integration agent keeping pipeline data consistent between systems (CRM, NocoDB, dashboards)
+auto-triggers:
+  - sync crm data
+  - update pipeline dashboard
+  - synchronize leads
+  - clean up crm records
+  - reconcile sales data
+  - validate crm fields
+  - export pipeline report
 model: haiku
 color: indigo
 id: crm-sync

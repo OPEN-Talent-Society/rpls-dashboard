@@ -7,16 +7,22 @@ id: netdata-operations
 summary: Procedures for deploying and tuning the Netdata monitoring stack for host and container insights.
 status: active
 owner: ops
-last_reviewed_at: 2025-10-26
+last_reviewed_at: 2025-12-12
 domains:
-
-- observability
-- infrastructure
-  tooling:
-- netdata
-- docker
-- cloudflare
-
+  - observability
+  - infrastructure
+tooling:
+  - netdata
+  - docker
+  - cloudflare
+auto-triggers:
+  - netdata
+  - system metrics
+  - cpu usage
+  - memory usage
+  - disk usage
+  - performance monitoring
+  - server health
 ---
 
 # Netdata Operations Guide

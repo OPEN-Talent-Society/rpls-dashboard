@@ -6,6 +6,14 @@ owner: marketing
 last_reviewed_at: 2025-10-28
 tags:
   - marketing
+triggers:
+  - "create marketing brief"
+  - "campaign brief"
+  - "marketing plan"
+  - "campaign objectives"
+  - "messaging pillars"
+  - "ICP definition"
+  - "channel strategy"
 dependencies:
   - marketing-orchestrator
 outputs:

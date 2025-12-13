@@ -1,6 +1,14 @@
 ---
 name: content-research-writer
 description: Assists in writing high-quality content by conducting research, adding citations, improving hooks, iterating on outlines, and providing real-time feedback on each section. Transforms your writing process from solo effort to collaborative partnership.
+triggers:
+  - "help me write"
+  - "research and write"
+  - "improve my hook"
+  - "section feedback"
+  - "create outline for article"
+  - "add citations"
+  - "writing assistance"
 ---
 
 # Content Research Writer

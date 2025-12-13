@@ -10,6 +10,14 @@ capabilities:
   - result_delivery
   - peer_collaboration
 priority: high
+auto-triggers:
+  - execute task
+  - implement feature
+  - complete assignment
+  - code implementation
+  - run tests
+  - analyze data
+  - process findings
 ---
 
 # Worker Specialist

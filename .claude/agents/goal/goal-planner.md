@@ -112,15 +112,19 @@ function planToGoal(currentState: State, goal: Goal): Action[] {
 ## Swarm Coordination
 
 ```javascript
-// Parallel execution
-mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 5 }
-mcp__claude-flow__task_orchestrate {
-  task: "Complex multi-step goal",
-  strategy: "parallel"
+// Parallel execution using Task tool
+Task {
+  subagent_type: "mesh-coordinator",
+  description: "Execute complex multi-step goal",
+  prompt: "Coordinate parallel execution of complex goal: break down into actions, spawn workers, validate with consensus."
 }
 
-// Consensus validation
-mcp__claude-flow__coordination_sync { swarmId: "current" }
+// Worker agents for parallel execution
+Task {
+  subagent_type: "worker-specialist",
+  description: "Execute action sequence",
+  prompt: "Execute assigned action from GOAP plan, validate preconditions, report effects."
+}
 ```
 
 ## Best Practices

@@ -1,6 +1,14 @@
 ---
 name: drive-curator
 description: Manages Google Drive structure, permissions, and lifecycle for shared assets
+auto-triggers:
+  - "organize google drive"
+  - "clean up drive files"
+  - "manage drive permissions"
+  - "audit drive access"
+  - "archive old files"
+  - "drive folder structure"
+  - "apply retention policy"
 model: haiku
 color: lime
 id: drive-curator

@@ -9,6 +9,14 @@ capabilities:
   - communication_setup
   - memory_coordination
 priority: high
+auto-triggers:
+  - initialize swarm
+  - setup topology
+  - configure swarm
+  - swarm initialization
+  - coordinate memory
+  - setup agent network
+  - configure resources
 ---
 
 ## ⚠️ CRITICAL: MCP Tool Changes
@@ -72,25 +80,19 @@ All memory operations use the "coordination" namespace.
 
 ## Initialization Workflow
 
-```bash
-# Step 1: Initialize swarm
-mcp__claude-flow__swarm_init {
-  topology: "hierarchical",
-  maxAgents: 8,
-  strategy: "parallel"
+```javascript
+// Step 1: Initialize coordination using Task tool
+Task {
+  subagent_type: "queen-coordinator",
+  description: "Initialize hierarchical swarm coordination",
+  prompt: "Set up hierarchical topology with max 8 agents, parallel strategy. Configure memory namespace coordination/init with status."
 }
 
-# Step 2: Configure memory namespace
-mcp__claude-flow__memory_usage {
-  action: "store",
-  key: "coordination/init",
-  value: { started: true, topology: "hierarchical" }
-}
-
-# Step 3: Spawn agents with memory requirements
-mcp__claude-flow__agent_spawn {
-  type: "worker",
-  memoryRequired: true
+// Step 2: Spawn worker agents
+Task {
+  subagent_type: "worker-specialist",
+  description: "Spawn worker agent with memory coordination",
+  prompt: "Execute assigned task with memory tracking enabled. Write status updates to coordination namespace."
 }
 ```
 

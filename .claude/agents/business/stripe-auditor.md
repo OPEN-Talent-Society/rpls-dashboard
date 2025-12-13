@@ -1,6 +1,14 @@
 ---
 name: stripe-auditor
 description: Finance specialist overseeing Stripe revenue, payouts, and anomaly detection using Stripe Agent Toolkit
+auto-triggers:
+  - reconcile stripe transactions
+  - audit stripe revenue
+  - check payment anomalies
+  - review stripe payouts
+  - analyze payment trends
+  - detect stripe fraud
+  - generate revenue report
 model: haiku
 color: violet
 id: stripe-auditor

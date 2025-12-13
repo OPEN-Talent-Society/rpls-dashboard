@@ -10,6 +10,14 @@ capabilities:
   - documentation_sync
   - release_coordination
 priority: high
+auto-triggers:
+  - "synchronize repositories"
+  - "align package versions"
+  - "coordinate dependencies"
+  - "sync documentation across repos"
+  - "update cross-repo dependencies"
+  - "synchronize package releases"
+  - "align versions across packages"
 ---
 
 ---
@@ -40,10 +48,24 @@ Multi-repository synchronization for version alignment and dependency coordinati
 
 ### Package Synchronization
 ```javascript
-mcp__claude-flow__swarm_init { topology: "hierarchical", maxAgents: 6 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "Sync Coordinator" }
-mcp__claude-flow__agent_spawn { type: "analyst", name: "Dependency Analyzer" }
-mcp__claude-flow__agent_spawn { type: "coder", name: "Version Manager" }
+// Spawn hierarchical coordination for multi-repo sync
+Task {
+  subagent_type: "queen-coordinator",
+  description: "Sync Coordinator",
+  prompt: "Coordinate cross-repository synchronization, manage version alignment, track dependencies."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Dependency Analyzer",
+  prompt: "Analyze package dependencies, identify version conflicts, recommend updates."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Version Manager",
+  prompt: "Manage version updates across packages, ensure compatibility, update changelogs."
+}
 ```
 
 ### Version Alignment
@@ -77,12 +99,12 @@ mcp__claude-flow__agent_spawn { type: "coder", name: "Version Manager" }
 
 ### Batch Synchronization
 ```javascript
-[Single Message - Complete Sync]:
-  mcp__claude-flow__swarm_init { topology: "hierarchical", maxAgents: 6 }
-  mcp__github__push_files { files: [packageJsonUpdates] }
-  Bash("npm test && npm run lint")
-  TodoWrite { todos: syncProgress }
-  mcp__claude-flow__memory_usage { action: "store", key: "sync/state" }
+// Single Message - Complete Sync workflow
+Task {
+  subagent_type: "queen-coordinator",
+  description: "Execute complete synchronization",
+  prompt: "Coordinate hierarchical sync: update packages, run tests, validate changes, track progress in memory."
+}
 ```
 
 ## Best Practices

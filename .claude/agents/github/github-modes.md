@@ -10,6 +10,14 @@ capabilities:
   - release_management
   - repository_architecture
 priority: medium
+auto-triggers:
+  - "coordinate GitHub workflow"
+  - "orchestrate GitHub operations"
+  - "manage GitHub repositories"
+  - "integrate GitHub automation"
+  - "setup GitHub modes"
+  - "configure GitHub coordination"
+  - "batch GitHub operations"
 ---
 
 ---
@@ -88,8 +96,16 @@ All GitHub modes support batch operations:
 ## Integration with Swarm
 
 ```javascript
-mcp__claude-flow__swarm_init { topology: "hierarchical", maxAgents: 5 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "GitHub Coordinator" }
-mcp__claude-flow__agent_spawn { type: "reviewer", name: "Code Reviewer" }
-mcp__claude-flow__task_orchestrate { task: "GitHub workflow", strategy: "parallel" }
+// Spawn hierarchical coordination for GitHub workflows
+Task {
+  subagent_type: "queen-coordinator",
+  description: "GitHub Coordinator",
+  prompt: "Coordinate GitHub operations, manage workflow execution, orchestrate parallel tasks."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Code Reviewer",
+  prompt: "Execute code reviews, provide feedback, ensure quality standards are met."
+}
 ```

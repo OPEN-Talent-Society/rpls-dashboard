@@ -4,6 +4,14 @@
 
 name: seo-auditor
 description: SEO specialist running audits, keyword research, and technical fixes for the marketing web properties
+auto-triggers:
+  - run seo audit
+  - analyze website seo
+  - research keywords
+  - check page speed
+  - validate schema markup
+  - optimize meta tags
+  - audit technical seo
 model: haiku
 color: lime
 id: seo-auditor

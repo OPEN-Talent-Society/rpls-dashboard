@@ -7,16 +7,23 @@ id: docker-operations
 summary: Standard operating procedures for building, publishing, and maintaining Docker-based services.
 status: active
 owner: ops
-last_reviewed_at: 2025-10-26
+last_reviewed_at: 2025-12-12
 domains:
-
-- containers
-- infrastructure
-  tooling:
-- docker
-- compose
-- registries
-
+  - containers
+  - infrastructure
+tooling:
+  - docker
+  - compose
+  - registries
+auto-triggers:
+  - docker container
+  - docker compose
+  - container restart
+  - docker logs
+  - container health
+  - docker build
+  - docker deploy
+  - container troubleshoot
 ---
 
 # Docker Operations Runbook

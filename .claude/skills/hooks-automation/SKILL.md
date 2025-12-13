@@ -601,11 +601,12 @@ Hooks automatically integrate with MCP tools for coordination:
 // Hook command
 /opt/homebrew/bin/claude-flow hook pre-task --description "Build REST API"
 
-// Internally calls MCP tools:
-mcp__claude-flow__agent_spawn {
-  type: "backend-dev",
-  capabilities: ["api", "database", "testing"]
-}
+// Internally calls Task tool:
+Task({
+  subagent_type: "worker-specialist",
+  description: "Backend Developer",
+  prompt: "Handle API, database, and testing implementation"
+})
 
 mcp__claude-flow__memory_usage {
   action: "store",

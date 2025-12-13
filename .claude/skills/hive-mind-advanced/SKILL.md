@@ -5,6 +5,14 @@ version: 1.0.0
 category: coordination
 tags: [hive-mind, swarm, queen-worker, consensus, collective-intelligence, multi-agent, coordination]
 author: Claude Flow Team
+triggers:
+  - "initialize hive mind"
+  - "spawn queen coordinator"
+  - "collective intelligence"
+  - "Byzantine consensus"
+  - "multi-agent coordination"
+  - "collective memory"
+  - "worker specialization"
 ---
 
 # Hive Mind Advanced Skill

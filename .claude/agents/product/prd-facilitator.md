@@ -17,6 +17,14 @@ domains:
 - nocodb
 - docmost
 - git
+auto-triggers:
+  - create PRD
+  - product requirements document
+  - write requirements
+  - define product scope
+  - stakeholder alignment
+  - feature specification
+  - requirements gathering
 
 ---
 

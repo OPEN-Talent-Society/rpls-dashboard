@@ -3,6 +3,13 @@ name: swarm-memory-manager
 description: Manages distributed memory across the hive mind with data consistency, persistence, and efficient retrieval through advanced caching
 type: infrastructure
 color: "#2196F3"
+auto-triggers:
+  - memory sync
+  - memory management
+  - distributed memory
+  - cache optimization
+  - memory persistence
+  - memory retrieval
 capabilities:
   - distributed_memory
   - cache_optimization

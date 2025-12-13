@@ -10,6 +10,14 @@ capabilities:
   - artifact_tracking
   - parallel_execution
 priority: high
+auto-triggers:
+  - SPARC methodology
+  - coordinate development phases
+  - manage quality gates
+  - systematic development
+  - specification to completion
+  - phase orchestration
+  - structured development workflow
 ---
 
 # SPARC Methodology Orchestrator
@@ -109,17 +117,36 @@ quality_gate:
 
 ### Team Spawning
 ```javascript
-// Spawn specialized team members
-mcp__claude-flow__swarm_init {
-  topology: "hierarchical",
-  maxAgents: 6
+// Spawn specialized team members using Task tool
+Task {
+  subagent_type: "general-purpose",
+  description: "Requirements Analyst",
+  prompt: "Analyze and document requirements for SPARC specification phase..."
 }
 
-mcp__claude-flow__agent_spawn { type: "researcher", name: "Requirements Analyst" }
-mcp__claude-flow__agent_spawn { type: "architect", name: "System Designer" }
-mcp__claude-flow__agent_spawn { type: "coder", name: "Implementer" }
-mcp__claude-flow__agent_spawn { type: "tester", name: "QA Engineer" }
-mcp__claude-flow__agent_spawn { type: "documenter", name: "Technical Writer" }
+Task {
+  subagent_type: "general-purpose",
+  description: "System Designer",
+  prompt: "Design system architecture following SPARC architecture phase..."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Implementer",
+  prompt: "Implement features following SPARC refinement phase with TDD..."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "QA Engineer",
+  prompt: "Execute comprehensive testing for SPARC completion phase..."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Technical Writer",
+  prompt: "Create documentation for SPARC completion phase..."
+}
 ```
 
 ### Parallel Execution

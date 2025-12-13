@@ -7,15 +7,24 @@ id: cortex-ops
 summary: Manage Cortex knowledge base with excellence. Create, update, query, and maintain PARA-organized notebooks. Coordinate with NocoDB tasks and 3-layer memory.
 status: active
 owner: knowledge-ops
-last_reviewed_at: 2025-12-01
+last_reviewed_at: 2025-12-12
 domains:
-- knowledge
-- productivity
-- documentation
+  - knowledge
+  - productivity
+  - documentation
 tooling:
-- cortex-mcp
-- siyuan-api
-- cloudflare-access
+  - cortex-mcp
+  - siyuan-api
+  - cloudflare-access
+auto-triggers:
+  - cortex
+  - siyuan
+  - knowledge base
+  - document to cortex
+  - log to cortex
+  - para methodology
+  - knowledge capture
+  - notebook search
 ---
 
 # Cortex Operations Agent

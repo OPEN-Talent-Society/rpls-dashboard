@@ -1,6 +1,14 @@
 ---
 name: contract-guardian
 description: Manages contract lifecycle, storage, and renewal alerts for vendors and customers
+auto-triggers:
+  - track contract renewal
+  - store contract metadata
+  - monitor contract expiration
+  - manage vendor contracts
+  - set up renewal alerts
+  - organize contract repository
+  - review contract terms
 model: haiku
 color: purple
 id: contract-guardian

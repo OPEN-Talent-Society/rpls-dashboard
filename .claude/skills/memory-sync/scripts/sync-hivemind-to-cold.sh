@@ -16,9 +16,9 @@ SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY}"
 SIYUAN_BASE_URL="${CORTEX_URL:-https://cortex.aienablement.academy}"
 SIYUAN_API_TOKEN="${CORTEX_TOKEN}"
 
-# Cloudflare Zero Trust (required for Cortex access)
-CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
-CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
+# Cloudflare auth - Global API Key (more reliable)
+CF_AUTH_EMAIL="${CF_AUTH_EMAIL:-adam@aienablement.academy}"
+CF_GLOBAL_KEY="${CF_GLOBAL_API_KEY}"
 
 echo "🐝 Syncing Hive-Mind → Cold Storage"
 
@@ -148,36 +148,10 @@ for HIVE_FILE in $HIVE_FILES; do
         TOTAL_SYNCED=$((TOTAL_SYNCED + 1))
     fi
 
-    # 4. Sync consensus decisions to Cortex (with proper SiYuan features)
-    echo "  🗳️  Syncing consensus to Cortex..."
-    CONSENSUS=$(cat "$HIVE_FILE" | jq -c '.consensus_votes[]?' 2>/dev/null | head -5)
-
-    if [ -n "$CONSENSUS" ]; then
-        # Create a document in Cortex with proper formatting
-        DOC_CONTENT="# Hive-Mind Consensus: $PROJECT_NAME\n\n"
-        DOC_CONTENT+="#hive-mind #consensus #auto-sync\n\n"
-        DOC_CONTENT+="## Decisions\n\n"
-
-        echo "$CONSENSUS" | while read -r vote; do
-            DECISION=$(echo "$vote" | jq -r '.decision // .topic // "unknown"')
-            RESULT=$(echo "$vote" | jq -r '.result // .outcome // "pending"')
-            DOC_CONTENT+="- **$DECISION**: $RESULT\n"
-        done
-
-        # Create in Cortex using SiYuan API
-        curl -s -X POST "${SIYUAN_BASE_URL}/api/filetree/createDocWithMd" \
-            -H "Authorization: Token ${SIYUAN_API_TOKEN}" \
-            -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
-            -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
-            -H "Content-Type: application/json" \
-            -d "{
-                \"notebook\": \"20251201183343-ujsixib\",
-                \"path\": \"/Hive-Mind/$PROJECT_NAME-consensus\",
-                \"markdown\": \"$DOC_CONTENT\"
-            }" 2>/dev/null
-
-        TOTAL_SYNCED=$((TOTAL_SYNCED + 1))
-    fi
+    # 4. DISABLED - Cortex sync per MEMORY-SYSTEM-SPECIFICATION.md
+    # Raw machine data (consensus votes) should NOT be dumped to Cortex
+    # Use /cortex-* commands for curated human-readable content
+    echo "  🗳️  Cortex sync DISABLED (use /cortex-note for curated content)"
 done
 
 echo ""

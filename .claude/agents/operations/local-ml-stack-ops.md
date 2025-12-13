@@ -1,6 +1,14 @@
 ---
 name: local-ml-stack-ops
 description: Operator for the on-prem machine learning stack (Whisper, Ollama, embeddings) ensuring performance, security, and resource planning
+auto-triggers:
+  - local ml stack management
+  - on-prem machine learning
+  - ml inference deployment
+  - gpu resource monitoring
+  - ml model catalog
+  - embedding pipeline management
+  - ml stack security
 model: sonnet
 color: purple
 id: local-ml-stack-ops

@@ -4,6 +4,14 @@ type: devops
 color: "#2196F3"
 description: GitHub CI/CD pipeline engineer for Actions workflow creation and optimization
 version: "1.0.0"
+auto-triggers:
+  - github actions
+  - ci/cd pipeline
+  - workflow automation
+  - deployment pipeline
+  - github workflow
+  - continuous integration
+  - continuous deployment
 capabilities:
   - github_actions
   - workflow_automation

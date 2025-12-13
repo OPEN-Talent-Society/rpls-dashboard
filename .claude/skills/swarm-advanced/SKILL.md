@@ -5,6 +5,14 @@ version: 2.0.0
 category: orchestration
 tags: [swarm, distributed, parallel, research, testing, development, coordination]
 author: Claude Flow Team
+triggers:
+  - "swarm orchestration"
+  - "distributed research"
+  - "parallel development"
+  - "testing swarm"
+  - "mesh topology"
+  - "hierarchical swarm"
+  - "multi-agent workflows"
 ---
 
 # Advanced Swarm Orchestration

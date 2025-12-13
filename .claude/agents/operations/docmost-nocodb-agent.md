@@ -1,6 +1,14 @@
 ---
 name: docmost-nocodb-agent
 description: Docmost and NocoDB migration specialist for infrastructure migration, data transfer, and platform integration
+auto-triggers:
+  - docmost deployment
+  - nocodb deployment
+  - documentation platform migration
+  - docmost nocodb integration
+  - platform migration planning
+  - docmost backup restore
+  - nocodb database management
 model: opus
 color: green
 id: docmost-nocodb-migration

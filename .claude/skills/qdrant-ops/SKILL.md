@@ -1,3 +1,17 @@
+---
+name: qdrant-ops
+description: Qdrant vector database operations for semantic search, similarity matching, and vector indexing
+triggers:
+  - qdrant
+  - vector search
+  - semantic search
+  - similarity search
+  - embeddings
+  - vector database
+  - qdrant collection
+  - vector index
+---
+
 # Qdrant Vector Database Operations
 
 ## Overview
@@ -21,14 +35,22 @@ Supabase (source) → Qdrant (vector search) → Claude Code (retrieval)
 ## Configuration
 
 ### Endpoint
+
+> **CRITICAL**: All Qdrant requests require HTTPS + API key authentication!
+
 ```bash
-QDRANT_URL=http://qdrant.harbor.fyi
-QDRANT_API_KEY=<optional-for-cloud>
+# CORRECT - Always use this format:
+QDRANT_URL=https://qdrant.harbor.fyi
+QDRANT_API_KEY=<required>  # From .env file
+
+# WRONG - These will fail:
+# http://qdrant.harbor.fyi:6333  # NO - wrong protocol/port
+# http://qdrant.harbor.fyi       # NO - missing API key
 ```
 
 ### Embedding Model (STANDARD)
-**PRIMARY: Gemini text-embedding-004**
-- **Model**: `text-embedding-004` (Google Gemini)
+**PRIMARY: Gemini gemini-embedding-001**
+- **Model**: `gemini-embedding-001` (Google Gemini) with `outputDimensionality: 768`
 - **Dimensions**: 768
 - **Cost**: FREE (1500 requests/minute)
 - **Speed**: ~300ms for 1K tokens
@@ -48,8 +70,8 @@ QDRANT_API_KEY=<optional-for-cloud>
 
 ### Health Check
 ```bash
-curl http://qdrant.harbor.fyi/healthz
-# Response: {"status":"ok"}
+curl -s "https://qdrant.harbor.fyi/healthz" -H "api-key: ${QDRANT_API_KEY}"
+# Response: {"title":"qdrant - vector search engine","version":"..."}
 ```
 
 ## Collections Schema
@@ -231,19 +253,21 @@ curl -X GET "https://your-supabase.supabase.co/rest/v1/tasks?id=eq.226" \
   -H "Authorization: Bearer YOUR_SUPABASE_KEY"
 
 # 2. Generate embedding (via Gemini API - FREE)
-curl "https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${GEMINI_API_KEY}" \
+# CRITICAL: outputDimensionality: 768 is required! Without it, API returns 3072 dims which breaks Qdrant
+curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${GEMINI_API_KEY}" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "models/text-embedding-004",
+    "model": "models/gemini-embedding-001",
     "content": {
       "parts": [{
         "text": "Implemented NocoDB batch update pattern with 10-record limit"
       }]
-    }
+    },
+    "outputDimensionality": 768
   }'
 
 # 3. Upsert to Qdrant
-curl -X PUT "http://qdrant.harbor.fyi/collections/agent_memory/points" \
+curl -X PUT "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory/points" \
   -H "Content-Type: application/json" \
   -d '{
     "points": [
@@ -270,19 +294,21 @@ curl -X PUT "http://qdrant.harbor.fyi/collections/agent_memory/points" \
 **Basic Search**:
 ```bash
 # 1. Generate query embedding (using Gemini - FREE)
-curl "https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${GEMINI_API_KEY}" \
+# CRITICAL: outputDimensionality: 768 is required! Without it, API returns 3072 dims which breaks Qdrant
+curl "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${GEMINI_API_KEY}" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "models/text-embedding-004",
+    "model": "models/gemini-embedding-001",
     "content": {
       "parts": [{
         "text": "How do I handle batch operations with NocoDB?"
       }]
-    }
+    },
+    "outputDimensionality": 768
   }'
 
 # 2. Search Qdrant
-curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/search" \
+curl -X POST "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory/points/search" \
   -H "Content-Type: application/json" \
   -d '{
     "vector": [0.234, 0.567, ...],
@@ -294,7 +320,7 @@ curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/search" \
 
 **Filtered Search** (with metadata filters):
 ```bash
-curl -X POST "http://qdrant.harbor.fyi/collections/learnings/points/search" \
+curl -X POST "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/learnings/points/search" \
   -H "Content-Type: application/json" \
   -d '{
     "vector": [0.234, 0.567, ...],
@@ -321,7 +347,7 @@ curl -X POST "http://qdrant.harbor.fyi/collections/learnings/points/search" \
 
 **Scroll (Retrieve All)**:
 ```bash
-curl -X POST "http://qdrant.harbor.fyi/collections/patterns/points/scroll" \
+curl -X POST "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/patterns/points/scroll" \
   -H "Content-Type: application/json" \
   -d '{
     "limit": 100,
@@ -345,7 +371,7 @@ curl -X POST "http://qdrant.harbor.fyi/collections/patterns/points/scroll" \
 **Create Collection**:
 ```bash
 # STANDARD: All collections use 768 dimensions for Gemini compatibility
-curl -X PUT "http://qdrant.harbor.fyi/collections/agent_memory" \
+curl -X PUT "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory" \
   -H "Content-Type: application/json" \
   -d '{
     "vectors": {
@@ -362,7 +388,7 @@ curl -X PUT "http://qdrant.harbor.fyi/collections/agent_memory" \
 **Create Payload Index**:
 ```bash
 # Index session_id for fast filtering
-curl -X PUT "http://qdrant.harbor.fyi/collections/agent_memory/index" \
+curl -X PUT "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory/index" \
   -H "Content-Type: application/json" \
   -d '{
     "field_name": "session_id",
@@ -370,7 +396,7 @@ curl -X PUT "http://qdrant.harbor.fyi/collections/agent_memory/index" \
   }'
 
 # Index timestamp for time-based queries
-curl -X PUT "http://qdrant.harbor.fyi/collections/agent_memory/index" \
+curl -X PUT "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory/index" \
   -H "Content-Type: application/json" \
   -d '{
     "field_name": "timestamp",
@@ -380,18 +406,18 @@ curl -X PUT "http://qdrant.harbor.fyi/collections/agent_memory/index" \
 
 **Get Collection Info**:
 ```bash
-curl -X GET "http://qdrant.harbor.fyi/collections/agent_memory"
+curl -X GET "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory"
 ```
 
 **Delete Collection**:
 ```bash
-curl -X DELETE "http://qdrant.harbor.fyi/collections/agent_memory"
+curl -X DELETE "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory"
 ```
 
 **Delete Points by Filter**:
 ```bash
 # Delete old memories (>30 days)
-curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/delete" \
+curl -X POST "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory/points/delete" \
   -H "Content-Type: application/json" \
   -d '{
     "filter": {
@@ -409,7 +435,7 @@ curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/delete" \
 
 **Count Points**:
 ```bash
-curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/count" \
+curl -X POST "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory/points/count" \
   -H "Content-Type: application/json" \
   -d '{
     "filter": {
@@ -441,14 +467,14 @@ curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/count" \
 TASK_DESC="$1"
 
 # Generate embedding for task description (using Gemini - FREE, 768 dims)
-EMBEDDING=$(curl -s "https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${GEMINI_API_KEY}" \
+EMBEDDING=$(curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${GEMINI_API_KEY}" \
   -H "Content-Type: application/json" \
-  -d "{\"model\":\"models/text-embedding-004\",\"content\":{\"parts\":[{\"text\":\"$TASK_DESC\"}]}}" \
+  -d "{\"model\":\"models/gemini-embedding-001\",\"content\":{\"parts\":[{\"text\":\"$TASK_DESC\"}]}}" \
   | jq -r '.embedding.values')
 
 # Search all collections for relevant context
 for collection in agent_memory learnings patterns codebase; do
-  curl -s -X POST "http://qdrant.harbor.fyi/collections/$collection/points/search" \
+  curl -s -X POST "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/$collection/points/search" \
     -H "Content-Type: application/json" \
     -d "{
       \"vector\": $EMBEDDING,
@@ -476,7 +502,7 @@ CONTENT="$2"
 LEARNINGS="$3"
 
 # Index task memory
-curl -X PUT "http://qdrant.harbor.fyi/collections/agent_memory/points" \
+curl -X PUT "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory/points" \
   -H "Content-Type: application/json" \
   -d "{
     \"points\": [{
@@ -493,7 +519,7 @@ curl -X PUT "http://qdrant.harbor.fyi/collections/agent_memory/points" \
 
 # Index learnings if any
 if [ -n "$LEARNINGS" ]; then
-  curl -X PUT "http://qdrant.harbor.fyi/collections/learnings/points" \
+  curl -X PUT "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/learnings/points" \
     -H "Content-Type: application/json" \
     -d "{...}"
 fi
@@ -546,13 +572,13 @@ echo "$TASKS" | jq -c '.[]' | while read task; do
   CONTENT=$(echo "$task" | jq -r '."task name" + " " + .Description')
 
   # Generate embedding (using Gemini - FREE, 768 dims)
-  EMBEDDING=$(curl -s "https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${GEMINI_API_KEY}" \
+  EMBEDDING=$(curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${GEMINI_API_KEY}" \
     -H "Content-Type: application/json" \
-    -d "{\"model\":\"models/text-embedding-004\",\"content\":{\"parts\":[{\"text\":\"$CONTENT\"}]}}" \
+    -d "{\"model\":\"models/gemini-embedding-001\",\"content\":{\"parts\":[{\"text\":\"$CONTENT\"}]}}" \
     | jq '.embedding.values')
 
   # Upsert to Qdrant
-  curl -X PUT "http://qdrant.harbor.fyi/collections/agent_memory/points" \
+  curl -X PUT "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory/points" \
     -H "Content-Type: application/json" \
     -d "{
       \"points\": [{
@@ -582,13 +608,13 @@ done
 QUERY="batch update pattern with error handling"
 
 # Generate embedding (using Gemini - FREE, 768 dims)
-EMBEDDING=$(curl -s "https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${GEMINI_API_KEY}" \
+EMBEDDING=$(curl -s "https://generativelanguage.googleapis.com/v1beta/models/gemini-embedding-001:embedContent?key=${GEMINI_API_KEY}" \
   -H "Content-Type: application/json" \
-  -d "{\"model\":\"models/text-embedding-004\",\"content\":{\"parts\":[{\"text\":\"$QUERY\"}]}}" \
+  -d "{\"model\":\"models/gemini-embedding-001\",\"content\":{\"parts\":[{\"text\":\"$QUERY\"}]}}" \
   | jq '.embedding.values')
 
 # Search codebase collection
-curl -X POST "http://qdrant.harbor.fyi/collections/codebase/points/search" \
+curl -X POST "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/codebase/points/search" \
   -H "Content-Type: application/json" \
   -d "{
     \"vector\": $EMBEDDING,
@@ -610,8 +636,8 @@ CUTOFF_DATE=$(date -u -d "30 days ago" +%Y-%m-%dT%H:%M:%SZ)
 
 # Query old memories
 OLD_MEMORIES=$(curl -s -X POST \
-  "http://qdrant.harbor.fyi/collections/agent_memory/points/scroll" \
-  -H "Content-Type: application/json" \
+  "https://qdrant.harbor.fyi/collections/agent_memory/points/scroll" \
+  -H "api-key: ${QDRANT_API_KEY}" -H "Content-Type: application/json" \
   -d "{
     \"filter\": {
       \"must\": [{
@@ -624,12 +650,12 @@ OLD_MEMORIES=$(curl -s -X POST \
   }")
 
 # Move to archive collection (create if not exists)
-curl -X PUT "http://qdrant.harbor.fyi/collections/archive/points" \
+curl -X PUT "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/archive/points" \
   -H "Content-Type: application/json" \
   -d "{\"points\": $(echo "$OLD_MEMORIES" | jq '.result.points')}"
 
 # Delete from agent_memory
-curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/delete" \
+curl -X POST "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory/points/delete" \
   -H "Content-Type: application/json" \
   -d "{
     \"filter\": {
@@ -664,12 +690,12 @@ echo "Archived memories older than $CUTOFF_DATE"
 
 ### Health Check
 ```bash
-curl http://qdrant.harbor.fyi/healthz
+curl -s "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}"/healthz
 ```
 
 ### Collection Stats
 ```bash
-curl http://qdrant.harbor.fyi/collections/agent_memory | jq '{
+curl -s "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}"/collections/agent_memory | jq '{
   points_count: .result.points_count,
   segments_count: .result.segments_count,
   vectors_count: .result.vectors_count,
@@ -680,7 +706,7 @@ curl http://qdrant.harbor.fyi/collections/agent_memory | jq '{
 ### Search Performance
 ```bash
 # Add profiling to search
-curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/search" \
+curl -X POST "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}/collections/agent_memory/points/search" \
   -H "Content-Type: application/json" \
   -d '{
     "vector": [...],
@@ -697,7 +723,7 @@ curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/search" \
 
 ### Issue: Slow search performance
 **Solution**:
-- Check collection size: `curl http://qdrant.harbor.fyi/collections/agent_memory | jq .result.points_count`
+- Check collection size: `curl -s "https://qdrant.harbor.fyi" -H "api-key: ${QDRANT_API_KEY}"/collections/agent_memory | jq .result.points_count`
 - Increase HNSW ef parameter: `"params": {"hnsw_ef": 256}`
 - Enable payload indexing for filtered fields
 
@@ -726,7 +752,7 @@ curl -X POST "http://qdrant.harbor.fyi/collections/agent_memory/points/search" \
 9. **Test search queries** - Validate similarity scores before production use
 
 **EMBEDDING MODEL POLICY:**
-- PRIMARY: Gemini text-embedding-004 (768 dims) - FREE, high quality
+- PRIMARY: Gemini gemini-embedding-001 (768 dims) - FREE, high quality
 - FALLBACK: FastEmbed via MCP (384 dims) - Optional only
 - NEVER mix: Collections must use consistent embedding models
 

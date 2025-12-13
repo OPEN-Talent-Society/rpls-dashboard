@@ -25,9 +25,10 @@ QDRANT_API_KEY="${QDRANT_API_KEY:-}"
 if [ -z "$QDRANT_API_KEY" ]; then
     echo "Warning: QDRANT_API_KEY not set, requests may fail"
 fi
-QDRANT_COLLECTION="${QDRANT_COLLECTION:-agent_memory}"
+# IMPORTANT: Always use "patterns" collection - don't rely on env var
+QDRANT_COLLECTION="patterns"
 GEMINI_KEY="${GEMINI_API_KEY}"
-GEMINI_MODEL="${QDRANT_EMBEDDING_MODEL:-text-embedding-004}"
+GEMINI_MODEL="${QDRANT_EMBEDDING_MODEL:-gemini-embedding-001}"
 
 echo "🔄 Starting Patterns → Qdrant sync..."
 echo "📊 Supabase: ${SUPABASE_URL}"
@@ -35,23 +36,45 @@ echo "🗄️  Qdrant: ${QDRANT_URL}"
 echo "📦 Collection: ${QDRANT_COLLECTION}"
 echo ""
 
-# Fetch all patterns from Supabase
-echo "📥 Fetching patterns from Supabase..."
-PATTERNS=$(curl -s -X GET \
-  "${SUPABASE_URL}/rest/v1/patterns?select=*" \
+# Get total count of patterns first (Supabase has 1000 row default limit)
+echo "📥 Checking total patterns in Supabase..."
+TOTAL_COUNT=$(curl -s -I "${SUPABASE_URL}/rest/v1/patterns?select=id" \
   -H "apikey: ${SUPABASE_KEY}" \
-  -H "Authorization: Bearer ${SUPABASE_KEY}")
+  -H "Prefer: count=exact" | grep -i content-range | sed 's/.*\///' | tr -d '\r\n')
 
-# Count patterns
-PATTERN_COUNT=$(echo "$PATTERNS" | jq '. | length')
-echo "✅ Found ${PATTERN_COUNT} patterns"
-echo ""
+if [ -z "$TOTAL_COUNT" ] || [ "$TOTAL_COUNT" = "0" ]; then
+  TOTAL_COUNT=1000  # Fallback
+fi
+
+echo "📊 Total patterns in Supabase: ${TOTAL_COUNT}"
 
 # Process each pattern
 SUCCESSFUL=0
 FAILED=0
+PAGE_SIZE=1000
+OFFSET=0
 
-echo "$PATTERNS" | jq -c '.[]' | while read -r pattern; do
+# Paginate through all patterns
+while [ "$OFFSET" -lt "$TOTAL_COUNT" ]; do
+  END=$((OFFSET + PAGE_SIZE - 1))
+  echo ""
+  echo "📥 Fetching patterns ${OFFSET}-${END}..."
+
+  PATTERNS=$(curl -s -X GET \
+    "${SUPABASE_URL}/rest/v1/patterns?select=*&order=id" \
+    -H "apikey: ${SUPABASE_KEY}" \
+    -H "Authorization: Bearer ${SUPABASE_KEY}" \
+    -H "Range: ${OFFSET}-${END}")
+
+  PAGE_COUNT=$(echo "$PATTERNS" | jq '. | length')
+  echo "  📦 Got ${PAGE_COUNT} patterns in this page"
+
+  if [ "$PAGE_COUNT" = "0" ]; then
+    break
+  fi
+
+  # Process patterns in this page
+  while read -r pattern; do
   PATTERN_ID=$(echo "$pattern" | jq -r '.id')
   PATTERN_NAME=$(echo "$pattern" | jq -r '.name')
   PATTERN_CATEGORY=$(echo "$pattern" | jq -r '.category // "uncategorized"')
@@ -70,7 +93,7 @@ echo "$PATTERNS" | jq -c '.[]' | while read -r pattern; do
   EMBEDDING_RESPONSE=$(curl -s -X POST \
     "https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:embedContent?key=${GEMINI_KEY}" \
     -H "Content-Type: application/json" \
-    -d "{\"model\": \"models/${GEMINI_MODEL}\", \"content\": {\"parts\":[{\"text\": $(echo "$EMBEDDING_TEXT" | jq -Rs .)}]}}")
+    -d "{\"model\": \"models/${GEMINI_MODEL}\", \"content\": {\"parts\":[{\"text\": $(echo "$EMBEDDING_TEXT" | jq -Rs .)}]}, \"outputDimensionality\": 768}")
 
   # Extract embedding vector
   EMBEDDING=$(echo "$EMBEDDING_RESPONSE" | jq -c '.embedding.values')
@@ -131,6 +154,11 @@ echo "$PATTERNS" | jq -c '.[]' | while read -r pattern; do
   fi
 
   echo ""
+  done < <(echo "$PATTERNS" | jq -c '.[]')
+
+  # Move to next page
+  OFFSET=$((OFFSET + PAGE_SIZE))
+  echo "  📊 Progress: ${OFFSET}/${TOTAL_COUNT} patterns processed"
 done
 
 # Final report

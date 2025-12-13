@@ -1,6 +1,14 @@
 ---
 name: health-monitor
 description: Comprehensive multi-service health monitoring including uptime checks, performance metrics, and automated alerting for the entire infrastructure stack
+triggers:
+  - run health check
+  - monitor infrastructure
+  - check service health
+  - performance metrics
+  - uptime monitoring
+  - health status report
+  - infrastructure monitoring
 ---
 
 # Health Monitor Skill

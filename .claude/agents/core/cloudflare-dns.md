@@ -1,3 +1,21 @@
+---
+name: cloudflare-dns
+description: Manage Cloudflare DNS records for the aienablement.academy zone
+model: haiku
+color: "#F38020"
+id: cloudflare-dns
+status: active
+owner: core
+auto-triggers:
+  - cloudflare DNS
+  - add DNS record
+  - configure subdomain
+  - SSL certificate setup
+  - DNS management
+  - manage DNS records
+  - cloudflare proxy
+---
+
 # Cloudflare DNS Operations Agent
 
 ## Role

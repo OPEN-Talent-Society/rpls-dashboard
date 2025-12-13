@@ -1,0 +1,321 @@
+#!/bin/bash
+# Sync Supabase learnings and patterns to Qdrant semantic layer
+# Uses Gemini embeddings (768 dims) with smart-chunker.py for intelligent content splitting
+# Created: 2025-12-03 (updated 2025-12-08 with smart chunking & project metadata)
+
+set -e
+
+PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
+SMART_CHUNKER="$PROJECT_DIR/.claude/skills/memory-sync/scripts/smart-chunker.py"
+source "$PROJECT_DIR/.env" 2>/dev/null || true
+
+# Ensure .env is loaded with exports
+if [ -f "$PROJECT_DIR/.env" ]; then
+    set -a; source "$PROJECT_DIR/.env"; set +a
+fi
+[ -z "$QDRANT_API_KEY" ] && { echo "❌ QDRANT_API_KEY not set"; exit 1; }
+[ -z "$GEMINI_API_KEY" ] && { echo "❌ GEMINI_API_KEY not set"; exit 1; }
+[ ! -f "$SMART_CHUNKER" ] && { echo "❌ smart-chunker.py not found at $SMART_CHUNKER"; exit 1; }
+
+SUPABASE_URL="${PUBLIC_SUPABASE_URL}"
+SUPABASE_KEY="${SUPABASE_SERVICE_ROLE_KEY}"
+[ -z "$SUPABASE_KEY" ] && { echo "❌ SUPABASE_SERVICE_ROLE_KEY not set"; exit 1; }
+QDRANT_URL="${QDRANT_URL:-https://qdrant.harbor.fyi}"
+COLLECTION="agent_memory"
+SYNC_STATE_FILE="/tmp/supabase-qdrant-sync-state.json"
+
+# Detect project context
+GIT_REMOTE=$(git -C "$PROJECT_DIR" remote get-url origin 2>/dev/null || echo "unknown")
+GIT_BRANCH=$(git -C "$PROJECT_DIR" rev-parse --abbrev-ref HEAD 2>/dev/null || echo "unknown")
+PROJECT_NAME=$(basename "$PROJECT_DIR")
+
+# Check mode
+INCREMENTAL=false
+if [ "$1" = "--incremental" ]; then
+    INCREMENTAL=true
+fi
+
+echo "🔄 Syncing Supabase → Qdrant"
+echo "   Source: $SUPABASE_URL"
+echo "   Target: $QDRANT_URL"
+echo "   Mode: $([ "$INCREMENTAL" = true ] && echo 'incremental' || echo 'full')"
+echo ""
+
+# Get last sync timestamp for incremental
+LAST_SYNC="1970-01-01T00:00:00Z"
+if [ "$INCREMENTAL" = true ] && [ -f "$SYNC_STATE_FILE" ]; then
+    LAST_SYNC=$(python3 -c "import json; print(json.load(open('$SYNC_STATE_FILE')).get('last_sync', '1970-01-01T00:00:00Z'))" 2>/dev/null || echo "1970-01-01T00:00:00Z")
+fi
+
+# Function to chunk content using smart-chunker.py
+chunk_content() {
+    local content="$1"
+    local content_type="${2:-text}"
+    local metadata="$3"
+
+    python3 "$SMART_CHUNKER" <<EOF
+{
+    "content": $(echo "$content" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))"),
+    "content_type": "$content_type",
+    "metadata": $metadata
+}
+EOF
+}
+
+# Function to get embedding
+get_embedding() {
+    local text="$1"
+    local escaped=$(echo "$text" | python3 -c "import sys,json; print(json.dumps(sys.stdin.read()))")
+
+    curl -s --max-time 30 \
+        "https://generativelanguage.googleapis.com/v1beta/models/text-embedding-004:embedContent?key=${GEMINI_API_KEY}" \
+        -H "Content-Type: application/json" \
+        -d "{\"model\": \"models/text-embedding-004\", \"content\": {\"parts\": [{\"text\": $escaped}]}}" | \
+        python3 -c "import sys,json; d=json.load(sys.stdin); print(json.dumps(d.get('embedding',{}).get('values',[])))" 2>/dev/null
+}
+
+# Function to upsert to Qdrant
+upsert_to_qdrant() {
+    local point_id="$1"
+    local vector="$2"
+    local payload="$3"
+
+    curl -s --max-time 10 -X PUT "${QDRANT_URL}/collections/${COLLECTION}/points" \
+        -H "api-key: ${QDRANT_API_KEY}" \
+        -H "Content-Type: application/json" \
+        -d "{\"points\": [{\"id\": $point_id, \"vector\": $vector, \"payload\": $payload}]}" > /dev/null
+}
+
+SUCCESS=0
+SKIPPED=0
+
+# 1. Sync learnings
+echo "📚 Syncing learnings..."
+if [ "$INCREMENTAL" = true ]; then
+    LEARNINGS=$(curl -s "${SUPABASE_URL}/rest/v1/learnings?select=id,topic,content,category,created_at&created_at=gte.${LAST_SYNC}&limit=100" \
+        -H "apikey: ${SUPABASE_KEY}" \
+        -H "Authorization: Bearer ${SUPABASE_KEY}" 2>/dev/null)
+else
+    LEARNINGS=$(curl -s "${SUPABASE_URL}/rest/v1/learnings?select=id,topic,content,category,created_at&limit=500" \
+        -H "apikey: ${SUPABASE_KEY}" \
+        -H "Authorization: Bearer ${SUPABASE_KEY}" 2>/dev/null)
+fi
+
+echo "$LEARNINGS" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for item in data:
+    print(json.dumps(item))
+" 2>/dev/null | while read -r learning; do
+    TOPIC=$(echo "$learning" | python3 -c "import sys,json; print(json.load(sys.stdin).get('topic',''))" 2>/dev/null)
+    CONTENT=$(echo "$learning" | python3 -c "import sys,json; print(json.load(sys.stdin).get('content',''))" 2>/dev/null)
+    CATEGORY=$(echo "$learning" | python3 -c "import sys,json; print(json.load(sys.stdin).get('category','general'))" 2>/dev/null)
+    ID=$(echo "$learning" | python3 -c "import sys,json; print(json.load(sys.stdin).get('id',''))" 2>/dev/null)
+    CREATED_AT=$(echo "$learning" | python3 -c "import sys,json; print(json.load(sys.stdin).get('created_at',''))" 2>/dev/null)
+
+    [ -z "$TOPIC" ] && continue
+    [ ${#CONTENT} -lt 20 ] && continue
+
+    EMBED_TEXT="$TOPIC: $CONTENT"
+
+    # Prepare metadata for chunker
+    CHUNK_METADATA=$(python3 -c "
+import json
+print(json.dumps({
+    'supabase_id': '$ID',
+    'category': '$CATEGORY',
+    'created_at': '$CREATED_AT'
+}))
+" 2>/dev/null)
+
+    # Chunk content using smart-chunker
+    CHUNK_RESULT=$(chunk_content "$EMBED_TEXT" "text" "$CHUNK_METADATA")
+
+    # Check if chunking succeeded
+    CHUNK_SUCCESS=$(echo "$CHUNK_RESULT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('success', False))" 2>/dev/null)
+
+    if [ "$CHUNK_SUCCESS" = "True" ]; then
+        # Process each chunk
+        echo "$CHUNK_RESULT" | python3 -c "
+import sys, json
+result = json.load(sys.stdin)
+for chunk in result.get('chunks', []):
+    print(json.dumps(chunk))
+" 2>/dev/null | while read -r chunk; do
+            CHUNK_TEXT=$(echo "$chunk" | python3 -c "import sys,json; print(json.load(sys.stdin).get('text',''))" 2>/dev/null)
+            CHUNK_HASH=$(echo "$chunk" | python3 -c "import sys,json; print(json.load(sys.stdin).get('hash',''))" 2>/dev/null)
+            CHUNK_INDEX=$(echo "$chunk" | python3 -c "import sys,json; print(json.load(sys.stdin).get('index',0))" 2>/dev/null)
+            CHUNK_TOTAL=$(echo "$chunk" | python3 -c "import sys,json; print(json.load(sys.stdin).get('total',1))" 2>/dev/null)
+
+            [ -z "$CHUNK_TEXT" ] && continue
+
+            EMBEDDING=$(get_embedding "$CHUNK_TEXT")
+
+            if [ -n "$EMBEDDING" ] && [ "$EMBEDDING" != "[]" ]; then
+                # Use content hash for point ID (first 7 hex chars)
+                POINT_ID=$((16#${CHUNK_HASH:0:7}))
+
+                PAYLOAD=$(python3 -c "
+import json
+print(json.dumps({
+    'type': 'learning',
+    'source': 'supabase-sync',
+    'topic': '''$TOPIC''',
+    'content': '''$CHUNK_TEXT''',
+    'category': '$CATEGORY',
+    'indexed_at': '$(date -u +%Y-%m-%dT%H:%M:%SZ)',
+    'version': 1,
+    'chunk_info': {
+        'index': $CHUNK_INDEX,
+        'total': $CHUNK_TOTAL,
+        'hash': '$CHUNK_HASH'
+    },
+    'project': {
+        'name': '$PROJECT_NAME',
+        'git_remote': '''$GIT_REMOTE''',
+        'git_branch': '$GIT_BRANCH'
+    },
+    'metadata': {
+        'learning': {
+            'supabase_id': '$ID',
+            'created_at': '$CREATED_AT'
+        }
+    }
+}))
+" 2>/dev/null)
+
+                upsert_to_qdrant "$POINT_ID" "$EMBEDDING" "$PAYLOAD"
+                SUCCESS=$((SUCCESS + 1))
+                echo -n "."
+            fi
+
+            sleep 0.1
+        done
+    fi
+
+    sleep 0.1
+done
+echo ""
+
+# 2. Sync patterns
+echo "📐 Syncing patterns..."
+if [ "$INCREMENTAL" = true ]; then
+    PATTERNS=$(curl -s "${SUPABASE_URL}/rest/v1/patterns?select=id,name,description,category,created_at&created_at=gte.${LAST_SYNC}&limit=100" \
+        -H "apikey: ${SUPABASE_KEY}" \
+        -H "Authorization: Bearer ${SUPABASE_KEY}" 2>/dev/null)
+else
+    PATTERNS=$(curl -s "${SUPABASE_URL}/rest/v1/patterns?select=id,name,description,category,created_at&limit=500" \
+        -H "apikey: ${SUPABASE_KEY}" \
+        -H "Authorization: Bearer ${SUPABASE_KEY}" 2>/dev/null)
+fi
+
+echo "$PATTERNS" | python3 -c "
+import sys, json
+data = json.load(sys.stdin)
+for item in data:
+    print(json.dumps(item))
+" 2>/dev/null | while read -r pattern; do
+    NAME=$(echo "$pattern" | python3 -c "import sys,json; print(json.load(sys.stdin).get('name',''))" 2>/dev/null)
+    DESC=$(echo "$pattern" | python3 -c "import sys,json; print(json.load(sys.stdin).get('description',''))" 2>/dev/null)
+    CATEGORY=$(echo "$pattern" | python3 -c "import sys,json; print(json.load(sys.stdin).get('category','general'))" 2>/dev/null)
+    ID=$(echo "$pattern" | python3 -c "import sys,json; print(json.load(sys.stdin).get('id',''))" 2>/dev/null)
+    CREATED_AT=$(echo "$pattern" | python3 -c "import sys,json; print(json.load(sys.stdin).get('created_at',''))" 2>/dev/null)
+
+    [ -z "$NAME" ] && continue
+    [ ${#DESC} -lt 10 ] && continue
+
+    EMBED_TEXT="Pattern: $NAME. $DESC"
+
+    # Prepare metadata for chunker
+    CHUNK_METADATA=$(python3 -c "
+import json
+print(json.dumps({
+    'supabase_id': '$ID',
+    'category': '$CATEGORY',
+    'created_at': '$CREATED_AT',
+    'pattern_name': '''$NAME'''
+}))
+" 2>/dev/null)
+
+    # Chunk content using smart-chunker
+    CHUNK_RESULT=$(chunk_content "$EMBED_TEXT" "text" "$CHUNK_METADATA")
+
+    # Check if chunking succeeded
+    CHUNK_SUCCESS=$(echo "$CHUNK_RESULT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('success', False))" 2>/dev/null)
+
+    if [ "$CHUNK_SUCCESS" = "True" ]; then
+        # Process each chunk
+        echo "$CHUNK_RESULT" | python3 -c "
+import sys, json
+result = json.load(sys.stdin)
+for chunk in result.get('chunks', []):
+    print(json.dumps(chunk))
+" 2>/dev/null | while read -r chunk; do
+            CHUNK_TEXT=$(echo "$chunk" | python3 -c "import sys,json; print(json.load(sys.stdin).get('text',''))" 2>/dev/null)
+            CHUNK_HASH=$(echo "$chunk" | python3 -c "import sys,json; print(json.load(sys.stdin).get('hash',''))" 2>/dev/null)
+            CHUNK_INDEX=$(echo "$chunk" | python3 -c "import sys,json; print(json.load(sys.stdin).get('index',0))" 2>/dev/null)
+            CHUNK_TOTAL=$(echo "$chunk" | python3 -c "import sys,json; print(json.load(sys.stdin).get('total',1))" 2>/dev/null)
+
+            [ -z "$CHUNK_TEXT" ] && continue
+
+            EMBEDDING=$(get_embedding "$CHUNK_TEXT")
+
+            if [ -n "$EMBEDDING" ] && [ "$EMBEDDING" != "[]" ]; then
+                # Use content hash for point ID (first 7 hex chars)
+                POINT_ID=$((16#${CHUNK_HASH:0:7}))
+
+                PAYLOAD=$(python3 -c "
+import json
+print(json.dumps({
+    'type': 'pattern',
+    'source': 'supabase-sync',
+    'topic': '''$NAME''',
+    'content': '''$CHUNK_TEXT''',
+    'category': '$CATEGORY',
+    'indexed_at': '$(date -u +%Y-%m-%dT%H:%M:%SZ)',
+    'version': 1,
+    'chunk_info': {
+        'index': $CHUNK_INDEX,
+        'total': $CHUNK_TOTAL,
+        'hash': '$CHUNK_HASH'
+    },
+    'project': {
+        'name': '$PROJECT_NAME',
+        'git_remote': '''$GIT_REMOTE''',
+        'git_branch': '$GIT_BRANCH'
+    },
+    'metadata': {
+        'pattern': {
+            'supabase_id': '$ID',
+            'name': '''$NAME''',
+            'created_at': '$CREATED_AT'
+        }
+    }
+}))
+" 2>/dev/null)
+
+                upsert_to_qdrant "$POINT_ID" "$EMBEDDING" "$PAYLOAD"
+                SUCCESS=$((SUCCESS + 1))
+                echo -n "."
+            fi
+
+            sleep 0.1
+        done
+    fi
+
+    sleep 0.1
+done
+echo ""
+
+# Update sync state
+NOW=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+python3 -c "
+import json
+state = {'last_sync': '$NOW', 'last_success_count': $SUCCESS}
+with open('$SYNC_STATE_FILE', 'w') as f:
+    json.dump(state, f)
+" 2>/dev/null
+
+echo ""
+echo "✅ Supabase → Qdrant sync complete"
+echo "   Indexed: $SUCCESS items"

@@ -1,6 +1,14 @@
 ---
 name: marketing-orchestrator
 description: Marketing automation strategist coordinating multi-channel campaigns, content calendars, and analytics
+auto-triggers:
+  - plan marketing campaign
+  - create content calendar
+  - launch multi-channel campaign
+  - coordinate marketing assets
+  - track campaign performance
+  - schedule social media posts
+  - generate marketing brief
 model: sonnet
 color: pink
 id: marketing-orchestrator

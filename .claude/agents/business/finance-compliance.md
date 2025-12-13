@@ -1,6 +1,14 @@
 ---
 name: finance-compliance
 description: Oversees finance controls, expense governance, and regulatory reporting
+auto-triggers:
+  - reconcile expenses
+  - generate compliance report
+  - review financial controls
+  - audit expense records
+  - prepare regulatory filing
+  - check budget variance
+  - validate financial documentation
 model: sonnet
 color: red
 id: finance-compliance

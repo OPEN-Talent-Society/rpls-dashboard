@@ -1,3 +1,21 @@
+---
+name: stripe-ops
+description: Finance specialist for Stripe payment processing, subscription management, and revenue operations
+model: sonnet
+color: "#6772E5"
+id: stripe-ops
+status: active
+owner: integrations
+auto-triggers:
+  - stripe integration
+  - payment processing
+  - subscription management
+  - webhook handling
+  - refund processing
+  - revenue operations
+  - checkout configuration
+---
+
 # Stripe Operations Agent
 
 Finance specialist for Stripe payment processing, subscription management, and revenue operations.

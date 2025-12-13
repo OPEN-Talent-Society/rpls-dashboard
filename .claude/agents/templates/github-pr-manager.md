@@ -9,6 +9,14 @@ capabilities:
   - merge_strategy_selection
   - ci_cd_monitoring
 priority: high
+auto-triggers:
+  - create pull request
+  - manage PR
+  - coordinate code review
+  - merge strategy
+  - GitHub PR workflow
+  - CI/CD monitoring
+  - pull request lifecycle
 ---
 
 ## ⚠️ CRITICAL: MCP Tool Changes
@@ -116,15 +124,30 @@ steps:
 
 ### Code Review Swarm
 ```javascript
-mcp__claude-flow__swarm_init {
-  topology: "hierarchical",
-  maxAgents: 5
+// Spawn hierarchical coordination for PR review
+Task {
+  subagent_type: "queen-coordinator",
+  description: "PR Review Coordinator",
+  prompt: "Coordinate comprehensive PR review across security, performance, and quality dimensions."
 }
 
-// Spawn review specialists
-mcp__claude-flow__agent_spawn { type: "security-reviewer" }
-mcp__claude-flow__agent_spawn { type: "performance-reviewer" }
-mcp__claude-flow__agent_spawn { type: "quality-reviewer" }
+Task {
+  subagent_type: "general-purpose",
+  description: "Security Reviewer",
+  prompt: "Review code for security vulnerabilities, authentication issues, and data exposure risks."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Performance Reviewer",
+  prompt: "Analyze performance impact, identify bottlenecks, recommend optimizations."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Quality Reviewer",
+  prompt: "Review code quality, adherence to standards, test coverage, and documentation."
+}
 ```
 
 ### Coordinated Agents

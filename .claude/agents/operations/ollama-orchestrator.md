@@ -1,6 +1,14 @@
 ---
 name: ollama-orchestrator
 description: Oversees Ollama model lifecycle, prompt routing, and evaluation for on-prem LLM deployments
+auto-triggers:
+  - ollama model management
+  - local llm deployment
+  - ollama model routing
+  - on-prem inference optimization
+  - ollama model catalog
+  - llm prompt routing
+  - ollama performance monitoring
 model: sonnet
 color: magenta
 id: ollama-orchestrator

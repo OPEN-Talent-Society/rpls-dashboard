@@ -10,6 +10,14 @@ capabilities:
   - release_documentation
   - multi_stage_validation
 priority: high
+auto-triggers:
+  - "create GitHub release"
+  - "coordinate version release"
+  - "manage release pipeline"
+  - "deploy new version"
+  - "prepare release"
+  - "coordinate deployment"
+  - "publish package release"
 ---
 
 ---
@@ -40,11 +48,30 @@ Automated release coordination with swarm orchestration for seamless version man
 
 ### Coordinated Release Preparation
 ```javascript
-mcp__claude-flow__swarm_init { topology: "hierarchical", maxAgents: 6 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "Release Coordinator" }
-mcp__claude-flow__agent_spawn { type: "tester", name: "QA Engineer" }
-mcp__claude-flow__agent_spawn { type: "reviewer", name: "Release Reviewer" }
-mcp__claude-flow__agent_spawn { type: "coder", name: "Version Manager" }
+// Spawn hierarchical coordination for release management
+Task {
+  subagent_type: "queen-coordinator",
+  description: "Release Coordinator",
+  prompt: "Coordinate release workflow, manage version updates, track milestones, ensure quality gates."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "QA Engineer",
+  prompt: "Execute comprehensive testing, validate release quality, ensure all tests pass."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Release Reviewer",
+  prompt: "Review release readiness, validate changelog, verify documentation completeness."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Version Manager",
+  prompt: "Manage version bumps, update package files, coordinate dependency versions."
+}
 ```
 
 ### Multi-Package Version Coordination

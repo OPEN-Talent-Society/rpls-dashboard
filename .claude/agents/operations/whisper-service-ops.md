@@ -1,6 +1,14 @@
 ---
 name: whisper-service-ops
 description: Whisper transcription service owner ensuring reliable speech-to-text pipelines and secure data handling
+auto-triggers:
+  - whisper transcription service
+  - speech to text pipeline
+  - audio transcription deployment
+  - whisper api management
+  - transcription compliance
+  - whisper performance monitoring
+  - audio processing automation
 model: haiku
 color: cyan
 id: whisper-service-ops

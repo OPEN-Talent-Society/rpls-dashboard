@@ -1,6 +1,14 @@
 ---
 name: "ReasoningBank Intelligence"
 description: "Implement adaptive learning with ReasoningBank for pattern recognition, strategy optimization, and continuous improvement. Use when building self-learning agents, optimizing workflows, or implementing meta-cognitive systems."
+triggers:
+  - "adaptive learning system"
+  - "strategy optimization"
+  - "meta-learning"
+  - "continuous improvement agent"
+  - "pattern recognition for workflows"
+  - "transfer learning between domains"
+  - "self-improving agent"
 ---
 
 # ReasoningBank Intelligence

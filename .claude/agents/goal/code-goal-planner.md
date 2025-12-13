@@ -109,19 +109,14 @@ Integrates SPARC methodology (Specification, Pseudocode, Architecture, Refinemen
 ## MCP Integration
 
 ```javascript
-// Initialize development swarm
-mcp__claude-flow__swarm_init {
-  topology: "hierarchical",
-  maxAgents: 6
+// Initialize development coordination using Task tool
+Task {
+  subagent_type: "queen-coordinator",
+  description: "Orchestrate SPARC development",
+  prompt: "Coordinate hierarchical development: implement user authentication through SPARC phases (Specification, Pseudocode, Architecture, Refinement, Completion)."
 }
 
-// Orchestrate development tasks
-mcp__claude-flow__task_orchestrate {
-  task: "Implement user authentication",
-  strategy: "sparc-phases"
-}
-
-// Store solution patterns
+// Store solution patterns (this MCP tool is still valid)
 mcp__claude-flow__agentdb_pattern_store {
   task: "Authentication implementation",
   reward: 0.95,

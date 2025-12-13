@@ -10,6 +10,14 @@ capabilities:
   - knowledge_sharing
   - decision_coordination
 priority: critical
+auto-triggers:
+  - synchronize memory
+  - build consensus
+  - distribute cognitive load
+  - collective intelligence
+  - decision coordination
+  - knowledge sharing
+  - memory sync across agents
 ---
 
 # Collective Intelligence Coordinator

@@ -10,6 +10,14 @@ capabilities:
   - self_healing_pipelines
   - performance_monitoring
 priority: high
+auto-triggers:
+  - "create GitHub Actions workflow"
+  - "automate CI/CD pipeline"
+  - "setup GitHub workflow"
+  - "configure continuous integration"
+  - "optimize GitHub Actions"
+  - "automate deployment pipeline"
+  - "create workflow automation"
 ---
 
 ---
@@ -40,10 +48,24 @@ AI swarm integration with GitHub Actions for intelligent CI/CD pipelines.
 
 ### Swarm-Powered Actions
 ```javascript
-mcp__claude-flow__swarm_init { topology: "mesh", maxAgents: 12 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "CI Coordinator" }
-mcp__claude-flow__agent_spawn { type: "tester", name: "Test Orchestrator" }
-mcp__claude-flow__agent_spawn { type: "optimizer", name: "Performance Monitor" }
+// Spawn mesh topology for distributed CI/CD coordination
+Task {
+  subagent_type: "mesh-coordinator",
+  description: "CI Coordinator",
+  prompt: "Coordinate CI/CD workflows, manage pipeline execution, track build status."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Test Orchestrator",
+  prompt: "Orchestrate test execution, manage parallel testing, aggregate results."
+}
+
+Task {
+  subagent_type: "general-purpose",
+  description: "Performance Monitor",
+  prompt: "Monitor pipeline performance, identify bottlenecks, optimize execution time."
+}
 ```
 
 ### Dynamic Workflow Generation

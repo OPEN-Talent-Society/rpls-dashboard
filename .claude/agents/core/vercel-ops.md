@@ -1,3 +1,21 @@
+---
+name: vercel-ops
+description: Vercel deployment and infrastructure management specialist for Next.js applications with Payload CMS
+model: sonnet
+color: "#000000"
+id: vercel-ops
+status: active
+owner: core
+auto-triggers:
+  - vercel deployment
+  - deploy to vercel
+  - manage environment variables
+  - configure custom domain
+  - serverless functions
+  - vercel troubleshooting
+  - edge computing setup
+---
+
 # Vercel Operations Agent
 
 Vercel deployment and infrastructure management specialist for Next.js applications with Payload CMS.

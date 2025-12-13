@@ -4,6 +4,14 @@
 
 name: formbricks-operations
 description: Guide for operating the self-hosted Formbricks stack (survey suite) on the OCI Ampere host.
+auto-triggers:
+  - formbricks deployment
+  - survey platform management
+  - formbricks s3 integration
+  - formbricks smtp configuration
+  - survey stack troubleshooting
+  - formbricks backup
+  - survey platform operations
 model: opus
 color: purple
 id: formbricks-operations

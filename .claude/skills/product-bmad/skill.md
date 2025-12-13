@@ -8,6 +8,14 @@ tags:
   - product
   - strategy
   - commercialization
+triggers:
+  - "BMAD analysis"
+  - "validate business model"
+  - "go no-go decision"
+  - "market assessment"
+  - "competitive advantage"
+  - "delivery readiness"
+  - "investment decision"
 dependencies:
   - bmad-analyst
 outputs:

@@ -14,6 +14,14 @@ capabilities:
   - architecture optimization
   - template management
   - distributed workflows
+triggers:
+  - sync multiple repositories
+  - multi-repo coordination
+  - cross-repo synchronization
+  - align package versions
+  - synchronize repositories
+  - coordinate across repos
+  - multi-repository workflow
 ---
 
 ---
@@ -109,11 +117,14 @@ const DEPS = Bash(`gh repo list my-organization --json name | \
       --jq '.content' 2>/dev/null | base64 -d | jq '{name, dependencies}'
   done | jq -s '.'`)
 
-// Initialize swarm with discovered repositories
-mcp__claude-flow__swarm_init({
-  topology: "hierarchical",
-  maxAgents: 8,
-  metadata: { repos: REPOS, dependencies: DEPS }
+// Initialize swarm coordination using Task tool
+Task({
+  subagent_type: "queen-coordinator",
+  description: "Coordinate multi-repository operations",
+  prompt: `Initialize swarm coordination for discovered repositories:
+  - Repositories: ${REPOS}
+  - Dependencies: ${DEPS}
+  - Strategy: hierarchical coordination with max 8 workers`
 })
 ```
 
@@ -121,10 +132,22 @@ mcp__claude-flow__swarm_init({
 ```javascript
 // Execute synchronized changes across repositories
 [Parallel Multi-Repo Operations]:
-  // Spawn coordination agents
-  Task("Repository Coordinator", "Coordinate changes across all repositories", "coordinator")
-  Task("Dependency Analyzer", "Analyze cross-repo dependencies", "analyst")
-  Task("Integration Tester", "Validate cross-repo changes", "tester")
+  // Spawn coordination agents using Task tool
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Repository Coordinator",
+    prompt: "Coordinate changes across all repositories"
+  })
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Dependency Analyzer",
+    prompt: "Analyze cross-repo dependencies"
+  })
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Integration Tester",
+    prompt: "Validate cross-repo changes"
+  })
 
   // Get matching repositories
   Bash(`gh repo list org --limit 100 --json name \
@@ -164,13 +187,29 @@ mcp__claude-flow__swarm_init({
 ```javascript
 // Synchronize package dependencies and versions
 [Complete Package Sync]:
-  // Initialize sync swarm
-  mcp__claude-flow__swarm_init({ topology: "mesh", maxAgents: 5 })
+  // Initialize sync swarm using Task tool
+  Task({
+    subagent_type: "mesh-coordinator",
+    description: "Initialize sync swarm",
+    prompt: "Coordinate version alignment across packages with mesh topology and max 5 agents"
+  })
 
   // Spawn sync agents
-  Task("Sync Coordinator", "Coordinate version alignment", "coordinator")
-  Task("Dependency Analyzer", "Analyze dependencies", "analyst")
-  Task("Integration Tester", "Validate synchronization", "tester")
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Sync Coordinator",
+    prompt: "Coordinate version alignment"
+  })
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Dependency Analyzer",
+    prompt: "Analyze dependencies"
+  })
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Integration Tester",
+    prompt: "Validate synchronization"
+  })
 
   // Read package states
   Read("/workspaces/ruv-FANN/claude-code-flow/claude-code-flow/package.json")
@@ -265,14 +304,34 @@ mcp__claude-flow__swarm_init({
 ```javascript
 // Analyze and optimize repository structure
 [Architecture Analysis]:
-  // Initialize architecture swarm
-  mcp__claude-flow__swarm_init({ topology: "hierarchical", maxAgents: 6 })
+  // Initialize architecture swarm using Task tool
+  Task({
+    subagent_type: "queen-coordinator",
+    description: "Initialize architecture analysis swarm",
+    prompt: "Coordinate architecture analysis with hierarchical topology and max 6 agents"
+  })
 
   // Spawn architecture agents
-  Task("Senior Architect", "Analyze repository structure", "architect")
-  Task("Structure Analyst", "Identify optimization opportunities", "analyst")
-  Task("Performance Optimizer", "Optimize structure for scalability", "optimizer")
-  Task("Best Practices Researcher", "Research architecture patterns", "researcher")
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Senior Architect",
+    prompt: "Analyze repository structure"
+  })
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Structure Analyst",
+    prompt: "Identify optimization opportunities"
+  })
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Performance Optimizer",
+    prompt: "Optimize structure for scalability"
+  })
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Best Practices Researcher",
+    prompt: "Research architecture patterns"
+  })
 
   // Analyze current structures
   LS("/workspaces/ruv-FANN/claude-code-flow/claude-code-flow")
@@ -425,15 +484,39 @@ Part of #$TRACKING_ISSUE"
 ```javascript
 // Coordinate large-scale refactoring
 [Cross-Repo Refactoring]:
-  // Initialize refactoring swarm
-  mcp__claude-flow__swarm_init({ topology: "mesh", maxAgents: 8 })
+  // Initialize refactoring swarm using Task tool
+  Task({
+    subagent_type: "mesh-coordinator",
+    description: "Initialize refactoring swarm",
+    prompt: "Coordinate cross-repo refactoring with mesh topology and max 8 agents"
+  })
 
   // Spawn specialized agents
-  Task("Refactoring Coordinator", "Coordinate refactoring across repos", "coordinator")
-  Task("Impact Analyzer", "Analyze refactoring impact", "analyst")
-  Task("Code Transformer", "Apply refactoring changes", "coder")
-  Task("Migration Guide Creator", "Create migration documentation", "documenter")
-  Task("Integration Tester", "Validate refactored code", "tester")
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Refactoring Coordinator",
+    prompt: "Coordinate refactoring across repos"
+  })
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Impact Analyzer",
+    prompt: "Analyze refactoring impact"
+  })
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Code Transformer",
+    prompt: "Apply refactoring changes"
+  })
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Migration Guide Creator",
+    prompt: "Create migration documentation"
+  })
+  Task({
+    subagent_type: "worker-specialist",
+    description: "Integration Tester",
+    prompt: "Validate refactored code"
+  })
 
   // Execute refactoring
   mcp__claude-flow__task_orchestrate({

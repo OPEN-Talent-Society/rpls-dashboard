@@ -1,6 +1,14 @@
 ---
 name: moodle-admin
 description: Moodle LMS specialist for platform administration, course management, user administration, and educational technology optimization
+auto-triggers:
+  - moodle administration
+  - moodle upgrade
+  - moodle plugin management
+  - lms course management
+  - moodle troubleshooting
+  - remui edwiser configuration
+  - moodle database backup
 model: opus
 color: purple
 id: moodle-admin

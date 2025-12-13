@@ -30,6 +30,14 @@ related_skills:
   - github-release-management
   - sparc-orchestrator
 estimated_time: 30-45 minutes
+triggers:
+  - manage github issues
+  - github project board
+  - sprint planning
+  - issue tracking
+  - project board automation
+  - agile workflow
+  - github project management
 ---
 
 ---
@@ -98,11 +106,30 @@ pnpm dlx ruv-swarm github board-init \
 #### Single Issue with Swarm Coordination
 
 ```javascript
-// Initialize issue management swarm
-mcp__claude-flow__swarm_init { topology: "star", maxAgents: 3 }
-mcp__claude-flow__agent_spawn { type: "coordinator", name: "Issue Coordinator" }
-mcp__claude-flow__agent_spawn { type: "researcher", name: "Requirements Analyst" }
-mcp__claude-flow__agent_spawn { type: "coder", name: "Implementation Planner" }
+// Initialize issue management swarm using Task tool
+Task({
+  subagent_type: "queen-coordinator",
+  description: "Initialize issue management swarm",
+  prompt: "Coordinate issue management with star topology and max 3 agents"
+})
+
+Task({
+  subagent_type: "worker-specialist",
+  description: "Issue Coordinator",
+  prompt: "Coordinate issue creation and tracking"
+})
+
+Task({
+  subagent_type: "worker-specialist",
+  description: "Requirements Analyst",
+  prompt: "Analyze requirements and acceptance criteria"
+})
+
+Task({
+  subagent_type: "worker-specialist",
+  description: "Implementation Planner",
+  prompt: "Plan implementation approach and tasks"
+})
 
 // Create comprehensive issue
 mcp__github__create_issue {

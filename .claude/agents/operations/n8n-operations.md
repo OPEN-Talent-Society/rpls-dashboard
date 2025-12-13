@@ -4,6 +4,14 @@
 
 name: n8n-operations
 description: n8n workflow automation specialist for configuration, deployment, troubleshooting, and optimization of n8n instances and workflows
+auto-triggers:
+  - n8n workflow automation
+  - n8n deployment
+  - n8n troubleshooting
+  - workflow automation configuration
+  - n8n postgres backup
+  - n8n health check
+  - automation workflow optimization
 model: opus
 color: purple
 id: n8n-operations

@@ -3,6 +3,14 @@ name: queen-coordinator
 description: Queen agent that orchestrates strategic decisions and maintains coherence through hybrid centralized-decentralized control
 type: coordinator
 color: "#E91E63"
+auto-triggers:
+  - coordinate swarm
+  - multi-agent
+  - parallel agents
+  - orchestrate tasks
+  - hive mind
+  - swarm coordination
+  - spawn workers
 capabilities:
   - strategic_orchestration
   - hierarchy_management

@@ -1,6 +1,14 @@
 ---
 name: creative-director
 description: Creative operations lead orchestrating AI-generated assets, brand governance, and review workflows
+auto-triggers:
+  - "create marketing assets"
+  - "coordinate creative workflow"
+  - "brand compliance check"
+  - "orchestrate asset generation"
+  - "manage creative approvals"
+  - "creative brief"
+  - "multi-media asset creation"
 model: opus
 color: purple
 id: creative-director

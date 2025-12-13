@@ -7,11 +7,11 @@ set -e
 PROJECT_DIR="/Users/adamkovacs/Documents/codebuild"
 source "$PROJECT_DIR/.env" 2>/dev/null || true
 
-# Cortex/SiYuan config - requires Cloudflare Zero Trust headers
+# Cortex/SiYuan config - uses Global API Key auth
 CORTEX_URL="${CORTEX_URL:-https://cortex.aienablement.academy}"
 CORTEX_API_TOKEN="${CORTEX_TOKEN}"
-CF_CLIENT_ID="${CF_ACCESS_CLIENT_ID}"
-CF_CLIENT_SECRET="${CF_ACCESS_CLIENT_SECRET}"
+CF_AUTH_EMAIL="${CF_AUTH_EMAIL:-adam@aienablement.academy}"
+CF_GLOBAL_KEY="${CF_GLOBAL_API_KEY}"
 
 # Supabase config (target) - use anon key, falls back to service role
 SUPABASE_URL="${PUBLIC_SUPABASE_URL:-https://zxcrbcmdxpqprpxhsntc.supabase.co}"
@@ -25,8 +25,8 @@ search_cortex() {
     local QUERY="$1"
     curl -s -X POST "${CORTEX_URL}/api/search/fullTextSearchBlock" \
         -H "Authorization: Token ${CORTEX_API_TOKEN}" \
-        -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
-        -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
+        -H "X-Auth-Email: ${CF_AUTH_EMAIL}" \
+        -H "X-Auth-Key: ${CF_GLOBAL_KEY}" \
         -H "Content-Type: application/json" \
         -d "{\"query\": \"$QUERY\"}" 2>/dev/null
 }
@@ -36,8 +36,8 @@ get_doc_content() {
     local DOC_ID="$1"
     curl -s -X POST "${CORTEX_URL}/api/export/exportMdContent" \
         -H "Authorization: Token ${CORTEX_API_TOKEN}" \
-        -H "CF-Access-Client-Id: ${CF_CLIENT_ID}" \
-        -H "CF-Access-Client-Secret: ${CF_CLIENT_SECRET}" \
+        -H "X-Auth-Email: ${CF_AUTH_EMAIL}" \
+        -H "X-Auth-Key: ${CF_GLOBAL_KEY}" \
         -H "Content-Type: application/json" \
         -d "{\"id\": \"$DOC_ID\"}" 2>/dev/null
 }
