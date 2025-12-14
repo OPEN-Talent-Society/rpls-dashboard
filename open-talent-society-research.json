@@ -1,0 +1,225 @@
+{
+  "organization_name": "OPEN Talent Society",
+  "acronym": "OPEN = Opportunities for People to Elevate and Network",
+  "tagline": "Together We Grow",
+  "website": "https://opentalentsociety.org/",
+  "last_updated": "2025-12-13",
+
+  "legal_status": {
+    "type": "501(c)(3) Non-Profit Organization",
+    "status": "Confirmed nonprofit status on website",
+    "verification_note": "Specific 501(c)(3) documentation not publicly available on website",
+    "tax_id_ein": "Not publicly disclosed"
+  },
+
+  "mission": {
+    "primary": "Building environments that nurture Opportunities for People to Elevate and Network",
+    "vision": "A nonprofit and open source community of practice, dedicated to mutual support and growth",
+    "approach": "People pros (HR, TA, L&D, People Ops) learn and create with engineers, designers, researchers, and marketers. Everyone is a builder in their own way.",
+    "access": "Free-to-join space where members can learn, solve real problems, share what works, and build solutions others can use",
+    "focus_area": "The 'people industry' where the future of work and labor takes shape",
+    "philosophy": "Challenges must be met together through a nonprofit, open-source community model"
+  },
+
+  "programs_and_initiatives": [
+    {
+      "name": "Community of Practice",
+      "type": "Core Program",
+      "description": "Collaborative space for HR professionals, talent acquisition specialists, learning & development experts, and people operations professionals",
+      "target_audience": "HR, TA, L&D, People Ops professionals, engineers, designers, researchers, marketers",
+      "cost": "Free to join"
+    },
+    {
+      "name": "OPEN Community Hour",
+      "type": "Weekly Event",
+      "description": "Weekly peer-support session described as a 'free-for-all' gathering for industry builders and problem-solvers",
+      "platform": "Luma (event management)",
+      "frequency": "Weekly",
+      "format": "Peer support and networking"
+    },
+    {
+      "name": "JD Auditor",
+      "type": "Tool/Technology",
+      "description": "Job description auditing tool",
+      "url": "skilllens-505497480506.us-west1.run.app/",
+      "purpose": "Likely assists with job description analysis and improvement"
+    },
+    {
+      "name": "AI Builder Series",
+      "type": "Educational Program",
+      "description": "Educational content on custom GPT development",
+      "focus": "AI and technology skills for HR/people professionals"
+    },
+    {
+      "name": "Volunteer Program",
+      "type": "Engagement Opportunity",
+      "description": "Formal volunteer opportunities available",
+      "page": "https://opentalentsociety.org/volunteer-opportunities",
+      "details": "Specific roles and requirements not publicly detailed"
+    }
+  ],
+
+  "community_composition": {
+    "member_companies_count": "80+",
+    "notable_companies": [
+      "Microsoft",
+      "Amazon",
+      "Google",
+      "Meta",
+      "Apple",
+      "OpenAI",
+      "Uber",
+      "Netflix",
+      "Oracle",
+      "Salesforce",
+      "Adobe",
+      "LinkedIn",
+      "Airbnb",
+      "Stripe",
+      "Spotify"
+    ],
+    "industries_represented": [
+      "Technology",
+      "Finance",
+      "Healthcare",
+      "Retail",
+      "Transportation",
+      "Media & Entertainment"
+    ],
+    "member_roles": [
+      "HR Professionals",
+      "Talent Acquisition Specialists",
+      "Learning & Development Experts",
+      "People Operations Professionals",
+      "Engineers",
+      "Designers",
+      "Researchers",
+      "Marketers"
+    ]
+  },
+
+  "leadership_and_governance": {
+    "board_members": "Not publicly disclosed",
+    "executive_team": "Not publicly disclosed",
+    "advisory_board": "Not publicly disclosed",
+    "founder_information": "Not publicly available",
+    "governance_structure": "Information not available on public website"
+  },
+
+  "impact_and_outcomes": {
+    "quantified_metrics": "Not publicly disclosed",
+    "member_testimonials": "Not available on main website",
+    "success_stories": "Not publicly detailed",
+    "years_of_operation": "Not disclosed (copyright shows 2025)",
+    "community_size": "Members from 80+ major companies",
+    "geographic_reach": "Global (based on multinational company participation)"
+  },
+
+  "get_involved": {
+    "membership": {
+      "cost": "Free to join",
+      "process": "Information available on website",
+      "benefits": [
+        "Access to community of practice",
+        "Weekly OPEN Community Hour",
+        "Learning opportunities",
+        "Networking with professionals from 80+ companies",
+        "Access to tools like JD Auditor",
+        "Problem-solving collaboration",
+        "Open-source solution building"
+      ]
+    },
+    "volunteer_opportunities": {
+      "availability": "Yes",
+      "page": "https://opentalentsociety.org/volunteer-opportunities",
+      "specific_roles": "Not publicly detailed",
+      "application_process": "Contact through website"
+    },
+    "donation_support": {
+      "donation_page": "Not found on public website",
+      "tax_deductibility": "Assumed (501c3 status)",
+      "donation_methods": "Not publicly disclosed",
+      "recommendation": "Contact organization directly for donation information"
+    },
+    "newsletter": {
+      "available": "Yes",
+      "signup": "Email subscription option on website"
+    }
+  },
+
+  "contact_information": {
+    "website": "https://opentalentsociety.org/",
+    "email": "Not publicly disclosed",
+    "phone": "Not publicly disclosed",
+    "mailing_address": "Not publicly disclosed",
+    "social_media": {
+      "linkedin": "https://www.linkedin.com/company/opent-talent-society",
+      "twitter_x": "https://x.com/opentalentscty",
+      "facebook": "https://facebook.com/opentalentsociety",
+      "bluesky": "Listed but URL not provided",
+      "threads": "Listed but URL not provided",
+      "tiktok": "Listed but URL not provided",
+      "youtube": "Listed but URL not provided",
+      "instagram": "Listed but URL not provided"
+    },
+    "primary_contact_method": "Website and social media channels"
+  },
+
+  "history_and_founding": {
+    "founding_date": "Not publicly disclosed",
+    "founder_story": "Not publicly available",
+    "origin_narrative": "Not disclosed on public website",
+    "organizational_evolution": "Limited public information",
+    "milestones": "Not publicly documented",
+    "copyright_year": "2025 (suggesting recent or ongoing operation)"
+  },
+
+  "technology_and_tools": {
+    "website_platform": "Ghost CMS with Singapore theme",
+    "tools_developed": [
+      {
+        "name": "JD Auditor",
+        "url": "skilllens-505497480506.us-west1.run.app/",
+        "purpose": "Job description auditing"
+      }
+    ],
+    "open_source_commitment": "Emphasized as core organizational value",
+    "technology_focus": "AI/GPT development, HR tech solutions"
+  },
+
+  "key_differentiators": [
+    "Nonprofit model serving for-profit companies",
+    "Open-source community approach to HR/people problems",
+    "Cross-functional collaboration (HR + engineering + design)",
+    "Free access to all programs and resources",
+    "Tool building and solution sharing philosophy",
+    "Focus on 'the people industry' broadly, not just HR"
+  ],
+
+  "research_limitations": [
+    "No public board member information",
+    "Limited founding history available",
+    "No quantified impact metrics disclosed",
+    "Donation/funding information not publicly accessible",
+    "Detailed volunteer role descriptions not available",
+    "Leadership team not identified on website",
+    "Some pages (about, community, contact) returned 404 errors",
+    "Tax documentation (Form 990) not linked from website"
+  ],
+
+  "research_sources": [
+    "https://opentalentsociety.org/ (primary website)",
+    "https://opentalentsociety.org/volunteer-opportunities",
+    "https://www.linkedin.com/company/opent-talent-society",
+    "Web search results for verification"
+  ],
+
+  "recommended_next_steps": [
+    "Contact organization directly via social media for detailed leadership information",
+    "Request Form 990 for financial transparency and governance details",
+    "Check IRS Tax Exempt Organization Search for official 501(c)(3) verification",
+    "Reach out through LinkedIn company page for founder story and history",
+    "Subscribe to newsletter for ongoing updates and impact stories",
+    "Visit volunteer opportunities page for current engagement options"
+  ]
+}

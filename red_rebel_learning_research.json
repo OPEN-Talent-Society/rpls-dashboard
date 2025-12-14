@@ -1,0 +1,379 @@
+{
+  "company_name": "RedRebel Learning",
+  "website": "https://www.redrebellearning.com/",
+  "tagline": "Human-First AI Adoption",
+  "founding_year": "2025 (approximately)",
+
+  "mission_vision_values": {
+    "mission": "Helping humans thrive in the age of AI by building human-centered approaches to AI adoption through social learning, critical thinking, and community",
+    "vision": "Co-creating more relevant, practical, and social learning experiences in the age of AI",
+    "core_philosophy": "Traditional learning can't keep up with the pace of change, especially in an AI-driven world. Implementation isn't adoption - AI shines in demos but stalls in workflows when people aren't brought along.",
+    "value_proposition": "Unlock the missing 70% of AI ROI by focusing on what really drives transformation: mindset, literacy, trust, and leadership",
+    "tagline_extended": "Build a human-first AI strategy bold enough to turn pilots into profit and fear into confidence",
+    "rebellion_against": "The 'course factory' - passive, disconnected learning that doesn't drive real adoption or performance"
+  },
+
+  "services_products": {
+    "overview": "Consulting practice helping founders, teams, and learning leaders build learning cultures from scratch or reimagine existing ones to become more practical, energizing, and rooted in human connection",
+    "service_framework": "4As Framework (inferred from website navigation)",
+    "services": [
+      {
+        "name": "Assess",
+        "description": "Evaluate current AI readiness and learning culture",
+        "focus": "Understanding gaps in mindset, literacy, trust, and leadership"
+      },
+      {
+        "name": "Align",
+        "description": "Strategic alignment of AI initiatives with organizational culture",
+        "focus": "Human-centered AI strategy development"
+      },
+      {
+        "name": "Accelerate",
+        "description": "Implementation of social learning programs that drive AI adoption",
+        "focus": "Scalable, cohort-based learning experiences"
+      },
+      {
+        "name": "Advise",
+        "description": "Ongoing advisory and support for sustainable transformation",
+        "focus": "Long-term mentorship and community building"
+      }
+    ],
+    "specific_offerings": [
+      {
+        "name": "Mentorship Blueprint",
+        "description": "Structured and repeatable mentorship program customized to client needs",
+        "benefits": "Clear framework to seamlessly onboard mentors and mentees, facilitate meaningful relationships, and measure success",
+        "target_outcome": "Set up an effective mentorship structure that lasts - simple, measurable, and impactful"
+      },
+      {
+        "name": "Learning Culture Blueprint",
+        "description": "Clear pathway to building a thriving environment of continuous learning",
+        "approach": "Partner with clients to assess current state, identify strengths and gaps, and co-create a strategic blueprint",
+        "target_outcome": "Unlock organizations' full potential by building a thriving learning culture that drives growth, innovation, and lasting impact"
+      },
+      {
+        "name": "Social Learning Design",
+        "description": "Design social learning experiences that turn passive content into an active community",
+        "approach": "Build a culture where learning is relevant, knowledge is shared, performance grows, and people stay",
+        "differentiator": "Transform disengaged communities into energizing spaces where people show up, contribute, and connect"
+      },
+      {
+        "name": "Community Blueprint",
+        "description": "Clear, practical roadmap to create or revive communities",
+        "deliverables": "Clarify community purpose, design meaningful interactions, foster ongoing engagement",
+        "target_outcome": "Transform disengaged communities into energizing spaces"
+      }
+    ],
+    "methodology_keywords": [
+      "Social learning",
+      "Cohort-based programs",
+      "Community-driven learning",
+      "Human-centered design",
+      "Scalable solutions",
+      "Human-first AI adoption",
+      "Mindset before model"
+    ]
+  },
+
+  "target_audience": {
+    "primary_segments": [
+      "Founders (especially first-time founders)",
+      "Leadership teams in tech companies",
+      "Learning & Development leaders",
+      "Talent development professionals",
+      "HR executives"
+    ],
+    "ideal_client_profile": {
+      "company_size": "Scale-ups to enterprise (based on Meta/Uber experience)",
+      "industries": "Technology, Big Tech, high-growth startups",
+      "pain_points": [
+        "AI pilots that don't scale beyond demos",
+        "Low adoption rates despite technology investment",
+        "Disengaged communities and learning programs",
+        "Ineffective mentorship structures",
+        "Learning programs that feel like checkboxes rather than catalysts",
+        "Missing 70% of AI ROI due to people/culture gaps"
+      ],
+      "readiness_indicators": "Teams ready to ditch the status quo",
+      "mindset": "Organizations that understand implementation isn't adoption"
+    },
+    "psychographics": {
+      "values": "Human connection, practical learning, social impact, innovation",
+      "concerns": "AI transformation stalling, fear of AI displacement, lack of trust in new technology",
+      "desires": "Turn pilots into profit, transform fear into confidence, retain talent, drive real performance"
+    }
+  },
+
+  "key_differentiators": {
+    "unique_value_propositions": [
+      "Human-first approach to AI adoption (not technology-first)",
+      "Focus on the missing 70% of AI ROI through people/culture transformation",
+      "Social learning over passive course content",
+      "Proven experience at Meta and Uber with programs serving 50,000+ people",
+      "Rebel positioning against traditional 'course factory' L&D",
+      "Integration of AI adoption with learning culture development",
+      "Mindset-before-model philosophy"
+    ],
+    "competitive_advantages": [
+      "8+ years building global, cohort-based learning at big tech (Meta, Uber, Randstad)",
+      "Ability to navigate strategic high-level and tactical detailed views",
+      "Proven track record building large-scale, global talent acquisition L&D projects",
+      "Community building expertise combined with AI adoption focus",
+      "First-hand experience with 50,000+ person mentorship programs"
+    ],
+    "service_approach": {
+      "description": "Bold, practical, impactful, and personalized",
+      "methodology": "Co-created strategy that transforms how teams learn, mentor, and connect",
+      "philosophy": "Reimagine learning not as a checkbox, but as a catalyst for clarity, connection, performance and change",
+      "transparency": "Raw, no-nonsense journey sharing as a first-time founder"
+    }
+  },
+
+  "team_members": {
+    "founder": {
+      "name": "Klara Hermesz",
+      "title": "Founder, Talent Development Consultant, Learning Strategist, Community Builder, Social Impact Catalyst",
+      "linkedin": "https://www.linkedin.com/in/klarahermesz/",
+      "location": "Seattle, WA, USA",
+      "origin": "Hungary (living in Seattle since 2018)",
+      "education": "Corvinus University of Budapest",
+      "background": {
+        "experience_years": "8+ years",
+        "companies": [
+          {
+            "name": "Meta (Facebook)",
+            "role": "Learning Program Manager",
+            "focus": "Supporting Recruiting organization, global learning programs"
+          },
+          {
+            "name": "Uber",
+            "role": "Learning & Development",
+            "focus": "Global, cohort-based, community-driven learning programs"
+          },
+          {
+            "name": "Randstad",
+            "role": "Learning & Development",
+            "focus": "Talent acquisition L&D projects"
+          }
+        ],
+        "notable_projects": [
+          "Reimagined global mentorship program for 50,000+ people",
+          "Built large-scale, global talent acquisition L&D projects",
+          "Developed cohort-based and community-driven learning programs"
+        ]
+      },
+      "expertise": [
+        "Social learning design",
+        "Community building",
+        "Mentorship program design",
+        "Learning culture transformation",
+        "AI adoption strategy",
+        "Talent & career development",
+        "Pathway programs",
+        "Creating access to education for underserved and underrepresented people"
+      ],
+      "board_roles": [
+        {
+          "organization": "Sourcing7",
+          "role": "Board of Director for Education & Community Learning"
+        },
+        {
+          "organization": "Open Talent Society (referenced)",
+          "role": "Board member / Community learning strategy lead",
+          "description": "Nonprofit building learning communities for talent professionals"
+        }
+      ],
+      "volunteer_work": [
+        {
+          "organization": "L&D Cares",
+          "description": "All-volunteer group of L&D and HR professionals providing support for industry professionals displaced or disrupted by pandemic/work shifts"
+        },
+        {
+          "organization": "Innov8social",
+          "role": "Impact Catalyst for Impactathon events"
+        }
+      ],
+      "personal_brand": {
+        "description": "Fierce kindness, innovative spirit, genuine listening skills",
+        "work_style": "Straightforward, strategic approach with deep care for work",
+        "personality": "Razor-sharp wit, bursts of energy and insight",
+        "values": "Human-centered design mindset, social impact, equity"
+      }
+    }
+  },
+
+  "contact_information": {
+    "website": "https://www.redrebellearning.com/",
+    "substack": "https://redrebel.substack.com/",
+    "linkedin_company": "RedRebel Learning",
+    "linkedin_founder": "https://www.linkedin.com/in/klarahermesz/",
+    "calendly_booking": "https://calendly.com/helloklara/brainstorm (inferred from website HTML)",
+    "twitter_mention": "@lovable_dev (website metadata - may be platform builder)",
+    "contact_method": "Schedule Strategy Call via Calendly",
+    "newsletter": {
+      "platform": "Substack",
+      "url": "https://redrebel.substack.com/",
+      "handle": "@redrebellearning",
+      "subscribers": "Hundreds",
+      "launch_date": "January 2025 (approximately)",
+      "focus": "Human-centered AI adoption, social learning, critical thinking, community, founder journey"
+    }
+  },
+
+  "case_studies_testimonials": {
+    "client_testimonials": [
+      {
+        "client_description": "Former colleague",
+        "relationship": "Worked together at Meta and Uber",
+        "testimonial": "I've had the pleasure of working with Klara over the years at Meta and Uber, and I'm continually inspired by her ability to create scalable, impactful programs that feel personalized and thoughtfully designed. Most recently, I supported her in developing a mentorship program from scratch, and her fierce kindness, innovative spirit, and genuine listening skills made the process both enjoyable and meaningful. Klara's straightforward, strategic approach and her deep care for her work make her a trusted partner.",
+        "key_themes": [
+          "Scalable yet personalized programs",
+          "Mentorship program design",
+          "Fierce kindness",
+          "Strategic approach",
+          "Trusted partnership"
+        ]
+      },
+      {
+        "client_description": "Collaboration partner",
+        "testimonial": "Beyond her expertise, Klara's kindness and razor-sharp wit make every collaboration a burst of energy and insight. She is not only an expert in her field but also a trusted partner who is genuinely invested in the success of those she works with.",
+        "key_themes": [
+          "Expert knowledge",
+          "Energizing collaboration",
+          "Investment in client success",
+          "Sharp insights"
+        ]
+      },
+      {
+        "client_description": "Professional reference",
+        "testimonial": "What truly sets Klara apart is her remarkable versatility. With experience at industry leaders like Meta, Uber, and Randstad, she seamlessly navigates between a strategic, high-level perspective and a detailed, tactical view, ensuring that both immediate needs and long-term objectives are met. Whether building large-scale, global talent acquisition L&D projects or solving pressing, tactical issues, Klara consistently delivers outstanding results.",
+        "key_themes": [
+          "Strategic and tactical versatility",
+          "Big tech experience",
+          "Consistent results",
+          "Global scale expertise"
+        ]
+      }
+    ],
+    "proven_experience": {
+      "scale": "50,000+ person programs",
+      "companies": "Meta, Uber, Randstad",
+      "program_types": [
+        "Global mentorship programs",
+        "Cohort-based learning",
+        "Community-driven learning",
+        "Talent acquisition L&D",
+        "Learning culture transformation"
+      ]
+    }
+  },
+
+  "content_thought_leadership": {
+    "substack_publication": {
+      "name": "RedRebel Learning",
+      "tagline": "Co-creating more relevant, practical, and social learning experiences in the age of AI",
+      "content_themes": [
+        "Human-first AI adoption",
+        "Mindset Before Model",
+        "The Rise of Communities, Fellowships & Social Learning",
+        "Learning as Leverage",
+        "Navigating Change Together: Lessons on learning, AI, and the future of work",
+        "Monthly founder journey reviews (reflection, recalibration, transparency)"
+      ],
+      "audience_size": "Hundreds of subscribers",
+      "posting_frequency": "Regular (monthly reviews + topical posts)"
+    },
+    "key_messages": [
+      "Implementation isn't adoption",
+      "AI shines in demos but stalls in workflows when people aren't brought along",
+      "Mindset before model - AI readiness is a people-first endeavor",
+      "Shared human experiences are increasingly important amid AI advancement",
+      "Learning should be a catalyst, not a checkbox",
+      "Turn pilots into profit, fear into confidence"
+    ]
+  },
+
+  "pricing_business_model": {
+    "model": "Consulting / Advisory Services",
+    "engagement_types": [
+      "Strategy calls (Calendly booking)",
+      "Custom program design",
+      "Co-creation partnerships",
+      "Ongoing advisory"
+    ],
+    "pricing": "Not publicly disclosed - custom engagements",
+    "entry_point": "Schedule Strategy Call via Calendly",
+    "ideal_engagement": "Organizations ready for transformation, not quick fixes"
+  },
+
+  "market_positioning": {
+    "category": "Human-First AI Adoption Consulting / Learning Culture Transformation",
+    "positioning_statement": "The only learning consultancy that helps tech leaders unlock the missing 70% of AI ROI by transforming mindset, literacy, trust, and leadership - not just implementing technology",
+    "market_gap_addressed": "Organizations struggle with AI adoption beyond pilots because they focus on technology implementation without addressing the human/cultural transformation needed for real adoption",
+    "competitive_landscape": {
+      "traditional_competitors": "L&D consultancies, AI implementation firms, change management consultancies",
+      "differentiation": "Rebel positioning against 'course factory' L&D, focus on social learning vs passive content, proven big tech experience, AI adoption integrated with learning culture"
+    }
+  },
+
+  "relevant_events_activities": {
+    "speaking_engagements": [
+      {
+        "event": "2025 Seattle Women in Tech Regatta",
+        "topic": "Staying human, curious, and connected in an AI-powered world",
+        "date": "2025"
+      },
+      {
+        "event": "Sourcing7 Seattle Summer Showcase",
+        "role": "Moderator",
+        "topic": "Inclusion in talent acquisition",
+        "organization": "Juneteenth event"
+      }
+    ]
+  },
+
+  "seo_keywords": [
+    "human-first AI adoption",
+    "AI transformation consulting",
+    "learning culture development",
+    "social learning design",
+    "mentorship programs",
+    "community building",
+    "AI ROI optimization",
+    "mindset transformation",
+    "cohort-based learning",
+    "tech company learning programs",
+    "AI adoption strategy",
+    "human-centered AI",
+    "learning & development consulting",
+    "talent development",
+    "organizational learning"
+  ],
+
+  "metadata": {
+    "research_date": "2025-12-13",
+    "researcher": "Strategic Business Researcher Agent",
+    "data_sources": [
+      "https://www.redrebellearning.com/",
+      "https://redrebel.substack.com/",
+      "https://www.linkedin.com/in/klarahermesz/",
+      "Web search results 2025",
+      "Website HTML metadata"
+    ],
+    "completeness_score": 85,
+    "confidence_level": "High",
+    "data_gaps": [
+      "Specific pricing information",
+      "Detailed case study metrics/ROI data",
+      "Complete list of current clients",
+      "Exact founding date",
+      "Direct email address (likely hello@redrebellearning.com or via Calendly)"
+    ],
+    "recommended_next_steps": [
+      "Schedule strategy call via Calendly for detailed service discussion",
+      "Subscribe to Substack for ongoing thought leadership",
+      "Connect with Klara Hermesz on LinkedIn",
+      "Review Substack archives for deeper methodology insights"
+    ]
+  }
+}
