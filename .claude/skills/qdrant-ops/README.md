@@ -27,12 +27,12 @@ Environment variables (already configured in `/Users/adamkovacs/Documents/codebu
 
 ```bash
 QDRANT_URL=https://qdrant.harbor.fyi
-QDRANT_API_KEY=[REDACTED_QDRANT_KEY]
+QDRANT_API_KEY=${QDRANT_API_KEY}  # Set in .env
 QDRANT_COLLECTION=agent_memory
 QDRANT_EMBEDDING_PROVIDER=gemini
 QDRANT_EMBEDDING_MODEL=gemini-embedding-001
 QDRANT_EMBEDDING_DIM=768
-GEMINI_API_KEY=[REDACTED_GEMINI_KEY]
+GEMINI_API_KEY=${GEMINI_API_KEY}  # Set in .env
 ```
 
 ## Current Status
