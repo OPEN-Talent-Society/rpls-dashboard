@@ -1,0 +1,163 @@
+version: '3.8'
+
+services:
+  # Runner for AI-Enablement-Academy organization
+  runner-aea:
+    image: myoung34/github-runner:latest
+    container_name: github-runner-aea
+    restart: unless-stopped
+    environment:
+      ORG_NAME: AI-Enablement-Academy
+      ACCESS_TOKEN: ${GITHUB_PAT}
+      RUNNER_NAME: docker-runner-aea-1
+      RUNNER_WORKDIR: /tmp/runner-aea/work
+      RUNNER_GROUP: default
+      RUNNER_SCOPE: org
+      LABELS: docker,self-hosted,linux,x64,bun,aea
+      EPHEMERAL: false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./runner-data/aea:/tmp/runner-aea
+      - ./cache/bun:/root/.bun
+      - ./cache/node_modules:/cache/node_modules
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    networks:
+      - runner-network
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "Runner.Listener"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Runner for OPEN-Talent-Society organization
+  runner-ots:
+    image: myoung34/github-runner:latest
+    container_name: github-runner-ots
+    restart: unless-stopped
+    environment:
+      ORG_NAME: OPEN-Talent-Society
+      ACCESS_TOKEN: ${GITHUB_PAT}
+      RUNNER_NAME: docker-runner-ots-1
+      RUNNER_WORKDIR: /tmp/runner-ots/work
+      RUNNER_GROUP: default
+      RUNNER_SCOPE: org
+      LABELS: docker,self-hosted,linux,x64,bun,ots
+      EPHEMERAL: false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./runner-data/ots:/tmp/runner-ots
+      - ./cache/bun:/root/.bun
+      - ./cache/node_modules:/cache/node_modules
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    networks:
+      - runner-network
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "Runner.Listener"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Runner for The-Talent-Foundation organization
+  runner-ttf:
+    image: myoung34/github-runner:latest
+    container_name: github-runner-ttf
+    restart: unless-stopped
+    environment:
+      ORG_NAME: The-Talent-Foundation
+      ACCESS_TOKEN: ${GITHUB_PAT}
+      RUNNER_NAME: docker-runner-ttf-1
+      RUNNER_WORKDIR: /tmp/runner-ttf/work
+      RUNNER_GROUP: default
+      RUNNER_SCOPE: org
+      LABELS: docker,self-hosted,linux,x64,bun,ttf
+      EPHEMERAL: false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./runner-data/ttf:/tmp/runner-ttf
+      - ./cache/bun:/root/.bun
+      - ./cache/node_modules:/cache/node_modules
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    networks:
+      - runner-network
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "Runner.Listener"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Runner for personal repos (adambkovacs)
+  runner-personal:
+    image: myoung34/github-runner:latest
+    container_name: github-runner-personal
+    restart: unless-stopped
+    environment:
+      REPO_URL: https://github.com/adambkovacs
+      ACCESS_TOKEN: ${GITHUB_PAT}
+      RUNNER_NAME: docker-runner-personal-1
+      RUNNER_WORKDIR: /tmp/runner-personal/work
+      RUNNER_GROUP: default
+      LABELS: docker,self-hosted,linux,x64,bun,personal
+      EPHEMERAL: false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./runner-data/personal:/tmp/runner-personal
+      - ./cache/bun:/root/.bun
+      - ./cache/node_modules:/cache/node_modules
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+        reservations:
+          cpus: '1'
+          memory: 2G
+    networks:
+      - runner-network
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "Runner.Listener"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Watchtower for auto-updates
+  watchtower:
+    image: containrrr/watchtower
+    container_name: runner-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      WATCHTOWER_CLEANUP: true
+      WATCHTOWER_POLL_INTERVAL: 86400  # Check daily
+      WATCHTOWER_INCLUDE_STOPPED: true
+    networks:
+      - runner-network
+
+networks:
+  runner-network:
+    driver: bridge

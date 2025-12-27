@@ -1,0 +1,79 @@
+version: '3.8'
+
+services:
+  github-runner:
+    image: myoung34/github-runner:latest
+    container_name: github-runner-academy
+    restart: unless-stopped
+
+    environment:
+      # GitHub Configuration (from .env)
+      # For org-level runner, use ORG_NAME
+      ORG_NAME: ${GITHUB_ORG_NAME}
+      # For repo-specific runner, use REPO_URL instead
+      # REPO_URL: ${GITHUB_REPO_URL}
+
+      ACCESS_TOKEN: ${GITHUB_PAT}
+      RUNNER_NAME: ${RUNNER_NAME:-docker-runner-org-1}
+      RUNNER_WORKDIR: /tmp/runner/work
+      RUNNER_GROUP: ${RUNNER_GROUP:-default}
+
+      # Labels for workflow targeting
+      LABELS: docker,self-hosted,linux,x64,bun
+
+      # Performance tuning
+      RUNNER_SCOPE: ${RUNNER_SCOPE:-org}
+      EPHEMERAL: false  # Reuse runner after jobs
+
+    volumes:
+      # Docker-in-Docker support for building images
+      - /var/run/docker.sock:/var/run/docker.sock
+
+      # Persistent runner data
+      - ./runner-data:/tmp/runner
+
+      # Bun cache for faster builds
+      - ./cache/bun:/root/.bun
+
+      # Node modules cache
+      - ./cache/node_modules:/cache/node_modules
+
+    # Resource limits (adjust based on your needs)
+    deploy:
+      resources:
+        limits:
+          cpus: '4'
+          memory: 8G
+        reservations:
+          cpus: '2'
+          memory: 4G
+
+    # Network configuration
+    networks:
+      - runner-network
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "Runner.Listener"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Optional: Add Watchtower for auto-updates
+  watchtower:
+    image: containrrr/watchtower
+    container_name: runner-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      WATCHTOWER_CLEANUP: true
+      WATCHTOWER_POLL_INTERVAL: 86400  # Check daily
+      WATCHTOWER_INCLUDE_STOPPED: true
+    networks:
+      - runner-network
+
+networks:
+  runner-network:
+    driver: bridge
