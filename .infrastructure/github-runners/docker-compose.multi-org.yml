@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Runner for AI-Enablement-Academy organization
   runner-aea:
@@ -109,44 +107,9 @@ services:
       retries: 3
       start_period: 40s
 
-  # Runner for personal repos (adambkovacs)
-  runner-personal:
-    image: myoung34/github-runner:latest
-    container_name: github-runner-personal
-    restart: unless-stopped
-    environment:
-      REPO_URL: https://github.com/adambkovacs
-      ACCESS_TOKEN: ${GITHUB_PAT}
-      RUNNER_NAME: docker-runner-personal-1
-      RUNNER_WORKDIR: /tmp/runner-personal/work
-      RUNNER_GROUP: default
-      LABELS: docker,self-hosted,linux,x64,bun,personal
-      EPHEMERAL: false
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-      - ./runner-data/personal:/tmp/runner-personal
-      - ./cache/bun:/root/.bun
-      - ./cache/node_modules:/cache/node_modules
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 4G
-        reservations:
-          cpus: '1'
-          memory: 2G
-    networks:
-      - runner-network
-    healthcheck:
-      test: ["CMD", "pgrep", "-f", "Runner.Listener"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 40s
-
   # Watchtower for auto-updates
   watchtower:
-    image: containrrr/watchtower
+    image: containrrr/watchtower:latest
     container_name: runner-watchtower
     restart: unless-stopped
     volumes:
@@ -155,6 +118,7 @@ services:
       WATCHTOWER_CLEANUP: true
       WATCHTOWER_POLL_INTERVAL: 86400  # Check daily
       WATCHTOWER_INCLUDE_STOPPED: true
+      DOCKER_API_VERSION: "1.52"
     networks:
       - runner-network
 

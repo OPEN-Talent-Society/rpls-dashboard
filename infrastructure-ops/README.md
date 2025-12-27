@@ -28,9 +28,10 @@ This directory contains all infrastructure documentation, monitoring setup, and 
 
 ### Homelab (192.168.50.x)
 - Proxmox host: 100.103.83.62 (Tailscale)
-- Docker VM: 192.168.50.149 (VM 101)
+- Docker VM: 192.168.50.149 (VM 101) / docker-host: 100.114.104.8 (Tailscale)
 - Nginx Proxy Manager: 192.168.50.45 (LXC 106)
 - QNAP NAS: 192.168.50.251
+- GitHub Runners: 3 org runners (AI-Enablement-Academy, OPEN-Talent-Society, The-Talent-Foundation)
 - Services: n8n, Qdrant, Jellyfin, Supabase, LibreChat, and more
 
 ### Domains

@@ -1,5 +1,5 @@
 # Homelab Infrastructure Documentation
-**Last Updated:** 2025-12-05
+**Last Updated:** 2025-12-26
 **Status:** Comprehensive documentation complete
 
 ---
@@ -13,7 +13,8 @@ Complete documentation for the homelab network infrastructure, including router 
 - **Hypervisor:** Proxmox VE (192.168.50.10 / Tailscale: 100.103.83.62)
 - **NAS:** QNAP "Natasha" (192.168.50.251) - 26.7TB, 32% used
 - **Reverse Proxy:** Nginx Proxy Manager LXC 106 (192.168.50.45 / Tailscale: 100.85.205.49)
-- **Docker Host:** VM 101 via Proxmox (192.168.50.149) - 34+ containers
+- **Docker Host:** VM 101 via Proxmox (192.168.50.149 / Tailscale: 100.114.104.8) - 34+ containers
+- **GitHub Runners:** Docker Debian VM (docker-host) - 3 organization runners + Watchtower
 - **Total Network Devices:** 47+ (Infrastructure, IoT, Smart Home, Mobile)
 
 ---
@@ -90,7 +91,48 @@ ssh admin@192.168.50.251 "docker ps -a"
 
 ---
 
-### 4. Local DNS Configuration
+### 4. GitHub Runners (Self-Hosted CI/CD)
+**Location:** Docker Debian VM (docker-host) - `/opt/github-runners`
+**Tailscale:** 100.114.104.8
+
+Self-hosted GitHub Actions runners serving 3 organizations:
+- **runner-aea:** AI-Enablement-Academy organization
+- **runner-ots:** OPEN-Talent-Society organization
+- **runner-ttf:** The-Talent-Foundation organization
+- **watchtower:** Auto-updates (daily checks)
+
+**Quick Access:**
+```bash
+# SSH to docker host
+ssh root@100.114.104.8  # via Tailscale
+
+# Check runner status
+cd /opt/github-runners
+docker compose -f docker-compose.multi-org.yml ps
+
+# View logs
+docker compose -f docker-compose.multi-org.yml logs -f
+
+# Restart specific runner
+docker compose -f docker-compose.multi-org.yml restart runner-aea
+```
+
+**Resource Allocation (per runner):**
+- CPU: 2 cores limit, 1 core reserved
+- Memory: 4GB limit, 2GB reserved
+- Shared caching: Bun and node_modules
+
+**Web Dashboard:**
+- Planned: https://gitrunners.harbor.fyi (Nginx subdomain - pending configuration)
+
+**GitHub Settings:**
+- AI-Enablement-Academy: https://github.com/organizations/AI-Enablement-Academy/settings/actions/runners
+- OPEN-Talent-Society: https://github.com/organizations/OPEN-Talent-Society/settings/actions/runners
+- The-Talent-Foundation: https://github.com/organizations/The-Talent-Foundation/settings/actions/runners
+
+---
+
+### 5. Local DNS Configuration
 **File:** `LOCAL-DNS-CONFIGURATION.md` (12 KB)
 
 Solutions for nas.harbor.fyi local network access (hairpin NAT issue):
@@ -129,7 +171,9 @@ LAN: 192.168.50.0/24 (DHCP .11-.254)
   │   ├─ LXC 104: Supabase
   │   ├─ LXC 105: n8n
   │   ├─ LXC 106: NPM (192.168.50.45 / TS: 100.85.205.49)
-  │   └─ VM 101: Docker Debian (192.168.50.149) - 34+ containers
+  │   └─ VM 101: Docker Debian (192.168.50.149 / TS: 100.114.104.8)
+  │       ├─ 34+ containers (Qdrant, Jellyfin, Supabase, etc.)
+  │       └─ GitHub Runners (runner-aea, runner-ots, runner-ttf)
   │
   ├─► QNAP NAS "Natasha" (192.168.50.251)
   │   ├─ Storage: 26.7TB (32% used)
@@ -199,6 +243,9 @@ ssh admin@192.168.50.251 "hostname && uptime"
 
 # Test port forwarding (from router)
 ssh -i ~/.ssh/id_ed25519_asus_router_new -p 5855 sysadmin@192.168.50.1 "iptables -t nat -L VSERVER"
+
+# Check GitHub Runners status
+ssh root@100.114.104.8 "cd /opt/github-runners && docker compose -f docker-compose.multi-org.yml ps"
 ```
 
 ---
@@ -212,6 +259,7 @@ ssh -i ~/.ssh/id_ed25519_asus_router_new -p 5855 sysadmin@192.168.50.1 "iptables
 - [ ] Docker VM (192.168.50.149) - Ping + SSH
 - [ ] QNAP NAS (192.168.50.251) - Ping + HTTPS:8081 + SSH
 - [ ] nas.harbor.fyi (external) - HTTPS
+- [ ] GitHub Runners (100.114.104.8) - Docker health checks + SSH
 - [ ] Critical smart home devices - Ping
 
 ### Alerts to Configure
@@ -285,7 +333,8 @@ ssh -i ~/.ssh/id_ed25519_asus_router_new -p 5855 sysadmin@192.168.50.1 "iptables
 | 2025-12-05 | NETWORK-DEVICE-INVENTORY.md | ✅ Complete | 47+ devices mapped, full details, MAC/IP/hostname |
 | 2025-12-05 | NAS-ACCESS-GUIDE.md | ✅ Complete | SSH/Web UI access verified, 26.7TB storage documented |
 | 2025-12-05 | LOCAL-DNS-CONFIGURATION.md | ✅ Complete | Hairpin NAT issue documented with 4 solution options |
-| 2025-12-05 | README.md | ✅ Complete | This file - comprehensive index and quick reference |
+| 2025-12-26 | GitHub Runners Section | ✅ Complete | 3 org runners deployed, Watchtower configured |
+| 2025-12-26 | README.md | ✅ Updated | Added GitHub runners, updated topology, service checks |
 
 ---
 
