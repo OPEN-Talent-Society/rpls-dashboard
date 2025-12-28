@@ -57,13 +57,12 @@ RUN curl -fsSL https://bun.sh/install | bash
 # Install Lighthouse CI globally
 RUN npm install -g @lhci/cli@latest
 
-# Install Playwright with Chromium only (saves ~1GB disk space)
-# Add firefox webkit to the install command if you need other browsers
+# Install Playwright with all browsers (Chromium, Firefox, WebKit)
 RUN mkdir -p /tmp/playwright-setup \
     && cd /tmp/playwright-setup \
     && npm init -y \
     && npm install playwright@latest \
-    && npx playwright install --with-deps chromium \
+    && npx playwright install --with-deps chromium firefox webkit \
     && cd / \
     && rm -rf /tmp/playwright-setup
 
