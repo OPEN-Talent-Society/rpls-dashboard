@@ -1,7 +1,10 @@
 services:
   # Runner for AI-Enablement-Academy organization
   runner-aea:
-    image: myoung34/github-runner:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: github-runner-optimized:latest
     container_name: github-runner-aea
     restart: unless-stopped
     environment:
@@ -11,21 +14,27 @@ services:
       RUNNER_WORKDIR: /tmp/runner-aea/work
       RUNNER_GROUP: default
       RUNNER_SCOPE: org
-      LABELS: docker,self-hosted,linux,x64,bun,aea
+      LABELS: docker,self-hosted,linux,x64,bun,node20,playwright,lighthouse,aea
       EPHEMERAL: false
+      # Performance: Skip tool installation in jobs (already installed)
+      ACTIONS_RUNNER_HOOK_JOB_STARTED: ""
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./runner-data/aea:/tmp/runner-aea
-      - ./cache/bun:/root/.bun
-      - ./cache/node_modules:/cache/node_modules
+      # Shared caches for faster builds
+      - ./cache/bun:/root/.bun/install/cache
+      - ./cache/npm:/root/.npm
+      - ./cache/pnpm:/root/.local/share/pnpm/store
+      # Playwright browsers are baked into image, but cache results
+      - ./cache/playwright:/root/.cache/ms-playwright-results
     deploy:
       resources:
         limits:
           cpus: '2'
-          memory: 4G
+          memory: 6G
         reservations:
           cpus: '1'
-          memory: 2G
+          memory: 3G
     networks:
       - runner-network
     healthcheck:
@@ -33,11 +42,14 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 60s
 
   # Runner for OPEN-Talent-Society organization
   runner-ots:
-    image: myoung34/github-runner:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: github-runner-optimized:latest
     container_name: github-runner-ots
     restart: unless-stopped
     environment:
@@ -47,21 +59,23 @@ services:
       RUNNER_WORKDIR: /tmp/runner-ots/work
       RUNNER_GROUP: default
       RUNNER_SCOPE: org
-      LABELS: docker,self-hosted,linux,x64,bun,ots
+      LABELS: docker,self-hosted,linux,x64,bun,node20,playwright,lighthouse,ots
       EPHEMERAL: false
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./runner-data/ots:/tmp/runner-ots
-      - ./cache/bun:/root/.bun
-      - ./cache/node_modules:/cache/node_modules
+      - ./cache/bun:/root/.bun/install/cache
+      - ./cache/npm:/root/.npm
+      - ./cache/pnpm:/root/.local/share/pnpm/store
+      - ./cache/playwright:/root/.cache/ms-playwright-results
     deploy:
       resources:
         limits:
           cpus: '2'
-          memory: 4G
+          memory: 6G
         reservations:
           cpus: '1'
-          memory: 2G
+          memory: 3G
     networks:
       - runner-network
     healthcheck:
@@ -69,11 +83,14 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 60s
 
   # Runner for The-Talent-Foundation organization
   runner-ttf:
-    image: myoung34/github-runner:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: github-runner-optimized:latest
     container_name: github-runner-ttf
     restart: unless-stopped
     environment:
@@ -83,21 +100,23 @@ services:
       RUNNER_WORKDIR: /tmp/runner-ttf/work
       RUNNER_GROUP: default
       RUNNER_SCOPE: org
-      LABELS: docker,self-hosted,linux,x64,bun,ttf
+      LABELS: docker,self-hosted,linux,x64,bun,node20,playwright,lighthouse,ttf
       EPHEMERAL: false
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./runner-data/ttf:/tmp/runner-ttf
-      - ./cache/bun:/root/.bun
-      - ./cache/node_modules:/cache/node_modules
+      - ./cache/bun:/root/.bun/install/cache
+      - ./cache/npm:/root/.npm
+      - ./cache/pnpm:/root/.local/share/pnpm/store
+      - ./cache/playwright:/root/.cache/ms-playwright-results
     deploy:
       resources:
         limits:
           cpus: '2'
-          memory: 4G
+          memory: 6G
         reservations:
           cpus: '1'
-          memory: 2G
+          memory: 3G
     networks:
       - runner-network
     healthcheck:
@@ -105,9 +124,56 @@ services:
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
+      start_period: 60s
 
-  # Watchtower for auto-updates
+  # Runner for personal repos (adambkovacs)
+  # NOTE: GitHub personal accounts don't support user-level runners like organizations.
+  # Personal repos require repo-level runner registration. To use this:
+  # 1. Go to a specific repo > Settings > Actions > Runners > Add self-hosted runner
+  # 2. Set REPO_URL to that specific repo (e.g., https://github.com/adambkovacs/my-repo)
+  # 3. Uncomment and configure below
+  # For now, personal repos can use GitHub-hosted runners.
+  runner-personal:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: github-runner-optimized:latest
+    container_name: github-runner-personal
+    restart: unless-stopped
+    environment:
+      # Personal repos use ORG_NAME with username for user-level runner
+      ORG_NAME: adambkovacs
+      ACCESS_TOKEN: ${GITHUB_PAT}
+      RUNNER_NAME: docker-runner-personal-1
+      RUNNER_WORKDIR: /tmp/runner-personal/work
+      RUNNER_GROUP: default
+      LABELS: docker,self-hosted,linux,x64,bun,node20,playwright,lighthouse,personal
+      EPHEMERAL: false
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./runner-data/personal:/tmp/runner-personal
+      - ./cache/bun:/root/.bun/install/cache
+      - ./cache/npm:/root/.npm
+      - ./cache/pnpm:/root/.local/share/pnpm/store
+      - ./cache/playwright:/root/.cache/ms-playwright-results
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 6G
+        reservations:
+          cpus: '1'
+          memory: 3G
+    networks:
+      - runner-network
+    healthcheck:
+      test: ["CMD", "pgrep", "-f", "Runner.Listener"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+
+  # Watchtower for auto-updates (watches for new base image versions)
   watchtower:
     image: containrrr/watchtower:latest
     container_name: runner-watchtower
@@ -118,7 +184,10 @@ services:
       WATCHTOWER_CLEANUP: true
       WATCHTOWER_POLL_INTERVAL: 86400  # Check daily
       WATCHTOWER_INCLUDE_STOPPED: true
-      DOCKER_API_VERSION: "1.52"
+      # Only watch specific containers, not the custom-built ones
+      WATCHTOWER_LABEL_ENABLE: true
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
     networks:
       - runner-network
 
